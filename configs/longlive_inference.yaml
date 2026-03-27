@@ -13,16 +13,21 @@ model_kwargs:
 
 
 # inference
-data_path: longlive_models/prompts/vidprom_filtered_extended.txt
-output_folder: videos/long
+data_path: prompts_rag_test.txt
+output_folder: videos/baseline
 inference_iter: -1
-num_output_frames: 120
+num_output_frames: 120  # RAG benefit increases with longer videos (>36 frames = 3x local window)
 use_ema: false
 seed: 0
 num_samples: 1
 save_with_index: true
 global_sink: true
 context_noise: 0
+
+# RAG-KV: Retrieve evicted KV cache entries for entity consistency
+rag_enabled: false
+rag_top_k: 6           # Number of past frames to retrieve per attention layer
+rag_bank_size: 256     # Max frames stored in the retrieval bank
 
 generator_ckpt: longlive_models/models/longlive_base.pt
 lora_ckpt: longlive_models/models/lora.pt

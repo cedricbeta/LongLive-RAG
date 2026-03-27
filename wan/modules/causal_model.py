@@ -104,7 +104,9 @@ class CausalWanSelfAttention(nn.Module):
         kv_cache=None,
         current_start=0,
         cache_start=None,
-        sink_recache_after_switch=False
+        sink_recache_after_switch=False,
+        retrieval_bank=None,
+        retrieval_top_k=3
     ):
         r"""
         Args:
@@ -245,11 +247,20 @@ class CausalWanSelfAttention(nn.Module):
                     kv_cache["global_end_index"].item() - num_evicted_tokens
                 local_start_index = local_end_index - num_new_tokens
 
+                # RAG: Store evicted KVs in the retrieval bank before they are lost
+                if retrieval_bank is not None and num_evicted_tokens > 0 and not is_recompute:
+                    evicted_k = kv_cache["k"][:, sink_tokens:sink_tokens + num_evicted_tokens].clone()
+                    evicted_v = kv_cache["v"][:, sink_tokens:sink_tokens + num_evicted_tokens].clone()
+                    # Compute the global frame id of the first evicted token
+                    evicted_global_start = kv_cache["global_end_index"].item() - kv_cache["local_end_index"].item() + sink_tokens
+                    evicted_start_frame = evicted_global_start // frame_seqlen
+                    retrieval_bank.store_evicted_frames(evicted_k, evicted_v, evicted_start_frame)
+
                 # Construct full k, v for attention computation (without modifying the original cache)
                 # Create temporary k, v for computation
                 temp_k = kv_cache["k"].clone()
                 temp_v = kv_cache["v"].clone()
-                
+
                 # Apply rolling update to the temporary cache
                 temp_k[:, sink_tokens:sink_tokens + num_rolled_tokens] = \
                     temp_k[:, sink_tokens + num_evicted_tokens:sink_tokens + num_evicted_tokens + num_rolled_tokens].clone()
@@ -317,10 +328,27 @@ class CausalWanSelfAttention(nn.Module):
             # if (not dist.is_initialized() or dist.get_rank() == 0) and DEBUG:
             #     print(f"local_start_index: {local_start_index}, local_end_index: {local_end_index}")
 
+            # RAG: Retrieve relevant past frames from the bank
+            retrieved_k, retrieved_v = None, None
+            if retrieval_bank is not None and len(retrieval_bank) > 0 and not is_recompute:
+                # Determine which frames are already in sink + local window (to exclude)
+                sink_frame_ids = set(range(self.sink_size))
+                # Approximate local window frame ids from global indices
+                local_global_start = kv_cache["global_end_index"].item() - kv_cache["local_end_index"].item()
+                local_window_start_frame = (local_global_start + sink_tokens) // frame_seqlen
+                local_window_end_frame = current_end // frame_seqlen
+                local_frame_ids = set(range(local_window_start_frame, local_window_end_frame))
+                exclude = sink_frame_ids | local_frame_ids
+
+                retrieved_k, retrieved_v, _ = retrieval_bank.retrieve(
+                    roped_query, top_k=retrieval_top_k, exclude_frame_ids=exclude
+                )
+
             # Use temporary k, v to compute attention
             if sink_tokens > 0:
                 # Concatenate sink tokens and local window tokens, keeping total length strictly below max_attention_size
-                local_budget = self.max_attention_size - sink_tokens
+                rag_tokens = retrieved_k.shape[1] if retrieved_k is not None else 0
+                local_budget = self.max_attention_size - sink_tokens - rag_tokens
                 k_sink = temp_k[:, :sink_tokens]
                 v_sink = temp_v[:, :sink_tokens]
                 # if (not dist.is_initialized() or dist.get_rank() == 0) and DEBUG:
@@ -329,8 +357,16 @@ class CausalWanSelfAttention(nn.Module):
                     local_start_for_window = max(sink_tokens, local_end_index - local_budget)
                     k_local = temp_k[:, local_start_for_window:local_end_index]
                     v_local = temp_v[:, local_start_for_window:local_end_index]
-                    k_cat = torch.cat([k_sink, k_local], dim=1)
-                    v_cat = torch.cat([v_sink, v_local], dim=1)
+                    # Assemble: [sink] + [retrieved] + [local window]
+                    k_parts = [k_sink]
+                    v_parts = [v_sink]
+                    if retrieved_k is not None:
+                        k_parts.append(retrieved_k)
+                        v_parts.append(retrieved_v)
+                    k_parts.append(k_local)
+                    v_parts.append(v_local)
+                    k_cat = torch.cat(k_parts, dim=1)
+                    v_cat = torch.cat(v_parts, dim=1)
                 else:
                     k_cat = k_sink
                     v_cat = v_sink
@@ -341,10 +377,17 @@ class CausalWanSelfAttention(nn.Module):
                 )
             else:
                 window_start = max(0, local_end_index - self.max_attention_size)
+                k_parts = []
+                v_parts = []
+                if retrieved_k is not None:
+                    k_parts.append(retrieved_k)
+                    v_parts.append(retrieved_v)
+                k_parts.append(temp_k[:, window_start:local_end_index])
+                v_parts.append(temp_v[:, window_start:local_end_index])
                 x = attention(
                     roped_query,
-                    temp_k[:, window_start:local_end_index],
-                    temp_v[:, window_start:local_end_index]
+                    torch.cat(k_parts, dim=1),
+                    torch.cat(v_parts, dim=1)
                 )
 
         # output
@@ -413,6 +456,8 @@ class CausalWanAttentionBlock(nn.Module):
         current_start=0,
         cache_start=None,
         sink_recache_after_switch=False,
+        retrieval_bank=None,
+        retrieval_top_k=3,
     ):
         r"""
         Args:
@@ -432,7 +477,8 @@ class CausalWanAttentionBlock(nn.Module):
         self_attn_result = self.self_attn(
             (self.norm1(x).unflatten(dim=1, sizes=(num_frames, frame_seqlen)) * (1 + e[1]) + e[0]).flatten(1, 2),
             seq_lens, grid_sizes,
-            freqs, block_mask, kv_cache, current_start, cache_start, sink_recache_after_switch)
+            freqs, block_mask, kv_cache, current_start, cache_start, sink_recache_after_switch,
+            retrieval_bank=retrieval_bank, retrieval_top_k=retrieval_top_k)
         
         if kv_cache is not None:
             y, cache_update_info = self_attn_result
@@ -900,7 +946,9 @@ class CausalWanModel(ModelMixin, ConfigMixin):
         crossattn_cache: dict = None,
         current_start: int = 0,
         cache_start: int = 0,
-        sink_recache_after_switch=False
+        sink_recache_after_switch=False,
+        retrieval_banks=None,
+        retrieval_top_k=3
     ):
         r"""
         Run the diffusion model with kv caching.
@@ -997,12 +1045,17 @@ class CausalWanModel(ModelMixin, ConfigMixin):
         cache_update_infos = []  # Collect cache update info for all blocks
         for block_index, block in enumerate(self.blocks):
             # print(f"block_index: {block_index}")
+            # Per-layer retrieval bank (None if RAG is disabled)
+            block_retrieval_bank = retrieval_banks[block_index] if retrieval_banks is not None else None
+
             if torch.is_grad_enabled() and self.gradient_checkpointing:
                 kwargs.update(
                     {
                         "kv_cache": kv_cache[block_index],
                         "current_start": current_start,
-                        "cache_start": cache_start
+                        "cache_start": cache_start,
+                        "retrieval_bank": block_retrieval_bank,
+                        "retrieval_top_k": retrieval_top_k
                     }
                 )
                 # print(f"forward checkpointing")
@@ -1025,7 +1078,9 @@ class CausalWanModel(ModelMixin, ConfigMixin):
                         "kv_cache": kv_cache[block_index],
                         "crossattn_cache": crossattn_cache[block_index],
                         "current_start": current_start,
-                        "cache_start": cache_start
+                        "cache_start": cache_start,
+                        "retrieval_bank": block_retrieval_bank,
+                        "retrieval_top_k": retrieval_top_k
                     }
                 )
                 # print(f"forward no checkpointing")

@@ -5,6 +5,7 @@ import torch
 import os
 
 from utils.wan_wrapper import WanDiffusionWrapper, WanTextEncoder, WanVAEWrapper
+from wan.modules.kv_retrieval_bank import KVRetrievalBank
 
 from utils.memory import gpu, get_cuda_free_memory_gb, DynamicSwapInstaller, move_model_to_device_with_memory_preservation, log_gpu_memory
 from utils.debug_option import DEBUG
@@ -131,6 +132,19 @@ class CausalInferencePipeline(torch.nn.Module):
             device=noise.device
         )
 
+        # RAG: Initialize per-layer retrieval banks if enabled
+        rag_enabled = getattr(self.args, "rag_enabled", False)
+        rag_top_k = getattr(self.args, "rag_top_k", 3)
+        rag_bank_size = getattr(self.args, "rag_bank_size", 256)
+        if rag_enabled:
+            self.retrieval_banks = [
+                KVRetrievalBank(max_frames=rag_bank_size, frame_seq_length=self.frame_seq_length)
+                for _ in range(self.num_transformer_blocks)
+            ]
+            print(f"[RAG] Enabled: top_k={rag_top_k}, bank_size={rag_bank_size}")
+        else:
+            self.retrieval_banks = None
+
         current_start_frame = 0
         self.generator.model.local_attn_size = self.local_attn_size
         print(f"[inference] local_attn_size set on model: {self.generator.model.local_attn_size}")
@@ -167,7 +181,9 @@ class CausalInferencePipeline(torch.nn.Module):
                         timestep=timestep,
                         kv_cache=self.kv_cache1,
                         crossattn_cache=self.crossattn_cache,
-                        current_start=current_start_frame * self.frame_seq_length
+                        current_start=current_start_frame * self.frame_seq_length,
+                        retrieval_banks=self.retrieval_banks,
+                        retrieval_top_k=rag_top_k
                     )
                     next_timestep = self.denoising_step_list[index + 1]
                     noisy_input = self.scheduler.add_noise(
@@ -184,7 +200,9 @@ class CausalInferencePipeline(torch.nn.Module):
                         timestep=timestep,
                         kv_cache=self.kv_cache1,
                         crossattn_cache=self.crossattn_cache,
-                        current_start=current_start_frame * self.frame_seq_length
+                        current_start=current_start_frame * self.frame_seq_length,
+                        retrieval_banks=self.retrieval_banks,
+                        retrieval_top_k=rag_top_k
                     )
             # Step 2.2: record the model's output
             output[:, current_start_frame:current_start_frame + current_num_frames] = denoised_pred.to(output.device)
@@ -197,6 +215,8 @@ class CausalInferencePipeline(torch.nn.Module):
                 kv_cache=self.kv_cache1,
                 crossattn_cache=self.crossattn_cache,
                 current_start=current_start_frame * self.frame_seq_length,
+                retrieval_banks=self.retrieval_banks,
+                retrieval_top_k=rag_top_k
             )
 
             if profile:
