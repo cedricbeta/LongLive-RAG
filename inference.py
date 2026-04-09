@@ -1,6 +1,7 @@
 # Adopted from https://github.com/guandeh17/Self-Forcing
 # SPDX-License-Identifier: Apache-2.0
 import argparse
+import json
 import torch
 import os
 from omegaconf import OmegaConf
@@ -15,7 +16,8 @@ from torch.utils.data.distributed import DistributedSampler
 from pipeline import (
     CausalInferencePipeline,
 )
-from utils.dataset import TextDataset
+from pipeline.interactive_causal_inference import InteractiveCausalInferencePipeline
+from utils.dataset import MultiTextDataset, TextDataset
 from utils.misc import set_seed
 
 from utils.memory import gpu, get_cuda_free_memory_gb, DynamicSwapInstaller, log_gpu_memory
@@ -25,6 +27,33 @@ parser.add_argument("--config_path", type=str, help="Path to the config file")
 args = parser.parse_args()
 
 config = OmegaConf.load(args.config_path)
+
+
+def _parse_switch_frame_indices(raw_value):
+    if raw_value is None:
+        return []
+    if isinstance(raw_value, int):
+        return [int(raw_value)]
+    return [int(x) for x in str(raw_value).split(",") if str(x).strip()]
+
+
+def _should_use_prompt_switch(data_path, switch_frame_indices):
+    if not switch_frame_indices:
+        return False
+
+    try:
+        with open(data_path, encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                record = json.loads(line)
+                prompts = record.get("prompts")
+                return isinstance(prompts, list) and len(prompts) > 1
+    except (OSError, json.JSONDecodeError, AttributeError):
+        return False
+
+    return False
 
 # Initialize distributed inference
 if "LOCAL_RANK" in os.environ:
@@ -65,9 +94,16 @@ low_memory = True
 torch.set_grad_enabled(False)
 
 
-# Initialize pipeline
-# Note: checkpoint loading is now handled inside the pipeline __init__ method
-pipeline = CausalInferencePipeline(config, device=device)
+switch_frame_indices = _parse_switch_frame_indices(
+    getattr(config, "switch_frame_indices", None)
+)
+use_prompt_switch = _should_use_prompt_switch(config.data_path, switch_frame_indices)
+
+if use_prompt_switch:
+    print(f"Prompt-switch mode enabled with switch frames: {switch_frame_indices}")
+    pipeline = InteractiveCausalInferencePipeline(config, device=device)
+else:
+    pipeline = CausalInferencePipeline(config, device=device)
 
 # Load generator checkpoint
 if config.generator_ckpt:
@@ -138,8 +174,11 @@ if low_memory:
 pipeline.generator.to(device=device)
 pipeline.vae.to(device=device)
 
-extended_prompt_path = config.data_path
-dataset = TextDataset(prompt_path=config.data_path, extended_prompt_path=extended_prompt_path)
+if use_prompt_switch:
+    dataset = MultiTextDataset(config.data_path)
+else:
+    extended_prompt_path = config.data_path
+    dataset = TextDataset(prompt_path=config.data_path, extended_prompt_path=extended_prompt_path)
 num_prompts = len(dataset)
 print(f"Number of prompts: {num_prompts}")
 
@@ -183,34 +222,43 @@ for i, batch_data in tqdm(enumerate(dataloader), disable=(local_rank != 0)):
     all_video = []
     num_generated_frames = 0  # Number of generated (latent) frames
 
-    # For text-to-video, batch is just the text prompt
-    prompt = batch['prompts'][0]
-    extended_prompt = batch['extended_prompts'][0] if 'extended_prompts' in batch else None
-    if extended_prompt is not None:
-        prompts = [extended_prompt] * config.num_samples
+    prompt = None
+    prompts = None
+    prompts_list = None
+    if use_prompt_switch:
+        prompts_list = batch["prompts_list"]
+        prompt = prompts_list[0][0] if config.num_samples == 1 else prompts_list[0]
     else:
-        prompts = [prompt] * config.num_samples
+        prompt = batch['prompts'][0]
+        extended_prompt = batch['extended_prompts'][0] if 'extended_prompts' in batch else None
+        if extended_prompt is not None:
+            prompts = [extended_prompt] * config.num_samples
+        else:
+            prompts = [prompt] * config.num_samples
 
     sampled_noise = torch.randn(
         [config.num_samples, config.num_output_frames, 16, 60, 104], device=device, dtype=torch.bfloat16
     )
 
     print("sampled_noise.device", sampled_noise.device)
-    # print("initial_latent.device", initial_latent.device)
-    print("prompts", prompts)
-    # Generate 81 frames
-    # print('sampled_noise.shape', sampled_noise.shape, 'prompts', prompts)
-    # print('pipeline.generator', pipeline.generator)
-    # print('pipeline.text_encoder', pipeline.text_encoder)
-    # print('pipeline.vae', pipeline.vae)
-
-    video, latents = pipeline.inference(
-        noise=sampled_noise,
-        text_prompts=prompts,
-        return_latents=True,
-        low_memory=low_memory,
-        profile=False,
-    )
+    if use_prompt_switch:
+        print("prompts_list", prompts_list)
+        video, latents = pipeline.inference(
+            noise=sampled_noise,
+            text_prompts_list=prompts_list,
+            switch_frame_indices=switch_frame_indices,
+            return_latents=True,
+            low_memory=low_memory,
+        )
+    else:
+        print("prompts", prompts)
+        video, latents = pipeline.inference(
+            noise=sampled_noise,
+            text_prompts=prompts,
+            return_latents=True,
+            low_memory=low_memory,
+            profile=False,
+        )
     current_video = rearrange(video, 'b t c h w -> b t h w c').cpu()
     all_video.append(current_video)
     num_generated_frames += latents.shape[1]
