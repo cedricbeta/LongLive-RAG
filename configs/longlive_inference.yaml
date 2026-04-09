@@ -13,8 +13,8 @@ model_kwargs:
 
 
 # inference
-data_path: prompts_rag_test.txt
-output_folder: videos/baseline
+data_path: prompts_reappear_test.txt
+output_folder: videos/single-rag
 inference_iter: -1
 num_output_frames: 120  # RAG benefit increases with longer videos (>36 frames = 3x local window)
 use_ema: false
@@ -25,7 +25,7 @@ global_sink: true
 context_noise: 0
 
 # RAG-KV: Retrieve evicted KV cache entries for entity consistency
-rag_enabled: false
+rag_enabled: true
 rag_top_k: 6           # Number of past frames to retrieve per attention layer
 rag_bank_size: 256     # Max frames stored in the retrieval bank
 

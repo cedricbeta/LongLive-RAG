@@ -330,7 +330,7 @@ class CausalWanSelfAttention(nn.Module):
 
             # RAG: Retrieve relevant past frames from the bank
             retrieved_k, retrieved_v = None, None
-            if retrieval_bank is not None and len(retrieval_bank) > 0 and not is_recompute:
+            if retrieval_bank is not None and retrieval_top_k > 0 and len(retrieval_bank) > 0 and not is_recompute:
                 # Determine which frames are already in sink + local window (to exclude)
                 sink_frame_ids = set(range(self.sink_size))
                 # Approximate local window frame ids from global indices
@@ -340,8 +340,10 @@ class CausalWanSelfAttention(nn.Module):
                 local_frame_ids = set(range(local_window_start_frame, local_window_end_frame))
                 exclude = sink_frame_ids | local_frame_ids
 
+                query_frame_id = current_start_frame + (num_new_tokens // frame_seqlen) - 1
                 retrieved_k, retrieved_v, _ = retrieval_bank.retrieve(
-                    roped_query, top_k=retrieval_top_k, exclude_frame_ids=exclude
+                    roped_query, top_k=retrieval_top_k, exclude_frame_ids=exclude,
+                    query_frame_id=query_frame_id
                 )
 
             # Use temporary k, v to compute attention

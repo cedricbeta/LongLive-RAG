@@ -4,6 +4,8 @@ from typing import List, Optional
 import torch
 import os
 
+import time
+import json
 from utils.wan_wrapper import WanDiffusionWrapper, WanTextEncoder, WanVAEWrapper
 from wan.modules.kv_retrieval_bank import KVRetrievalBank
 
@@ -136,12 +138,17 @@ class CausalInferencePipeline(torch.nn.Module):
         rag_enabled = getattr(self.args, "rag_enabled", False)
         rag_top_k = getattr(self.args, "rag_top_k", 3)
         rag_bank_size = getattr(self.args, "rag_bank_size", 256)
+        rag_embedding = getattr(self.args, "rag_embedding", "norm_weighted")
         if rag_enabled:
             self.retrieval_banks = [
-                KVRetrievalBank(max_frames=rag_bank_size, frame_seq_length=self.frame_seq_length)
+                KVRetrievalBank(
+                    max_frames=rag_bank_size,
+                    frame_seq_length=self.frame_seq_length,
+                    embedding_strategy=rag_embedding,
+                )
                 for _ in range(self.num_transformer_blocks)
             ]
-            print(f"[RAG] Enabled: top_k={rag_top_k}, bank_size={rag_bank_size}")
+            print(f"[RAG] Enabled: top_k={rag_top_k}, bank_size={rag_bank_size}, embedding={rag_embedding}")
         else:
             self.retrieval_banks = None
 
@@ -157,9 +164,15 @@ class CausalInferencePipeline(torch.nn.Module):
 
         # Step 2: Temporal denoising loop
         all_num_frames = [self.num_frame_per_block] * num_blocks
+        block_wall_times = []  # wall-clock ms per block (always collected)
+        torch.cuda.synchronize()
+        gen_wall_start = time.perf_counter()
         for current_num_frames in all_num_frames:
             if profile:
                 block_start.record()
+
+            torch.cuda.synchronize()
+            block_wall_t0 = time.perf_counter()
 
             noisy_input = noise[
                 :, current_start_frame:current_start_frame + current_num_frames]
@@ -225,6 +238,9 @@ class CausalInferencePipeline(torch.nn.Module):
                 block_time = block_start.elapsed_time(block_end)
                 block_times.append(block_time)
 
+            torch.cuda.synchronize()
+            block_wall_times.append((time.perf_counter() - block_wall_t0) * 1000)
+
             # Step 3.4: update the start and end frame indices
             current_start_frame += current_num_frames
 
@@ -256,6 +272,86 @@ class CausalInferencePipeline(torch.nn.Module):
                 print(f"    - Block {i} generation time: {block_time:.2f} ms ({100 * block_time / diffusion_time:.2f}% of diffusion)")
             print(f"  - VAE decoding time: {vae_time:.2f} ms ({100 * vae_time / total_time:.2f}%)")
             print(f"  - Total time: {total_time:.2f} ms")
+
+        # --- Latency summary (always printed) ---
+        torch.cuda.synchronize()
+        gen_wall_total = (time.perf_counter() - gen_wall_start) * 1000
+        avg_block_ms = sum(block_wall_times) / len(block_wall_times) if block_wall_times else 0
+        pixel_frames = (num_output_frames - 1) * 4 + 1
+        fps = pixel_frames / (gen_wall_total / 1000) if gen_wall_total > 0 else 0
+
+        timing_stats = {
+            "rag_enabled": rag_enabled,
+            "num_latent_frames": num_output_frames,
+            "num_pixel_frames": pixel_frames,
+            "total_diffusion_ms": round(gen_wall_total, 2),
+            "avg_block_ms": round(avg_block_ms, 2),
+            "fps": round(fps, 2),
+            "per_block_ms": [round(t, 2) for t in block_wall_times],
+        }
+
+        if rag_enabled and self.retrieval_banks is not None:
+            total_store = sum(b.store_time_ms for b in self.retrieval_banks)
+            total_retrieve = sum(b.retrieve_time_ms for b in self.retrieval_banks)
+            total_store_calls = sum(b.store_calls for b in self.retrieval_banks)
+            total_retrieve_calls = sum(b.retrieve_calls for b in self.retrieval_banks)
+            bank_sizes = [len(b) for b in self.retrieval_banks]
+            timing_stats["rag_store_ms"] = round(total_store, 2)
+            timing_stats["rag_retrieve_ms"] = round(total_retrieve, 2)
+            timing_stats["rag_store_calls"] = total_store_calls
+            timing_stats["rag_retrieve_calls"] = total_retrieve_calls
+            timing_stats["rag_bank_sizes"] = bank_sizes
+            timing_stats["rag_overhead_ms"] = round(total_store + total_retrieve, 2)
+            timing_stats["rag_overhead_pct"] = round(100 * (total_store + total_retrieve) / gen_wall_total, 2) if gen_wall_total > 0 else 0
+
+        print(f"\n{'='*50}")
+        print(f"LATENCY SUMMARY ({'RAG' if rag_enabled else 'Baseline'})")
+        print(f"{'='*50}")
+        print(f"  Latent frames:    {num_output_frames}")
+        print(f"  Pixel frames:     {pixel_frames}")
+        print(f"  Diffusion total:  {gen_wall_total:.0f} ms")
+        print(f"  Avg per block:    {avg_block_ms:.1f} ms")
+        print(f"  Generation FPS:   {fps:.1f} (pixel frames / diffusion time)")
+        if rag_enabled and self.retrieval_banks is not None:
+            print(f"  RAG store:        {timing_stats['rag_store_ms']:.1f} ms ({timing_stats['rag_store_calls']} calls)")
+            print(f"  RAG retrieve:     {timing_stats['rag_retrieve_ms']:.1f} ms ({timing_stats['rag_retrieve_calls']} calls)")
+            print(f"  RAG overhead:     {timing_stats['rag_overhead_ms']:.1f} ms ({timing_stats['rag_overhead_pct']:.1f}%)")
+        print(f"{'='*50}\n")
+
+        # Save timing to JSON (append mode per prompt)
+        output_folder = getattr(self.args, 'output_folder', '.')
+        os.makedirs(output_folder, exist_ok=True)
+        timing_path = os.path.join(output_folder, "timing.json")
+        existing = []
+        if os.path.exists(timing_path):
+            with open(timing_path, 'r') as f:
+                try:
+                    existing = json.load(f)
+                except json.JSONDecodeError:
+                    existing = []
+        existing.append(timing_stats)
+        with open(timing_path, 'w') as f:
+            json.dump(existing, f, indent=2)
+
+        # Save per-layer retrieval logs
+        if rag_enabled and retrieval_banks is not None:
+            retrieval_log = {}
+            for layer_idx, bank in enumerate(retrieval_banks):
+                if bank.retrieval_log:
+                    retrieval_log[f"layer_{layer_idx}"] = bank.retrieval_log
+            if retrieval_log:
+                log_path = os.path.join(output_folder, "retrieval_log.json")
+                existing_logs = []
+                if os.path.exists(log_path):
+                    with open(log_path, 'r') as f:
+                        try:
+                            existing_logs = json.load(f)
+                        except json.JSONDecodeError:
+                            existing_logs = []
+                existing_logs.append(retrieval_log)
+                with open(log_path, 'w') as f:
+                    json.dump(existing_logs, f, indent=2)
+                print(f"  Retrieval log saved to {log_path}")
 
         if return_latents:
             return video, output.to(noise.device)
