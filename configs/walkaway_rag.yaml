@@ -1,4 +1,4 @@
-# Walk-away test: entity present → leaves scene → returns (3 segments)
+# Walk-away test: entity present → empty scene → entity returns (3 segments)
 # RAG enabled — harder consistency test than pose changes
 
 denoising_step_list:
@@ -24,7 +24,9 @@ seed: 0
 num_samples: 1
 save_with_index: true
 switch_frame_indices: 40, 80
-global_sink: true
+# Walkaway needs a clean post-switch cache; preserving the initial sink frames
+# keeps the subject visible even when segment 1 asks for an empty scene.
+global_sink: false
 context_noise: 0
 
 # RAG enabled

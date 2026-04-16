@@ -202,9 +202,9 @@ class InteractiveCausalInferencePipeline(CausalInferencePipeline):
             else None
         )
 
-        # RAG retrieval control: disabled for the first two segments (entity
-        # facing + entity turned away), enabled from segment 2 onward where
-        # the entity returns and can benefit from recalling earlier KVs.
+        # RAG retrieval control: disabled for the first two segments (initial
+        # appearance + empty-scene walkaway), enabled from segment 2 onward
+        # where the entity returns and can benefit from recalling earlier KVs.
         rag_active = False
         if rag_enabled:
             print(f"[RAG] Segment 0: retrieval OFF (initial segment)")
@@ -231,8 +231,8 @@ class InteractiveCausalInferencePipeline(CausalInferencePipeline):
 
                 # Enable RAG retrieval from segment 2 onward — this is when
                 # the entity returns and benefits from recalling earlier KVs.
-                # Segment 1 (turned away / action change) should NOT retrieve
-                # to allow the pose transition to happen naturally.
+                # Segment 1 is the empty-scene gap and should NOT retrieve,
+                # otherwise the old entity can be pulled back too early.
                 if segment_idx >= 2:
                     rag_active = True
                     if rag_enabled:

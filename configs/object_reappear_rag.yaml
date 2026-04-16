@@ -1,4 +1,4 @@
-# Object reappearance test: object in scene → leaves → returns (3 segments)
+# Object reappearance test: object in scene → empty scene → object returns (3 segments)
 # RAG enabled — static scenes with objects leaving and returning
 
 denoising_step_list:
