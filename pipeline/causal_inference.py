@@ -139,16 +139,20 @@ class CausalInferencePipeline(torch.nn.Module):
         rag_top_k = getattr(self.args, "rag_top_k", 3)
         rag_bank_size = getattr(self.args, "rag_bank_size", 256)
         rag_embedding = getattr(self.args, "rag_embedding", "norm_weighted")
+        rag_random_baseline = getattr(self.args, "rag_random_baseline", False)
+        rag_query_source = getattr(self.args, "rag_query_source", "early")
         if rag_enabled:
             self.retrieval_banks = [
                 KVRetrievalBank(
                     max_frames=rag_bank_size,
                     frame_seq_length=self.frame_seq_length,
                     embedding_strategy=rag_embedding,
+                    random_mode=rag_random_baseline,
                 )
                 for _ in range(self.num_transformer_blocks)
             ]
-            print(f"[RAG] Enabled: top_k={rag_top_k}, bank_size={rag_bank_size}, embedding={rag_embedding}")
+            mode_str = "RANDOM BASELINE" if rag_random_baseline else f"embedding={rag_embedding}"
+            print(f"[RAG] Enabled: top_k={rag_top_k}, bank_size={rag_bank_size}, {mode_str}, query_source={rag_query_source}")
         else:
             self.retrieval_banks = None
 
@@ -177,9 +181,22 @@ class CausalInferencePipeline(torch.nn.Module):
             noisy_input = noise[
                 :, current_start_frame:current_start_frame + current_num_frames]
 
+            # For 'clean' query source: serve cached retrieval during denoising
+            if rag_query_source == "clean" and self.retrieval_banks is not None:
+                for bank in self.retrieval_banks:
+                    bank.use_cache = True
+
             # Step 2.1: Spatial denoising loop
             for index, current_timestep in enumerate(self.denoising_step_list):
-                # print(f"current_timestep: {current_timestep}")
+                # Per-step retrieval top_k based on query source
+                is_last_step = (index == len(self.denoising_step_list) - 1)
+                if rag_query_source == "late":
+                    step_top_k = rag_top_k if is_last_step else 0
+                    if self.retrieval_banks is not None:
+                        for bank in self.retrieval_banks:
+                            bank.force_retrieve = is_last_step
+                else:
+                    step_top_k = rag_top_k
 
                 # set current timestep
                 timestep = torch.ones(
@@ -196,7 +213,7 @@ class CausalInferencePipeline(torch.nn.Module):
                         crossattn_cache=self.crossattn_cache,
                         current_start=current_start_frame * self.frame_seq_length,
                         retrieval_banks=self.retrieval_banks,
-                        retrieval_top_k=rag_top_k
+                        retrieval_top_k=step_top_k
                     )
                     next_timestep = self.denoising_step_list[index + 1]
                     noisy_input = self.scheduler.add_noise(
@@ -215,10 +232,22 @@ class CausalInferencePipeline(torch.nn.Module):
                         crossattn_cache=self.crossattn_cache,
                         current_start=current_start_frame * self.frame_seq_length,
                         retrieval_banks=self.retrieval_banks,
-                        retrieval_top_k=rag_top_k
+                        retrieval_top_k=step_top_k
                     )
+            # Reset force_retrieve after late-mode denoising loop
+            if rag_query_source == "late" and self.retrieval_banks is not None:
+                for bank in self.retrieval_banks:
+                    bank.force_retrieve = False
+
             # Step 2.2: record the model's output
             output[:, current_start_frame:current_start_frame + current_num_frames] = denoised_pred.to(output.device)
+
+            # For 'clean' query source: fresh retrieval during recache pass
+            if rag_query_source == "clean" and self.retrieval_banks is not None:
+                for bank in self.retrieval_banks:
+                    bank.use_cache = False
+                    bank.force_retrieve = True
+
             # Step 2.3: rerun with timestep zero to update KV cache using clean context
             context_timestep = torch.ones_like(timestep) * self.args.context_noise
             self.generator(
@@ -231,6 +260,11 @@ class CausalInferencePipeline(torch.nn.Module):
                 retrieval_banks=self.retrieval_banks,
                 retrieval_top_k=rag_top_k
             )
+
+            # Reset force_retrieve after recache
+            if rag_query_source == "clean" and self.retrieval_banks is not None:
+                for bank in self.retrieval_banks:
+                    bank.force_retrieve = False
 
             if profile:
                 block_end.record()
@@ -334,9 +368,9 @@ class CausalInferencePipeline(torch.nn.Module):
             json.dump(existing, f, indent=2)
 
         # Save per-layer retrieval logs
-        if rag_enabled and retrieval_banks is not None:
+        if rag_enabled and self.retrieval_banks is not None:
             retrieval_log = {}
-            for layer_idx, bank in enumerate(retrieval_banks):
+            for layer_idx, bank in enumerate(self.retrieval_banks):
                 if bank.retrieval_log:
                     retrieval_log[f"layer_{layer_idx}"] = bank.retrieval_log
             if retrieval_log:
@@ -352,6 +386,32 @@ class CausalInferencePipeline(torch.nn.Module):
                 with open(log_path, 'w') as f:
                     json.dump(existing_logs, f, indent=2)
                 print(f"  Retrieval log saved to {log_path}")
+
+        # Retrieval audit
+        if rag_enabled and self.retrieval_banks is not None:
+            audit = self._compute_retrieval_audit()
+            if audit:
+                audit_path = os.path.join(output_folder, "retrieval_audit.json")
+                existing_audits = []
+                if os.path.exists(audit_path):
+                    with open(audit_path, 'r') as f:
+                        try:
+                            existing_audits = json.load(f)
+                        except json.JSONDecodeError:
+                            existing_audits = []
+                existing_audits.append(audit)
+                with open(audit_path, 'w') as f:
+                    json.dump(existing_audits, f, indent=2)
+                print(f"\n  [AUDIT] Retrieval audit saved to {audit_path}")
+                if "cross_layer_agreement" in audit:
+                    cla = audit["cross_layer_agreement"]
+                    print(f"  [AUDIT] Cross-layer agreement: {cla['overall_avg_jaccard']:.4f} avg Jaccard ({cla['num_query_frames']} queries)")
+                if "embedding_quality" in audit:
+                    eq = audit["embedding_quality"]
+                    print(f"  [AUDIT] Embedding quality: top1={eq['avg_top1_score']:.4f}, margin={eq.get('avg_margin', 'N/A')}, entropy={eq.get('avg_entropy', 'N/A')}")
+                if "insertion_stats" in audit:
+                    ins = audit["insertion_stats"]
+                    print(f"  [AUDIT] Insertions: {ins['num_insertions']} frames, avg_novelty={ins['avg_novelty']:.4f}")
 
         if return_latents:
             return video, output.to(noise.device)
@@ -433,3 +493,115 @@ class CausalInferencePipeline(torch.nn.Module):
                     updated_modules.append(name if name else module.__class__.__name__)
                 except Exception:
                     pass
+
+    def _compute_retrieval_audit(self, oracle_frame_ids=None, oracle_query_min_frame=None):
+        """Compute retrieval quality metrics for Phase 0 instrumentation.
+
+        Returns a dict with:
+        - cross_layer_agreement: Jaccard similarity of frame ID sets across layers
+        - oracle_comparison: precision of retrieval vs. known-good frame IDs
+        - embedding_quality: top1 score, margin, entropy statistics
+        - insertion_stats: novelty and embedding norm of stored frames
+        """
+        if self.retrieval_banks is None:
+            return {}
+
+        audit = {}
+
+        # --- 1. Cross-layer agreement ---
+        per_layer_by_qf = {}
+        for layer_idx, bank in enumerate(self.retrieval_banks):
+            for entry in bank.retrieval_log:
+                qf = entry.get("query_frame")
+                if qf is None or entry.get("mode") == "random":
+                    continue
+                per_layer_by_qf.setdefault(qf, {})[layer_idx] = set(entry["retrieved_frames"])
+
+        agreement_per_frame = []
+        for qf in sorted(per_layer_by_qf.keys()):
+            sets = list(per_layer_by_qf[qf].values())
+            if len(sets) < 2:
+                continue
+            jaccards = []
+            for i in range(len(sets)):
+                for j in range(i + 1, len(sets)):
+                    union = len(sets[i] | sets[j])
+                    jaccards.append(len(sets[i] & sets[j]) / union if union > 0 else 0.0)
+            avg_j = sum(jaccards) / len(jaccards)
+            agreement_per_frame.append({"query_frame": qf, "jaccard": round(avg_j, 4)})
+
+        if agreement_per_frame:
+            overall = sum(e["jaccard"] for e in agreement_per_frame) / len(agreement_per_frame)
+            audit["cross_layer_agreement"] = {
+                "overall_avg_jaccard": round(overall, 4),
+                "num_query_frames": len(agreement_per_frame),
+                "per_frame": agreement_per_frame,
+            }
+
+        # --- 2. Oracle comparison ---
+        if oracle_frame_ids is not None:
+            oracle_set = set(oracle_frame_ids)
+            precisions = []
+            for qf in sorted(per_layer_by_qf.keys()):
+                if oracle_query_min_frame is not None and qf < oracle_query_min_frame:
+                    continue
+                layer_precisions = []
+                for layer_idx, fid_set in per_layer_by_qf[qf].items():
+                    if len(fid_set) > 0:
+                        p = len(fid_set & oracle_set) / len(fid_set)
+                        layer_precisions.append(p)
+                if layer_precisions:
+                    precisions.append({
+                        "query_frame": qf,
+                        "avg_precision": round(sum(layer_precisions) / len(layer_precisions), 4),
+                    })
+
+            if precisions:
+                overall_p = sum(e["avg_precision"] for e in precisions) / len(precisions)
+                audit["oracle_comparison"] = {
+                    "oracle_frames": oracle_frame_ids,
+                    "avg_precision": round(overall_p, 4),
+                    "num_query_frames": len(precisions),
+                    "per_frame": precisions,
+                }
+
+        # --- 3. Embedding quality summary ---
+        all_top1 = []
+        all_margins = []
+        all_entropies = []
+        for bank in self.retrieval_banks:
+            for entry in bank.retrieval_log:
+                if entry.get("top1_score") is not None:
+                    all_top1.append(entry["top1_score"])
+                if entry.get("margin") is not None:
+                    all_margins.append(entry["margin"])
+                if entry.get("entropy") is not None:
+                    all_entropies.append(entry["entropy"])
+
+        if all_top1:
+            audit["embedding_quality"] = {
+                "avg_top1_score": round(sum(all_top1) / len(all_top1), 4),
+                "min_top1_score": round(min(all_top1), 4),
+                "max_top1_score": round(max(all_top1), 4),
+                "avg_margin": round(sum(all_margins) / len(all_margins), 4) if all_margins else None,
+                "avg_entropy": round(sum(all_entropies) / len(all_entropies), 4) if all_entropies else None,
+                "num_retrievals": len(all_top1),
+            }
+
+        # --- 4. Insertion stats ---
+        all_novelties = []
+        all_emb_norms = []
+        for bank in self.retrieval_banks:
+            for entry in bank.insertion_log:
+                all_novelties.append(entry["novelty"])
+                all_emb_norms.append(entry["embedding_norm"])
+
+        if all_novelties:
+            audit["insertion_stats"] = {
+                "avg_novelty": round(sum(all_novelties) / len(all_novelties), 4),
+                "min_novelty": round(min(all_novelties), 4),
+                "avg_embedding_norm": round(sum(all_emb_norms) / len(all_emb_norms), 4),
+                "num_insertions": len(all_novelties),
+            }
+
+        return audit

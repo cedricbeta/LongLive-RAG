@@ -1,0 +1,698 @@
+[
+  {
+    "oracle_comparison": {
+      "oracle_frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39
+      ],
+      "avg_precision": 0.5513,
+      "num_query_frames": 13,
+      "per_frame": [
+        {
+          "query_frame": 83,
+          "avg_precision": 0.8333
+        },
+        {
+          "query_frame": 86,
+          "avg_precision": 0.8333
+        },
+        {
+          "query_frame": 89,
+          "avg_precision": 0.8333
+        },
+        {
+          "query_frame": 92,
+          "avg_precision": 0.8333
+        },
+        {
+          "query_frame": 95,
+          "avg_precision": 0.8333
+        },
+        {
+          "query_frame": 98,
+          "avg_precision": 0.6667
+        },
+        {
+          "query_frame": 101,
+          "avg_precision": 0.5
+        },
+        {
+          "query_frame": 104,
+          "avg_precision": 0.3333
+        },
+        {
+          "query_frame": 107,
+          "avg_precision": 0.5
+        },
+        {
+          "query_frame": 110,
+          "avg_precision": 0.3333
+        },
+        {
+          "query_frame": 113,
+          "avg_precision": 0.1667
+        },
+        {
+          "query_frame": 116,
+          "avg_precision": 0.1667
+        },
+        {
+          "query_frame": 119,
+          "avg_precision": 0.3333
+        }
+      ]
+    },
+    "embedding_quality": {
+      "avg_top1_score": 0.4279,
+      "min_top1_score": 0.416,
+      "max_top1_score": 0.4434,
+      "avg_margin": 0.0101,
+      "avg_entropy": 4.4471,
+      "num_retrievals": 13
+    },
+    "insertion_stats": {
+      "avg_novelty": 0.1551,
+      "min_novelty": 0.0195,
+      "avg_embedding_norm": 37.6626,
+      "num_insertions": 3240
+    }
+  },
+  {
+    "oracle_comparison": {
+      "oracle_frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39
+      ],
+      "avg_precision": 0.5897,
+      "num_query_frames": 13,
+      "per_frame": [
+        {
+          "query_frame": 83,
+          "avg_precision": 0.8333
+        },
+        {
+          "query_frame": 86,
+          "avg_precision": 0.8333
+        },
+        {
+          "query_frame": 89,
+          "avg_precision": 0.8333
+        },
+        {
+          "query_frame": 92,
+          "avg_precision": 0.8333
+        },
+        {
+          "query_frame": 95,
+          "avg_precision": 0.8333
+        },
+        {
+          "query_frame": 98,
+          "avg_precision": 0.6667
+        },
+        {
+          "query_frame": 101,
+          "avg_precision": 0.5
+        },
+        {
+          "query_frame": 104,
+          "avg_precision": 0.5
+        },
+        {
+          "query_frame": 107,
+          "avg_precision": 0.5
+        },
+        {
+          "query_frame": 110,
+          "avg_precision": 0.3333
+        },
+        {
+          "query_frame": 113,
+          "avg_precision": 0.3333
+        },
+        {
+          "query_frame": 116,
+          "avg_precision": 0.3333
+        },
+        {
+          "query_frame": 119,
+          "avg_precision": 0.3333
+        }
+      ]
+    },
+    "embedding_quality": {
+      "avg_top1_score": 0.4136,
+      "min_top1_score": 0.3965,
+      "max_top1_score": 0.4297,
+      "avg_margin": 0.0074,
+      "avg_entropy": 4.4447,
+      "num_retrievals": 13
+    },
+    "insertion_stats": {
+      "avg_novelty": 0.165,
+      "min_novelty": 0.0234,
+      "avg_embedding_norm": 35.9133,
+      "num_insertions": 3240
+    }
+  },
+  {
+    "oracle_comparison": {
+      "oracle_frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39
+      ],
+      "avg_precision": 0.5641,
+      "num_query_frames": 13,
+      "per_frame": [
+        {
+          "query_frame": 83,
+          "avg_precision": 0.8333
+        },
+        {
+          "query_frame": 86,
+          "avg_precision": 0.8333
+        },
+        {
+          "query_frame": 89,
+          "avg_precision": 0.8333
+        },
+        {
+          "query_frame": 92,
+          "avg_precision": 0.8333
+        },
+        {
+          "query_frame": 95,
+          "avg_precision": 0.8333
+        },
+        {
+          "query_frame": 98,
+          "avg_precision": 0.6667
+        },
+        {
+          "query_frame": 101,
+          "avg_precision": 0.5
+        },
+        {
+          "query_frame": 104,
+          "avg_precision": 0.5
+        },
+        {
+          "query_frame": 107,
+          "avg_precision": 0.5
+        },
+        {
+          "query_frame": 110,
+          "avg_precision": 0.3333
+        },
+        {
+          "query_frame": 113,
+          "avg_precision": 0.1667
+        },
+        {
+          "query_frame": 116,
+          "avg_precision": 0.1667
+        },
+        {
+          "query_frame": 119,
+          "avg_precision": 0.3333
+        }
+      ]
+    },
+    "embedding_quality": {
+      "avg_top1_score": 0.4292,
+      "min_top1_score": 0.416,
+      "max_top1_score": 0.4531,
+      "avg_margin": 0.0063,
+      "avg_entropy": 4.4447,
+      "num_retrievals": 13
+    },
+    "insertion_stats": {
+      "avg_novelty": 0.1626,
+      "min_novelty": 0.0234,
+      "avg_embedding_norm": 37.1971,
+      "num_insertions": 3240
+    }
+  },
+  {
+    "oracle_comparison": {
+      "oracle_frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39
+      ],
+      "avg_precision": 0.5513,
+      "num_query_frames": 13,
+      "per_frame": [
+        {
+          "query_frame": 83,
+          "avg_precision": 0.8333
+        },
+        {
+          "query_frame": 86,
+          "avg_precision": 0.8333
+        },
+        {
+          "query_frame": 89,
+          "avg_precision": 0.8333
+        },
+        {
+          "query_frame": 92,
+          "avg_precision": 0.8333
+        },
+        {
+          "query_frame": 95,
+          "avg_precision": 0.8333
+        },
+        {
+          "query_frame": 98,
+          "avg_precision": 0.6667
+        },
+        {
+          "query_frame": 101,
+          "avg_precision": 0.5
+        },
+        {
+          "query_frame": 104,
+          "avg_precision": 0.5
+        },
+        {
+          "query_frame": 107,
+          "avg_precision": 0.5
+        },
+        {
+          "query_frame": 110,
+          "avg_precision": 0.3333
+        },
+        {
+          "query_frame": 113,
+          "avg_precision": 0.1667
+        },
+        {
+          "query_frame": 116,
+          "avg_precision": 0.1667
+        },
+        {
+          "query_frame": 119,
+          "avg_precision": 0.1667
+        }
+      ]
+    },
+    "embedding_quality": {
+      "avg_top1_score": 0.4083,
+      "min_top1_score": 0.3887,
+      "max_top1_score": 0.4316,
+      "avg_margin": 0.0123,
+      "avg_entropy": 4.4423,
+      "num_retrievals": 13
+    },
+    "insertion_stats": {
+      "avg_novelty": 0.1684,
+      "min_novelty": 0.0234,
+      "avg_embedding_norm": 35.8179,
+      "num_insertions": 3240
+    }
+  },
+  {
+    "oracle_comparison": {
+      "oracle_frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39
+      ],
+      "avg_precision": 0.5769,
+      "num_query_frames": 13,
+      "per_frame": [
+        {
+          "query_frame": 83,
+          "avg_precision": 0.8333
+        },
+        {
+          "query_frame": 86,
+          "avg_precision": 0.8333
+        },
+        {
+          "query_frame": 89,
+          "avg_precision": 0.8333
+        },
+        {
+          "query_frame": 92,
+          "avg_precision": 0.8333
+        },
+        {
+          "query_frame": 95,
+          "avg_precision": 0.8333
+        },
+        {
+          "query_frame": 98,
+          "avg_precision": 0.6667
+        },
+        {
+          "query_frame": 101,
+          "avg_precision": 0.5
+        },
+        {
+          "query_frame": 104,
+          "avg_precision": 0.3333
+        },
+        {
+          "query_frame": 107,
+          "avg_precision": 0.5
+        },
+        {
+          "query_frame": 110,
+          "avg_precision": 0.3333
+        },
+        {
+          "query_frame": 113,
+          "avg_precision": 0.3333
+        },
+        {
+          "query_frame": 116,
+          "avg_precision": 0.3333
+        },
+        {
+          "query_frame": 119,
+          "avg_precision": 0.3333
+        }
+      ]
+    },
+    "embedding_quality": {
+      "avg_top1_score": 0.3935,
+      "min_top1_score": 0.377,
+      "max_top1_score": 0.416,
+      "avg_margin": 0.0126,
+      "avg_entropy": 4.4447,
+      "num_retrievals": 13
+    },
+    "insertion_stats": {
+      "avg_novelty": 0.1624,
+      "min_novelty": 0.0156,
+      "avg_embedding_norm": 36.8177,
+      "num_insertions": 3240
+    }
+  },
+  {
+    "oracle_comparison": {
+      "oracle_frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39
+      ],
+      "avg_precision": 0.5769,
+      "num_query_frames": 13,
+      "per_frame": [
+        {
+          "query_frame": 83,
+          "avg_precision": 0.8333
+        },
+        {
+          "query_frame": 86,
+          "avg_precision": 0.8333
+        },
+        {
+          "query_frame": 89,
+          "avg_precision": 0.8333
+        },
+        {
+          "query_frame": 92,
+          "avg_precision": 0.8333
+        },
+        {
+          "query_frame": 95,
+          "avg_precision": 0.8333
+        },
+        {
+          "query_frame": 98,
+          "avg_precision": 0.6667
+        },
+        {
+          "query_frame": 101,
+          "avg_precision": 0.5
+        },
+        {
+          "query_frame": 104,
+          "avg_precision": 0.5
+        },
+        {
+          "query_frame": 107,
+          "avg_precision": 0.5
+        },
+        {
+          "query_frame": 110,
+          "avg_precision": 0.3333
+        },
+        {
+          "query_frame": 113,
+          "avg_precision": 0.1667
+        },
+        {
+          "query_frame": 116,
+          "avg_precision": 0.3333
+        },
+        {
+          "query_frame": 119,
+          "avg_precision": 0.3333
+        }
+      ]
+    },
+    "embedding_quality": {
+      "avg_top1_score": 0.4223,
+      "min_top1_score": 0.4082,
+      "max_top1_score": 0.4453,
+      "avg_margin": 0.0101,
+      "avg_entropy": 4.4447,
+      "num_retrievals": 13
+    },
+    "insertion_stats": {
+      "avg_novelty": 0.161,
+      "min_novelty": 0.0156,
+      "avg_embedding_norm": 37.6837,
+      "num_insertions": 3240
+    }
+  }
+]

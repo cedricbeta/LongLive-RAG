@@ -37,6 +37,10 @@ class InteractiveCausalInferencePipeline(CausalInferencePipeline):
     # Internal helpers — matches original LongLive logic with RAG support
     def _recache_after_switch(self, output, current_start_frame, new_conditional_dict,
                                retrieval_banks=None, retrieval_top_k=3):
+        if retrieval_banks is not None:
+            for bank in retrieval_banks:
+                bank.clear_retrieval_cache()
+
         if not self.global_sink:
             # reset kv cache
             for block_idx in range(self.num_transformer_blocks):
@@ -175,16 +179,20 @@ class InteractiveCausalInferencePipeline(CausalInferencePipeline):
         rag_top_k = getattr(self.args, "rag_top_k", 3)
         rag_bank_size = getattr(self.args, "rag_bank_size", 256)
         rag_embedding = getattr(self.args, "rag_embedding", "norm_weighted")
+        rag_random_baseline = getattr(self.args, "rag_random_baseline", False)
+        rag_query_source = getattr(self.args, "rag_query_source", "early")
         if rag_enabled:
             self.retrieval_banks = [
                 KVRetrievalBank(
                     max_frames=rag_bank_size,
                     frame_seq_length=self.frame_seq_length,
                     embedding_strategy=rag_embedding,
+                    random_mode=rag_random_baseline,
                 )
                 for _ in range(self.num_transformer_blocks)
             ]
-            print(f"[RAG] Enabled: top_k={rag_top_k}, bank_size={rag_bank_size}, embedding={rag_embedding}")
+            mode_str = "RANDOM BASELINE" if rag_random_baseline else f"embedding={rag_embedding}"
+            print(f"[RAG] Enabled: top_k={rag_top_k}, bank_size={rag_bank_size}, {mode_str}, query_source={rag_query_source}")
         else:
             self.retrieval_banks = None
 
@@ -264,8 +272,23 @@ class InteractiveCausalInferencePipeline(CausalInferencePipeline):
             # 0 = store only (no retrieval), >0 = store + retrieve.
             effective_top_k = rag_top_k if rag_active else 0
 
+            # For 'clean' query source: serve cached retrieval during denoising
+            if rag_query_source == "clean" and self.retrieval_banks is not None:
+                for bank in self.retrieval_banks:
+                    bank.use_cache = True
+
             # ---------------- Spatial denoising loop ----------------
             for index, current_timestep in enumerate(self.denoising_step_list):
+                # Per-step retrieval top_k based on query source
+                is_last_step = (index == len(self.denoising_step_list) - 1)
+                if rag_query_source == "late":
+                    step_top_k = effective_top_k if is_last_step else 0
+                    if self.retrieval_banks is not None:
+                        for bank in self.retrieval_banks:
+                            bank.force_retrieve = is_last_step
+                else:
+                    step_top_k = effective_top_k
+
                 timestep = (
                     torch.ones([batch_size, current_num_frames],
                     device=noise.device,
@@ -282,7 +305,7 @@ class InteractiveCausalInferencePipeline(CausalInferencePipeline):
                         crossattn_cache=self.crossattn_cache,
                         current_start=current_start_frame * self.frame_seq_length,
                         retrieval_banks=self.retrieval_banks,
-                        retrieval_top_k=effective_top_k,
+                        retrieval_top_k=step_top_k,
                     )
                     next_timestep = self.denoising_step_list[index + 1]
                     noisy_input = self.scheduler.add_noise(
@@ -302,11 +325,22 @@ class InteractiveCausalInferencePipeline(CausalInferencePipeline):
                         crossattn_cache=self.crossattn_cache,
                         current_start=current_start_frame * self.frame_seq_length,
                         retrieval_banks=self.retrieval_banks,
-                        retrieval_top_k=effective_top_k,
+                        retrieval_top_k=step_top_k,
                     )
+
+            # Reset force_retrieve after late-mode denoising loop
+            if rag_query_source == "late" and self.retrieval_banks is not None:
+                for bank in self.retrieval_banks:
+                    bank.force_retrieve = False
 
             # Record output
             output[:, current_start_frame : current_start_frame + current_num_frames] = denoised_pred.to(output.device)
+
+            # For 'clean' query source: fresh retrieval during recache pass
+            if rag_query_source == "clean" and self.retrieval_banks is not None:
+                for bank in self.retrieval_banks:
+                    bank.use_cache = False
+                    bank.force_retrieve = True
 
             # rerun with clean context to update cache
             # Always pass retrieval_banks here so evicted KVs are still
@@ -322,6 +356,11 @@ class InteractiveCausalInferencePipeline(CausalInferencePipeline):
                 retrieval_banks=self.retrieval_banks,
                 retrieval_top_k=rag_top_k,
             )
+
+            # Reset force_retrieve after recache
+            if rag_query_source == "clean" and self.retrieval_banks is not None:
+                for bank in self.retrieval_banks:
+                    bank.force_retrieve = False
 
             torch.cuda.synchronize()
             block_wall_times.append((time.perf_counter() - block_wall_t0) * 1000)
@@ -401,7 +440,6 @@ class InteractiveCausalInferencePipeline(CausalInferencePipeline):
                     retrieval_log[f"layer_{layer_idx}"] = bank.retrieval_log
             if retrieval_log:
                 log_path = os.path.join(output_folder, "retrieval_log.json")
-                # Append to existing logs (one entry per video)
                 existing_logs = []
                 if os.path.exists(log_path):
                     with open(log_path, 'r') as f:
@@ -413,6 +451,44 @@ class InteractiveCausalInferencePipeline(CausalInferencePipeline):
                 with open(log_path, 'w') as f:
                     json.dump(existing_logs, f, indent=2)
                 print(f"  Retrieval log saved to {log_path}")
+
+        # Retrieval audit with oracle comparison
+        if rag_enabled and self.retrieval_banks is not None:
+            oracle_frame_ids = None
+            oracle_query_min_frame = None
+            if len(switch_frame_indices) >= 2:
+                oracle_frame_ids = list(range(switch_frame_indices[0]))
+                oracle_query_min_frame = switch_frame_indices[1]
+
+            audit = self._compute_retrieval_audit(
+                oracle_frame_ids=oracle_frame_ids,
+                oracle_query_min_frame=oracle_query_min_frame,
+            )
+            if audit:
+                audit_path = os.path.join(output_folder, "retrieval_audit.json")
+                existing_audits = []
+                if os.path.exists(audit_path):
+                    with open(audit_path, 'r') as f:
+                        try:
+                            existing_audits = json.load(f)
+                        except json.JSONDecodeError:
+                            existing_audits = []
+                existing_audits.append(audit)
+                with open(audit_path, 'w') as f:
+                    json.dump(existing_audits, f, indent=2)
+                print(f"\n  [AUDIT] Retrieval audit saved to {audit_path}")
+                if "cross_layer_agreement" in audit:
+                    cla = audit["cross_layer_agreement"]
+                    print(f"  [AUDIT] Cross-layer agreement: {cla['overall_avg_jaccard']:.4f} avg Jaccard ({cla['num_query_frames']} queries)")
+                if "oracle_comparison" in audit:
+                    oc = audit["oracle_comparison"]
+                    print(f"  [AUDIT] Oracle precision: {oc['avg_precision']:.4f} (oracle frames: {oc['oracle_frames']}, {oc['num_query_frames']} queries)")
+                if "embedding_quality" in audit:
+                    eq = audit["embedding_quality"]
+                    print(f"  [AUDIT] Embedding quality: top1={eq['avg_top1_score']:.4f}, margin={eq.get('avg_margin', 'N/A')}, entropy={eq.get('avg_entropy', 'N/A')}")
+                if "insertion_stats" in audit:
+                    ins = audit["insertion_stats"]
+                    print(f"  [AUDIT] Insertions: {ins['num_insertions']} frames, avg_novelty={ins['avg_novelty']:.4f}")
 
         if return_latents:
             return video, output

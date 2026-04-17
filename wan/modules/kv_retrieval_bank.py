@@ -91,7 +91,8 @@ class KVRetrievalBank:
     """
 
     def __init__(self, max_frames=256, frame_seq_length=1560,
-                 embedding_strategy="norm_weighted", salient_k=256, norm_temp=0.1):
+                 embedding_strategy="norm_weighted", salient_k=256, norm_temp=0.1,
+                 random_mode=False):
         """
         Args:
             max_frames: Maximum number of frames to store in the bank.
@@ -99,12 +100,14 @@ class KVRetrievalBank:
             embedding_strategy: "mean", "norm_weighted", "salient_topk", or "max_mean".
             salient_k: For "salient_topk": number of top-norm tokens to pool.
             norm_temp: For "norm_weighted": softmax temperature (lower = sharper).
+            random_mode: If True, retrieve random frames instead of similarity-based (ablation baseline).
         """
         self.max_frames = max_frames
         self.frame_seq_length = frame_seq_length
         self.embedding_strategy = embedding_strategy
         self.salient_k = salient_k
         self.norm_temp = norm_temp
+        self.random_mode = random_mode
         # Latency tracking
         self.store_time_ms = 0.0
         self.retrieve_time_ms = 0.0
@@ -112,6 +115,16 @@ class KVRetrievalBank:
         self.retrieve_calls = 0
         # Retrieval log: list of (query_frame_id, retrieved_frame_ids, similarities)
         self.retrieval_log = []
+        self.insertion_log = []
+        # Retrieval result cache (for clean query source mode)
+        self._cached_k = None
+        self._cached_v = None
+        self._cached_fids = []
+        self.use_cache = False
+        self.force_retrieve = False
+        # Shared frame selection: when set, retrieve() fetches these IDs
+        # instead of running similarity search (set externally by leader layer)
+        self.shared_frame_ids = None
         self.reset()
 
     def reset(self):
@@ -120,9 +133,33 @@ class KVRetrievalBank:
         self.values = []     # List of [B, frame_seq_length, num_heads, head_dim]
         self.embeddings = [] # List of [B, num_heads * head_dim]
         self.frame_ids = []  # List of int (global frame index)
+        self._cached_k = None
+        self._cached_v = None
+        self._cached_fids = []
+        self.shared_frame_ids = None
 
     def __len__(self):
         return len(self.keys)
+
+    def clear_retrieval_cache(self):
+        """Clear cached retrieval results (call on prompt switch)."""
+        self._cached_k = None
+        self._cached_v = None
+        self._cached_fids = []
+
+    def _fetch_by_ids(self, frame_ids):
+        """Fetch KV tensors for explicit frame IDs (shared index mode).
+
+        Used when another layer has already decided which frames to retrieve.
+        """
+        fid_to_idx = {fid: i for i, fid in enumerate(self.frame_ids)}
+        valid_ids = [fid for fid in frame_ids if fid in fid_to_idx]
+        if not valid_ids:
+            return None, None, []
+        indices = [fid_to_idx[fid] for fid in valid_ids]
+        retrieved_k = torch.cat([self.keys[i] for i in indices], dim=1)
+        retrieved_v = torch.cat([self.values[i] for i in indices], dim=1)
+        return retrieved_k, retrieved_v, valid_ids
 
     def _find_most_redundant(self):
         """
@@ -176,6 +213,19 @@ class KVRetrievalBank:
                 k_frame, self.embedding_strategy, self.salient_k, self.norm_temp
             )
 
+            novelty = 1.0
+            if self.embeddings:
+                stored_embs = torch.stack(self.embeddings, dim=1)
+                emb_n = F.normalize(emb[0:1], dim=-1)
+                stored_n = F.normalize(stored_embs[0], dim=-1)
+                max_sim = (emb_n @ stored_n.T).max().item()
+                novelty = 1.0 - max_sim
+            self.insertion_log.append({
+                "frame_id": frame_id,
+                "novelty": round(novelty, 4),
+                "embedding_norm": round(emb[0].norm().item(), 4),
+            })
+
             self.keys.append(k_frame)
             self.values.append(v_frame)
             self.embeddings.append(emb)
@@ -212,6 +262,17 @@ class KVRetrievalBank:
         t0 = time.perf_counter()
 
         if len(self.keys) == 0:
+            return None, None, []
+
+        if self.random_mode:
+            return self._retrieve_random(top_k, exclude_frame_ids, query_frame_id)
+
+        if self.shared_frame_ids is not None:
+            return self._fetch_by_ids(self.shared_frame_ids)
+
+        if self.use_cache:
+            if self._cached_k is not None:
+                return self._cached_k, self._cached_v, self._cached_fids
             return None, None, []
 
         if exclude_frame_ids is None:
@@ -251,6 +312,14 @@ class KVRetrievalBank:
         topk_sims = topk_sim[0].tolist()
         topk_bank_indices = [valid_indices[i] for i in topk_local]
 
+        # Ranking-order stats (before temporal re-sort)
+        top1_score = topk_sims[0] if topk_sims else None
+        margin = (topk_sims[0] - topk_sims[1]) if len(topk_sims) >= 2 else None
+
+        # Entropy of similarity distribution over all candidates
+        sim_probs = F.softmax(sim[0], dim=-1)
+        entropy = -(sim_probs * (sim_probs + 1e-10).log()).sum().item()
+
         # Sort by frame_id to maintain temporal order
         sorted_pairs = sorted(zip(topk_bank_indices, topk_sims),
                               key=lambda x: self.frame_ids[x[0]])
@@ -272,6 +341,52 @@ class KVRetrievalBank:
             "retrieved_frames": retrieved_fids,
             "similarities": [round(s, 4) for s in topk_sims],
             "bank_size": len(self.keys),
+            "top1_score": round(top1_score, 4) if top1_score is not None else None,
+            "margin": round(margin, 4) if margin is not None else None,
+            "entropy": round(entropy, 4),
+            "num_candidates": len(valid_indices),
+        })
+
+        # Cache results for clean query source mode
+        self._cached_k = retrieved_k
+        self._cached_v = retrieved_v
+        self._cached_fids = retrieved_fids
+
+        elapsed = (time.perf_counter() - t0) * 1000
+        self.retrieve_time_ms += elapsed
+        self.retrieve_calls += 1
+
+        return retrieved_k, retrieved_v, retrieved_fids
+
+    def _retrieve_random(self, top_k=3, exclude_frame_ids=None, query_frame_id=None):
+        """Random retrieval baseline for ablation."""
+        t0 = time.perf_counter()
+
+        if exclude_frame_ids is None:
+            exclude_frame_ids = set()
+
+        valid_indices = [
+            i for i, fid in enumerate(self.frame_ids)
+            if fid not in exclude_frame_ids
+        ]
+        if len(valid_indices) == 0:
+            return None, None, []
+
+        actual_k = min(top_k, len(valid_indices))
+        perm = torch.randperm(len(valid_indices))[:actual_k].tolist()
+        selected = sorted([valid_indices[p] for p in perm],
+                          key=lambda i: self.frame_ids[i])
+
+        retrieved_k = torch.cat([self.keys[i] for i in selected], dim=1)
+        retrieved_v = torch.cat([self.values[i] for i in selected], dim=1)
+        retrieved_fids = [self.frame_ids[i] for i in selected]
+
+        self.retrieval_log.append({
+            "query_frame": query_frame_id,
+            "retrieved_frames": retrieved_fids,
+            "similarities": [],
+            "bank_size": len(self.keys),
+            "mode": "random",
         })
 
         elapsed = (time.perf_counter() - t0) * 1000

@@ -1,0 +1,1898 @@
+[
+  {
+    "layer_0": [
+      {
+        "query_frame": 83,
+        "retrieved_frames": [
+          6,
+          12,
+          13,
+          24,
+          25,
+          63
+        ],
+        "similarities": [
+          0.377,
+          0.4121,
+          0.4023,
+          0.4238,
+          0.4023,
+          0.373
+        ],
+        "bank_size": 72,
+        "top1_score": 0.4238,
+        "margin": 0.0117,
+        "entropy": 4.2188,
+        "num_candidates": 69
+      },
+      {
+        "query_frame": 86,
+        "retrieved_frames": [
+          9,
+          15,
+          16,
+          27,
+          28,
+          66
+        ],
+        "similarities": [
+          0.3613,
+          0.3945,
+          0.4004,
+          0.418,
+          0.4121,
+          0.3789
+        ],
+        "bank_size": 75,
+        "top1_score": 0.418,
+        "margin": 0.0059,
+        "entropy": 4.25,
+        "num_candidates": 72
+      },
+      {
+        "query_frame": 89,
+        "retrieved_frames": [
+          12,
+          18,
+          19,
+          30,
+          31,
+          69
+        ],
+        "similarities": [
+          0.3906,
+          0.4199,
+          0.4141,
+          0.4395,
+          0.4199,
+          0.3984
+        ],
+        "bank_size": 78,
+        "top1_score": 0.4395,
+        "margin": 0.0195,
+        "entropy": 4.3125,
+        "num_candidates": 75
+      },
+      {
+        "query_frame": 92,
+        "retrieved_frames": [
+          15,
+          21,
+          22,
+          33,
+          34,
+          72
+        ],
+        "similarities": [
+          0.377,
+          0.4043,
+          0.416,
+          0.4297,
+          0.4336,
+          0.3867
+        ],
+        "bank_size": 81,
+        "top1_score": 0.4336,
+        "margin": 0.0039,
+        "entropy": 4.3438,
+        "num_candidates": 78
+      },
+      {
+        "query_frame": 95,
+        "retrieved_frames": [
+          18,
+          24,
+          25,
+          36,
+          37,
+          75
+        ],
+        "similarities": [
+          0.373,
+          0.4043,
+          0.4082,
+          0.4277,
+          0.4141,
+          0.3809
+        ],
+        "bank_size": 84,
+        "top1_score": 0.4277,
+        "margin": 0.0137,
+        "entropy": 4.375,
+        "num_candidates": 81
+      },
+      {
+        "query_frame": 98,
+        "retrieved_frames": [
+          21,
+          27,
+          28,
+          39,
+          40,
+          78
+        ],
+        "similarities": [
+          0.3887,
+          0.4277,
+          0.4199,
+          0.4434,
+          0.4277,
+          0.3887
+        ],
+        "bank_size": 87,
+        "top1_score": 0.4434,
+        "margin": 0.0156,
+        "entropy": 4.4062,
+        "num_candidates": 84
+      },
+      {
+        "query_frame": 101,
+        "retrieved_frames": [
+          24,
+          30,
+          31,
+          42,
+          43,
+          81
+        ],
+        "similarities": [
+          0.3848,
+          0.4219,
+          0.416,
+          0.4297,
+          0.4102,
+          0.3984
+        ],
+        "bank_size": 90,
+        "top1_score": 0.4297,
+        "margin": 0.0078,
+        "entropy": 4.4375,
+        "num_candidates": 87
+      },
+      {
+        "query_frame": 104,
+        "retrieved_frames": [
+          33,
+          34,
+          45,
+          46,
+          83,
+          84
+        ],
+        "similarities": [
+          0.4199,
+          0.4121,
+          0.4121,
+          0.3965,
+          0.3848,
+          0.3965
+        ],
+        "bank_size": 93,
+        "top1_score": 0.4199,
+        "margin": 0.0078,
+        "entropy": 4.5,
+        "num_candidates": 90
+      },
+      {
+        "query_frame": 107,
+        "retrieved_frames": [
+          30,
+          36,
+          37,
+          48,
+          49,
+          87
+        ],
+        "similarities": [
+          0.3828,
+          0.4297,
+          0.416,
+          0.4199,
+          0.4023,
+          0.3945
+        ],
+        "bank_size": 96,
+        "top1_score": 0.4297,
+        "margin": 0.0098,
+        "entropy": 4.5312,
+        "num_candidates": 93
+      },
+      {
+        "query_frame": 110,
+        "retrieved_frames": [
+          33,
+          39,
+          40,
+          51,
+          52,
+          90
+        ],
+        "similarities": [
+          0.3809,
+          0.416,
+          0.4062,
+          0.4121,
+          0.3945,
+          0.3906
+        ],
+        "bank_size": 99,
+        "top1_score": 0.416,
+        "margin": 0.0039,
+        "entropy": 4.5625,
+        "num_candidates": 96
+      },
+      {
+        "query_frame": 113,
+        "retrieved_frames": [
+          5,
+          42,
+          43,
+          54,
+          55,
+          93
+        ],
+        "similarities": [
+          0.3945,
+          0.416,
+          0.4043,
+          0.4102,
+          0.3984,
+          0.3906
+        ],
+        "bank_size": 102,
+        "top1_score": 0.416,
+        "margin": 0.0059,
+        "entropy": 4.5938,
+        "num_candidates": 99
+      },
+      {
+        "query_frame": 116,
+        "retrieved_frames": [
+          8,
+          45,
+          46,
+          57,
+          58,
+          96
+        ],
+        "similarities": [
+          0.4043,
+          0.4199,
+          0.4121,
+          0.4258,
+          0.4023,
+          0.3984
+        ],
+        "bank_size": 105,
+        "top1_score": 0.4258,
+        "margin": 0.0059,
+        "entropy": 4.625,
+        "num_candidates": 102
+      },
+      {
+        "query_frame": 119,
+        "retrieved_frames": [
+          4,
+          11,
+          48,
+          49,
+          60,
+          99
+        ],
+        "similarities": [
+          0.4395,
+          0.4023,
+          0.4199,
+          0.4141,
+          0.4199,
+          0.4062
+        ],
+        "bank_size": 108,
+        "top1_score": 0.4395,
+        "margin": 0.0195,
+        "entropy": 4.6562,
+        "num_candidates": 105
+      }
+    ]
+  },
+  {
+    "layer_0": [
+      {
+        "query_frame": 83,
+        "retrieved_frames": [
+          6,
+          12,
+          13,
+          24,
+          25,
+          63
+        ],
+        "similarities": [
+          0.3867,
+          0.418,
+          0.416,
+          0.4297,
+          0.4043,
+          0.3789
+        ],
+        "bank_size": 72,
+        "top1_score": 0.4297,
+        "margin": 0.0117,
+        "entropy": 4.2188,
+        "num_candidates": 69
+      },
+      {
+        "query_frame": 86,
+        "retrieved_frames": [
+          9,
+          15,
+          16,
+          27,
+          28,
+          66
+        ],
+        "similarities": [
+          0.3887,
+          0.418,
+          0.4062,
+          0.4277,
+          0.416,
+          0.3789
+        ],
+        "bank_size": 75,
+        "top1_score": 0.4277,
+        "margin": 0.0098,
+        "entropy": 4.25,
+        "num_candidates": 72
+      },
+      {
+        "query_frame": 89,
+        "retrieved_frames": [
+          12,
+          18,
+          19,
+          30,
+          31,
+          69
+        ],
+        "similarities": [
+          0.375,
+          0.4062,
+          0.3984,
+          0.4102,
+          0.3926,
+          0.3711
+        ],
+        "bank_size": 78,
+        "top1_score": 0.4102,
+        "margin": 0.0039,
+        "entropy": 4.3125,
+        "num_candidates": 75
+      },
+      {
+        "query_frame": 92,
+        "retrieved_frames": [
+          15,
+          21,
+          22,
+          33,
+          34,
+          72
+        ],
+        "similarities": [
+          0.377,
+          0.416,
+          0.3887,
+          0.4121,
+          0.3828,
+          0.3574
+        ],
+        "bank_size": 81,
+        "top1_score": 0.416,
+        "margin": 0.0039,
+        "entropy": 4.3438,
+        "num_candidates": 78
+      },
+      {
+        "query_frame": 95,
+        "retrieved_frames": [
+          18,
+          24,
+          25,
+          36,
+          37,
+          75
+        ],
+        "similarities": [
+          0.3809,
+          0.4004,
+          0.3906,
+          0.4199,
+          0.4023,
+          0.3691
+        ],
+        "bank_size": 84,
+        "top1_score": 0.4199,
+        "margin": 0.0176,
+        "entropy": 4.375,
+        "num_candidates": 81
+      },
+      {
+        "query_frame": 98,
+        "retrieved_frames": [
+          21,
+          27,
+          28,
+          39,
+          40,
+          78
+        ],
+        "similarities": [
+          0.3906,
+          0.4121,
+          0.4062,
+          0.4238,
+          0.3965,
+          0.3672
+        ],
+        "bank_size": 87,
+        "top1_score": 0.4238,
+        "margin": 0.0117,
+        "entropy": 4.4062,
+        "num_candidates": 84
+      },
+      {
+        "query_frame": 101,
+        "retrieved_frames": [
+          24,
+          30,
+          31,
+          42,
+          43,
+          81
+        ],
+        "similarities": [
+          0.375,
+          0.3965,
+          0.3984,
+          0.4043,
+          0.3926,
+          0.3789
+        ],
+        "bank_size": 90,
+        "top1_score": 0.4043,
+        "margin": 0.0059,
+        "entropy": 4.4375,
+        "num_candidates": 87
+      },
+      {
+        "query_frame": 104,
+        "retrieved_frames": [
+          27,
+          33,
+          34,
+          45,
+          46,
+          84
+        ],
+        "similarities": [
+          0.3887,
+          0.4102,
+          0.4004,
+          0.4102,
+          0.3926,
+          0.3828
+        ],
+        "bank_size": 93,
+        "top1_score": 0.4102,
+        "margin": 0.0,
+        "entropy": 4.5,
+        "num_candidates": 90
+      },
+      {
+        "query_frame": 107,
+        "retrieved_frames": [
+          30,
+          36,
+          37,
+          48,
+          49,
+          87
+        ],
+        "similarities": [
+          0.3711,
+          0.4023,
+          0.3965,
+          0.3887,
+          0.377,
+          0.3633
+        ],
+        "bank_size": 96,
+        "top1_score": 0.4023,
+        "margin": 0.0059,
+        "entropy": 4.5312,
+        "num_candidates": 93
+      },
+      {
+        "query_frame": 110,
+        "retrieved_frames": [
+          33,
+          39,
+          40,
+          51,
+          52,
+          90
+        ],
+        "similarities": [
+          0.3652,
+          0.3965,
+          0.3965,
+          0.3867,
+          0.3867,
+          0.375
+        ],
+        "bank_size": 99,
+        "top1_score": 0.3965,
+        "margin": 0.0,
+        "entropy": 4.5625,
+        "num_candidates": 96
+      },
+      {
+        "query_frame": 113,
+        "retrieved_frames": [
+          5,
+          36,
+          42,
+          43,
+          54,
+          55
+        ],
+        "similarities": [
+          0.3867,
+          0.3828,
+          0.4062,
+          0.3906,
+          0.4121,
+          0.3945
+        ],
+        "bank_size": 102,
+        "top1_score": 0.4121,
+        "margin": 0.0059,
+        "entropy": 4.5938,
+        "num_candidates": 99
+      },
+      {
+        "query_frame": 116,
+        "retrieved_frames": [
+          8,
+          39,
+          45,
+          46,
+          57,
+          58
+        ],
+        "similarities": [
+          0.3945,
+          0.377,
+          0.3848,
+          0.3828,
+          0.4023,
+          0.3848
+        ],
+        "bank_size": 105,
+        "top1_score": 0.4023,
+        "margin": 0.0078,
+        "entropy": 4.625,
+        "num_candidates": 102
+      },
+      {
+        "query_frame": 119,
+        "retrieved_frames": [
+          4,
+          11,
+          48,
+          49,
+          60,
+          61
+        ],
+        "similarities": [
+          0.4219,
+          0.4023,
+          0.3867,
+          0.3906,
+          0.4102,
+          0.4043
+        ],
+        "bank_size": 108,
+        "top1_score": 0.4219,
+        "margin": 0.0117,
+        "entropy": 4.625,
+        "num_candidates": 105
+      }
+    ]
+  },
+  {
+    "layer_0": [
+      {
+        "query_frame": 83,
+        "retrieved_frames": [
+          6,
+          12,
+          13,
+          24,
+          25,
+          63
+        ],
+        "similarities": [
+          0.3926,
+          0.4316,
+          0.4219,
+          0.4336,
+          0.4043,
+          0.377
+        ],
+        "bank_size": 72,
+        "top1_score": 0.4336,
+        "margin": 0.002,
+        "entropy": 4.2188,
+        "num_candidates": 69
+      },
+      {
+        "query_frame": 86,
+        "retrieved_frames": [
+          9,
+          15,
+          16,
+          27,
+          28,
+          66
+        ],
+        "similarities": [
+          0.3887,
+          0.4297,
+          0.4219,
+          0.416,
+          0.3945,
+          0.3691
+        ],
+        "bank_size": 75,
+        "top1_score": 0.4297,
+        "margin": 0.0078,
+        "entropy": 4.25,
+        "num_candidates": 72
+      },
+      {
+        "query_frame": 89,
+        "retrieved_frames": [
+          12,
+          18,
+          19,
+          30,
+          31,
+          69
+        ],
+        "similarities": [
+          0.3945,
+          0.4316,
+          0.4297,
+          0.4219,
+          0.4082,
+          0.3809
+        ],
+        "bank_size": 78,
+        "top1_score": 0.4316,
+        "margin": 0.002,
+        "entropy": 4.3125,
+        "num_candidates": 75
+      },
+      {
+        "query_frame": 92,
+        "retrieved_frames": [
+          15,
+          21,
+          22,
+          33,
+          34,
+          72
+        ],
+        "similarities": [
+          0.3965,
+          0.4336,
+          0.4238,
+          0.4277,
+          0.4082,
+          0.377
+        ],
+        "bank_size": 81,
+        "top1_score": 0.4336,
+        "margin": 0.0059,
+        "entropy": 4.3438,
+        "num_candidates": 78
+      },
+      {
+        "query_frame": 95,
+        "retrieved_frames": [
+          18,
+          24,
+          25,
+          36,
+          37,
+          75
+        ],
+        "similarities": [
+          0.3984,
+          0.4297,
+          0.4199,
+          0.4316,
+          0.4102,
+          0.377
+        ],
+        "bank_size": 84,
+        "top1_score": 0.4316,
+        "margin": 0.002,
+        "entropy": 4.375,
+        "num_candidates": 81
+      },
+      {
+        "query_frame": 98,
+        "retrieved_frames": [
+          21,
+          27,
+          28,
+          39,
+          40,
+          78
+        ],
+        "similarities": [
+          0.3867,
+          0.4004,
+          0.416,
+          0.4141,
+          0.4141,
+          0.375
+        ],
+        "bank_size": 87,
+        "top1_score": 0.416,
+        "margin": 0.002,
+        "entropy": 4.4062,
+        "num_candidates": 84
+      },
+      {
+        "query_frame": 101,
+        "retrieved_frames": [
+          24,
+          30,
+          31,
+          42,
+          43,
+          81
+        ],
+        "similarities": [
+          0.3867,
+          0.4141,
+          0.4258,
+          0.4258,
+          0.418,
+          0.4023
+        ],
+        "bank_size": 90,
+        "top1_score": 0.4258,
+        "margin": 0.0,
+        "entropy": 4.4375,
+        "num_candidates": 87
+      },
+      {
+        "query_frame": 104,
+        "retrieved_frames": [
+          27,
+          33,
+          34,
+          45,
+          46,
+          84
+        ],
+        "similarities": [
+          0.373,
+          0.416,
+          0.4238,
+          0.4121,
+          0.3965,
+          0.3906
+        ],
+        "bank_size": 93,
+        "top1_score": 0.4238,
+        "margin": 0.0078,
+        "entropy": 4.5,
+        "num_candidates": 90
+      },
+      {
+        "query_frame": 107,
+        "retrieved_frames": [
+          30,
+          36,
+          37,
+          48,
+          49,
+          87
+        ],
+        "similarities": [
+          0.3848,
+          0.4336,
+          0.4336,
+          0.4238,
+          0.4062,
+          0.3926
+        ],
+        "bank_size": 96,
+        "top1_score": 0.4336,
+        "margin": 0.0,
+        "entropy": 4.5312,
+        "num_candidates": 93
+      },
+      {
+        "query_frame": 110,
+        "retrieved_frames": [
+          33,
+          39,
+          40,
+          51,
+          52,
+          90
+        ],
+        "similarities": [
+          0.3789,
+          0.4238,
+          0.4258,
+          0.416,
+          0.4004,
+          0.3926
+        ],
+        "bank_size": 99,
+        "top1_score": 0.4258,
+        "margin": 0.002,
+        "entropy": 4.5625,
+        "num_candidates": 96
+      },
+      {
+        "query_frame": 113,
+        "retrieved_frames": [
+          5,
+          42,
+          43,
+          54,
+          55,
+          93
+        ],
+        "similarities": [
+          0.4102,
+          0.4102,
+          0.4238,
+          0.3984,
+          0.3984,
+          0.4121
+        ],
+        "bank_size": 102,
+        "top1_score": 0.4238,
+        "margin": 0.0117,
+        "entropy": 4.5938,
+        "num_candidates": 99
+      },
+      {
+        "query_frame": 116,
+        "retrieved_frames": [
+          8,
+          45,
+          46,
+          57,
+          58,
+          96
+        ],
+        "similarities": [
+          0.4141,
+          0.4102,
+          0.4082,
+          0.418,
+          0.3945,
+          0.3887
+        ],
+        "bank_size": 105,
+        "top1_score": 0.418,
+        "margin": 0.0039,
+        "entropy": 4.625,
+        "num_candidates": 102
+      },
+      {
+        "query_frame": 119,
+        "retrieved_frames": [
+          4,
+          11,
+          48,
+          49,
+          60,
+          61
+        ],
+        "similarities": [
+          0.4531,
+          0.418,
+          0.416,
+          0.4102,
+          0.418,
+          0.3926
+        ],
+        "bank_size": 108,
+        "top1_score": 0.4531,
+        "margin": 0.0352,
+        "entropy": 4.625,
+        "num_candidates": 105
+      }
+    ]
+  },
+  {
+    "layer_0": [
+      {
+        "query_frame": 83,
+        "retrieved_frames": [
+          6,
+          12,
+          13,
+          24,
+          25,
+          63
+        ],
+        "similarities": [
+          0.3711,
+          0.3945,
+          0.3965,
+          0.418,
+          0.4023,
+          0.3809
+        ],
+        "bank_size": 72,
+        "top1_score": 0.418,
+        "margin": 0.0156,
+        "entropy": 4.2188,
+        "num_candidates": 69
+      },
+      {
+        "query_frame": 86,
+        "retrieved_frames": [
+          9,
+          15,
+          16,
+          27,
+          28,
+          66
+        ],
+        "similarities": [
+          0.3555,
+          0.3906,
+          0.3945,
+          0.4102,
+          0.3926,
+          0.3613
+        ],
+        "bank_size": 75,
+        "top1_score": 0.4102,
+        "margin": 0.0156,
+        "entropy": 4.25,
+        "num_candidates": 72
+      },
+      {
+        "query_frame": 89,
+        "retrieved_frames": [
+          12,
+          18,
+          19,
+          30,
+          31,
+          69
+        ],
+        "similarities": [
+          0.332,
+          0.3691,
+          0.3809,
+          0.3848,
+          0.4102,
+          0.3496
+        ],
+        "bank_size": 78,
+        "top1_score": 0.4102,
+        "margin": 0.0254,
+        "entropy": 4.3125,
+        "num_candidates": 75
+      },
+      {
+        "query_frame": 92,
+        "retrieved_frames": [
+          15,
+          21,
+          22,
+          33,
+          34,
+          72
+        ],
+        "similarities": [
+          0.3438,
+          0.3867,
+          0.3828,
+          0.4043,
+          0.3867,
+          0.3535
+        ],
+        "bank_size": 81,
+        "top1_score": 0.4043,
+        "margin": 0.0176,
+        "entropy": 4.3438,
+        "num_candidates": 78
+      },
+      {
+        "query_frame": 95,
+        "retrieved_frames": [
+          18,
+          24,
+          25,
+          36,
+          37,
+          75
+        ],
+        "similarities": [
+          0.3672,
+          0.4102,
+          0.3965,
+          0.4238,
+          0.3867,
+          0.3711
+        ],
+        "bank_size": 84,
+        "top1_score": 0.4238,
+        "margin": 0.0137,
+        "entropy": 4.375,
+        "num_candidates": 81
+      },
+      {
+        "query_frame": 98,
+        "retrieved_frames": [
+          21,
+          27,
+          28,
+          39,
+          40,
+          78
+        ],
+        "similarities": [
+          0.3594,
+          0.3926,
+          0.3906,
+          0.3984,
+          0.3867,
+          0.3594
+        ],
+        "bank_size": 87,
+        "top1_score": 0.3984,
+        "margin": 0.0059,
+        "entropy": 4.4062,
+        "num_candidates": 84
+      },
+      {
+        "query_frame": 101,
+        "retrieved_frames": [
+          24,
+          30,
+          31,
+          42,
+          43,
+          81
+        ],
+        "similarities": [
+          0.3594,
+          0.3945,
+          0.416,
+          0.3984,
+          0.3809,
+          0.3535
+        ],
+        "bank_size": 90,
+        "top1_score": 0.416,
+        "margin": 0.0176,
+        "entropy": 4.4375,
+        "num_candidates": 87
+      },
+      {
+        "query_frame": 104,
+        "retrieved_frames": [
+          27,
+          33,
+          34,
+          45,
+          46,
+          84
+        ],
+        "similarities": [
+          0.3477,
+          0.3984,
+          0.4023,
+          0.3887,
+          0.3809,
+          0.3555
+        ],
+        "bank_size": 93,
+        "top1_score": 0.4023,
+        "margin": 0.0039,
+        "entropy": 4.4688,
+        "num_candidates": 90
+      },
+      {
+        "query_frame": 107,
+        "retrieved_frames": [
+          30,
+          36,
+          37,
+          48,
+          49,
+          87
+        ],
+        "similarities": [
+          0.3652,
+          0.4121,
+          0.4004,
+          0.4043,
+          0.3848,
+          0.3691
+        ],
+        "bank_size": 96,
+        "top1_score": 0.4121,
+        "margin": 0.0078,
+        "entropy": 4.5312,
+        "num_candidates": 93
+      },
+      {
+        "query_frame": 110,
+        "retrieved_frames": [
+          33,
+          39,
+          40,
+          51,
+          52,
+          90
+        ],
+        "similarities": [
+          0.3633,
+          0.3848,
+          0.3887,
+          0.3906,
+          0.3711,
+          0.3535
+        ],
+        "bank_size": 99,
+        "top1_score": 0.3906,
+        "margin": 0.002,
+        "entropy": 4.5625,
+        "num_candidates": 96
+      },
+      {
+        "query_frame": 113,
+        "retrieved_frames": [
+          5,
+          42,
+          43,
+          54,
+          55,
+          93
+        ],
+        "similarities": [
+          0.3594,
+          0.3789,
+          0.3887,
+          0.3789,
+          0.3789,
+          0.3613
+        ],
+        "bank_size": 102,
+        "top1_score": 0.3887,
+        "margin": 0.0098,
+        "entropy": 4.5938,
+        "num_candidates": 99
+      },
+      {
+        "query_frame": 116,
+        "retrieved_frames": [
+          8,
+          45,
+          46,
+          57,
+          58,
+          96
+        ],
+        "similarities": [
+          0.3887,
+          0.3926,
+          0.3984,
+          0.4023,
+          0.3887,
+          0.3691
+        ],
+        "bank_size": 105,
+        "top1_score": 0.4023,
+        "margin": 0.0039,
+        "entropy": 4.625,
+        "num_candidates": 102
+      },
+      {
+        "query_frame": 119,
+        "retrieved_frames": [
+          4,
+          48,
+          49,
+          60,
+          61,
+          99
+        ],
+        "similarities": [
+          0.4316,
+          0.3984,
+          0.3906,
+          0.4102,
+          0.3828,
+          0.3867
+        ],
+        "bank_size": 108,
+        "top1_score": 0.4316,
+        "margin": 0.0215,
+        "entropy": 4.625,
+        "num_candidates": 105
+      }
+    ]
+  },
+  {
+    "layer_0": [
+      {
+        "query_frame": 83,
+        "retrieved_frames": [
+          6,
+          12,
+          13,
+          24,
+          25,
+          62
+        ],
+        "similarities": [
+          0.3438,
+          0.3789,
+          0.3574,
+          0.3926,
+          0.3613,
+          0.3301
+        ],
+        "bank_size": 72,
+        "top1_score": 0.3926,
+        "margin": 0.0137,
+        "entropy": 4.2188,
+        "num_candidates": 69
+      },
+      {
+        "query_frame": 86,
+        "retrieved_frames": [
+          9,
+          15,
+          16,
+          27,
+          28,
+          66
+        ],
+        "similarities": [
+          0.3633,
+          0.3848,
+          0.3809,
+          0.4062,
+          0.3867,
+          0.3477
+        ],
+        "bank_size": 75,
+        "top1_score": 0.4062,
+        "margin": 0.0195,
+        "entropy": 4.25,
+        "num_candidates": 72
+      },
+      {
+        "query_frame": 89,
+        "retrieved_frames": [
+          12,
+          18,
+          19,
+          30,
+          31,
+          69
+        ],
+        "similarities": [
+          0.373,
+          0.3965,
+          0.3789,
+          0.416,
+          0.3867,
+          0.3516
+        ],
+        "bank_size": 78,
+        "top1_score": 0.416,
+        "margin": 0.0195,
+        "entropy": 4.3125,
+        "num_candidates": 75
+      },
+      {
+        "query_frame": 92,
+        "retrieved_frames": [
+          15,
+          21,
+          22,
+          33,
+          34,
+          72
+        ],
+        "similarities": [
+          0.3457,
+          0.3672,
+          0.3672,
+          0.3887,
+          0.377,
+          0.3398
+        ],
+        "bank_size": 81,
+        "top1_score": 0.3887,
+        "margin": 0.0117,
+        "entropy": 4.3438,
+        "num_candidates": 78
+      },
+      {
+        "query_frame": 95,
+        "retrieved_frames": [
+          18,
+          24,
+          25,
+          36,
+          37,
+          75
+        ],
+        "similarities": [
+          0.3477,
+          0.373,
+          0.3672,
+          0.3906,
+          0.3711,
+          0.3379
+        ],
+        "bank_size": 84,
+        "top1_score": 0.3906,
+        "margin": 0.0176,
+        "entropy": 4.375,
+        "num_candidates": 81
+      },
+      {
+        "query_frame": 98,
+        "retrieved_frames": [
+          21,
+          27,
+          28,
+          39,
+          40,
+          77
+        ],
+        "similarities": [
+          0.3477,
+          0.375,
+          0.3652,
+          0.3926,
+          0.3613,
+          0.3301
+        ],
+        "bank_size": 87,
+        "top1_score": 0.3926,
+        "margin": 0.0176,
+        "entropy": 4.4062,
+        "num_candidates": 84
+      },
+      {
+        "query_frame": 101,
+        "retrieved_frames": [
+          24,
+          30,
+          31,
+          42,
+          43,
+          81
+        ],
+        "similarities": [
+          0.3555,
+          0.3828,
+          0.373,
+          0.4023,
+          0.373,
+          0.3535
+        ],
+        "bank_size": 90,
+        "top1_score": 0.4023,
+        "margin": 0.0195,
+        "entropy": 4.4375,
+        "num_candidates": 87
+      },
+      {
+        "query_frame": 104,
+        "retrieved_frames": [
+          33,
+          34,
+          45,
+          46,
+          83,
+          84
+        ],
+        "similarities": [
+          0.3789,
+          0.3672,
+          0.3867,
+          0.3594,
+          0.3496,
+          0.3477
+        ],
+        "bank_size": 93,
+        "top1_score": 0.3867,
+        "margin": 0.0078,
+        "entropy": 4.5,
+        "num_candidates": 90
+      },
+      {
+        "query_frame": 107,
+        "retrieved_frames": [
+          30,
+          36,
+          37,
+          48,
+          49,
+          87
+        ],
+        "similarities": [
+          0.3418,
+          0.3613,
+          0.377,
+          0.3711,
+          0.3652,
+          0.3594
+        ],
+        "bank_size": 96,
+        "top1_score": 0.377,
+        "margin": 0.0059,
+        "entropy": 4.5312,
+        "num_candidates": 93
+      },
+      {
+        "query_frame": 110,
+        "retrieved_frames": [
+          33,
+          39,
+          40,
+          51,
+          52,
+          90
+        ],
+        "similarities": [
+          0.3691,
+          0.3887,
+          0.3965,
+          0.3887,
+          0.3867,
+          0.3711
+        ],
+        "bank_size": 99,
+        "top1_score": 0.3965,
+        "margin": 0.0078,
+        "entropy": 4.5625,
+        "num_candidates": 96
+      },
+      {
+        "query_frame": 113,
+        "retrieved_frames": [
+          5,
+          36,
+          42,
+          43,
+          54,
+          55
+        ],
+        "similarities": [
+          0.3711,
+          0.3477,
+          0.3789,
+          0.3652,
+          0.3789,
+          0.3574
+        ],
+        "bank_size": 102,
+        "top1_score": 0.3789,
+        "margin": 0.0,
+        "entropy": 4.5938,
+        "num_candidates": 99
+      },
+      {
+        "query_frame": 116,
+        "retrieved_frames": [
+          8,
+          39,
+          45,
+          46,
+          57,
+          58
+        ],
+        "similarities": [
+          0.3926,
+          0.3633,
+          0.377,
+          0.3789,
+          0.3848,
+          0.3789
+        ],
+        "bank_size": 105,
+        "top1_score": 0.3926,
+        "margin": 0.0078,
+        "entropy": 4.625,
+        "num_candidates": 102
+      },
+      {
+        "query_frame": 119,
+        "retrieved_frames": [
+          4,
+          11,
+          48,
+          49,
+          60,
+          61
+        ],
+        "similarities": [
+          0.3945,
+          0.3789,
+          0.3594,
+          0.3574,
+          0.3789,
+          0.3574
+        ],
+        "bank_size": 108,
+        "top1_score": 0.3945,
+        "margin": 0.0156,
+        "entropy": 4.625,
+        "num_candidates": 105
+      }
+    ]
+  },
+  {
+    "layer_0": [
+      {
+        "query_frame": 83,
+        "retrieved_frames": [
+          6,
+          12,
+          13,
+          24,
+          25,
+          63
+        ],
+        "similarities": [
+          0.3926,
+          0.4238,
+          0.416,
+          0.4453,
+          0.4199,
+          0.3867
+        ],
+        "bank_size": 72,
+        "top1_score": 0.4453,
+        "margin": 0.0215,
+        "entropy": 4.2188,
+        "num_candidates": 69
+      },
+      {
+        "query_frame": 86,
+        "retrieved_frames": [
+          9,
+          15,
+          16,
+          27,
+          28,
+          66
+        ],
+        "similarities": [
+          0.377,
+          0.4219,
+          0.4023,
+          0.4297,
+          0.4023,
+          0.3652
+        ],
+        "bank_size": 75,
+        "top1_score": 0.4297,
+        "margin": 0.0078,
+        "entropy": 4.25,
+        "num_candidates": 72
+      },
+      {
+        "query_frame": 89,
+        "retrieved_frames": [
+          12,
+          18,
+          19,
+          30,
+          31,
+          69
+        ],
+        "similarities": [
+          0.3848,
+          0.4219,
+          0.4082,
+          0.4277,
+          0.4062,
+          0.375
+        ],
+        "bank_size": 78,
+        "top1_score": 0.4277,
+        "margin": 0.0059,
+        "entropy": 4.3125,
+        "num_candidates": 75
+      },
+      {
+        "query_frame": 92,
+        "retrieved_frames": [
+          15,
+          21,
+          22,
+          33,
+          34,
+          71
+        ],
+        "similarities": [
+          0.4004,
+          0.4297,
+          0.4082,
+          0.4395,
+          0.4062,
+          0.3789
+        ],
+        "bank_size": 81,
+        "top1_score": 0.4395,
+        "margin": 0.0098,
+        "entropy": 4.3438,
+        "num_candidates": 78
+      },
+      {
+        "query_frame": 95,
+        "retrieved_frames": [
+          18,
+          24,
+          25,
+          36,
+          37,
+          75
+        ],
+        "similarities": [
+          0.3887,
+          0.4062,
+          0.4004,
+          0.4199,
+          0.4082,
+          0.3711
+        ],
+        "bank_size": 84,
+        "top1_score": 0.4199,
+        "margin": 0.0117,
+        "entropy": 4.375,
+        "num_candidates": 81
+      },
+      {
+        "query_frame": 98,
+        "retrieved_frames": [
+          21,
+          27,
+          28,
+          39,
+          40,
+          78
+        ],
+        "similarities": [
+          0.3809,
+          0.4062,
+          0.4082,
+          0.4199,
+          0.4043,
+          0.3711
+        ],
+        "bank_size": 87,
+        "top1_score": 0.4199,
+        "margin": 0.0117,
+        "entropy": 4.4062,
+        "num_candidates": 84
+      },
+      {
+        "query_frame": 101,
+        "retrieved_frames": [
+          24,
+          30,
+          31,
+          42,
+          43,
+          81
+        ],
+        "similarities": [
+          0.3848,
+          0.4062,
+          0.4043,
+          0.418,
+          0.4004,
+          0.3789
+        ],
+        "bank_size": 90,
+        "top1_score": 0.418,
+        "margin": 0.0117,
+        "entropy": 4.4375,
+        "num_candidates": 87
+      },
+      {
+        "query_frame": 104,
+        "retrieved_frames": [
+          27,
+          33,
+          34,
+          45,
+          46,
+          84
+        ],
+        "similarities": [
+          0.3828,
+          0.4043,
+          0.4004,
+          0.4199,
+          0.4043,
+          0.3828
+        ],
+        "bank_size": 93,
+        "top1_score": 0.4199,
+        "margin": 0.0156,
+        "entropy": 4.5,
+        "num_candidates": 90
+      },
+      {
+        "query_frame": 107,
+        "retrieved_frames": [
+          30,
+          36,
+          37,
+          48,
+          49,
+          87
+        ],
+        "similarities": [
+          0.3691,
+          0.4004,
+          0.4023,
+          0.4102,
+          0.3945,
+          0.3809
+        ],
+        "bank_size": 96,
+        "top1_score": 0.4102,
+        "margin": 0.0078,
+        "entropy": 4.5312,
+        "num_candidates": 93
+      },
+      {
+        "query_frame": 110,
+        "retrieved_frames": [
+          33,
+          39,
+          40,
+          51,
+          52,
+          90
+        ],
+        "similarities": [
+          0.3789,
+          0.416,
+          0.4141,
+          0.4238,
+          0.4102,
+          0.3926
+        ],
+        "bank_size": 99,
+        "top1_score": 0.4238,
+        "margin": 0.0078,
+        "entropy": 4.5625,
+        "num_candidates": 96
+      },
+      {
+        "query_frame": 113,
+        "retrieved_frames": [
+          5,
+          42,
+          43,
+          54,
+          55,
+          93
+        ],
+        "similarities": [
+          0.3906,
+          0.3926,
+          0.4023,
+          0.4082,
+          0.4043,
+          0.3848
+        ],
+        "bank_size": 102,
+        "top1_score": 0.4082,
+        "margin": 0.0039,
+        "entropy": 4.5938,
+        "num_candidates": 99
+      },
+      {
+        "query_frame": 116,
+        "retrieved_frames": [
+          8,
+          39,
+          45,
+          46,
+          57,
+          58
+        ],
+        "similarities": [
+          0.4004,
+          0.3789,
+          0.3945,
+          0.3945,
+          0.416,
+          0.3965
+        ],
+        "bank_size": 105,
+        "top1_score": 0.416,
+        "margin": 0.0156,
+        "entropy": 4.625,
+        "num_candidates": 102
+      },
+      {
+        "query_frame": 119,
+        "retrieved_frames": [
+          4,
+          11,
+          48,
+          49,
+          60,
+          61
+        ],
+        "similarities": [
+          0.4121,
+          0.3828,
+          0.3867,
+          0.375,
+          0.4121,
+          0.3809
+        ],
+        "bank_size": 108,
+        "top1_score": 0.4121,
+        "margin": 0.0,
+        "entropy": 4.625,
+        "num_candidates": 105
+      }
+    ]
+  }
+]

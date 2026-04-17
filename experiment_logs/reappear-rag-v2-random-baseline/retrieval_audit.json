@@ -1,0 +1,50 @@
+[
+  {
+    "insertion_stats": {
+      "avg_novelty": 0.2072,
+      "min_novelty": 0.0273,
+      "avg_embedding_norm": 44.9008,
+      "num_insertions": 3240
+    }
+  },
+  {
+    "insertion_stats": {
+      "avg_novelty": 0.21,
+      "min_novelty": 0.0156,
+      "avg_embedding_norm": 44.8172,
+      "num_insertions": 3240
+    }
+  },
+  {
+    "insertion_stats": {
+      "avg_novelty": 0.211,
+      "min_novelty": 0.0273,
+      "avg_embedding_norm": 44.5239,
+      "num_insertions": 3240
+    }
+  },
+  {
+    "insertion_stats": {
+      "avg_novelty": 0.232,
+      "min_novelty": 0.0273,
+      "avg_embedding_norm": 45.1936,
+      "num_insertions": 3240
+    }
+  },
+  {
+    "insertion_stats": {
+      "avg_novelty": 0.2123,
+      "min_novelty": 0.0352,
+      "avg_embedding_norm": 44.4159,
+      "num_insertions": 3240
+    }
+  },
+  {
+    "insertion_stats": {
+      "avg_novelty": 0.2217,
+      "min_novelty": 0.0156,
+      "avg_embedding_norm": 45.2761,
+      "num_insertions": 3240
+    }
+  }
+]

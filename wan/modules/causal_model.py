@@ -330,7 +330,8 @@ class CausalWanSelfAttention(nn.Module):
 
             # RAG: Retrieve relevant past frames from the bank
             retrieved_k, retrieved_v = None, None
-            if retrieval_bank is not None and retrieval_top_k > 0 and len(retrieval_bank) > 0 and not is_recompute:
+            allow_retrieval = not is_recompute or (retrieval_bank is not None and retrieval_bank.force_retrieve)
+            if retrieval_bank is not None and retrieval_top_k > 0 and len(retrieval_bank) > 0 and allow_retrieval:
                 # Determine which frames are already in sink + local window (to exclude)
                 sink_frame_ids = set(range(self.sink_size))
                 # Approximate local window frame ids from global indices
@@ -1045,6 +1046,12 @@ class CausalWanModel(ModelMixin, ConfigMixin):
 
         cache_update_info = None
         cache_update_infos = []  # Collect cache update info for all blocks
+
+        # Clear shared frame IDs from any previous forward pass
+        if retrieval_banks is not None:
+            for bank in retrieval_banks:
+                bank.shared_frame_ids = None
+
         for block_index, block in enumerate(self.blocks):
             # print(f"block_index: {block_index}")
             # Per-layer retrieval bank (None if RAG is disabled)
@@ -1095,6 +1102,15 @@ class CausalWanModel(ModelMixin, ConfigMixin):
                     cache_update_info = block_cache_update_info[:2]  # (current_end, local_end_index)
                 else:
                     x = result
+
+            # Shared frame selection: after the leader layer (block 0) retrieves,
+            # propagate its chosen frame IDs to all remaining layers so they
+            # fetch KV for the same frames instead of searching independently.
+            if block_index == 0 and retrieval_banks is not None:
+                leader_fids = retrieval_banks[0]._cached_fids
+                if leader_fids:
+                    for i in range(1, len(retrieval_banks)):
+                        retrieval_banks[i].shared_frame_ids = leader_fids
         # log_gpu_memory(f"in _forward_inference: {x[0].device}")
         # After all blocks are processed, apply cache updates in a single pass
         if kv_cache is not None and cache_update_infos:
