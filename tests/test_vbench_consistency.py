@@ -397,6 +397,21 @@ class TestMatchingPerspectives(unittest.TestCase):
         with self.assertRaises(ValueError):
             _assert_matching_perspectives("s", base, mod_bad)  # baseline has p2, modified doesn't
 
+    def test_compare_rejects_one_sided_incomplete_scene(self):
+        # baseline p0,p1 vs modified only p0: the missing render must be REJECTED,
+        # not skipped by the <2 check (validation runs first). Empty files are fine
+        # because the mismatch raises before any video decode. (P2 fix.)
+        from evaluation.vbench_consistency import compare_multiview_vbench_dirs
+        tmp = Path(tempfile.mkdtemp())
+        base, mod = tmp / "baseline", tmp / "kv_rag"
+        base.mkdir(); mod.mkdir()
+        (base / "b-rank0-scene_a-p0-seed0_regular.mp4").write_bytes(b"")
+        (base / "b-rank0-scene_a-p1-seed0_regular.mp4").write_bytes(b"")
+        (mod / "m-rank0-scene_a-p0-seed0_regular.mp4").write_bytes(b"")  # missing p1
+        with self.assertRaises(ValueError) as ctx:
+            compare_multiview_vbench_dirs(str(base), str(mod))
+        self.assertIn("mismatched perspective", str(ctx.exception))
+
 
 class TestCollapseVisible(unittest.TestCase):
     def test_identical_perspectives_have_zero_diversity(self):

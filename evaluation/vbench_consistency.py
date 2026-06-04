@@ -748,9 +748,13 @@ def compare_multiview_vbench_dirs(
 
     records = []
     for scene in scenes:
-        if len(base[scene]) < 2 or len(mod[scene]) < 2:
-            continue
+        # Validate matching perspective sets FIRST: a one-sided incomplete scene
+        # (e.g. baseline p0,p1 but modified only p0) must be REJECTED, not skipped
+        # by the < 2 check below (which would silently drop the missing render and
+        # let the gate pass on a smaller, non-comparable subset).
         _assert_matching_perspectives(scene, base[scene], mod[scene])
+        if len(base[scene]) < 2:  # == len(mod[scene]); a genuinely single-perspective scene
+            continue
         caps = captions_for.get(scene) if captions_for else None
         kw = dict(
             dino_encoder=dino_encoder, clip_encoder=clip_encoder,

@@ -130,6 +130,28 @@ class TestFinalistKvRagMerge(unittest.TestCase):
         self.assertIn("layers", merged)  # from DEFAULT_KV_RAG
         self.assertEqual(merged["layers"], abl.DEFAULT_KV_RAG["layers"])
 
+    def test_base_kv_rag_block_handles_boolean_shorthand(self):
+        # `inference.kv_rag: false/true` is a supported shorthand and must NOT crash
+        # OmegaConf.to_container. (P2 fix.)
+        from omegaconf import OmegaConf
+        self.assertEqual(
+            abl._base_kv_rag_block(OmegaConf.create({"inference": {"kv_rag": False}})),
+            {"enabled": False})
+        self.assertEqual(
+            abl._base_kv_rag_block(OmegaConf.create({"inference": {"kv_rag": True}})),
+            {"enabled": True})
+        self.assertEqual(
+            abl._base_kv_rag_block(OmegaConf.create({"inference": {"kv_rag": {"layers": [1, 2]}}})),
+            {"layers": [1, 2]})
+        self.assertEqual(abl._base_kv_rag_block(OmegaConf.create({"inference": {}})), {})
+
+    def test_finalist_enables_kv_rag_over_boolean_false_base(self):
+        from omegaconf import OmegaConf
+        base = abl._base_kv_rag_block(OmegaConf.create({"inference": {"kv_rag": False}}))
+        merged = abl._finalist_kv_rag(base, {"retrieval_key_mode": "semantic",
+                                             "retrieval_value_mode": "raw"})
+        self.assertTrue(merged["enabled"])  # the finalist overlay re-enables KV-RAG
+
 
 def _write_scene(root: Path, name: str, n_perspectives: int):
     folder = root / name

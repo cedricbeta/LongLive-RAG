@@ -644,12 +644,26 @@ def _finalist_kv_rag(base_kv_rag: dict | None, settings: dict) -> dict:
 
 
 def _base_kv_rag_block(cfg) -> dict:
-    """The base config's ``inference.kv_rag`` block as a plain dict (or {})."""
+    """The base config's ``inference.kv_rag`` block as a plain dict (or {}).
+
+    Handles the supported shorthands explicitly (mirroring
+    ``KVRAGConfig._to_plain_dict``): a boolean ``kv_rag: false/true`` becomes
+    ``{"enabled": bool}`` and a plain dict passes through, so a non-``DictConfig``
+    block never reaches ``OmegaConf.to_container`` (which raises on a bool).
+    """
     inf = cfg.get("inference") if "inference" in cfg else None
     block = inf.get("kv_rag") if (inf is not None and "kv_rag" in inf) else None
     if block is None and "kv_rag" in cfg:
         block = cfg.get("kv_rag")
-    return OmegaConf.to_container(block, resolve=True) or {} if block is not None else {}
+    if block is None:
+        return {}
+    if isinstance(block, bool):
+        return {"enabled": block}
+    if OmegaConf.is_config(block):
+        return OmegaConf.to_container(block, resolve=True) or {}
+    if isinstance(block, dict):
+        return dict(block)
+    return {}
 
 
 def _run_multiview_finalists(args, output_root: Path) -> None:
