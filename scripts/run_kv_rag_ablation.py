@@ -731,7 +731,8 @@ def _run_multiview_finalists(args, output_root: Path) -> None:
     # closed); the actual encoder is built FRESH PER SCENE via the factory below,
     # because build_identity_encoder('auto') is stateful and must not be shared.
     identity_probe = _try_build_backbone("identity", lambda: build_identity_encoder(
-        subject_kind=args.subject_kind, device=args.clip_device)) if args.vbench_identity else None
+        subject_kind=args.subject_kind, device=args.clip_device, eager_fallback=True)) \
+        if args.vbench_identity else None
     identity_factory = (lambda kind: build_identity_encoder(
         subject_kind=kind, device=args.clip_device)) if identity_probe is not None else None
     backbones = {
@@ -904,7 +905,8 @@ def _run_multiview_vbench(args, output_root: Path) -> None:
     # Pre-check identity availability once; the encoder is built FRESH PER SCENE via
     # the factory (stateful 'auto' encoder must not be shared across scenes).
     identity_probe = _try_build_backbone("identity", lambda: build_identity_encoder(
-        subject_kind=args.subject_kind, device=args.clip_device)) if args.vbench_identity else None
+        subject_kind=args.subject_kind, device=args.clip_device, eager_fallback=True)) \
+        if args.vbench_identity else None
     identity_factory = (lambda kind: build_identity_encoder(
         subject_kind=kind, device=args.clip_device)) if identity_probe is not None else None
     backbones = {

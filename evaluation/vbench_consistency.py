@@ -399,7 +399,8 @@ def _insightface_ctx_id(device: str | None) -> int:
     return 0  # "cuda" or unset -> default GPU 0
 
 
-def build_identity_encoder(*, subject_kind: str = "auto", device: str | None = None):
+def build_identity_encoder(*, subject_kind: str = "auto", device: str | None = None,
+                           eager_fallback: bool = False):
     """Return ``fn(frames_rgb) -> [T, D]`` subject-IDENTITY features.
 
     Identity is the SAME individual across videos, not a similar-looking one, so
@@ -457,6 +458,11 @@ def build_identity_encoder(*, subject_kind: str = "auto", device: str | None = N
 
     if kind == "object" or (kind == "auto" and face_embed is None):
         _dino_patch()  # fail fast: DINO is the only available identity path here
+    elif eager_fallback and kind == "auto":
+        # An ``auto`` scene with no face falls back to DINO; build it now so a
+        # gate availability pre-check fails CLOSED (records identity unavailable)
+        # instead of crashing later, post-render, on the first no-face scene.
+        _dino_patch()
 
     def _dino_encode(frames_rgb):
         feats = _dino_patch()(frames_rgb)
@@ -770,10 +776,21 @@ def compare_multiview_vbench_dirs(
     """
     base = group_perspectives_by_scene(baseline_dir)
     mod = group_perspectives_by_scene(modified_dir)
-    scenes = sorted(set(base) & set(mod))
+    # A scene rendered on one side but missing on the other (a failed/missing render)
+    # must be REJECTED, not silently dropped by an intersection -- otherwise the gate
+    # could pass on a smaller, non-comparable scene subset.
+    only_base = sorted(set(base) - set(mod))
+    only_mod = sorted(set(mod) - set(base))
+    if only_base or only_mod:
+        raise ValueError(
+            "Mismatched scene sets between baseline and modified (a missing/extra "
+            f"rendered scene makes the gate non-comparable): baseline-only={only_base}, "
+            f"modified-only={only_mod}."
+        )
+    scenes = sorted(set(base))  # == set(mod)
     if not scenes:
         raise ValueError(
-            f"No common multi-perspective scenes in {baseline_dir} and {modified_dir}"
+            f"No multi-perspective scenes in {baseline_dir} and {modified_dir}"
         )
 
     def _identity_for(scene: str):

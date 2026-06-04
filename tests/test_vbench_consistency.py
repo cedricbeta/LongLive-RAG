@@ -429,6 +429,30 @@ class TestIdentityAutoFallback(unittest.TestCase):
             sys.modules.pop("insightface", None)
             sys.modules.pop("insightface.app", None)
 
+    def test_eager_fallback_validates_dino_for_auto(self):
+        # auto pre-check with ArcFace available but DINO unavailable: the default
+        # (lazy) build succeeds (DINO not touched), but eager_fallback=True builds
+        # DINO -> raises, so the gate pre-check can mark identity unavailable
+        # instead of crashing post-render on a no-face scene. (P2 fix.)
+        import evaluation.vbench_consistency as vc
+        face = type("F", (), {"bbox": [0.0, 0.0, 10.0, 10.0],
+                              "normed_embedding": np.ones(8, dtype=np.float32)})()
+        self._install_fake_arcface(lambda img: [face])
+        orig = vc._build_dino_patch_encoder
+
+        def _boom(*a, **k):
+            raise RuntimeError("no DINO")
+
+        vc._build_dino_patch_encoder = _boom
+        try:
+            vc.build_identity_encoder(subject_kind="auto", device="cpu")  # lazy -> no raise
+            with self.assertRaises(RuntimeError):
+                vc.build_identity_encoder(subject_kind="auto", device="cpu", eager_fallback=True)
+        finally:
+            vc._build_dino_patch_encoder = orig
+            sys.modules.pop("insightface", None)
+            sys.modules.pop("insightface.app", None)
+
     def test_auto_face_scene_then_no_face_perspective_raises(self):
         import evaluation.vbench_consistency as vc
         face = type("F", (), {"bbox": [0.0, 0.0, 10.0, 10.0],
@@ -500,6 +524,22 @@ class TestMatchingPerspectives(unittest.TestCase):
         _assert_matching_perspectives("s", base, mod_ok)  # identical sets -> ok
         with self.assertRaises(ValueError):
             _assert_matching_perspectives("s", base, mod_bad)  # baseline has p2, modified doesn't
+
+    def test_compare_rejects_scene_missing_from_one_variant(self):
+        # An entire scene missing from one variant must be REJECTED, not dropped by
+        # the scene-name intersection. (P2 fix.)
+        from evaluation.vbench_consistency import compare_multiview_vbench_dirs
+        tmp = Path(tempfile.mkdtemp())
+        base, mod = tmp / "baseline", tmp / "kv_rag"
+        base.mkdir(); mod.mkdir()
+        for scene in ("scene_a", "scene_b"):
+            for p in (0, 1):
+                (base / f"b-rank0-{scene}-p{p}-seed0_regular.mp4").write_bytes(b"")
+        for p in (0, 1):  # modified is missing scene_b entirely
+            (mod / f"m-rank0-scene_a-p{p}-seed0_regular.mp4").write_bytes(b"")
+        with self.assertRaises(ValueError) as ctx:
+            compare_multiview_vbench_dirs(str(base), str(mod))
+        self.assertIn("Mismatched scene sets", str(ctx.exception))
 
     def test_compare_rejects_one_sided_incomplete_scene(self):
         # baseline p0,p1 vs modified only p0: the missing render must be REJECTED,
