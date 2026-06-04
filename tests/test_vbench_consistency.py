@@ -447,6 +447,50 @@ class TestIdentityAutoFallback(unittest.TestCase):
             sys.modules.pop("insightface.app", None)
 
 
+class TestInsightFaceCtxId(unittest.TestCase):
+    def test_ctx_id_from_device(self):
+        from evaluation.vbench_consistency import _insightface_ctx_id
+        self.assertEqual(_insightface_ctx_id("cpu"), -1)
+        self.assertEqual(_insightface_ctx_id("cuda:3"), 3)   # honor requested GPU N
+        self.assertEqual(_insightface_ctx_id("cuda"), 0)
+        self.assertEqual(_insightface_ctx_id(None), 0)
+        self.assertEqual(_insightface_ctx_id("cuda:bad"), 0)
+
+
+class TestPerSceneIdentityEncoder(unittest.TestCase):
+    def test_identity_factory_invoked_fresh_per_scene(self):
+        # The stateful 'auto' encoder must be built FRESH per scene (not cached and
+        # shared, which would lock the first scene's ArcFace/DINO choice). (P2 fix.)
+        import cv2
+        from evaluation.vbench_consistency import compare_multiview_vbench_dirs
+        tmp = Path(tempfile.mkdtemp())
+        base, mod = tmp / "b", tmp / "m"
+        base.mkdir(); mod.mkdir()
+
+        def write(d, scene, p):
+            rng = np.random.RandomState(p)
+            vw = cv2.VideoWriter(str(d / f"x-rank0-{scene}-p{p}-seed0_regular.mp4"),
+                                 cv2.VideoWriter_fourcc(*"mp4v"), 8, (32, 32))
+            for _ in range(4):
+                vw.write((rng.rand(32, 32, 3) * 255).astype(np.uint8))
+            vw.release()
+
+        for scene in ("scene_a", "scene_b"):
+            for p in (0, 1):
+                write(base, scene, p)
+                write(mod, scene, p)
+
+        calls = {"n": 0}
+
+        def factory(kind):
+            calls["n"] += 1
+            return lambda frames: np.ones((len(frames), 4), dtype=np.float64)
+
+        compare_multiview_vbench_dirs(str(base), str(mod), identity_encoder_for=factory,
+                                      subject_kind_default="auto", frames_per_video=4)
+        self.assertEqual(calls["n"], 2)  # once PER SCENE (not 1 cached across scenes)
+
+
 class TestMatchingPerspectives(unittest.TestCase):
     def test_validator_rejects_mismatched_sets(self):
         from evaluation.vbench_consistency import _assert_matching_perspectives

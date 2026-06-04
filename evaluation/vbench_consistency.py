@@ -384,6 +384,21 @@ def build_clip_image_encoder(*, model_name: str = "ViT-B-32", pretrained: str = 
     return _embed_hf
 
 
+def _insightface_ctx_id(device: str | None) -> int:
+    """InsightFace ctx_id for a torch-style device string: ``cpu`` -> -1,
+    ``cuda:N`` -> N, bare ``cuda``/None -> 0 (so a requested non-zero GPU is
+    honored instead of always allocating ArcFace on GPU 0)."""
+    d = (device or "").strip().lower()
+    if d.startswith("cpu"):
+        return -1
+    if d.startswith("cuda:"):
+        try:
+            return int(d.split(":", 1)[1])
+        except (ValueError, IndexError):
+            return 0
+    return 0  # "cuda" or unset -> default GPU 0
+
+
 def build_identity_encoder(*, subject_kind: str = "auto", device: str | None = None):
     """Return ``fn(frames_rgb) -> [T, D]`` subject-IDENTITY features.
 
@@ -410,9 +425,10 @@ def build_identity_encoder(*, subject_kind: str = "auto", device: str | None = N
         try:
             from insightface.app import FaceAnalysis
 
-            app = FaceAnalysis(name="buffalo_l", providers=["CPUExecutionProvider"]
-                               if (device or "").startswith("cpu") else None)
-            app.prepare(ctx_id=0 if not (device or "").startswith("cpu") else -1, det_size=(320, 320))
+            is_cpu = (device or "").startswith("cpu")
+            app = FaceAnalysis(name="buffalo_l",
+                               providers=["CPUExecutionProvider"] if is_cpu else None)
+            app.prepare(ctx_id=_insightface_ctx_id(device), det_size=(320, 320))
 
             def face_embed(frame_rgb):  # noqa: ANN001
                 faces = app.get(frame_rgb[..., ::-1])  # insightface expects BGR
@@ -730,6 +746,7 @@ def compare_multiview_vbench_dirs(
     identity_encoder=None,
     identity_encoder_for=None,
     scene_subject_kinds: dict | None = None,
+    subject_kind_default: str = "auto",
     adherence_scorer=None,
     captions_for=None,
     frames_per_video: int = 16,
@@ -745,10 +762,11 @@ def compare_multiview_vbench_dirs(
 
     Subject IDENTITY is per-scene: pass either a single ``identity_encoder`` for
     every scene, or ``identity_encoder_for`` -- a factory ``fn(subject_kind) ->
-    encoder`` built once per distinct kind, with ``scene_subject_kinds`` (a
-    ``scene -> human|object|auto`` map) selecting the kind via
-    ``select_subject_kind``. Returns per-scene records with every dimension,
-    the ``aggregate_consistency``, and modified-minus-baseline deltas.
+    encoder`` invoked FRESH PER SCENE (the ``auto`` encoder is stateful, so it must
+    not be cached/shared across scenes), with ``scene_subject_kinds`` (a
+    ``scene -> human|object|auto`` map) + ``subject_kind_default`` selecting the
+    kind via ``select_subject_kind``. Returns per-scene records with every
+    dimension, the ``aggregate_consistency``, and modified-minus-baseline deltas.
     """
     base = group_perspectives_by_scene(baseline_dir)
     mod = group_perspectives_by_scene(modified_dir)
@@ -758,17 +776,18 @@ def compare_multiview_vbench_dirs(
             f"No common multi-perspective scenes in {baseline_dir} and {modified_dir}"
         )
 
-    encoder_cache: dict[str, object] = {}
-
     def _identity_for(scene: str):
         if identity_encoder is not None:
-            return identity_encoder
+            return identity_encoder  # explicit single encoder (caller's responsibility)
         if identity_encoder_for is None:
             return None
-        kind = select_subject_kind(scene, scene_subject_kinds=scene_subject_kinds)
-        if kind not in encoder_cache:
-            encoder_cache[kind] = identity_encoder_for(kind)
-        return encoder_cache[kind]
+        # Build a FRESH encoder PER SCENE: build_identity_encoder('auto') is stateful
+        # (it locks ArcFace vs DINO from its first/reference video), so a cached
+        # encoder shared across scenes would carry the first scene's subject-type
+        # choice into later scenes (raising or using the wrong backend).
+        kind = select_subject_kind(scene, scene_subject_kinds=scene_subject_kinds,
+                                   default=subject_kind_default)
+        return identity_encoder_for(kind)
 
     records = []
     for scene in scenes:

@@ -727,12 +727,17 @@ def _run_multiview_finalists(args, output_root: Path) -> None:
         if args.vbench_subject else None
     clip = _try_build_backbone("background(CLIP)", lambda: build_clip_image_encoder(device=args.clip_device)) \
         if args.vbench_background else None
-    identity = _try_build_backbone("identity", lambda: build_identity_encoder(
+    # Pre-check identity availability once (to record {requested, loaded} + fail
+    # closed); the actual encoder is built FRESH PER SCENE via the factory below,
+    # because build_identity_encoder('auto') is stateful and must not be shared.
+    identity_probe = _try_build_backbone("identity", lambda: build_identity_encoder(
         subject_kind=args.subject_kind, device=args.clip_device)) if args.vbench_identity else None
+    identity_factory = (lambda kind: build_identity_encoder(
+        subject_kind=kind, device=args.clip_device)) if identity_probe is not None else None
     backbones = {
         "subject_dino": {"requested": bool(args.vbench_subject), "loaded": bool(dino)},
         "background_clip": {"requested": bool(args.vbench_background), "loaded": bool(clip)},
-        "identity": {"requested": bool(args.vbench_identity), "loaded": bool(identity)},
+        "identity": {"requested": bool(args.vbench_identity), "loaded": bool(identity_probe)},
         "subject_kind": args.subject_kind,
     }
 
@@ -753,7 +758,8 @@ def _run_multiview_finalists(args, output_root: Path) -> None:
         run_inference(mod_cfg)
         result = compare_multiview_vbench_dirs(
             baseline_dir, mod_dir, dino_encoder=dino, clip_encoder=clip,
-            identity_encoder=identity, adherence_scorer=adherence_scorer,
+            identity_encoder_for=identity_factory, subject_kind_default=args.subject_kind,
+            adherence_scorer=adherence_scorer,
             captions_for=captions_for, max_frames=args.max_frames, stride=max(1, args.stride),
         )
         gate = evaluate_multiview_vbench_gate(
@@ -895,12 +901,16 @@ def _run_multiview_vbench(args, output_root: Path) -> None:
         if args.vbench_subject else None
     clip = _try_build_backbone("background(CLIP)", lambda: build_clip_image_encoder(device=args.clip_device)) \
         if args.vbench_background else None
-    identity = _try_build_backbone("identity", lambda: build_identity_encoder(
+    # Pre-check identity availability once; the encoder is built FRESH PER SCENE via
+    # the factory (stateful 'auto' encoder must not be shared across scenes).
+    identity_probe = _try_build_backbone("identity", lambda: build_identity_encoder(
         subject_kind=args.subject_kind, device=args.clip_device)) if args.vbench_identity else None
+    identity_factory = (lambda kind: build_identity_encoder(
+        subject_kind=kind, device=args.clip_device)) if identity_probe is not None else None
     backbones = {
         "subject_dino": {"requested": bool(args.vbench_subject), "loaded": bool(dino)},
         "background_clip": {"requested": bool(args.vbench_background), "loaded": bool(clip)},
-        "identity": {"requested": bool(args.vbench_identity), "loaded": bool(identity)},
+        "identity": {"requested": bool(args.vbench_identity), "loaded": bool(identity_probe)},
         "subject_kind": args.subject_kind,
     }
     missing_backbones = _missing_requested_backbones(backbones)
@@ -911,7 +921,8 @@ def _run_multiview_vbench(args, output_root: Path) -> None:
 
     result = compare_multiview_vbench_dirs(
         baseline_dir, rag_dir,
-        dino_encoder=dino, clip_encoder=clip, identity_encoder=identity,
+        dino_encoder=dino, clip_encoder=clip,
+        identity_encoder_for=identity_factory, subject_kind_default=args.subject_kind,
         adherence_scorer=adherence_scorer, captions_for=captions_for,
         max_frames=args.max_frames, stride=max(1, args.stride),
     )
