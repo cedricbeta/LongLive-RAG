@@ -232,6 +232,30 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
             if neg is not None:
                 self.kv_rag_neg.set_context_key(neg.get("prompt_embeds"))
 
+    @staticmethod
+    def _memory_boundary_active(is_shot_boundary, force_scene_memory_boundary, chunk_index) -> bool:
+        """Whether the scene anchors should be force-injected for this chunk.
+
+        Fires on an intra-video shot cut (``is_shot_boundary``) OR on the first
+        chunk of a NEW perspective in the per-perspective path
+        (``force_scene_memory_boundary and chunk_index == 0``). The latter is the
+        fix for `boundary_injections == 0`: a new perspective is a separate
+        ``inference()`` call whose chunk 0 is never a prompt shot-cut, so without
+        this the perspective-0 anchors were never force-injected.
+        """
+        return bool(is_shot_boundary or (force_scene_memory_boundary and chunk_index == 0))
+
+    @staticmethod
+    def _should_store_persistent(scene_memory_active, seed_scene_memory, scene_shot_index) -> bool:
+        """Whether this chunk's clean-recache slice seeds the PERSISTENT partition.
+
+        Only the reference perspective (``seed_scene_memory``, i.e. perspective 0)
+        at its first shot seeds the scene anchors; later perspectives retrieve /
+        force-inject them but store only transient per-shot entries (so generated
+        later views do not continuously reseed the partition).
+        """
+        return bool(scene_memory_active and seed_scene_memory and scene_shot_index == 0)
+
     def _kv_rag_call_kwargs(
         self,
         bank,
@@ -263,6 +287,8 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
         return_latents: bool = False,
         start_frame_index: Optional[int] = 0,
         preserve_scene_memory: bool = False,
+        seed_scene_memory: bool = True,
+        force_scene_memory_boundary: bool = False,
     ) -> torch.Tensor:
         """
         Perform inference on the given noise and text prompts.
@@ -689,17 +715,25 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
                 print(f"[inference] multi-shot RoPE: shot_index={current_shot_index}, "
                       f"temporal_offset={self._dit_model.rope_temporal_offset:.4f}")
 
-            # Force-inject the persistent scene anchors on the first chunk of a
-            # new shot so the perspective change keeps the established scene.
-            self._set_kv_rag_boundary_inject(is_shot_boundary)
+            # Force-inject the persistent scene anchors on an intra-video shot cut
+            # OR on the first chunk of a new perspective (per-perspective path),
+            # so the perspective change keeps the established scene.
+            is_memory_boundary = self._memory_boundary_active(
+                is_shot_boundary, force_scene_memory_boundary, chunk_index
+            )
+            self._set_kv_rag_boundary_inject(is_memory_boundary)
             # A new shot drops the per-shot framing memory while the persistent
-            # scene anchors survive. Tied only to scene memory (not to the sink /
-            # clean-recache settings) so stale per-shot entries never bleed into
-            # the new shot's retrieval pool.
+            # scene anchors survive. Tied only to the intra-video shot cut (not the
+            # perspective boundary, which already reset the per-shot partition via
+            # _reset_kv_rag_keep_scene) so stale per-shot entries never bleed in.
             if is_shot_boundary:
                 self._reset_kv_rag_shot()
-            # Shot 0 supplies the persistent anchors; later shots store per-shot.
-            store_persistent = self._scene_memory_active and (scene_shot_index == 0)
+            # Only the reference perspective (perspective 0) at shot 0 seeds the
+            # persistent anchors; later perspectives retrieve/force-inject but store
+            # transient per-shot entries, so generated later views never reseed it.
+            store_persistent = self._should_store_persistent(
+                self._scene_memory_active, seed_scene_memory, scene_shot_index
+            )
 
             noisy_input = noise[
                 :, cache_start_frame - num_input_frames:cache_start_frame + current_num_frames - num_input_frames]

@@ -111,6 +111,82 @@ class TestScenePartition(unittest.TestCase):
 
 
 # ---------------------------------------------------------------------------
+# AC-1: per-perspective seed / force-inject protocol (Round 1 substrate fix)
+# ---------------------------------------------------------------------------
+class TestPerPerspectiveProtocol(unittest.TestCase):
+    """Perspective 0 SEEDS the persistent anchors; later perspectives FORCE-INJECT
+    them at their first chunk and store only TRANSIENT per-shot entries."""
+
+    def _cfg(self, **kw):
+        base = dict(enabled=True, top_k=0, scene_memory_enabled=True,
+                    boundary_inject_anchors=2, scene_memory_max_entries=8,
+                    frame_aligned_store=True)
+        base.update(kw)
+        return KVRAGConfig(**base)
+
+    def test_persp0_seeds_then_persp1_forceinjects_and_stores_transient(self):
+        m = KVRAGMemory(self._cfg())
+        # Perspective 0 (seed_scene_memory=True): store persistent anchors.
+        for i in range(3):
+            _store(m, persistent=True, start=i * 8)
+        self.assertEqual(len(m.scene_entries_by_layer[0]), 3)
+        self.assertEqual(len(m.entries_by_layer.get(0, [])), 0)
+
+        # Boundary into perspective 1: keep scene, clear per-shot (mirrors
+        # _reset_kv_rag_keep_scene), then pulse the boundary force-inject.
+        m.reset_shot()
+        m.set_boundary_inject(True)
+        out = m.retrieve(layer=0, query=torch.randn(1, 4, 2, 3), current_start=0,
+                         frame_seqlen=4, dtype=torch.float32, device=CPU)
+        self.assertIsNotNone(out)
+        self.assertGreaterEqual(m.stats["boundary_injections"], 1)  # B1 fix
+        _, _, selected = out
+        self.assertTrue(selected and all(e.persistent for e in selected))
+
+        # Perspective 1 (seed_scene_memory=False): store TRANSIENT, do not reseed.
+        _store(m, persistent=False, start=200)
+        self.assertEqual(len(m.scene_entries_by_layer[0]), 3)   # B2 fix: not reseeded
+        self.assertEqual(len(m.entries_by_layer[0]), 1)         # transient stored
+
+    def test_no_boundary_inject_without_pulse(self):
+        # Without the perspective-boundary pulse, no force-injection happens
+        # (this is the pre-fix behavior the new force_scene_memory_boundary cures).
+        m = KVRAGMemory(self._cfg())
+        for i in range(2):
+            _store(m, persistent=True, start=i * 8)
+        m.reset_shot()
+        out = m.retrieve(layer=0, query=torch.randn(1, 4, 2, 3), current_start=0,
+                         frame_seqlen=4, dtype=torch.float32, device=CPU)
+        self.assertIsNone(out)  # top_k=0 and no pulse -> nothing retrieved
+        self.assertEqual(m.stats["boundary_injections"], 0)
+
+
+class TestPipelineSceneMemoryPredicates(unittest.TestCase):
+    """The pure boundary/seed predicates the per-perspective inference loop uses."""
+
+    def setUp(self):
+        try:
+            from pipeline.causal_diffusion_inference import CausalDiffusionInferencePipeline
+        except Exception as exc:  # pragma: no cover - heavy deps absent
+            self.skipTest(f"pipeline import unavailable: {exc}")
+        self.P = CausalDiffusionInferencePipeline
+
+    def test_memory_boundary_active(self):
+        P = self.P
+        self.assertTrue(P._memory_boundary_active(True, False, 5))    # intra-video shot cut
+        self.assertTrue(P._memory_boundary_active(False, True, 0))    # new perspective chunk 0
+        self.assertFalse(P._memory_boundary_active(False, True, 1))   # later chunk, not boundary
+        self.assertFalse(P._memory_boundary_active(False, False, 0))  # non-multiview chunk 0
+
+    def test_should_store_persistent(self):
+        P = self.P
+        self.assertTrue(P._should_store_persistent(True, True, 0))    # persp0, shot0, scene mem
+        self.assertFalse(P._should_store_persistent(True, False, 0))  # later perspective
+        self.assertFalse(P._should_store_persistent(True, True, 1))   # later shot
+        self.assertFalse(P._should_store_persistent(False, True, 0))  # scene memory off
+
+
+# ---------------------------------------------------------------------------
 # AC-2: boundary force-injection, dedup, flag isolation
 # ---------------------------------------------------------------------------
 class TestBoundaryInjection(unittest.TestCase):

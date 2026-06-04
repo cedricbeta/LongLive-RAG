@@ -148,6 +148,11 @@ def parse_args() -> argparse.Namespace:
                         "guard). Omit to report motion changes without failing on them.")
     parser.add_argument("--min_scene_wins", type=int, default=None,
                         help="multiview_vbench: scenes the modified aggregate must win (default ceil(N/2)).")
+    parser.add_argument("--finalists", default=None,
+                        help="multiview_vbench: comma-separated key:value finalists (e.g. "
+                        "'pooled:raw,semantic:raw,subject_identity:raw'). When set, the "
+                        "baseline is rendered ONCE and each finalist scored against it, then "
+                        "ranked on the rendered AC-2 aggregate into one consolidated JSON.")
     # Modified-variant knobs so the AC-3.2 rendered ranking can vary the
     # key/value representation per run (defaults = recommended multi-view).
     parser.add_argument("--modified_retrieval_key_mode", default="salient_set")
@@ -535,6 +540,167 @@ def _run_cross_perspective(args, output_root: Path) -> None:
         raise SystemExit(1)
 
 
+def _write_one_variant(cfg, output_root: Path, name: str, *, kv_rag_settings: dict,
+                       multiview_per_perspective: bool = False) -> tuple[Path, Path]:
+    """Write a single inference config (baseline OR one modified finalist) for the
+    per-perspective render and return ``(config_path, output_dir)``."""
+    output_root.mkdir(parents=True, exist_ok=True)
+    config_dir = output_root / "configs"
+    config_dir.mkdir(parents=True, exist_ok=True)
+    out_dir = output_root / name
+    variant = OmegaConf.create(OmegaConf.to_container(cfg, resolve=True))
+    variant.output_folder = str(out_dir)
+    if "inference" not in variant or variant.inference is None:
+        variant.inference = {}
+    variant.inference.output_folder = str(out_dir)
+    variant.inference.filename_prefix = name
+    variant.inference.kv_rag = kv_rag_settings
+    variant.inference.filename_from_sample_name = True
+    variant.filename_from_sample_name = True
+    if multiview_per_perspective:
+        variant.inference.multiview_per_perspective = True
+        variant.multiview_per_perspective = True
+    cfg_path = config_dir / f"{name}.yaml"
+    OmegaConf.save(variant, cfg_path)
+    return cfg_path, out_dir
+
+
+def _parse_finalists(spec: str) -> list[tuple[str, str]]:
+    """Parse 'key:value,key:value' into [(key, value), ...] (value defaults to raw)."""
+    out: list[tuple[str, str]] = []
+    for tok in spec.split(","):
+        tok = tok.strip()
+        if not tok:
+            continue
+        key, _, value = tok.partition(":")
+        out.append((key.strip(), value.strip() or "raw"))
+    if len(out) < 2:
+        raise ValueError("--finalists needs >= 2 key:value finalists (e.g. "
+                         "'pooled:raw,subject_identity:raw')")
+    return out
+
+
+def _run_multiview_finalists(args, output_root: Path) -> None:
+    """AC-3/AC-4/AC-6 consolidated finalist gate: render the baseline ONCE and each
+    finalist (key,value) against it, score the FULL AC-2 suite, rank on the rendered
+    aggregate, and write one ranked JSON (winner or honest null)."""
+    from evaluation.vbench_consistency import (
+        build_clip_image_encoder, build_dino_encoder, build_identity_encoder,
+        compare_multiview_vbench_dirs, evaluate_multiview_vbench_gate,
+    )
+    from evaluation.multiview_prompts import load_shot_specs
+    from evaluation.retrieval_screen import run_screen
+    import numpy as np
+
+    require_adherence = not args.dry_run_without_adherence
+    if require_adherence and not args.prompts_dir:
+        raise ValueError("multiview_vbench finalist gate requires --prompts_dir.")
+    if require_adherence and args.motion_tolerance is None:
+        raise ValueError("multiview_vbench finalist gate requires --motion_tolerance "
+                         "(AC-4 motion guard); pass e.g. --motion_tolerance 0.3.")
+    finalists = _parse_finalists(args.finalists)
+
+    cfg = _apply_overrides(OmegaConf.load(args.config_path), args)
+    subset = [s.strip() for s in args.prompt_subset.split(",")] if args.prompt_subset else None
+    chosen, coverage = build_multiview_subset(
+        args.prompts_dir, subset, output_root / "prompt_subset",
+        max_perspectives=args.max_perspectives,
+    )
+    _set_nested(cfg, "data", "data_path", str(output_root / "prompt_subset"))
+    print(f"[finalist-gate] subset: {chosen}")
+    print(f"[finalist-gate] perspective coverage (AC-7 -- logged): {coverage}")
+    print(f"[finalist-gate] finalists: {finalists}")
+    _preflight_config(cfg, args.config_path)
+
+    # Render the baseline (no scene memory) ONCE, shared across finalists.
+    baseline_cfg, baseline_dir = _write_one_variant(
+        cfg, output_root, "baseline", kv_rag_settings={"enabled": False},
+        multiview_per_perspective=True,
+    )
+    run_inference(baseline_cfg)
+
+    captions_for = {s: v["captions"] for s, v in load_shot_specs(args.prompts_dir).items()}
+    adherence_scorer = build_clip_adherence_scorer(
+        model_name=args.clip_model, pretrained=args.clip_pretrained, device=args.clip_device
+    ) if require_adherence else None
+    dino = build_dino_encoder(device=args.clip_device) if args.vbench_subject else None
+    clip = build_clip_image_encoder(device=args.clip_device) if args.vbench_background else None
+    identity = build_identity_encoder(subject_kind=args.subject_kind, device=args.clip_device) \
+        if args.vbench_identity else None
+    backbones = {"subject_dino": bool(dino), "background_clip": bool(clip),
+                 "identity": bool(identity), "subject_kind": args.subject_kind}
+
+    finalist_records = []
+    for key, value in finalists:
+        settings = {
+            "scene_memory_enabled": bool(args.modified_scene_memory_enabled),
+            "boundary_inject_anchors": int(args.modified_boundary_inject_anchors),
+            "scene_score_bonus": float(args.modified_scene_score_bonus),
+            "retrieval_key_mode": key, "retrieval_value_mode": value,
+        }
+        merged = dict(DEFAULT_KV_RAG); merged["enabled"] = True; merged.update(settings)
+        name = f"mod_{key}_{value}"
+        mod_cfg, mod_dir = _write_one_variant(
+            cfg, output_root, name, kv_rag_settings=merged, multiview_per_perspective=True
+        )
+        print(f"[finalist-gate] rendering {name}: {settings}")
+        run_inference(mod_cfg)
+        result = compare_multiview_vbench_dirs(
+            baseline_dir, mod_dir, dino_encoder=dino, clip_encoder=clip,
+            identity_encoder=identity, adherence_scorer=adherence_scorer,
+            captions_for=captions_for, max_frames=args.max_frames, stride=max(1, args.stride),
+        )
+        gate = evaluate_multiview_vbench_gate(
+            result, min_scene_wins=args.min_scene_wins,
+            adherence_tolerance=args.adherence_tolerance,
+            diversity_tolerance=args.diversity_tolerance,
+            motion_tolerance=args.motion_tolerance, require_adherence=require_adherence,
+        )
+        deltas = [r["modified_metrics"].get("aggregate_consistency", float("nan"))
+                  - r["baseline_metrics"].get("aggregate_consistency", float("nan"))
+                  for r in result["records"]]
+        mean_delta = float(np.nanmean(deltas)) if deltas else float("nan")
+        finalist_records.append({
+            "key": key, "value": value, "settings": settings,
+            "passed": gate["passed"], "scene_wins": gate["scene_wins"],
+            "num_scenes": gate["num_scenes"], "mean_aggregate_delta": mean_delta,
+            "gate": gate, "comparison": result,
+        })
+
+    # Rank: passing finalists first, then by mean rendered aggregate delta.
+    ranked = sorted(finalist_records, key=lambda r: (r["passed"], r["mean_aggregate_delta"]),
+                    reverse=True)
+    winner = next((r for r in ranked if r["passed"]), None)
+    consolidated = {
+        "is_prefilter": False,
+        "selector": "rendered AC-2 suite",
+        "winner": ({"key": winner["key"], "value": winner["value"]} if winner else None),
+        "is_null_result": winner is None,
+        "ranking": [{"key": r["key"], "value": r["value"], "passed": r["passed"],
+                     "mean_aggregate_delta": r["mean_aggregate_delta"],
+                     "scene_wins": f"{r['scene_wins']}/{r['num_scenes']}"} for r in ranked],
+        "perspective_coverage": coverage,
+        "backbones": backbones,
+        "guards": {"adherence_tolerance": args.adherence_tolerance,
+                   "diversity_tolerance": args.diversity_tolerance,
+                   "motion_tolerance": args.motion_tolerance,
+                   "require_adherence": require_adherence},
+        "finalists": finalist_records,
+        "offline_screen": run_screen(),
+    }
+    metrics_json = Path(args.metrics_json) if args.metrics_json else output_root / "multiview_finalist_gate.json"
+    save_metrics_json(consolidated, metrics_json)
+    print(f"Wrote metrics: {metrics_json.resolve()}")
+    print("[finalist-gate] RANKING (rendered AC-2 aggregate):")
+    for r in ranked:
+        print(f"  {r['key']}+{r['value']}: mean_agg_delta={r['mean_aggregate_delta']:+.4f} "
+              f"wins={r['scene_wins']}/{r['num_scenes']} passed={r['passed']}")
+    if winner:
+        print(f"[finalist-gate] WINNER: {winner['key']}+{winner['value']}")
+    else:
+        print("[finalist-gate] RESULT: honest NULL -- no finalist passed all guards.")
+
+
 def _run_multiview_vbench(args, output_root: Path) -> None:
     """AC-3/AC-4 driver: render ONE video per perspective for baseline + modified,
     score the AC-2 cross-video VBench suite, and decide the gate. The offline
@@ -549,6 +715,9 @@ def _run_multiview_vbench(args, output_root: Path) -> None:
     from evaluation.multiview_prompts import load_shot_specs
     from evaluation.retrieval_screen import run_screen
 
+    if args.finalists:
+        return _run_multiview_finalists(args, output_root)
+
     require_adherence = not args.dry_run_without_adherence
     modified_settings = _modified_kv_rag_from_args(args)
     coverage: dict | None = None
@@ -558,6 +727,15 @@ def _run_multiview_vbench(args, output_root: Path) -> None:
             "The multiview_vbench gate requires --prompts_dir (per-perspective "
             "captions + the CLIP adherence guard). Use --dry_run_without_adherence "
             "for a consistency-only non-gate run."
+        )
+    if require_adherence and args.motion_tolerance is None:
+        # AC-4 forbids a consistency gain bought by a motion collapse, so a real
+        # gate MUST enforce the dynamic_degree non-regression guard with an
+        # explicit, recorded tolerance (no silent off-by-default for a pass).
+        raise ValueError(
+            "The multiview_vbench gate requires --motion_tolerance (AC-4 motion "
+            "non-regression guard); pass e.g. --motion_tolerance 0.3. Use "
+            "--dry_run_without_adherence for a non-gate exploratory run."
         )
 
     if args.skip_generation:

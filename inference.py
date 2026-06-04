@@ -614,11 +614,24 @@ for i, batch_data in tqdm(enumerate(dataloader), disable=(local_rank != 0)):
         and scene_name == _prev_scene_name
     )
     _prev_scene_name = scene_name
+    # Scene memory is SEEDED only by the reference perspective (perspective 0);
+    # later perspectives force-inject those anchors at their first chunk but store
+    # only transient per-shot entries. Defaults (True / False) keep the
+    # non-multiview concatenated path byte-identical.
+    is_first_perspective = True
+    if isinstance(batch, dict) and "is_first_perspective" in batch:
+        ifp = batch["is_first_perspective"]
+        ifp = ifp[0] if isinstance(ifp, (list, tuple)) and ifp else ifp
+        is_first_perspective = bool(ifp.item() if hasattr(ifp, "item") else ifp)
+    seed_scene_memory = (not multiview_per_perspective) or is_first_perspective
+    force_scene_memory_boundary = preserve_scene_memory
     inference_kwargs = dict(
         noise=sampled_noise,
         text_prompts=prompts,
         return_latents=save_latents_only,
         preserve_scene_memory=preserve_scene_memory,
+        seed_scene_memory=seed_scene_memory,
+        force_scene_memory_boundary=force_scene_memory_boundary,
     )
     with torch.inference_mode():
         generated = pipeline.inference(**inference_kwargs)
