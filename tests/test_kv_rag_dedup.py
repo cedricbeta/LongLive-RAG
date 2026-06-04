@@ -113,6 +113,37 @@ class TestExcludeTokenRanges(unittest.TestCase):
         self.assertNotIn(16, starts)
         self.assertTrue(starts.issubset({0, 8}))
 
+    def test_persistent_anchor_is_causality_exempt_but_overlap_dedup_applies(self):
+        # Cross-perspective: scene anchors survive a per-video token-clock restart,
+        # so a persistent anchor with end_token > min_end (would fail per-shot
+        # causality) is still retrievable -- UNLESS it overlaps the live window.
+        m = KVRAGMemory(KVRAGConfig(
+            enabled=True, top_k=2, scene_memory_enabled=True, scene_memory_max_entries=8,
+        ))
+        _store(m, persistent=True, start=1000)   # stored "in the future" vs current_start
+        q = torch.randn(1, 4, 2, 3)
+        # current_start=8 (small, as if a new perspective video) -> a per-shot entry
+        # here would be filtered, but the scene anchor is exempt.
+        res = m.retrieve(layer=0, query=q, current_start=8, frame_seqlen=4,
+                         dtype=torch.float32, device=CPU)
+        self.assertIsNotNone(res)
+        self.assertEqual(res[2][0].start_token, 1000)
+        # ...but if the live window overlaps it, it is still suppressed.
+        res2 = m.retrieve(layer=0, query=q, current_start=8, frame_seqlen=4,
+                          dtype=torch.float32, device=CPU,
+                          exclude_token_ranges=[(1000, 1008)])
+        self.assertIsNone(res2)
+
+    def test_shot_entry_still_obeys_causality(self):
+        # Non-persistent (per-shot) entries are NOT exempt: a future-positioned
+        # shot entry is filtered by end_token <= min_end.
+        m = KVRAGMemory(KVRAGConfig(enabled=True, top_k=2))
+        _store(m, persistent=False, start=1000)
+        q = torch.randn(1, 4, 2, 3)
+        res = m.retrieve(layer=0, query=q, current_start=8, frame_seqlen=4,
+                         dtype=torch.float32, device=CPU)
+        self.assertIsNone(res)
+
     def test_all_excluded_returns_none(self):
         m = KVRAGMemory(KVRAGConfig(enabled=True, top_k=4))
         for i in range(2):
@@ -123,6 +154,24 @@ class TestExcludeTokenRanges(unittest.TestCase):
             dtype=torch.float32, device=CPU, exclude_token_ranges=[(0, 1000)],
         )
         self.assertIsNone(res)
+
+    def test_boundary_fill_is_additive(self):
+        # Intended semantics: at a boundary, total selected = (up to force_n
+        # forced anchors) + (up to top_k content matches), i.e. additive.
+        m = KVRAGMemory(KVRAGConfig(
+            enabled=True, top_k=2, scene_memory_enabled=True,
+            scene_memory_max_entries=8, boundary_inject_anchors=2,
+        ))
+        for i in range(5):
+            _store(m, persistent=True, start=i * 8)  # 5 eligible anchors
+        q = torch.randn(1, 4, 2, 3)
+        m.set_boundary_inject(True)
+        _, _, selected = m.retrieve(
+            layer=0, query=q, current_start=1000, frame_seqlen=4,
+            dtype=torch.float32, device=CPU,
+        )
+        self.assertEqual(len(selected), 4)  # 2 forced + 2 content, no overlap
+        self.assertEqual(len(selected), len({id(e) for e in selected}))
 
     def test_no_exclude_arg_is_backward_compatible(self):
         # Omitting exclude_token_ranges reproduces the prior retrieval (no filter).

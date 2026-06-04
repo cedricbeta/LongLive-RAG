@@ -574,7 +574,16 @@ class KVRAGMemory:
                 entry.start_token, entry.end_token, exclude_token_ranges
             )
 
-        scene_pool = [e for e in scene_entries if _eligible(e)]
+        # Persistent scene anchors are timeless establishing context: they survive
+        # boundaries AND survive a per-video token-clock restart (cross-perspective
+        # generation renders one video per viewpoint, each starting at token 0), so
+        # they are exempt from the per-shot causality filter -- only the live-window
+        # overlap dedup applies. Within a single rollout this is a no-op (shot-0
+        # anchors already satisfy causality).
+        scene_pool = [
+            e for e in scene_entries
+            if not self._overlaps_any(e.start_token, e.end_token, exclude_token_ranges)
+        ]
         candidates = [e for e in shot_entries if _eligible(e)]
         candidates += scene_pool
         if not candidates:
@@ -595,8 +604,11 @@ class KVRAGMemory:
             if selected:
                 self.stats["boundary_injections"] += 1
 
-        # Fill the remaining budget with content-matched candidates. Persistent
-        # entries receive an additive bonus so the shared scene is preferred.
+        # Add up to ``top_k`` content-matched candidates ON TOP of the forced
+        # anchors (additive by design: the boundary injects guaranteed scene
+        # anchors *plus* the best content matches, so the total selected is
+        # <= boundary_inject_anchors + top_k). Persistent entries receive an
+        # additive score bonus so the shared scene is preferred when matching.
         if self.config.top_k > 0:
             remaining = [e for e in candidates if id(e) not in chosen_ids]
             if remaining:

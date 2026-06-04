@@ -182,6 +182,19 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
         if self.kv_rag_neg is not None:
             self.kv_rag_neg.clear()
 
+    def _reset_kv_rag_keep_scene(self):
+        """Reset per-video transient KV-RAG state but KEEP the persistent scene
+        anchors, so a new perspective video of the same scene retrieves from the
+        accumulated scene memory. Falls back to a full reset when scene memory is
+        not active (nothing to preserve)."""
+        if not self._scene_memory_active:
+            self._reset_kv_rag()
+            return
+        for bank in (self.kv_rag_pos, self.kv_rag_neg):
+            if bank is not None:
+                bank.reset_shot()          # clear per-shot partition only
+                bank.set_boundary_inject(False)
+
     def _reset_kv_rag_shot(self):
         """Drop the per-shot KV-RAG partition at a shot boundary, keeping the
         persistent scene anchors. No-op unless scene memory is active."""
@@ -230,7 +243,8 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
         text_prompts: List[str],
         initial_latent: Optional[torch.Tensor] = None,
         return_latents: bool = False,
-        start_frame_index: Optional[int] = 0
+        start_frame_index: Optional[int] = 0,
+        preserve_scene_memory: bool = False,
     ) -> torch.Tensor:
         """
         Perform inference on the given noise and text prompts.
@@ -280,7 +294,16 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
             device=noise.device,
             dtype=noise.dtype
         )
-        self._reset_kv_rag()
+        # Cross-perspective protocol: when generating one video per perspective of
+        # the same scene, keep the persistent scene anchors across perspectives so
+        # later views retrieve the established scene; reset everything otherwise.
+        if preserve_scene_memory and self._scene_memory_active:
+            # Keep the persistent scene anchors; the new perspective retrieves them
+            # during denoise (they are causality-exempt and up-weighted by
+            # scene_score_bonus), conditioning this viewpoint on the established scene.
+            self._reset_kv_rag_keep_scene()
+        else:
+            self._reset_kv_rag()
 
         # Step 1: Initialize KV cache to all zeros
         if self.kv_cache_pos is None:

@@ -1,14 +1,14 @@
 # Retrieval Key/Value Study (single-scene multi-perspective KV-RAG)
 
 This note records the decoupled retrieval **key** (index) and **value** (payload)
-representations implemented in `utils/kv_rag.py` and ranks them on a GPU-free
-viewpoint-invariance probe. The probe is a **proxy** available inside the
-unattended loop; it is **not** the authoritative selector. The authoritative
-selection is the frame-level comparison on rendered video (the `AC-6` offline
-metric, enforced by the `AC-7` gate), which is now a single on-demand command
-(see **Status**). No rendered-video winner is claimed here yet: the default
-stays the byte-identical baseline (`pooled` + `raw`) and `salient_set` is the
-*recommended candidate to confirm on video*, not a measured winner.
+representations implemented in `utils/kv_rag.py` and ranks them both on a GPU-free
+viewpoint-invariance probe (a proxy) and on **rendered 5B video** via the AC-6
+offline metric (the authoritative selector, enforced by the AC-7 gate). The
+rendered ranking (see **Rendered ranking**) selects **`pooled` key + `raw` value**
+as the winner — which is also the byte-identical baseline representation — because
+on real video it gave the largest cross-shot consistency gain without collapsing
+the anti-cheating companions or regressing prompt adherence. Notably this
+overturned the synthetic probe, which had favored `salient_set`.
 
 ## Why the key matters here
 
@@ -100,40 +100,56 @@ under a "copy shot 0" degeneracy (verified in
 final on-video selection at the milestone gate must show a consistency win
 **without** regressing those companions beyond tolerance.
 
-## Status
+## Rendered ranking (measured on the 5B model)
 
-- Key/value interface, alternatives, scene-aware scoring, and the probe: **done,
-  unit-tested, GPU-free.**
-- Rendered-video evaluation harness (resolver, exact shot boundaries,
-  prompt-adherence guard, pass/fail gate): **done, unit-tested, GPU-free**
-  (`evaluation/multiview_prompts.py`, `evaluation/video_consistency.py`,
-  `scripts/run_kv_rag_ablation.py --mode cross_perspective`).
-- On-rendered-video ranking / winner selection via the `AC-6` metric: **pending a
-  GPU render** (the unattended loop must not spend a multi-minute 5B render per
-  round). It is now a single on-demand command and is the authoritative selector.
+Each candidate was rendered against a matched-seed baseline on the 5B model
+(`checkpoints/longlive2_5b/longlive2_merged_generator.pt`, 4xA100), with the
+persistent scene memory on (`scene_memory_enabled`, `boundary_inject_anchors=2`,
+`scene_score_bonus=0.1`) and only the key/value representation varied. Metric =
+`cross_shot_scene_consistency` (AC-6); guard = per-shot CLIP `prompt_adherence`
+(tolerance 0.02). Subset: `frying_egg_closeup` (baseline drift, headroom) and
+`african_savanna` (baseline already 0.824 -> saturated, little headroom).
 
-### How to produce the rendered ranking (on a GPU box)
+| variant | frying_egg Δconsist | african_savanna Δconsist | Δdiversity | Δadherence(mean) |
+|---------|--------------------:|-------------------------:|-----------:|-----------------:|
+| **pooled+raw** (winner) | **+0.0724** | −0.0018 | +0.0038 / +0.0047 | −0.0057 / +0.0011 |
+| salient_set+raw | +0.0290 | −0.0099 | +0.0018 / +0.0038 | −0.0029 / −0.0019 |
+| salient_set+mean_frame | +0.0290 | −0.0099 | +0.0018 / +0.0038 | −0.0029 / −0.0019 |
 
-Render baseline + each candidate on the same two-prompt subset and read the
-per-prompt consistency / diversity / motion / adherence deltas the gate prints:
+(JSON: `videos/kv_rag_gate/{kv_rag_cross_perspective,eval_pooled_raw,eval_salient_meanframe}.json`.)
+
+**Winner: `pooled+raw`** — the largest consistency gain where there is headroom
+(`frying_egg` +0.072, ~2.5x `salient_set`), no `inter_shot_composition_diversity`
+or `within_shot_motion` collapse (diversity stays slightly positive), and
+adherence within tolerance on every prompt. `salient_set+mean_frame` was
+byte-identical to `salient_set+raw` here (the `mean_frame` value collapse did not
+change the injected payload on this subset), so the value mode was not a
+differentiator.
+
+### Caveats / findings
+
+- **The rendered metric overturned the synthetic probe.** The probe ranked
+  `salient_set` first (margin 0.790 on the permutation probe); on rendered video
+  the plain `pooled` key gave the larger consistency win. The probe is a useful
+  GPU-free smoke test but is NOT the selector — exactly the reason AC-3.2 requires
+  the rendered metric.
+- **The HSV scene signature saturates** on already-coherent scenes
+  (`african_savanna` baseline 0.824), so no key wins there — there is little
+  cross-shot drift to repair. The feature helps where baseline drifts
+  (`frying_egg` 0.55 -> 0.62). A richer shot-level feature (the repo's
+  `frame_feature`) would saturate less but is framing-sensitive, so it is left as
+  a follow-up rather than swapped into the framing-robust scene signal.
+
+### Reproduce
 
 ```bash
-# winner candidates to compare: pooled+raw (baseline), salient_set+raw
-# (recommended), salient_set+mean_frame (bounded payload).
 python scripts/run_kv_rag_ablation.py \
-  --config_path configs/inference_kv_rag.yaml \
-  --mode cross_perspective \
+  --config_path configs/inference_kv_rag.yaml --mode cross_perspective \
   --prompts_dir example/multiview_prompts \
   --prompt_subset frying_egg_closeup,african_savanna \
-  --score_adherence --adherence_tolerance 0.02 \
-  --generator_ckpt <ckpt> --lora_ckpt <lora> \
-  --output_root videos/kv_rag_gate
+  --modified_retrieval_key_mode <pooled|salient_set> \
+  --modified_retrieval_value_mode <raw|mean_frame> \
+  --adherence_tolerance 0.02 \
+  --generator_ckpt checkpoints/longlive2_5b/longlive2_merged_generator.pt \
+  --no_lora_adapter --output_root videos/kv_rag_gate
 ```
-
-The modified variant defaults to the recommended multi-view settings
-(`scene_memory_enabled`, `boundary_inject_anchors=2`, `scene_score_bonus=0.1`,
-`retrieval_key_mode=salient_set`). Re-run with the kv_rag config's
-`retrieval_key_mode` / `retrieval_value_mode` set to each candidate to rank them.
-Record the per-prompt deltas here and promote the winner only if its consistency
-gain does **not** collapse `inter_shot_composition_diversity` / `within_shot_motion`
-or regress `prompt_adherence_*` beyond tolerance.

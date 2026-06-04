@@ -1,0 +1,153 @@
+{
+  "baseline_summary": {
+    "cross_shot_scene_consistency": {
+      "count": 2,
+      "mean": 0.6874220169491039,
+      "std": 0.13665338348287365
+    },
+    "inter_shot_composition_diversity": {
+      "count": 2,
+      "mean": 0.11613208173723133,
+      "std": 0.029788402610975928
+    },
+    "num_shots": {
+      "count": 2,
+      "mean": 3.0,
+      "std": 0.0
+    },
+    "prompt_adherence_mean": {
+      "count": 2,
+      "mean": 0.31159621973832446,
+      "std": 0.006371542811393738
+    },
+    "prompt_adherence_min": {
+      "count": 2,
+      "mean": 0.3046058118343353,
+      "std": 0.010820597410202026
+    },
+    "within_shot_motion": {
+      "count": 2,
+      "mean": 0.0008010044499921303,
+      "std": 0.0003849744098260999
+    }
+  },
+  "delta_summary": {
+    "cross_shot_scene_consistency": {
+      "count": 2,
+      "mean": 0.035269397930966395,
+      "std": 0.03709564944364552
+    },
+    "inter_shot_composition_diversity": {
+      "count": 2,
+      "mean": 0.004264314651351742,
+      "std": 0.00047711124397070703
+    },
+    "prompt_adherence_mean": {
+      "count": 2,
+      "mean": -0.002263282736142458,
+      "std": 0.003394380211830139
+    },
+    "prompt_adherence_min": {
+      "count": 2,
+      "mean": -0.00718824565410614,
+      "std": 0.004525020718574524
+    },
+    "within_shot_motion": {
+      "count": 2,
+      "mean": 2.012952366688592e-05,
+      "std": 2.3668976306604915e-05
+    }
+  },
+  "modified_summary": {
+    "cross_shot_scene_consistency": {
+      "count": 2,
+      "mean": 0.7226914148800703,
+      "std": 0.09955773403922813
+    },
+    "inter_shot_composition_diversity": {
+      "count": 2,
+      "mean": 0.12039639638858307,
+      "std": 0.02931129136700522
+    },
+    "num_shots": {
+      "count": 2,
+      "mean": 3.0,
+      "std": 0.0
+    },
+    "prompt_adherence_mean": {
+      "count": 2,
+      "mean": 0.309332937002182,
+      "std": 0.009765923023223877
+    },
+    "prompt_adherence_min": {
+      "count": 2,
+      "mean": 0.2974175661802292,
+      "std": 0.01534561812877655
+    },
+    "within_shot_motion": {
+      "count": 2,
+      "mean": 0.0008211339736590162,
+      "std": 0.000361305433519495
+    }
+  },
+  "num_pairs": 2,
+  "records": [
+    {
+      "baseline": "videos/kv_rag_gate/baseline/baseline-rank0-african_savanna-seed0_regular.mp4",
+      "baseline_metrics": {
+        "cross_shot_scene_consistency": 0.8240754004319776,
+        "inter_shot_composition_diversity": 0.0863436791262554,
+        "num_shots": 3.0,
+        "prompt_adherence_mean": 0.3179677625497182,
+        "prompt_adherence_min": 0.31542640924453735,
+        "within_shot_motion": 0.00041603004016603035
+      },
+      "delta": {
+        "cross_shot_scene_consistency": -0.0018262515126791223,
+        "inter_shot_composition_diversity": 0.004741425895322449,
+        "prompt_adherence_mean": 0.0011310974756876813,
+        "prompt_adherence_min": -0.002663224935531616,
+        "within_shot_motion": 4.3798499973490834e-05
+      },
+      "modified": "videos/kv_rag_gate/pooled_raw/kv_rag-rank0-african_savanna-seed0_regular.mp4",
+      "modified_metrics": {
+        "cross_shot_scene_consistency": 0.8222491489192985,
+        "inter_shot_composition_diversity": 0.09108510502157785,
+        "num_shots": 3.0,
+        "prompt_adherence_mean": 0.3190988600254059,
+        "prompt_adherence_min": 0.31276318430900574,
+        "within_shot_motion": 0.0004598285401395212
+      },
+      "stem": "baseline-rank0-african_savanna-seed0_regular"
+    },
+    {
+      "baseline": "videos/kv_rag_gate/baseline/baseline-rank0-frying_egg_closeup-seed0_regular.mp4",
+      "baseline_metrics": {
+        "cross_shot_scene_consistency": 0.5507686334662303,
+        "inter_shot_composition_diversity": 0.14592048434820726,
+        "num_shots": 3.0,
+        "prompt_adherence_mean": 0.3052246769269307,
+        "prompt_adherence_min": 0.2937852144241333,
+        "within_shot_motion": 0.0011859788598182301
+      },
+      "delta": {
+        "cross_shot_scene_consistency": 0.07236504737461191,
+        "inter_shot_composition_diversity": 0.0037872034073810346,
+        "prompt_adherence_mean": -0.005657662947972597,
+        "prompt_adherence_min": -0.011713266372680664,
+        "within_shot_motion": -3.539452639718995e-06
+      },
+      "modified": "videos/kv_rag_gate/pooled_raw/kv_rag-rank0-frying_egg_closeup-seed0_regular.mp4",
+      "modified_metrics": {
+        "cross_shot_scene_consistency": 0.6231336808408422,
+        "inter_shot_composition_diversity": 0.1497076877555883,
+        "num_shots": 3.0,
+        "prompt_adherence_mean": 0.29956701397895813,
+        "prompt_adherence_min": 0.28207194805145264,
+        "within_shot_motion": 0.0011824394071785111
+      },
+      "stem": "baseline-rank0-frying_egg_closeup-seed0_regular"
+    }
+  ],
+  "skipped_stems": []
+}

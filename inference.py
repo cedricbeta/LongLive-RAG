@@ -509,14 +509,26 @@ num_blocks = config.num_output_frames // nfpb
 data_path = config.data_path
 chunks_per_shot = getattr(config, 'chunks_per_shot', 0)
 scene_cut_prefix = getattr(config, 'scene_cut_prefix', "The scene transitions. ")
-dataset = MultiTextConcatDataset(
-    data_path=data_path,
-    num_blocks=num_blocks,
-    chunks_per_shot=chunks_per_shot,
-    scene_cut_prefix=scene_cut_prefix,
-    deterministic=True,
+# Cross-perspective protocol: one video per prompt/perspective (scenes contiguous
+# so KV-RAG scene memory can persist across a scene's perspectives). Flag-gated;
+# default off reproduces the concatenated multi-shot behavior.
+multiview_per_perspective = section_get(
+    config, "inference", "multiview_per_perspective",
+    getattr(config, "multiview_per_perspective", False),
 )
+if multiview_per_perspective:
+    from utils.dataset import MultiViewPerspectiveDataset
+    dataset = MultiViewPerspectiveDataset(data_path=data_path, num_blocks=num_blocks)
+else:
+    dataset = MultiTextConcatDataset(
+        data_path=data_path,
+        num_blocks=num_blocks,
+        chunks_per_shot=chunks_per_shot,
+        scene_cut_prefix=scene_cut_prefix,
+        deterministic=True,
+    )
 collate_fn = eval_collate_fn
+_prev_scene_name = None
 if local_rank == 0:
     print(f"[data] data_path={data_path}, mode={dataset._mode}, num_blocks={num_blocks}")
 num_prompts = len(dataset)
@@ -588,10 +600,22 @@ for i, batch_data in tqdm(enumerate(dataloader), disable=(local_rank != 0)):
         getattr(config, "save_latents_only", getattr(config, "save_latent_only", False)),
         aliases=("save_latent_only", "return_latents"),
     )
+    # Persist KV-RAG scene memory across consecutive perspectives of one scene.
+    scene_name = None
+    if isinstance(batch, dict) and "scene_name" in batch:
+        sn = batch["scene_name"]
+        scene_name = sn[0] if isinstance(sn, (list, tuple)) and sn else sn
+    preserve_scene_memory = bool(
+        multiview_per_perspective
+        and scene_name is not None
+        and scene_name == _prev_scene_name
+    )
+    _prev_scene_name = scene_name
     inference_kwargs = dict(
         noise=sampled_noise,
         text_prompts=prompts,
         return_latents=save_latents_only,
+        preserve_scene_memory=preserve_scene_memory,
     )
     with torch.inference_mode():
         generated = pipeline.inference(**inference_kwargs)

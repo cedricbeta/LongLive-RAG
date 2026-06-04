@@ -260,6 +260,62 @@ class MultiTextConcatDataset(Dataset):
         return prompts
 
 
+class MultiViewPerspectiveDataset(Dataset):
+    """One sample per *perspective* of a single-scene multi-view set.
+
+    Where ``MultiTextConcatDataset`` (dir mode) concatenates a scene's shots into
+    ONE multi-shot rollout, this dataset emits ONE video per prompt/perspective:
+    each ``caption/<scene>/<i>.json`` becomes its own ``num_blocks``-long single-
+    caption video. Samples are ordered scene-major then perspective-index, so all
+    perspectives of a scene are CONTIGUOUS -- the inference driver can persist the
+    KV-RAG scene memory across a scene's perspectives (seeded by perspective 0)
+    and reset it at the next scene. Each item carries ``scene_name``,
+    ``perspective_index`` and ``is_first_perspective`` for that control.
+    """
+
+    def __init__(self, data_path: str, num_blocks: int, caption_field: str = "caption"):
+        self.num_blocks = num_blocks
+        self.caption_field = caption_field
+        path = Path(data_path)
+        caption_dir = path / "caption" if (path / "caption").is_dir() else path
+        folders = sorted(
+            d for d in caption_dir.iterdir()
+            if d.is_dir() and any(f.name != "global.json" for f in d.glob("*.json"))
+        )
+        assert folders, f"No caption subfolders found in {caption_dir}"
+        self._items: list[dict] = []
+        for folder in folders:
+            json_files = sorted(
+                (f for f in folder.glob("*.json") if f.name != "global.json"),
+                key=lambda p: (not p.stem.isdigit(), int(p.stem) if p.stem.isdigit() else 0, p.stem),
+            )
+            for p_idx, jf in enumerate(json_files):
+                try:
+                    caption = json.load(open(jf, encoding="utf-8")).get(caption_field, "")
+                except Exception:
+                    caption = ""
+                self._items.append({
+                    "scene_name": folder.name,
+                    "perspective_index": p_idx,
+                    "is_first_perspective": p_idx == 0,
+                    "caption": caption,
+                })
+
+    def __len__(self):
+        return len(self._items)
+
+    def __getitem__(self, idx):
+        item = self._items[idx]
+        return {
+            "prompts": [item["caption"]] * self.num_blocks,
+            "idx": idx,
+            "sample_name": f"{item['scene_name']}-p{item['perspective_index']}",
+            "scene_name": item["scene_name"],
+            "perspective_index": item["perspective_index"],
+            "is_first_perspective": item["is_first_perspective"],
+        }
+
+
 class MultiVideoConcatDataset(Dataset):
     """Dataset that concatenates multiple videos from a folder into a fixed-length video.
     
@@ -943,4 +999,7 @@ def eval_collate_fn(batch):
         result["sample_name"] = [b["sample_name"] for b in batch]
     if "shot_durations" in batch[0]:
         result["shot_durations"] = [b["shot_durations"] for b in batch]
+    for key in ("scene_name", "perspective_index", "is_first_perspective"):
+        if key in batch[0]:
+            result[key] = [b[key] for b in batch]
     return result

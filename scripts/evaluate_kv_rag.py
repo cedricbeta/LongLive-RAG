@@ -38,10 +38,20 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--stride", type=int, default=1, help="Frame stride for faster evaluation.")
     parser.add_argument(
         "--mode",
-        choices=("temporal", "cross_perspective"),
+        choices=("temporal", "cross_perspective", "multiview_vbench"),
         default="temporal",
         help="temporal: adjacent/optical-flow consistency. cross_perspective: "
-        "single-scene multi-viewpoint scene consistency + anti-cheating companions.",
+        "within-one-video multi-shot scene consistency. multiview_vbench: VBench-"
+        "style cross-perspective consistency over one-video-per-perspective sets "
+        "(DINO subject + CLIP background + dynamics/diversity/adherence).",
+    )
+    parser.add_argument(
+        "--vbench_subject", action="store_true",
+        help="multiview_vbench: enable DINO subject-consistency (needs DINO weights).",
+    )
+    parser.add_argument(
+        "--vbench_background", action="store_true",
+        help="multiview_vbench: enable CLIP background-consistency (needs CLIP).",
     )
     parser.add_argument(
         "--num_shots",
@@ -84,8 +94,53 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def _run_multiview_vbench(args) -> None:
+    from evaluation.vbench_consistency import (
+        build_clip_image_encoder,
+        build_dino_encoder,
+        compare_multiview_vbench_dirs,
+    )
+
+    captions_for = None
+    adherence_scorer = None
+    if args.prompts_dir:
+        specs = build_spec_resolver(args.prompts_dir, with_captions=True)
+        # spec resolver is stem-based; here we want scene->captions directly.
+        from evaluation.multiview_prompts import load_shot_specs
+        captions_for = {s: v["captions"] for s, v in load_shot_specs(args.prompts_dir).items()}
+        if args.score_adherence:
+            adherence_scorer = build_clip_adherence_scorer(
+                model_name=args.clip_model, pretrained=args.clip_pretrained, device=args.clip_device
+            )
+    dino = build_dino_encoder(device=args.clip_device) if args.vbench_subject else None
+    clip = build_clip_image_encoder(device=args.clip_device) if args.vbench_background else None
+    if dino is None and clip is None:
+        print("[multiview_vbench] note: neither --vbench_subject nor --vbench_background "
+              "set; reporting dynamics/diversity/adherence only (no semantic consistency).")
+    result = compare_multiview_vbench_dirs(
+        args.baseline_dir, args.kv_rag_dir,
+        dino_encoder=dino, clip_encoder=clip,
+        adherence_scorer=adherence_scorer, captions_for=captions_for,
+        max_frames=args.max_frames, stride=max(1, args.stride),
+    )
+    save_metrics_json(result, args.output_json)
+    print(f"Wrote metrics: {os.path.abspath(args.output_json)}")
+    print(f"Scenes compared: {result['num_scenes']}")
+    for rec in result["records"]:
+        d = rec["delta"]
+        line = f"  {rec['scene']}:"
+        for k in ("subject_consistency", "background_consistency", "dynamic_degree",
+                  "inter_video_diversity", "prompt_adherence_mean"):
+            if k in d:
+                line += f" Δ{k}={d[k]:+.4f}"
+        print(line)
+
+
 def main() -> None:
     args = parse_args()
+    if args.mode == "multiview_vbench":
+        _run_multiview_vbench(args)
+        return
     if args.mode == "cross_perspective":
         if args.prompts_dir:
             shots_for = build_spec_resolver(

@@ -24,6 +24,12 @@ data:
 inference:
   sampling_steps: 4
   sink_size: 8
+  # Cross-perspective protocol: render ONE video per prompt/perspective (instead
+  # of one concatenated multi-shot video per scene) so the persistent KV-RAG
+  # scene memory carries across a scene's perspectives. Default off reproduces
+  # the concatenated multi-shot behavior. Evaluate with
+  # `scripts/evaluate_kv_rag.py --mode multiview_vbench` (VBench DINO/CLIP).
+  multiview_per_perspective: false
   guidance_scale: 1.0
   multi_shot_sink: true
   multi_shot_rope_offset: 8
