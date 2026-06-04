@@ -3,12 +3,13 @@
 This note records the decoupled retrieval **key** (index) and **value** (payload)
 representations implemented in `utils/kv_rag.py` and ranks them both on a GPU-free
 viewpoint-invariance probe (a proxy) and on **rendered 5B video** via the AC-6
-offline metric (the authoritative selector, enforced by the AC-7 gate). The
-rendered ranking (see **Rendered ranking**) selects **`pooled` key + `raw` value**
-as the winner — which is also the byte-identical baseline representation — because
-on real video it gave the largest cross-shot consistency gain without collapsing
-the anti-cheating companions or regressing prompt adherence. Notably this
-overturned the synthetic probe, which had favored `salient_set`.
+offline metric (the authoritative selector, enforced by the AC-7 gate).
+
+**Prior cross-shot context, not the current cross-video answer:** an earlier
+cross-shot protocol selected **`pooled` key + `raw` value** as its winner because
+it gave the largest cross-shot consistency gain in that older setup. That result
+is retained below only as history. **Current-plan conclusion:** see **Round 1:
+current cross-video conclusion (multiview_vbench, full AC-2 backbones)** below.
 
 ## Why the key matters here
 
@@ -71,11 +72,12 @@ Reading:
   scene across views. This is the deliberate negative control proving the probe
   is non-vacuous (it can reject a bad key), satisfying the `AC-3` negative test.
 
-## Selection
+## Pre-Round-1 defaults and synthetic hypothesis
 
-- **Default = `pooled` key + `raw` value.** This reproduces today's behaviour
-  byte-for-byte (`AC-4`); disabling the new switches changes nothing.
-- **Recommended multi-view configuration = `salient_set` key + `raw` value.**
+- **Implementation default = `pooled` key + `raw` value.** This reproduces
+  today's behaviour byte-for-byte (`AC-4`); disabling the new switches changes
+  nothing. This is a default/control, not the current cross-video conclusion.
+- **Synthetic probe hypothesis = `salient_set` key + `raw` value.**
   The synthetic probe rewards `pooled` with the widest margin, but that probe is
   a *pure spatial permutation*; it under-represents real perspective changes where
   the subject also changes scale/appearance and only part of the background
@@ -84,8 +86,8 @@ Reading:
   instead of being averaged into one blended vector — the failure mode the plan
   calls out for `pooled`, and the per-element fix the Codex review recommended over
   `multi_centroid`'s coarse magnitude buckets. It is train-free, GPU-free, and
-  adds only a top-M selection + Chamfer score. `multi_centroid` remains available
-  as a coarser, cheaper region-aware alternative.
+  adds only a top-M selection + Chamfer score. Round 1 rendered gates supersede
+  this synthetic hypothesis as the current selector evidence.
 - `mean_frame` value is offered as a **bounded** alternative when injected length
   must be capped; `raw` stays the faithful default.
 
@@ -100,9 +102,11 @@ under a "copy shot 0" degeneracy (verified in
 final on-video selection at the milestone gate must show a consistency win
 **without** regressing those companions beyond tolerance.
 
-## Rendered ranking (measured on the 5B model)
+## Prior cross-shot rendered ranking (measured on the 5B model)
 
-Each candidate was rendered against a matched-seed baseline on the 5B model
+This is prior cross-shot context from an earlier protocol, not the current
+cross-video `multiview_vbench` answer. Each candidate was rendered against a
+matched-seed baseline on the 5B model
 (`checkpoints/longlive2_5b/longlive2_merged_generator.pt`, 4xA100), with the
 persistent scene memory on (`scene_memory_enabled`, `boundary_inject_anchors=2`,
 `scene_score_bonus=0.1`) and only the key/value representation varied. Metric =
@@ -112,13 +116,13 @@ persistent scene memory on (`scene_memory_enabled`, `boundary_inject_anchors=2`,
 
 | variant | frying_egg Δconsist | african_savanna Δconsist | Δdiversity | Δadherence(mean) |
 |---------|--------------------:|-------------------------:|-----------:|-----------------:|
-| **pooled+raw** (winner) | **+0.0724** | −0.0018 | +0.0038 / +0.0047 | −0.0057 / +0.0011 |
+| **pooled+raw** (prior winner) | **+0.0724** | −0.0018 | +0.0038 / +0.0047 | −0.0057 / +0.0011 |
 | salient_set+raw | +0.0290 | −0.0099 | +0.0018 / +0.0038 | −0.0029 / −0.0019 |
 | salient_set+mean_frame | +0.0290 | −0.0099 | +0.0018 / +0.0038 | −0.0029 / −0.0019 |
 
 (JSON: `videos/kv_rag_gate/{kv_rag_cross_perspective,eval_pooled_raw,eval_salient_meanframe}.json`.)
 
-**Winner: `pooled+raw`** — the largest consistency gain where there is headroom
+**Prior cross-shot result: `pooled+raw`** - the largest consistency gain where there is headroom
 (`frying_egg` +0.072, ~2.5x `salient_set`), no `inter_shot_composition_diversity`
 or `within_shot_motion` collapse (diversity stays slightly positive), and
 adherence within tolerance on every prompt. `salient_set+mean_frame` was
@@ -154,9 +158,166 @@ python scripts/run_kv_rag_ablation.py \
   --no_lora_adapter --output_root videos/kv_rag_gate
 ```
 
-## Round 0: cross-video VBench protocol (multiview_vbench)
+## Round 1: current cross-video conclusion (multiview_vbench, full AC-2 backbones)
 
 Date: 2026-06-04.
+
+**Current conclusion:** the retrieval **key** only acts as a selector under
+content-match, not under boundary force-injection. Among the rendered
+content-match finalists, **`semantic+raw` is the leading key candidate** because
+it has the largest mean `aggregate_consistency` gain against the no-scene-memory
+baseline. **No configuration passes the full AC-4 guarded gate**: every finalist
+fails the motion guard on `african_savanna`, so this is a render-confirmed honest
+null, not a passing winner.
+
+The per-perspective scene-memory substrate was corrected in this round:
+perspective 0 seeds the persistent anchors, and later perspectives force-inject
+those anchors at chunk 0. The live substrate verification is not serialized in
+the two metric JSON files; the Round 1 force-inject commit records
+`boundary_injections > 0` and `stored_scene_entries=10`, with only perspective 0
+seeding persistent scene entries.
+
+Both Round 1 gates were run on the 5B model with the full AC-2 backbones loaded:
+`subject_dino.loaded=true`, `background_clip.loaded=true`, and
+`identity.loaded=true`, with `subject_kind=auto`. Both used mandatory adherence,
+diversity, and motion guards: `adherence_tolerance=0.02`,
+`diversity_tolerance=0.05`, and `motion_tolerance=0.3`. In both JSONs,
+`winner=null` and `is_null_result=true`.
+
+### Gate A: force-inject finalists
+
+Source: `docs/multiview_gate_results/round1_finalists.json`.
+
+Settings: `boundary_inject_anchors=2`, `scene_score_bonus=0.1`,
+`scene_memory_enabled=true`, and `perspective_coverage` is 4 for
+`african_savanna` and 4 for `frying_egg_closeup`. This is the force-inject
+round0gate run.
+
+Under boundary force-injection, the three rendered finalists
+`pooled+raw`, `semantic+raw`, and `subject_identity+raw` have identical JSON
+metric records. The Round 1 force-inject commit also records that the rendered
+videos were byte-identical by md5. This is the key finding for Gate A: with
+force-injection and a small anchor pool, the retrieval key is not the lever.
+
+All three finalists have the same gate outcome:
+
+| finalist | mean `aggregate_consistency` delta | scene wins | failed guard | passed |
+|----------|-----------------------------------:|-----------:|--------------|--------|
+| `pooled+raw` | -0.0011045587908575794 | 1/2 | motion on `african_savanna` | false |
+| `semantic+raw` | -0.0011045587908575794 | 1/2 | motion on `african_savanna` | false |
+| `subject_identity+raw` | -0.0011045587908575794 | 1/2 | motion on `african_savanna` | false |
+
+On the failing scene, `dynamic_degree` drops from 2.550567817563812 to
+2.1392649033417306 (`delta=-0.4113029142220812`). The aggregate consistency
+change there is positive but tiny: 0.7479458969866849 to 0.7480506237720738
+(`delta=0.00010472678538886449`). This is an honest null, not a passing result.
+
+### Gate B: content-match key sweep
+
+Source: `docs/multiview_gate_results/round1_keysweep_contentmatch.json`.
+
+Settings: `boundary_inject_anchors=0`, `scene_score_bonus=0.1`,
+`scene_memory_enabled=true`, and `perspective_coverage` is 2 for
+`african_savanna` and 2 for `frying_egg_closeup`. This is the pure
+content-match round1keysweep run.
+
+With boundary force-injection disabled, the keys differentiate. The Round 1
+content-match commit records distinct md5s, and the JSON ranking separates the
+finalists by rendered mean `aggregate_consistency` delta:
+
+| rank | finalist | mean `aggregate_consistency` delta | scene wins | `african_savanna` delta | `frying_egg_closeup` delta | failed guard | passed |
+|-----:|----------|-----------------------------------:|-----------:|------------------------:|---------------------------:|--------------|--------|
+| 1 | `semantic+raw` | 0.007539604896712293 | 2/2 | 0.011825278263029926 | 0.0032539315303946603 | motion on `african_savanna` | false |
+| 2 | `pooled+raw` | 0.006561657897123652 | 2/2 | 0.007683491271069487 | 0.005439824523177816 | motion on `african_savanna` | false |
+| 3 | `subject_identity+raw` | 0.005023037300745825 | 2/2 | 0.007782215482724508 | 0.002263859118767142 | motion on `african_savanna` | false |
+
+The leading `semantic+raw` candidate improves the strongest aggregate result on
+`african_savanna`: `aggregate_consistency` 0.733069493017568 to
+0.7448947712805979 (`delta=0.011825278263029926`),
+`subject_consistency` 0.4062790368804213 to 0.43541673900429917,
+`background_consistency` 0.8167224942174938 to 0.8587366724416364,
+and `appearance_style` 0.9797304188933249 to 0.984180419296064.
+It slightly lowers `overall_consistency` from 0.32250483334064484 to
+0.3220709413290024 and `subject_identity_consistency` from
+0.8758832763358713 to 0.8729876301095633.
+
+The metric vector previously summarized as `subject_consistency`
+0.4062790368804213 to 0.42157645325174514,
+`background_consistency` 0.8167224942174938 to 0.8430124942600754,
+`appearance_style` 0.9797304188933249 to 0.9860756981207562,
+`overall_consistency` 0.32250483334064484 to 0.327101394534111,
+`subject_identity_consistency` 0.8758832763358713 to 0.8713149203609201, and
+`aggregate_consistency` 0.733069493017568 to 0.7407529842886375 belongs to
+`pooled+raw` in this JSON, not `semantic+raw`.
+
+The honest-null blocker is motion. For the leading `semantic+raw` row on
+`african_savanna`, `dynamic_degree` drops from 6.173149074117342 to
+5.85896157224973 (`delta=-0.3141875018676119`), which fails the
+`motion_tolerance=0.3` guard. Every Gate B finalist has
+`motion_failures=["african_savanna"]`, `motion_ok=false`, and `passed=false`.
+
+Next hypotheses:
+- Reduce the motion cost with motion-preserving injection or fewer injected
+  anchors.
+- Revisit whether `motion_tolerance=0.3` is too strict for high-baseline-motion
+  scenes such as `african_savanna`.
+- Study value modes and larger candidate pools.
+
+### Round 1 reproduce
+
+Gate A, boundary force-inject on by default:
+
+```bash
+python scripts/run_kv_rag_ablation.py \
+  --config_path configs/inference_kv_rag_round0gate.yaml \
+  --mode multiview_vbench \
+  --prompts_dir example/multiview_prompts \
+  --prompt_subset frying_egg_closeup,african_savanna \
+  --max_perspectives 4 \
+  --finalists pooled:raw,semantic:raw,subject_identity:raw \
+  --vbench_subject \
+  --vbench_background \
+  --vbench_identity \
+  --subject_kind auto \
+  --adherence_tolerance 0.02 \
+  --diversity_tolerance 0.05 \
+  --motion_tolerance 0.3 \
+  --generator_ckpt checkpoints/longlive2_5b/longlive2_merged_generator.pt \
+  --no_lora_adapter \
+  --metrics_json docs/multiview_gate_results/round1_finalists.json \
+  --output_root videos/round1_finalist_gate
+```
+
+Gate B, pure content-match:
+
+```bash
+python scripts/run_kv_rag_ablation.py \
+  --config_path configs/inference_kv_rag_round1keysweep.yaml \
+  --mode multiview_vbench \
+  --prompts_dir example/multiview_prompts \
+  --prompt_subset frying_egg_closeup,african_savanna \
+  --max_perspectives 2 \
+  --modified_boundary_inject_anchors 0 \
+  --finalists pooled:raw,semantic:raw,subject_identity:raw \
+  --vbench_subject \
+  --vbench_background \
+  --vbench_identity \
+  --subject_kind auto \
+  --adherence_tolerance 0.02 \
+  --diversity_tolerance 0.05 \
+  --motion_tolerance 0.3 \
+  --generator_ckpt checkpoints/longlive2_5b/longlive2_merged_generator.pt \
+  --no_lora_adapter \
+  --metrics_json docs/multiview_gate_results/round1_keysweep_contentmatch.json \
+  --output_root videos/round1_keysweep
+```
+
+## Round 0 history: cross-video VBench protocol (multiview_vbench)
+
+Date: 2026-06-04.
+
+Round 0 is retained as history only. It is superseded by the Round 1
+full-backbone, guarded gates above and is not the current cross-video answer.
 
 This round extends the sweep to 7 retrieval keys x 3 retrieval values = 21
 cells. The two new keys are `semantic` (caption-text context supplied via
@@ -220,11 +381,12 @@ Per-dimension deltas: `appearance_style` african +0.0080 / frying +0.0010;
   2.78. This is a reduction in motion, not a collapse (`inter_video_diversity`
   held), but it is a flagged risk.
 
-This is a real but SMALL, narrow-coverage win, not yet a final winner. The next
-hypothesis is to add a `dynamic_degree` non-regression guard, then render the
-other finalists (`semantic+raw`, `pooled+raw` control) with the full semantic
-backbones across more scenes/perspectives before declaring a render-confirmed
-WINNER.
+At the time, this was a real but SMALL, narrow-coverage Round 0 signal, not a
+final winner. Its proposed next step was to add a `dynamic_degree`
+non-regression guard, then render the other finalists (`semantic+raw`,
+`pooled+raw` control) with the full semantic backbones across more
+scenes/perspectives before declaring any render-confirmed winner. Round 1 above
+is that superseding guarded result, and it is an honest null.
 
 > Update (same round): the `dynamic_degree` non-regression guard is now
 > implemented (`evaluate_multiview_vbench_gate(..., motion_tolerance=...)`, exposed
