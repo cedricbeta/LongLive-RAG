@@ -470,6 +470,8 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
                 current_start_frame=current_start_frame,
                 cache_start_frame=cache_start_frame,
                 raw_prompts=raw_prompts,
+                seed_scene_memory=seed_scene_memory,
+                force_scene_memory_boundary=force_scene_memory_boundary,
             )
         finally:
             dit.local_attn_size = prev_local_attn_size
@@ -502,6 +504,8 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
         use_cfg, initial_latent, return_latents,
         current_start_frame, cache_start_frame,
         raw_prompts=None,
+        seed_scene_memory=True,
+        force_scene_memory_boundary=False,
     ):
 
         if initial_latent is not None:
