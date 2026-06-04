@@ -623,12 +623,28 @@ def _run_multiview_finalists(args, output_root: Path) -> None:
     adherence_scorer = build_clip_adherence_scorer(
         model_name=args.clip_model, pretrained=args.clip_pretrained, device=args.clip_device
     ) if require_adherence else None
-    dino = build_dino_encoder(device=args.clip_device) if args.vbench_subject else None
-    clip = build_clip_image_encoder(device=args.clip_device) if args.vbench_background else None
-    identity = build_identity_encoder(subject_kind=args.subject_kind, device=args.clip_device) \
-        if args.vbench_identity else None
-    backbones = {"subject_dino": bool(dino), "background_clip": bool(clip),
-                 "identity": bool(identity), "subject_kind": args.subject_kind}
+
+    def _try_build(label, builder):
+        # A requested backbone that cannot load is recorded as unavailable (honest
+        # null for that dim), not a crash that wastes the renders (AC-7).
+        try:
+            return builder()
+        except Exception as exc:
+            print(f"[finalist-gate][warn] {label} backbone unavailable -> dim omitted: {exc}")
+            return None
+
+    dino = _try_build("subject(DINO)", lambda: build_dino_encoder(device=args.clip_device)) \
+        if args.vbench_subject else None
+    clip = _try_build("background(CLIP)", lambda: build_clip_image_encoder(device=args.clip_device)) \
+        if args.vbench_background else None
+    identity = _try_build("identity", lambda: build_identity_encoder(
+        subject_kind=args.subject_kind, device=args.clip_device)) if args.vbench_identity else None
+    backbones = {
+        "subject_dino": {"requested": bool(args.vbench_subject), "loaded": bool(dino)},
+        "background_clip": {"requested": bool(args.vbench_background), "loaded": bool(clip)},
+        "identity": {"requested": bool(args.vbench_identity), "loaded": bool(identity)},
+        "subject_kind": args.subject_kind,
+    }
 
     finalist_records = []
     for key, value in finalists:

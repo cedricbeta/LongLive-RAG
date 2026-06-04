@@ -452,7 +452,14 @@ def build_identity_encoder(*, subject_kind: str = "auto", device: str | None = N
 
 def _build_dino_patch_encoder(*, device: str | None = None):
     """Return ``fn(frames_rgb) -> [T, D]`` DINO PATCH-token features (mean over
-    patches), a finer instance-identity signal than the CLS appearance vector."""
+    patches), a finer instance-identity signal than the CLS appearance vector.
+
+    Prefers the HuggingFace ``facebook/dino-vits16`` (its ``last_hidden_state``
+    patch tokens), because the torch.hub DINO repo does ``from utils import
+    trunc_normal_`` which collides with this repository's own ``utils`` package
+    once it is in ``sys.modules`` (the hub import silently picks the wrong
+    ``utils``). torch.hub is only the fallback.
+    """
     import torch
 
     dev = device or ("cuda" if torch.cuda.is_available() else "cpu")
@@ -460,12 +467,30 @@ def _build_dino_patch_encoder(*, device: str | None = None):
 
     norm = T.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
     resize = T.Compose([T.ToTensor(), T.Resize(224), T.CenterCrop(224), norm])
+
+    try:
+        from transformers import AutoModel
+        model = AutoModel.from_pretrained("facebook/dino-vits16").to(dev).eval()
+
+        def _embed_hf(frames_rgb):
+            from PIL import Image
+            batch = torch.stack([resize(Image.fromarray(f.astype(np.uint8))) for f in frames_rgb]).to(dev)
+            with torch.no_grad():
+                out = model(pixel_values=batch)
+                patches = out.last_hidden_state[:, 1:, :].mean(dim=1)  # mean over patch tokens
+            return patches.float().cpu().numpy()
+
+        return _embed_hf
+    except Exception:
+        pass
+
     try:
         model = torch.hub.load("facebookresearch/dino:main", "dino_vits16").to(dev).eval()
     except Exception as exc:
         raise RuntimeError(
-            "Non-human identity needs the DINO backbone (torch.hub "
-            "facebookresearch/dino) for patch-token features."
+            "Non-human identity needs a DINO backbone (transformers "
+            "facebook/dino-vits16 or torch.hub facebookresearch/dino) for "
+            "patch-token features."
         ) from exc
 
     def _embed(frames_rgb):
