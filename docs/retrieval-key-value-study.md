@@ -8,8 +8,9 @@ offline metric (the authoritative selector, enforced by the AC-7 gate).
 **Prior cross-shot context, not the current cross-video answer:** an earlier
 cross-shot protocol selected **`pooled` key + `raw` value** as its winner because
 it gave the largest cross-shot consistency gain in that older setup. That result
-is retained below only as history. **Current-plan conclusion:** see **Round 1:
-current cross-video conclusion (multiview_vbench, full AC-2 backbones)** below.
+is retained below only as history. **Current-plan conclusion:** see **Round 5:
+corrected content-match conclusion (supersedes Round 1 Gate B)** below. The
+Round 1 Gate B `semantic+raw` leading-key claim is superseded history.
 
 ## Why the key matters here
 
@@ -86,8 +87,9 @@ Reading:
   instead of being averaged into one blended vector — the failure mode the plan
   calls out for `pooled`, and the per-element fix the Codex review recommended over
   `multi_centroid`'s coarse magnitude buckets. It is train-free, GPU-free, and
-  adds only a top-M selection + Chamfer score. Round 1 rendered gates supersede
-  this synthetic hypothesis as the current selector evidence.
+  adds only a top-M selection + Chamfer score. The corrected Round 5 rendered
+  gate supersedes this synthetic hypothesis and the Round 1 Gate B ranking as
+  the current selector evidence.
 - `mean_frame` value is offered as a **bounded** alternative when injected length
   must be capped; `raw` stays the faithful default.
 
@@ -158,17 +160,107 @@ python scripts/run_kv_rag_ablation.py \
   --no_lora_adapter --output_root videos/kv_rag_gate
 ```
 
-## Round 1: current cross-video conclusion (multiview_vbench, full AC-2 backbones)
+## Round 5: corrected content-match conclusion (supersedes Round 1 Gate B)
 
 Date: 2026-06-04.
 
-**Current conclusion:** the retrieval **key** only acts as a selector under
-content-match, not under boundary force-injection. Among the rendered
-content-match finalists, **`semantic+raw` is the leading key candidate** because
-it has the largest mean `aggregate_consistency` gain against the no-scene-memory
-baseline. **No configuration passes the full AC-4 guarded gate**: every finalist
-fails the motion guard on `african_savanna`, so this is a render-confirmed honest
-null, not a passing winner.
+Source: `docs/multiview_gate_results/round5_keysweep_contentmatch.json`.
+
+This section **SUPERSEDES** the Round 1 Gate B content-match key ranking. The
+Round 1 Gate B render was produced with three since-fixed bugs: R4 pooled the
+semantic caption as a flattened `[seq*D]` vector instead of a `[D]` vector, R3
+semantic-keyed the negative CFG bank on the scene-independent negative prompt,
+and R5 found persistent scene anchors were filtered by a spurious live-window
+overlap dedup across the per-perspective token-clock restart. Because those bugs
+changed the substrate and the semantic key, the Round 1 content-match key
+ranking was not reliable.
+
+**Current conclusion:** among the rendered content-match finalists, the
+identity-aware key **`subject_identity+raw` is the leading key for cross-video
+CONSISTENCY**. It has the largest mean `aggregate_consistency` gain, but it is
+not a passing winner: `winner=null`, `is_null_result=true`, and every finalist
+fails the motion guard. This is a render-confirmed honest NULL, not a passing
+configuration. The leading-key answer changed from `semantic+raw` to
+`subject_identity+raw` once the semantic key and cross-clock substrate were
+fixed.
+
+All requested AC-2 backbones loaded in this corrected render:
+`subject_dino.loaded=true`, `background_clip.loaded=true`, and
+`identity.loaded=true`, with `subject_kind=auto`. The JSON records
+`perspective_coverage=2` for both `african_savanna` and `frying_egg_closeup`.
+It does not serialize a `retrieved_tokens` field, so this ledger does not quote
+a token-count audit from this file.
+
+Corrected rendered ranking by mean `aggregate_consistency` delta:
+
+| rank | finalist | mean `aggregate_consistency` delta | scene wins | failed guard | passed |
+|-----:|----------|-----------------------------------:|-----------:|--------------|--------|
+| 1 | `subject_identity+raw` **LEADER** | 0.01632990415121155 | 2/2 | motion on `african_savanna` and `frying_egg_closeup` | false |
+| 2 | `pooled+raw` | 0.005708705778608991 | 1/2 | motion on `african_savanna` | false |
+| 3 | `semantic+raw` | 0.004318231071965717 | 2/2 | motion on `african_savanna` | false |
+
+The `subject_identity+raw` gain is driven by a large
+`subject_consistency` improvement on `african_savanna`:
+0.4062790368804213 to 0.5689382841438214. On that scene,
+`aggregate_consistency` rises from 0.733069493017568 to
+0.7643447321629594, `background_consistency` from 0.8167224942174938 to
+0.8389691409251452, `subject_identity_consistency` is essentially flat at
+0.8758832763358713 to 0.8758945069983526, and `appearance_style` rises from
+0.9797304188933249 to 0.9845797418012343.
+
+The honest-null blocker is motion. **NO finalist passes the full AC-4 guarded
+gate.** `subject_identity+raw` fails the motion guard on both scenes:
+`african_savanna` `dynamic_degree` 6.173149074117342 to 5.800541656712691, and
+`frying_egg_closeup` 4.001611689726512 to 3.632382745544116. `pooled+raw` and
+`semantic+raw` fail the motion guard on `african_savanna` only. The central
+finding is a consistency-vs-motion tradeoff: stronger scene-memory consistency
+anchoring via the identity-aware key buys the largest cross-video consistency
+gain, but it also costs the most motion, and no rendered finalist clears the
+guarded gate.
+
+Next hypotheses:
+- Reduce the motion cost of the strongest anchoring with motion-preserving
+  injection or fewer anchors.
+- Use a relative motion tolerance for high-motion scenes instead of an absolute
+  `motion_tolerance=0.3`.
+- Run the value-mode study.
+
+### Round 5 reproduce
+
+Same setup as the Round 1 content-match keysweep, with the corrected substrate
+and this metrics output:
+
+```bash
+python scripts/run_kv_rag_ablation.py \
+  --config_path configs/inference_kv_rag_round1keysweep.yaml \
+  --mode multiview_vbench \
+  --prompts_dir example/multiview_prompts \
+  --prompt_subset frying_egg_closeup,african_savanna \
+  --max_perspectives 2 \
+  --modified_boundary_inject_anchors 0 \
+  --finalists pooled:raw,semantic:raw,subject_identity:raw \
+  --vbench_subject \
+  --vbench_background \
+  --vbench_identity \
+  --subject_kind auto \
+  --adherence_tolerance 0.02 \
+  --diversity_tolerance 0.05 \
+  --motion_tolerance 0.3 \
+  --generator_ckpt checkpoints/longlive2_5b/longlive2_merged_generator.pt \
+  --no_lora_adapter \
+  --metrics_json docs/multiview_gate_results/round5_keysweep_contentmatch.json \
+  --output_root videos/round5_keysweep
+```
+
+## Round 1 history: superseded cross-video conclusion (multiview_vbench, full AC-2 backbones)
+
+Date: 2026-06-04.
+
+**Superseded conclusion (history only):** Round 1 Gate B originally reported
+`semantic+raw` as the leading content-match key, while still finding an honest
+null because the motion guard failed. The corrected Round 5 render above
+supersedes that key ranking. Keep this section as provenance for the rendered
+history, not as the current cross-video answer.
 
 The per-perspective scene-memory substrate was corrected in this round:
 perspective 0 seeds the persistent anchors, and later perspectives force-inject
@@ -216,6 +308,12 @@ change there is positive but tiny: 0.7479458969866849 to 0.7480506237720738
 
 Source: `docs/multiview_gate_results/round1_keysweep_contentmatch.json`.
 
+**Superseded by Round 5.** The ranking below named `semantic+raw` as the
+content-match leader, but it was rendered with the R4 flattened `[seq*D]`
+semantic caption key, the R3 scene-blind negative CFG bank, and the R5
+cross-clock anchor-filtering bug. Use the Round 5 corrected section above as the
+current answer.
+
 Settings: `boundary_inject_anchors=0`, `scene_score_bonus=0.1`,
 `scene_memory_enabled=true`, and `perspective_coverage` is 2 for
 `african_savanna` and 2 for `frying_egg_closeup`. This is the pure
@@ -256,25 +354,16 @@ The honest-null blocker is motion. For the leading `semantic+raw` row on
 `motion_tolerance=0.3` guard. Every Gate B finalist has
 `motion_failures=["african_savanna"]`, `motion_ok=false`, and `passed=false`.
 
-> Caveat (semantic key implementation): the Gate B `semantic` finalist was
-> rendered with the pre-Round-4 semantic key, which (a) keyed the unconditional
-> CFG bank on the negative prompt (fixed in Round 3) and (b) pooled the caption
-> embedding as a flattened `[seq*D]` vector rather than the documented `[D]`
-> (fixed in Round 4). Both were consistent WITHIN that run (constant seq length,
-> same scene), so `semantic` was a functional, differentiating key here, but its
-> exact margin over `pooled` (+0.0075 vs +0.0066) is provisional and should be
-> re-confirmed with the corrected `[D]` scene-caption key. The honest-null
-> conclusion is unaffected: the blocker is the motion cost, which is
-> key-independent (all three finalists fail the same `african_savanna` motion
-> guard).
+> Caveat (superseded key ranking): the Gate B `semantic` finalist was rendered
+> with the pre-Round-4 semantic key and the pre-Round-5 cross-clock substrate.
+> Round 5 re-rendered the content-match keysweep after the fixes and changed the
+> leading consistency key from `semantic+raw` to `subject_identity+raw`. The
+> honest-null conclusion remains: no finalist clears the motion guard.
 
 Next hypotheses:
-- Re-confirm the `semantic` finalist with the corrected `[D]` scene-caption key.
-- Reduce the motion cost with motion-preserving injection or fewer injected
-  anchors.
-- Revisit whether `motion_tolerance=0.3` is too strict for high-baseline-motion
-  scenes such as `african_savanna`.
-- Study value modes and larger candidate pools.
+- Completed in Round 5: re-confirm the content-match keysweep with the corrected
+  `[D]` scene-caption key and corrected cross-clock substrate.
+- Current follow-ups are listed in the Round 5 section above.
 
 ### Round 1 reproduce
 
@@ -329,8 +418,9 @@ python scripts/run_kv_rag_ablation.py \
 
 Date: 2026-06-04.
 
-Round 0 is retained as history only. It is superseded by the Round 1
-full-backbone, guarded gates above and is not the current cross-video answer.
+Round 0 is retained as history only. It is superseded by the guarded Round 1
+history and the corrected Round 5 conclusion above, and is not the current
+cross-video answer.
 
 This round extends the sweep to 7 retrieval keys x 3 retrieval values = 21
 cells. The two new keys are `semantic` (caption-text context supplied via
@@ -398,8 +488,9 @@ At the time, this was a real but SMALL, narrow-coverage Round 0 signal, not a
 final winner. Its proposed next step was to add a `dynamic_degree`
 non-regression guard, then render the other finalists (`semantic+raw`,
 `pooled+raw` control) with the full semantic backbones across more
-scenes/perspectives before declaring any render-confirmed winner. Round 1 above
-is that superseding guarded result, and it is an honest null.
+scenes/perspectives before declaring any render-confirmed winner. Round 1
+performed that guarded follow-up, and Round 5 corrected the content-match
+ranking; the current result is an honest null.
 
 > Update (same round): the `dynamic_degree` non-regression guard is now
 > implemented (`evaluate_multiview_vbench_gate(..., motion_tolerance=...)`, exposed
