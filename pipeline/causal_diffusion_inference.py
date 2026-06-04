@@ -214,23 +214,28 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
         if self.kv_rag_neg is not None:
             self.kv_rag_neg.set_boundary_inject(active)
 
-    def _set_kv_rag_context_key(self, conditional_dict, unconditional_dict):
+    def _set_kv_rag_context_key(self, conditional_dict):
         """Supply the per-perspective caption-text key for the semantic key mode.
 
-        For ``retrieval_key_mode == "semantic"`` the retrieval index is the
-        prompt's text embedding (decoupled from the K/V payload), so the same
-        scene is matched by what each perspective DESCRIBES. We reuse the already
-        computed ``prompt_embeds`` -- no new backbone -- mean-pooled to one vector
-        per bank. Inert for every other key mode (the default path is untouched).
+        For ``retrieval_key_mode == "semantic"`` the retrieval index is the SCENE
+        each perspective DESCRIBES -- the conditional (scene-caption) text
+        embedding, reused (no new backbone) and mean-pooled to one vector. We key
+        BOTH the conditional and the unconditional (CFG) banks on this SAME scene
+        caption: the unconditional negative prompt is scene-independent and
+        identical across perspectives, so keying ``kv_rag_neg`` on it would give
+        every negative entry one shared, scene-blind summary that cannot match the
+        current scene (and would tie-select unrelated/boosted entries). Inert for
+        every other key mode (the default path is untouched).
         """
         if not self.kv_rag_enabled or self.kv_rag_config.retrieval_key_mode != "semantic":
             return
-        if self.kv_rag_pos is not None and conditional_dict is not None:
-            self.kv_rag_pos.set_context_key(conditional_dict.get("prompt_embeds"))
+        scene_embeds = conditional_dict.get("prompt_embeds") if conditional_dict is not None else None
+        if scene_embeds is None:
+            return
+        if self.kv_rag_pos is not None:
+            self.kv_rag_pos.set_context_key(scene_embeds)
         if self.kv_rag_neg is not None:
-            neg = unconditional_dict if unconditional_dict is not None else conditional_dict
-            if neg is not None:
-                self.kv_rag_neg.set_context_key(neg.get("prompt_embeds"))
+            self.kv_rag_neg.set_context_key(scene_embeds)
 
     @staticmethod
     def _memory_boundary_active(is_shot_boundary, force_scene_memory_boundary, chunk_index) -> bool:
@@ -351,7 +356,7 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
 
         # Supply this perspective's caption-text key when the semantic key mode is
         # active (no-op otherwise). Set AFTER the scene reset so it is not cleared.
-        self._set_kv_rag_context_key(conditional_dict, unconditional_dict)
+        self._set_kv_rag_context_key(conditional_dict)
 
         # Step 1: Initialize KV cache to all zeros
         if self.kv_cache_pos is None:

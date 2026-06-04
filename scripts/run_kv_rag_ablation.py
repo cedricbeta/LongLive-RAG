@@ -233,8 +233,11 @@ def build_multiview_subset(prompts_dir: str, subset: list[str] | None, dest: Pat
     missing = [t for t in chosen if t not in available]
     if missing:
         raise ValueError(f"--prompt_subset themes not found in {prompts_dir}: {missing}")
-    if len(chosen) < 2:
-        raise ValueError("multiview_vbench gate needs at least two themes")
+    # Cross-video scoring is per-SCENE over a scene's perspectives, so the real
+    # requirement is >= 2 PERSPECTIVES per selected scene (one scene is fine; the
+    # gate handles n=1 via min_scene_wins=ceil(1/2)=1). Two SCENES are not required.
+    if not chosen:
+        raise ValueError("multiview_vbench gate needs at least one scene with >= 2 perspectives")
     if dest.exists():
         shutil.rmtree(dest)
     dest.mkdir(parents=True, exist_ok=True)
@@ -248,6 +251,12 @@ def build_multiview_subset(prompts_dir: str, subset: list[str] | None, dest: Pat
         )
         if max_perspectives is not None and max_perspectives > 0:
             persp_jsons = persp_jsons[:max_perspectives]
+        if len(persp_jsons) < 2:
+            raise ValueError(
+                f"multiview_vbench scene {theme!r} has {len(persp_jsons)} perspective(s) "
+                "to render; cross-video scoring needs >= 2 per scene (check "
+                "--max_perspectives and the scene's <i>.json files)."
+            )
         for jf in persp_jsons:
             shutil.copy2(jf, out_dir / jf.name)
         for extra in ("global.json", "shot_durations.txt"):

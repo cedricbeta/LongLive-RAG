@@ -186,6 +186,49 @@ class TestPipelineSceneMemoryPredicates(unittest.TestCase):
         self.assertFalse(P._should_store_persistent(False, True, 0))  # scene memory off
 
 
+class TestSemanticContextKeyCFG(unittest.TestCase):
+    """The semantic key must index the SCENE each perspective describes -- the
+    conditional caption -- for BOTH banks, not the scene-independent negative
+    prompt (which is identical across perspectives and would be scene-blind)."""
+
+    def setUp(self):
+        try:
+            from pipeline.causal_diffusion_inference import CausalDiffusionInferencePipeline
+        except Exception as exc:  # pragma: no cover - heavy deps absent
+            self.skipTest(f"pipeline import unavailable: {exc}")
+        self.P = CausalDiffusionInferencePipeline
+
+    def _fake_pipe(self, key_mode):
+        fake = type("FakePipe", (), {})()
+        cfg = KVRAGConfig(enabled=True, layers=(0,), retrieval_key_mode=key_mode)
+        fake.kv_rag_enabled = True
+        fake.kv_rag_config = cfg
+        fake.kv_rag_pos = KVRAGMemory(cfg)
+        fake.kv_rag_neg = KVRAGMemory(cfg)
+        return fake
+
+    def test_both_banks_keyed_on_conditional_scene_caption(self):
+        import torch.nn.functional as F
+        p = self._fake_pipe("semantic")
+        cond = {"prompt_embeds": torch.tensor([[1.0, 0.0, 0.0, 0.0]])}  # scene caption
+        self.P._set_kv_rag_context_key(p, cond)
+        self.assertIsNotNone(p.kv_rag_pos._context_key)
+        self.assertIsNotNone(p.kv_rag_neg._context_key)
+        # both banks share the SAME conditional-derived key (negative bank is scene-aware)
+        self.assertTrue(torch.allclose(p.kv_rag_pos._context_key, p.kv_rag_neg._context_key))
+        cond_key = F.normalize(torch.tensor([1.0, 0.0, 0.0, 0.0]), dim=-1).reshape(1, -1)
+        uncond_key = F.normalize(torch.tensor([0.0, 1.0, 0.0, 0.0]), dim=-1).reshape(1, -1)
+        self.assertTrue(torch.allclose(p.kv_rag_neg._context_key, cond_key, atol=1e-5))
+        # the negative bank is NOT keyed on a (different) negative-prompt embedding
+        self.assertFalse(torch.allclose(p.kv_rag_neg._context_key, uncond_key, atol=1e-3))
+
+    def test_inert_for_non_semantic_mode(self):
+        p = self._fake_pipe("pooled")
+        self.P._set_kv_rag_context_key(p, {"prompt_embeds": torch.tensor([[1.0, 0.0, 0.0, 0.0]])})
+        self.assertIsNone(p.kv_rag_pos._context_key)
+        self.assertIsNone(p.kv_rag_neg._context_key)
+
+
 # ---------------------------------------------------------------------------
 # AC-2: boundary force-injection, dedup, flag isolation
 # ---------------------------------------------------------------------------

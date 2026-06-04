@@ -17,9 +17,12 @@ return a null with a blocked_reason, even if a finalist would otherwise pass.
 from __future__ import annotations
 
 import importlib.util
+import json
 import os
 import sys
+import tempfile
 import unittest
+from pathlib import Path
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
@@ -86,6 +89,39 @@ class TestFailClosed(unittest.TestCase):
         ranked, winner, reason = abl._finalize_finalist_ranking(recs, [])
         self.assertIsNone(winner)
         self.assertIsNone(reason)  # honest null (guards), NOT a backbone block
+
+
+def _write_scene(root: Path, name: str, n_perspectives: int):
+    folder = root / name
+    folder.mkdir(parents=True, exist_ok=True)
+    for i in range(n_perspectives):
+        (folder / f"{i}.json").write_text(json.dumps({"caption": f"{name} perspective {i}"}))
+
+
+class TestMultiviewSubset(unittest.TestCase):
+    def test_single_scene_with_two_perspectives_is_allowed(self):
+        src = Path(tempfile.mkdtemp())
+        _write_scene(src, "lone_scene", 4)
+        dest = Path(tempfile.mkdtemp()) / "subset"
+        chosen, coverage = abl.build_multiview_subset(str(src), ["lone_scene"], dest)
+        self.assertEqual(chosen, ["lone_scene"])           # one scene is fine
+        self.assertEqual(coverage["lone_scene"], 4)
+        self.assertTrue((dest / "lone_scene" / "0.json").exists())
+
+    def test_scene_with_one_perspective_fails(self):
+        src = Path(tempfile.mkdtemp())
+        _write_scene(src, "too_few", 1)
+        dest = Path(tempfile.mkdtemp()) / "subset"
+        with self.assertRaises(ValueError):
+            abl.build_multiview_subset(str(src), ["too_few"], dest)
+
+    def test_max_perspectives_one_fails(self):
+        # Capping a multi-perspective scene to 1 leaves < 2 to score -> fail fast.
+        src = Path(tempfile.mkdtemp())
+        _write_scene(src, "plenty", 6)
+        dest = Path(tempfile.mkdtemp()) / "subset"
+        with self.assertRaises(ValueError):
+            abl.build_multiview_subset(str(src), ["plenty"], dest, max_perspectives=1)
 
 
 if __name__ == "__main__":
