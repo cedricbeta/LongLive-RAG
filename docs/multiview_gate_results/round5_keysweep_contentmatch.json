@@ -1,0 +1,966 @@
+{
+  "backbones": {
+    "background_clip": {
+      "loaded": true,
+      "requested": true
+    },
+    "identity": {
+      "loaded": true,
+      "requested": true
+    },
+    "subject_dino": {
+      "loaded": true,
+      "requested": true
+    },
+    "subject_kind": "auto"
+  },
+  "blocked_reason": null,
+  "finalists": [
+    {
+      "comparison": {
+        "num_scenes": 2,
+        "records": [
+          {
+            "baseline_metrics": {
+              "aggregate_consistency": 0.733069493017568,
+              "appearance_style": 0.9797304188933249,
+              "background_consistency": 0.8167224942174938,
+              "background_consistency_pairwise": 0.8167224942174938,
+              "dynamic_degree": 6.173149074117342,
+              "dynamic_degree_min": 2.6164876321951547,
+              "inter_video_diversity": 0.23175539098868425,
+              "motion_smoothness": 0.460109144449234,
+              "motion_smoothness_min": 0.16897743940353394,
+              "num_videos": 2.0,
+              "overall_consistency": 0.32250483334064484,
+              "prompt_adherence_mean": 0.32250483334064484,
+              "prompt_adherence_min": 0.31671765446662903,
+              "subject_consistency": 0.4062790368804213,
+              "subject_consistency_pairwise": 0.4062790368804213,
+              "subject_consistency_to_first": 0.4062790368804213,
+              "subject_identity_consistency": 0.8758832763358713,
+              "subject_identity_consistency_pairwise": 0.8758832763358713,
+              "temporal_style": 0.9972968984376512
+            },
+            "delta": {
+              "aggregate_consistency": 0.011565714787046488,
+              "appearance_style": 0.0010795852693028518,
+              "background_consistency": 0.022155685464907537,
+              "background_consistency_pairwise": 0.022155685464907537,
+              "dynamic_degree": -0.32424766818682293,
+              "dynamic_degree_min": -0.6601111690203347,
+              "inter_video_diversity": -0.0005607955632919159,
+              "motion_smoothness": 0.21900839358568192,
+              "motion_smoothness_min": 0.43637001514434814,
+              "overall_consistency": 0.0010724067687988281,
+              "prompt_adherence_mean": 0.0010724067687988281,
+              "prompt_adherence_min": -0.0003135502338409424,
+              "subject_consistency": 0.04991038008446447,
+              "subject_consistency_pairwise": 0.04991038008446447,
+              "subject_consistency_to_first": 0.04991038008446447,
+              "subject_identity_consistency": -0.002915616984331959,
+              "subject_identity_consistency_pairwise": -0.002915616984331959,
+              "temporal_style": -0.0019081518808624631
+            },
+            "modified_metrics": {
+              "aggregate_consistency": 0.7446352078046145,
+              "appearance_style": 0.9808100041626278,
+              "background_consistency": 0.8388781796824013,
+              "background_consistency_pairwise": 0.8388781796824013,
+              "dynamic_degree": 5.848901405930519,
+              "dynamic_degree_min": 1.95637646317482,
+              "inter_video_diversity": 0.23119459542539234,
+              "motion_smoothness": 0.6791175380349159,
+              "motion_smoothness_min": 0.6053474545478821,
+              "num_videos": 2.0,
+              "overall_consistency": 0.32357724010944366,
+              "prompt_adherence_mean": 0.32357724010944366,
+              "prompt_adherence_min": 0.3164041042327881,
+              "subject_consistency": 0.45618941696488574,
+              "subject_consistency_pairwise": 0.45618941696488574,
+              "subject_consistency_to_first": 0.45618941696488574,
+              "subject_identity_consistency": 0.8729676593515393,
+              "subject_identity_consistency_pairwise": 0.8729676593515393,
+              "temporal_style": 0.9953887465567888
+            },
+            "scene": "african_savanna"
+          },
+          {
+            "baseline_metrics": {
+              "aggregate_consistency": 0.6968835441084943,
+              "appearance_style": 0.9796642632126349,
+              "background_consistency": 0.7937857435257822,
+              "background_consistency_pairwise": 0.7937857435257822,
+              "dynamic_degree": 4.001611689726512,
+              "dynamic_degree_min": 3.5885115464528403,
+              "inter_video_diversity": 0.22322708065293617,
+              "motion_smoothness": 0.6494681686162949,
+              "motion_smoothness_min": 0.6084941029548645,
+              "num_videos": 2.0,
+              "overall_consistency": 0.31158214807510376,
+              "prompt_adherence_mean": 0.31158214807510376,
+              "prompt_adherence_min": 0.3092438578605652,
+              "subject_consistency": 0.2829651179117239,
+              "subject_consistency_pairwise": 0.2829651179117239,
+              "subject_consistency_to_first": 0.2829651179117239,
+              "subject_identity_consistency": 0.8146435067783575,
+              "subject_identity_consistency_pairwise": 0.8146435067783575,
+              "temporal_style": 0.9986604851473638
+            },
+            "delta": {
+              "aggregate_consistency": -0.00014830322982850586,
+              "appearance_style": 0.0007829244778507771,
+              "background_consistency": -0.0007924449980269976,
+              "background_consistency_pairwise": -0.0007924449980269976,
+              "dynamic_degree": -0.1951654454072318,
+              "dynamic_degree_min": -0.3894351919492087,
+              "inter_video_diversity": -0.01640085306967365,
+              "motion_smoothness": 0.08862657099962234,
+              "motion_smoothness_min": 0.08192762732505798,
+              "overall_consistency": 0.0010403990745544434,
+              "prompt_adherence_mean": 0.0010403990745544434,
+              "prompt_adherence_min": 0.0013235211372375488,
+              "subject_consistency": -0.000607562782058646,
+              "subject_consistency_pairwise": -0.000607562782058646,
+              "subject_consistency_to_first": -0.000607562782058646,
+              "subject_identity_consistency": -0.00179741107902609,
+              "subject_identity_consistency_pairwise": -0.00179741107902609,
+              "temporal_style": 0.0004842759277343678
+            },
+            "modified_metrics": {
+              "aggregate_consistency": 0.6967352408786658,
+              "appearance_style": 0.9804471876904857,
+              "background_consistency": 0.7929932985277552,
+              "background_consistency_pairwise": 0.7929932985277552,
+              "dynamic_degree": 3.80644624431928,
+              "dynamic_degree_min": 3.1990763545036316,
+              "inter_video_diversity": 0.20682622758326252,
+              "motion_smoothness": 0.7380947396159172,
+              "motion_smoothness_min": 0.6904217302799225,
+              "num_videos": 2.0,
+              "overall_consistency": 0.3126225471496582,
+              "prompt_adherence_mean": 0.3126225471496582,
+              "prompt_adherence_min": 0.31056737899780273,
+              "subject_consistency": 0.28235755512966526,
+              "subject_consistency_pairwise": 0.28235755512966526,
+              "subject_consistency_to_first": 0.28235755512966526,
+              "subject_identity_consistency": 0.8128460956993314,
+              "subject_identity_consistency_pairwise": 0.8128460956993314,
+              "temporal_style": 0.9991447610750982
+            },
+            "scene": "frying_egg_closeup"
+          }
+        ]
+      },
+      "gate": {
+        "adherence_failures": [],
+        "adherence_ok": true,
+        "adherence_tolerance": 0.02,
+        "consistency_ok": true,
+        "diversity_failures": [],
+        "diversity_ok": true,
+        "diversity_tolerance": 0.05,
+        "is_null_result": true,
+        "metric": "aggregate_consistency",
+        "min_scene_wins": 1,
+        "motion_failures": [
+          "african_savanna"
+        ],
+        "motion_ok": false,
+        "motion_tolerance": 0.3,
+        "num_scenes": 2,
+        "passed": false,
+        "per_scene": [
+          {
+            "adherence_baseline_mean": 0.32250483334064484,
+            "adherence_baseline_min": 0.31671765446662903,
+            "adherence_modified_mean": 0.32357724010944366,
+            "adherence_modified_min": 0.3164041042327881,
+            "adherence_ok": true,
+            "baseline": 0.733069493017568,
+            "delta": 0.011565714787046488,
+            "diversity_baseline": 0.23175539098868425,
+            "diversity_modified": 0.23119459542539234,
+            "diversity_ok": true,
+            "dynamic_degree_baseline": 6.173149074117342,
+            "dynamic_degree_modified": 5.848901405930519,
+            "metric": "aggregate_consistency",
+            "modified": 0.7446352078046145,
+            "motion_ok": false,
+            "scene": "african_savanna",
+            "win": true
+          },
+          {
+            "adherence_baseline_mean": 0.31158214807510376,
+            "adherence_baseline_min": 0.3092438578605652,
+            "adherence_modified_mean": 0.3126225471496582,
+            "adherence_modified_min": 0.31056737899780273,
+            "adherence_ok": true,
+            "baseline": 0.6968835441084943,
+            "delta": -0.00014830322982850586,
+            "diversity_baseline": 0.22322708065293617,
+            "diversity_modified": 0.20682622758326252,
+            "diversity_ok": true,
+            "dynamic_degree_baseline": 4.001611689726512,
+            "dynamic_degree_modified": 3.80644624431928,
+            "metric": "aggregate_consistency",
+            "modified": 0.6967352408786658,
+            "motion_ok": true,
+            "scene": "frying_egg_closeup",
+            "win": false
+          }
+        ],
+        "require_adherence": true,
+        "scene_wins": 1
+      },
+      "key": "pooled",
+      "mean_aggregate_delta": 0.005708705778608991,
+      "num_scenes": 2,
+      "passed": false,
+      "scene_wins": 1,
+      "settings": {
+        "boundary_inject_anchors": 0,
+        "retrieval_key_mode": "pooled",
+        "retrieval_value_mode": "raw",
+        "scene_memory_enabled": true,
+        "scene_score_bonus": 0.1
+      },
+      "value": "raw"
+    },
+    {
+      "comparison": {
+        "num_scenes": 2,
+        "records": [
+          {
+            "baseline_metrics": {
+              "aggregate_consistency": 0.733069493017568,
+              "appearance_style": 0.9797304188933249,
+              "background_consistency": 0.8167224942174938,
+              "background_consistency_pairwise": 0.8167224942174938,
+              "dynamic_degree": 6.173149074117342,
+              "dynamic_degree_min": 2.6164876321951547,
+              "inter_video_diversity": 0.23175539098868425,
+              "motion_smoothness": 0.460109144449234,
+              "motion_smoothness_min": 0.16897743940353394,
+              "num_videos": 2.0,
+              "overall_consistency": 0.32250483334064484,
+              "prompt_adherence_mean": 0.32250483334064484,
+              "prompt_adherence_min": 0.31671765446662903,
+              "subject_consistency": 0.4062790368804213,
+              "subject_consistency_pairwise": 0.4062790368804213,
+              "subject_consistency_to_first": 0.4062790368804213,
+              "subject_identity_consistency": 0.8758832763358713,
+              "subject_identity_consistency_pairwise": 0.8758832763358713,
+              "temporal_style": 0.9972968984376512
+            },
+            "delta": {
+              "aggregate_consistency": 0.008361438347033179,
+              "appearance_style": 0.0014411495346359215,
+              "background_consistency": 0.021725524668378626,
+              "background_consistency_pairwise": 0.021725524668378626,
+              "dynamic_degree": -0.39703466991583447,
+              "dynamic_degree_min": -0.8056851724783578,
+              "inter_video_diversity": 0.0002541933614369496,
+              "motion_smoothness": 0.21306566148996353,
+              "motion_smoothness_min": 0.4244845509529114,
+              "overall_consistency": 0.0009882301092147827,
+              "prompt_adherence_mean": 0.0009882301092147827,
+              "prompt_adherence_min": -0.0003135502338409424,
+              "subject_consistency": 0.03360980628681287,
+              "subject_consistency_pairwise": 0.03360980628681287,
+              "subject_consistency_to_first": 0.03360980628681287,
+              "subject_identity_consistency": -0.00560009058496469,
+              "subject_identity_consistency_pairwise": -0.00560009058496469,
+              "temporal_style": -0.00199598993187855
+            },
+            "modified_metrics": {
+              "aggregate_consistency": 0.7414309313646011,
+              "appearance_style": 0.9811715684279608,
+              "background_consistency": 0.8384480188858724,
+              "background_consistency_pairwise": 0.8384480188858724,
+              "dynamic_degree": 5.776114404201508,
+              "dynamic_degree_min": 1.8108024597167969,
+              "inter_video_diversity": 0.2320095843501212,
+              "motion_smoothness": 0.6731748059391975,
+              "motion_smoothness_min": 0.5934619903564453,
+              "num_videos": 2.0,
+              "overall_consistency": 0.3234930634498596,
+              "prompt_adherence_mean": 0.3234930634498596,
+              "prompt_adherence_min": 0.3164041042327881,
+              "subject_consistency": 0.43988884316723414,
+              "subject_consistency_pairwise": 0.43988884316723414,
+              "subject_consistency_to_first": 0.43988884316723414,
+              "subject_identity_consistency": 0.8702831857509066,
+              "subject_identity_consistency_pairwise": 0.8702831857509066,
+              "temporal_style": 0.9953009085057727
+            },
+            "scene": "african_savanna"
+          },
+          {
+            "baseline_metrics": {
+              "aggregate_consistency": 0.6968835441084943,
+              "appearance_style": 0.9796642632126349,
+              "background_consistency": 0.7937857435257822,
+              "background_consistency_pairwise": 0.7937857435257822,
+              "dynamic_degree": 4.001611689726512,
+              "dynamic_degree_min": 3.5885115464528403,
+              "inter_video_diversity": 0.22322708065293617,
+              "motion_smoothness": 0.6494681686162949,
+              "motion_smoothness_min": 0.6084941029548645,
+              "num_videos": 2.0,
+              "overall_consistency": 0.31158214807510376,
+              "prompt_adherence_mean": 0.31158214807510376,
+              "prompt_adherence_min": 0.3092438578605652,
+              "subject_consistency": 0.2829651179117239,
+              "subject_consistency_pairwise": 0.2829651179117239,
+              "subject_consistency_to_first": 0.2829651179117239,
+              "subject_identity_consistency": 0.8146435067783575,
+              "subject_identity_consistency_pairwise": 0.8146435067783575,
+              "temporal_style": 0.9986604851473638
+            },
+            "delta": {
+              "aggregate_consistency": 0.00027502379689825496,
+              "appearance_style": 0.0013030419246082836,
+              "background_consistency": 0.0014960052653038014,
+              "background_consistency_pairwise": 0.0014960052653038014,
+              "dynamic_degree": -0.002391109863917329,
+              "dynamic_degree_min": -0.0038865208625793457,
+              "inter_video_diversity": -0.018333697686843786,
+              "motion_smoothness": 0.07773324102163315,
+              "motion_smoothness_min": 0.08192762732505798,
+              "overall_consistency": 0.0006713271141052246,
+              "prompt_adherence_mean": 0.0006713271141052246,
+              "prompt_adherence_min": 0.0005853772163391113,
+              "subject_consistency": -0.00289327567064368,
+              "subject_consistency_pairwise": -0.00289327567064368,
+              "subject_consistency_to_first": -0.00289327567064368,
+              "subject_identity_consistency": 0.0012057139335833744,
+              "subject_identity_consistency_pairwise": 0.0012057139335833744,
+              "temporal_style": -0.00013266978556725206
+            },
+            "modified_metrics": {
+              "aggregate_consistency": 0.6971585679053925,
+              "appearance_style": 0.9809673051372432,
+              "background_consistency": 0.795281748791086,
+              "background_consistency_pairwise": 0.795281748791086,
+              "dynamic_degree": 3.9992205798625946,
+              "dynamic_degree_min": 3.584625025590261,
+              "inter_video_diversity": 0.20489338296609239,
+              "motion_smoothness": 0.727201409637928,
+              "motion_smoothness_min": 0.6904217302799225,
+              "num_videos": 2.0,
+              "overall_consistency": 0.312253475189209,
+              "prompt_adherence_mean": 0.312253475189209,
+              "prompt_adherence_min": 0.3098292350769043,
+              "subject_consistency": 0.2800718422410802,
+              "subject_consistency_pairwise": 0.2800718422410802,
+              "subject_consistency_to_first": 0.2800718422410802,
+              "subject_identity_consistency": 0.8158492207119409,
+              "subject_identity_consistency_pairwise": 0.8158492207119409,
+              "temporal_style": 0.9985278153617966
+            },
+            "scene": "frying_egg_closeup"
+          }
+        ]
+      },
+      "gate": {
+        "adherence_failures": [],
+        "adherence_ok": true,
+        "adherence_tolerance": 0.02,
+        "consistency_ok": true,
+        "diversity_failures": [],
+        "diversity_ok": true,
+        "diversity_tolerance": 0.05,
+        "is_null_result": true,
+        "metric": "aggregate_consistency",
+        "min_scene_wins": 1,
+        "motion_failures": [
+          "african_savanna"
+        ],
+        "motion_ok": false,
+        "motion_tolerance": 0.3,
+        "num_scenes": 2,
+        "passed": false,
+        "per_scene": [
+          {
+            "adherence_baseline_mean": 0.32250483334064484,
+            "adherence_baseline_min": 0.31671765446662903,
+            "adherence_modified_mean": 0.3234930634498596,
+            "adherence_modified_min": 0.3164041042327881,
+            "adherence_ok": true,
+            "baseline": 0.733069493017568,
+            "delta": 0.008361438347033179,
+            "diversity_baseline": 0.23175539098868425,
+            "diversity_modified": 0.2320095843501212,
+            "diversity_ok": true,
+            "dynamic_degree_baseline": 6.173149074117342,
+            "dynamic_degree_modified": 5.776114404201508,
+            "metric": "aggregate_consistency",
+            "modified": 0.7414309313646011,
+            "motion_ok": false,
+            "scene": "african_savanna",
+            "win": true
+          },
+          {
+            "adherence_baseline_mean": 0.31158214807510376,
+            "adherence_baseline_min": 0.3092438578605652,
+            "adherence_modified_mean": 0.312253475189209,
+            "adherence_modified_min": 0.3098292350769043,
+            "adherence_ok": true,
+            "baseline": 0.6968835441084943,
+            "delta": 0.00027502379689825496,
+            "diversity_baseline": 0.22322708065293617,
+            "diversity_modified": 0.20489338296609239,
+            "diversity_ok": true,
+            "dynamic_degree_baseline": 4.001611689726512,
+            "dynamic_degree_modified": 3.9992205798625946,
+            "metric": "aggregate_consistency",
+            "modified": 0.6971585679053925,
+            "motion_ok": true,
+            "scene": "frying_egg_closeup",
+            "win": true
+          }
+        ],
+        "require_adherence": true,
+        "scene_wins": 2
+      },
+      "key": "semantic",
+      "mean_aggregate_delta": 0.004318231071965717,
+      "num_scenes": 2,
+      "passed": false,
+      "scene_wins": 2,
+      "settings": {
+        "boundary_inject_anchors": 0,
+        "retrieval_key_mode": "semantic",
+        "retrieval_value_mode": "raw",
+        "scene_memory_enabled": true,
+        "scene_score_bonus": 0.1
+      },
+      "value": "raw"
+    },
+    {
+      "comparison": {
+        "num_scenes": 2,
+        "records": [
+          {
+            "baseline_metrics": {
+              "aggregate_consistency": 0.733069493017568,
+              "appearance_style": 0.9797304188933249,
+              "background_consistency": 0.8167224942174938,
+              "background_consistency_pairwise": 0.8167224942174938,
+              "dynamic_degree": 6.173149074117342,
+              "dynamic_degree_min": 2.6164876321951547,
+              "inter_video_diversity": 0.23175539098868425,
+              "motion_smoothness": 0.460109144449234,
+              "motion_smoothness_min": 0.16897743940353394,
+              "num_videos": 2.0,
+              "overall_consistency": 0.32250483334064484,
+              "prompt_adherence_mean": 0.32250483334064484,
+              "prompt_adherence_min": 0.31671765446662903,
+              "subject_consistency": 0.4062790368804213,
+              "subject_consistency_pairwise": 0.4062790368804213,
+              "subject_consistency_to_first": 0.4062790368804213,
+              "subject_identity_consistency": 0.8758832763358713,
+              "subject_identity_consistency_pairwise": 0.8758832763358713,
+              "temporal_style": 0.9972968984376512
+            },
+            "delta": {
+              "aggregate_consistency": 0.03127523914539143,
+              "appearance_style": 0.004849322907909404,
+              "background_consistency": 0.02224664670765142,
+              "background_consistency_pairwise": 0.02224664670765142,
+              "dynamic_degree": -0.37260741740465075,
+              "dynamic_degree_min": -0.756830667455991,
+              "inter_video_diversity": 0.008255718334848061,
+              "motion_smoothness": 0.1309974268078804,
+              "motion_smoothness_min": 0.2603480815887451,
+              "overall_consistency": -0.0003307610750198364,
+              "prompt_adherence_mean": -0.0003307610750198364,
+              "prompt_adherence_min": -0.0003135502338409424,
+              "subject_consistency": 0.16265924726340014,
+              "subject_consistency_pairwise": 0.16265924726340014,
+              "subject_consistency_to_first": 0.16265924726340014,
+              "subject_identity_consistency": 1.1230662481320763e-05,
+              "subject_identity_consistency_pairwise": 1.1230662481320763e-05,
+              "temporal_style": -0.0017842515940733605
+            },
+            "modified_metrics": {
+              "aggregate_consistency": 0.7643447321629594,
+              "appearance_style": 0.9845797418012343,
+              "background_consistency": 0.8389691409251452,
+              "background_consistency_pairwise": 0.8389691409251452,
+              "dynamic_degree": 5.800541656712691,
+              "dynamic_degree_min": 1.8596569647391636,
+              "inter_video_diversity": 0.2400111093235323,
+              "motion_smoothness": 0.5911065712571144,
+              "motion_smoothness_min": 0.42932552099227905,
+              "num_videos": 2.0,
+              "overall_consistency": 0.322174072265625,
+              "prompt_adherence_mean": 0.322174072265625,
+              "prompt_adherence_min": 0.3164041042327881,
+              "subject_consistency": 0.5689382841438214,
+              "subject_consistency_pairwise": 0.5689382841438214,
+              "subject_consistency_to_first": 0.5689382841438214,
+              "subject_identity_consistency": 0.8758945069983526,
+              "subject_identity_consistency_pairwise": 0.8758945069983526,
+              "temporal_style": 0.9955126468435779
+            },
+            "scene": "african_savanna"
+          },
+          {
+            "baseline_metrics": {
+              "aggregate_consistency": 0.6968835441084943,
+              "appearance_style": 0.9796642632126349,
+              "background_consistency": 0.7937857435257822,
+              "background_consistency_pairwise": 0.7937857435257822,
+              "dynamic_degree": 4.001611689726512,
+              "dynamic_degree_min": 3.5885115464528403,
+              "inter_video_diversity": 0.22322708065293617,
+              "motion_smoothness": 0.6494681686162949,
+              "motion_smoothness_min": 0.6084941029548645,
+              "num_videos": 2.0,
+              "overall_consistency": 0.31158214807510376,
+              "prompt_adherence_mean": 0.31158214807510376,
+              "prompt_adherence_min": 0.3092438578605652,
+              "subject_consistency": 0.2829651179117239,
+              "subject_consistency_pairwise": 0.2829651179117239,
+              "subject_consistency_to_first": 0.2829651179117239,
+              "subject_identity_consistency": 0.8146435067783575,
+              "subject_identity_consistency_pairwise": 0.8146435067783575,
+              "temporal_style": 0.9986604851473638
+            },
+            "delta": {
+              "aggregate_consistency": 0.0013845691570316676,
+              "appearance_style": -0.001710701370387091,
+              "background_consistency": 0.0019590326316738516,
+              "background_consistency_pairwise": 0.0019590326316738516,
+              "dynamic_degree": -0.36922894418239594,
+              "dynamic_degree_min": -0.7375621894995374,
+              "inter_video_diversity": -0.010476461326363595,
+              "motion_smoothness": 0.03497284650802612,
+              "motion_smoothness_min": 0.06996619701385498,
+              "overall_consistency": 0.0013925433158874512,
+              "prompt_adherence_mean": 0.0013925433158874512,
+              "prompt_adherence_min": 0.0020278096199035645,
+              "subject_consistency": 0.008060721971390017,
+              "subject_consistency_pairwise": 0.008060721971390017,
+              "subject_consistency_to_first": 0.008060721971390017,
+              "subject_identity_consistency": -0.0023819309616046613,
+              "subject_identity_consistency_pairwise": -0.0023819309616046613,
+              "temporal_style": 0.0009877493552302719
+            },
+            "modified_metrics": {
+              "aggregate_consistency": 0.698268113265526,
+              "appearance_style": 0.9779535618422478,
+              "background_consistency": 0.7957447761574561,
+              "background_consistency_pairwise": 0.7957447761574561,
+              "dynamic_degree": 3.632382745544116,
+              "dynamic_degree_min": 2.850949356953303,
+              "inter_video_diversity": 0.21275061932657258,
+              "motion_smoothness": 0.684441015124321,
+              "motion_smoothness_min": 0.6784602999687195,
+              "num_videos": 2.0,
+              "overall_consistency": 0.3129746913909912,
+              "prompt_adherence_mean": 0.3129746913909912,
+              "prompt_adherence_min": 0.31127166748046875,
+              "subject_consistency": 0.2910258398831139,
+              "subject_consistency_pairwise": 0.2910258398831139,
+              "subject_consistency_to_first": 0.2910258398831139,
+              "subject_identity_consistency": 0.8122615758167528,
+              "subject_identity_consistency_pairwise": 0.8122615758167528,
+              "temporal_style": 0.9996482345025941
+            },
+            "scene": "frying_egg_closeup"
+          }
+        ]
+      },
+      "gate": {
+        "adherence_failures": [],
+        "adherence_ok": true,
+        "adherence_tolerance": 0.02,
+        "consistency_ok": true,
+        "diversity_failures": [],
+        "diversity_ok": true,
+        "diversity_tolerance": 0.05,
+        "is_null_result": true,
+        "metric": "aggregate_consistency",
+        "min_scene_wins": 1,
+        "motion_failures": [
+          "african_savanna",
+          "frying_egg_closeup"
+        ],
+        "motion_ok": false,
+        "motion_tolerance": 0.3,
+        "num_scenes": 2,
+        "passed": false,
+        "per_scene": [
+          {
+            "adherence_baseline_mean": 0.32250483334064484,
+            "adherence_baseline_min": 0.31671765446662903,
+            "adherence_modified_mean": 0.322174072265625,
+            "adherence_modified_min": 0.3164041042327881,
+            "adherence_ok": true,
+            "baseline": 0.733069493017568,
+            "delta": 0.03127523914539143,
+            "diversity_baseline": 0.23175539098868425,
+            "diversity_modified": 0.2400111093235323,
+            "diversity_ok": true,
+            "dynamic_degree_baseline": 6.173149074117342,
+            "dynamic_degree_modified": 5.800541656712691,
+            "metric": "aggregate_consistency",
+            "modified": 0.7643447321629594,
+            "motion_ok": false,
+            "scene": "african_savanna",
+            "win": true
+          },
+          {
+            "adherence_baseline_mean": 0.31158214807510376,
+            "adherence_baseline_min": 0.3092438578605652,
+            "adherence_modified_mean": 0.3129746913909912,
+            "adherence_modified_min": 0.31127166748046875,
+            "adherence_ok": true,
+            "baseline": 0.6968835441084943,
+            "delta": 0.0013845691570316676,
+            "diversity_baseline": 0.22322708065293617,
+            "diversity_modified": 0.21275061932657258,
+            "diversity_ok": true,
+            "dynamic_degree_baseline": 4.001611689726512,
+            "dynamic_degree_modified": 3.632382745544116,
+            "metric": "aggregate_consistency",
+            "modified": 0.698268113265526,
+            "motion_ok": false,
+            "scene": "frying_egg_closeup",
+            "win": true
+          }
+        ],
+        "require_adherence": true,
+        "scene_wins": 2
+      },
+      "key": "subject_identity",
+      "mean_aggregate_delta": 0.01632990415121155,
+      "num_scenes": 2,
+      "passed": false,
+      "scene_wins": 2,
+      "settings": {
+        "boundary_inject_anchors": 0,
+        "retrieval_key_mode": "subject_identity",
+        "retrieval_value_mode": "raw",
+        "scene_memory_enabled": true,
+        "scene_score_bonus": 0.1
+      },
+      "value": "raw"
+    }
+  ],
+  "guards": {
+    "adherence_tolerance": 0.02,
+    "diversity_tolerance": 0.05,
+    "motion_tolerance": 0.3,
+    "require_adherence": true
+  },
+  "is_null_result": true,
+  "is_prefilter": false,
+  "missing_requested_backbones": [],
+  "offline_screen": {
+    "cells": [
+      {
+        "key": "pooled",
+        "key_margin": 1.1717608869075775,
+        "key_passes": true,
+        "render_candidate": true,
+        "value": "raw",
+        "value_reropeable": true
+      },
+      {
+        "key": "pooled",
+        "key_margin": 1.1717608869075775,
+        "key_passes": true,
+        "render_candidate": true,
+        "value": "mean_frame",
+        "value_reropeable": true
+      },
+      {
+        "key": "pooled",
+        "key_margin": 1.1717608869075775,
+        "key_passes": true,
+        "render_candidate": true,
+        "value": "top_frame",
+        "value_reropeable": true
+      },
+      {
+        "key": "moment",
+        "key_margin": 0.3822009563446045,
+        "key_passes": true,
+        "render_candidate": true,
+        "value": "raw",
+        "value_reropeable": true
+      },
+      {
+        "key": "moment",
+        "key_margin": 0.3822009563446045,
+        "key_passes": true,
+        "render_candidate": true,
+        "value": "mean_frame",
+        "value_reropeable": true
+      },
+      {
+        "key": "moment",
+        "key_margin": 0.3822009563446045,
+        "key_passes": true,
+        "render_candidate": true,
+        "value": "top_frame",
+        "value_reropeable": true
+      },
+      {
+        "key": "multi_centroid",
+        "key_margin": 0.41651982069015503,
+        "key_passes": true,
+        "render_candidate": true,
+        "value": "raw",
+        "value_reropeable": true
+      },
+      {
+        "key": "multi_centroid",
+        "key_margin": 0.41651982069015503,
+        "key_passes": true,
+        "render_candidate": true,
+        "value": "mean_frame",
+        "value_reropeable": true
+      },
+      {
+        "key": "multi_centroid",
+        "key_margin": 0.41651982069015503,
+        "key_passes": true,
+        "render_candidate": true,
+        "value": "top_frame",
+        "value_reropeable": true
+      },
+      {
+        "key": "salient_set",
+        "key_margin": 0.7904700040817261,
+        "key_passes": true,
+        "render_candidate": true,
+        "value": "raw",
+        "value_reropeable": true
+      },
+      {
+        "key": "salient_set",
+        "key_margin": 0.7904700040817261,
+        "key_passes": true,
+        "render_candidate": true,
+        "value": "mean_frame",
+        "value_reropeable": true
+      },
+      {
+        "key": "salient_set",
+        "key_margin": 0.7904700040817261,
+        "key_passes": true,
+        "render_candidate": true,
+        "value": "top_frame",
+        "value_reropeable": true
+      },
+      {
+        "key": "positional",
+        "key_margin": 0.4057590067386627,
+        "key_passes": false,
+        "render_candidate": false,
+        "value": "raw",
+        "value_reropeable": true
+      },
+      {
+        "key": "positional",
+        "key_margin": 0.4057590067386627,
+        "key_passes": false,
+        "render_candidate": false,
+        "value": "mean_frame",
+        "value_reropeable": true
+      },
+      {
+        "key": "positional",
+        "key_margin": 0.4057590067386627,
+        "key_passes": false,
+        "render_candidate": false,
+        "value": "top_frame",
+        "value_reropeable": true
+      },
+      {
+        "key": "subject_identity",
+        "key_margin": 1.1613516807556152,
+        "key_passes": true,
+        "render_candidate": true,
+        "value": "raw",
+        "value_reropeable": true
+      },
+      {
+        "key": "subject_identity",
+        "key_margin": 1.1613516807556152,
+        "key_passes": true,
+        "render_candidate": true,
+        "value": "mean_frame",
+        "value_reropeable": true
+      },
+      {
+        "key": "subject_identity",
+        "key_margin": 1.1613516807556152,
+        "key_passes": true,
+        "render_candidate": true,
+        "value": "top_frame",
+        "value_reropeable": true
+      },
+      {
+        "key": "semantic",
+        "key_margin": 0.8614735007286072,
+        "key_passes": true,
+        "render_candidate": true,
+        "value": "raw",
+        "value_reropeable": true
+      },
+      {
+        "key": "semantic",
+        "key_margin": 0.8614735007286072,
+        "key_passes": true,
+        "render_candidate": true,
+        "value": "mean_frame",
+        "value_reropeable": true
+      },
+      {
+        "key": "semantic",
+        "key_margin": 0.8614735007286072,
+        "key_passes": true,
+        "render_candidate": true,
+        "value": "top_frame",
+        "value_reropeable": true
+      }
+    ],
+    "is_prefilter": true,
+    "keys_ranked": [
+      {
+        "different_scene": -0.1718432605266571,
+        "is_negative_control": false,
+        "key": "pooled",
+        "margin": 1.1717608869075775,
+        "passes_prefilter": true,
+        "same_scene": 0.9999176263809204
+      },
+      {
+        "different_scene": -0.16143375635147095,
+        "is_negative_control": false,
+        "key": "subject_identity",
+        "margin": 1.1613516807556152,
+        "passes_prefilter": true,
+        "same_scene": 0.9999179244041443
+      },
+      {
+        "different_scene": 0.12964987754821777,
+        "is_negative_control": false,
+        "key": "semantic",
+        "margin": 0.8614735007286072,
+        "passes_prefilter": true,
+        "same_scene": 0.991123378276825
+      },
+      {
+        "different_scene": 0.20952993631362915,
+        "is_negative_control": false,
+        "key": "salient_set",
+        "margin": 0.7904700040817261,
+        "passes_prefilter": true,
+        "same_scene": 0.9999999403953552
+      },
+      {
+        "different_scene": 0.35946398973464966,
+        "is_negative_control": false,
+        "key": "multi_centroid",
+        "margin": 0.41651982069015503,
+        "passes_prefilter": true,
+        "same_scene": 0.7759838104248047
+      },
+      {
+        "different_scene": -0.23356276750564575,
+        "is_negative_control": true,
+        "key": "positional",
+        "margin": 0.4057590067386627,
+        "passes_prefilter": false,
+        "same_scene": 0.17219623923301697
+      },
+      {
+        "different_scene": 0.6177715063095093,
+        "is_negative_control": false,
+        "key": "moment",
+        "margin": 0.3822009563446045,
+        "passes_prefilter": true,
+        "same_scene": 0.9999724626541138
+      }
+    ],
+    "note": "PROXY ONLY (BL-20260604-rendered-metric-over-probe): this ranking PRUNES broken cells and orders a shortlist; it MUST NOT pick a winner. Promotion requires a rendered AC-2 confirmation.",
+    "selector": "rendered AC-2 suite (evaluation/vbench_consistency.py)",
+    "shortlist_keys": [
+      "pooled",
+      "subject_identity",
+      "semantic",
+      "salient_set",
+      "multi_centroid",
+      "moment"
+    ],
+    "thresholds": {
+      "min_margin": 0.1,
+      "min_same_scene": 0.6
+    },
+    "values": [
+      {
+        "bounded": false,
+        "frame_aligned": true,
+        "input_tokens": 12,
+        "reropeable": true,
+        "stored_frames": 3,
+        "stored_tokens": 12,
+        "value": "raw"
+      },
+      {
+        "bounded": true,
+        "frame_aligned": true,
+        "input_tokens": 12,
+        "reropeable": true,
+        "stored_frames": 1,
+        "stored_tokens": 4,
+        "value": "mean_frame"
+      },
+      {
+        "bounded": true,
+        "frame_aligned": true,
+        "input_tokens": 12,
+        "reropeable": true,
+        "stored_frames": 1,
+        "stored_tokens": 4,
+        "value": "top_frame"
+      }
+    ]
+  },
+  "perspective_coverage": {
+    "african_savanna": 2,
+    "frying_egg_closeup": 2
+  },
+  "ranking": [
+    {
+      "key": "subject_identity",
+      "mean_aggregate_delta": 0.01632990415121155,
+      "passed": false,
+      "scene_wins": "2/2",
+      "value": "raw"
+    },
+    {
+      "key": "pooled",
+      "mean_aggregate_delta": 0.005708705778608991,
+      "passed": false,
+      "scene_wins": "1/2",
+      "value": "raw"
+    },
+    {
+      "key": "semantic",
+      "mean_aggregate_delta": 0.004318231071965717,
+      "passed": false,
+      "scene_wins": "2/2",
+      "value": "raw"
+    }
+  ],
+  "selector": "rendered AC-2 suite",
+  "winner": null
+}
