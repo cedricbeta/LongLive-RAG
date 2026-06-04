@@ -441,21 +441,28 @@ def build_identity_encoder(*, subject_kind: str = "auto", device: str | None = N
 
     if kind == "object" or (kind == "auto" and face_embed is None):
         _dino_patch()  # fail fast: DINO is the only available identity path here
-    allow_dino = kind != "human"  # 'human' is ArcFace-only; no-face frames are skipped
+    use_face = face_embed is not None  # ONE feature space per video (no mixing)
 
     def _encode(frames_rgb):
-        embs = []
-        for f in frames_rgb:
-            emb = face_embed(f) if face_embed is not None else None
-            if emb is None and allow_dino:
-                emb = _dino_patch()(f[None, ...])[0]  # lazy build on first no-face frame
-            if emb is not None:
-                embs.append(_np.asarray(emb, dtype=_np.float64))
-        if not embs:
-            raise RuntimeError(
-                "Identity encoder produced no embeddings (no face detected and no "
-                "DINO-patch fallback available) for this video."
-            )
+        if use_face:
+            # ArcFace-only: frames with no detected face are SKIPPED (never mixed
+            # with DINO patches, whose dimension differs and would break np.stack).
+            embs = []
+            for f in frames_rgb:
+                emb = face_embed(f)
+                if emb is not None:
+                    embs.append(_np.asarray(emb, dtype=_np.float64))
+            if not embs:
+                raise RuntimeError(
+                    "Identity encoder (ArcFace) detected no face in any frame of this "
+                    "video; pick subject_kind='object' (DINO patches) for non-human scenes."
+                )
+        else:
+            # DINO patch space for the whole video (no face backbone).
+            feats = _dino_patch()(frames_rgb)
+            embs = [_np.asarray(v, dtype=_np.float64) for v in feats]
+            if not embs:
+                raise RuntimeError("Identity encoder produced no embeddings for this video.")
         return _np.stack(embs, axis=0)
 
     return _encode
@@ -577,6 +584,30 @@ def group_perspectives_by_scene(directory: str | Path) -> dict[str, list[Path]]:
         bucket["persp"][persp] = path
     return {s: [path for _persp, path in sorted(b["persp"].items())]
             for s, b in scenes.items()}
+
+
+def _perspective_index(path: str | Path) -> int | None:
+    """Perspective index parsed from a generated stem, or None if it doesn't match."""
+    m = _PERSPECTIVE_STEM.match(Path(path).stem)
+    return int(m.group("persp")) if m else None
+
+
+def _assert_matching_perspectives(scene: str, base_paths: list, mod_paths: list) -> None:
+    """Reject a scene whose baseline/modified perspective index sets differ.
+
+    Cross-video deltas are only comparable when both sides hold the SAME
+    perspectives; comparing e.g. baseline ``p0,p1,p2`` to modified ``p0,p1`` (a
+    missing/extra/capped render) would make the aggregate non-comparable and could
+    let a dropped bad view look like a win.
+    """
+    base_idx = sorted(i for i in (_perspective_index(p) for p in base_paths) if i is not None)
+    mod_idx = sorted(i for i in (_perspective_index(p) for p in mod_paths) if i is not None)
+    if base_idx != mod_idx:
+        raise ValueError(
+            f"Scene {scene!r} has mismatched perspective sets: baseline {base_idx} vs "
+            f"modified {mod_idx}; cross-video deltas require identical perspectives on "
+            "both sides (a missing/extra render makes the comparison invalid)."
+        )
 
 
 def score_scene(
@@ -719,6 +750,7 @@ def compare_multiview_vbench_dirs(
     for scene in scenes:
         if len(base[scene]) < 2 or len(mod[scene]) < 2:
             continue
+        _assert_matching_perspectives(scene, base[scene], mod[scene])
         caps = captions_for.get(scene) if captions_for else None
         kw = dict(
             dino_encoder=dino_encoder, clip_encoder=clip_encoder,

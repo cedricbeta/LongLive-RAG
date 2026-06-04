@@ -336,12 +336,66 @@ class TestIdentityAutoLazyDino(unittest.TestCase):
         try:
             # auto + working ArcFace + NO DINO must not raise (DINO is lazy here).
             enc = vc.build_identity_encoder(subject_kind="auto", device="cpu")
-            out = enc([np.zeros((16, 16, 3), dtype=np.uint8)])  # the (fake) face is detected
+            out = enc([np.ones((16, 16, 3), dtype=np.uint8)])  # the (fake) face is detected
             self.assertEqual(tuple(np.asarray(out).shape), (1, 8))
         finally:
             vc._build_dino_patch_encoder = orig_dino
             sys.modules.pop("insightface", None)
             sys.modules.pop("insightface.app", None)
+
+    def test_auto_arcface_skips_no_face_frames_without_dino_mix(self):
+        # With ArcFace in use, a frame with no detected face is SKIPPED, not
+        # encoded with DINO (which would mix dimensions and crash np.stack). (P2 fix.)
+        import types
+        import evaluation.vbench_consistency as vc
+
+        face = types.SimpleNamespace(bbox=[0.0, 0.0, 10.0, 10.0],
+                                     normed_embedding=np.ones(8, dtype=np.float32))
+
+        class _FakeApp:
+            def __init__(self, *a, **k):
+                pass
+
+            def prepare(self, *a, **k):
+                pass
+
+            def get(self, img):  # no face for all-zero frames, a face otherwise
+                return [face] if float(np.asarray(img).mean()) > 0 else []
+
+        fake_insight = types.ModuleType("insightface")
+        fake_app = types.ModuleType("insightface.app")
+        fake_app.FaceAnalysis = _FakeApp
+        fake_insight.app = fake_app
+        orig_dino = vc._build_dino_patch_encoder
+
+        def _boom(*a, **k):
+            raise RuntimeError("DINO must not be used when ArcFace is in play")
+
+        sys.modules["insightface"] = fake_insight
+        sys.modules["insightface.app"] = fake_app
+        vc._build_dino_patch_encoder = _boom
+        try:
+            enc = vc.build_identity_encoder(subject_kind="auto", device="cpu")
+            frames = [np.zeros((16, 16, 3), np.uint8),          # no face -> skipped
+                      np.ones((16, 16, 3), np.uint8) * 40,       # face
+                      np.zeros((16, 16, 3), np.uint8)]           # no face -> skipped
+            out = enc(frames)
+            self.assertEqual(tuple(np.asarray(out).shape), (1, 8))  # 1 ArcFace emb, no DINO mix
+        finally:
+            vc._build_dino_patch_encoder = orig_dino
+            sys.modules.pop("insightface", None)
+            sys.modules.pop("insightface.app", None)
+
+
+class TestMatchingPerspectives(unittest.TestCase):
+    def test_validator_rejects_mismatched_sets(self):
+        from evaluation.vbench_consistency import _assert_matching_perspectives
+        base = [Path(f"x/kv_rag-rank0-s-p{i}-seed0_regular.mp4") for i in (0, 1, 2)]
+        mod_ok = [Path(f"x/mod-rank0-s-p{i}-seed0_regular.mp4") for i in (0, 1, 2)]
+        mod_bad = [Path(f"x/mod-rank0-s-p{i}-seed0_regular.mp4") for i in (0, 1)]
+        _assert_matching_perspectives("s", base, mod_ok)  # identical sets -> ok
+        with self.assertRaises(ValueError):
+            _assert_matching_perspectives("s", base, mod_bad)  # baseline has p2, modified doesn't
 
 
 class TestCollapseVisible(unittest.TestCase):
