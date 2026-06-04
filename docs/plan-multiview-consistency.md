@@ -1,389 +1,286 @@
-# Single-Scene Multi-Perspective Consistency for LongLive-RAG
+# Cross-Video Scene Consistency for LongLive-RAG (Multi-Prompt, Independent Renders)
 
 ## Goal Description
 
-Improve the KV-cache RAG so that multi-shot videos depicting ONE scene from DIFFERENT
-camera perspectives stay coherent across shots. When successive shots are different
-viewpoints of the same environment, the spatial layout, geometry, lighting, and the
-placement/identity of the subjects and objects must read as the *same place seen from a
-new angle* -- not a freshly hallucinated scene at every cut -- while the camera framing
-and composition are still allowed to change.
+For each scene we generate MULTIPLE independent videos -- one per prompt
+(`example/multiview_prompts/<scene>/0.json .. N.json` -> `0.mp4 .. N.mp4`). Every prompt is
+a different description/viewpoint of the SAME place and subject. The objective: those
+*separately generated* videos must read as the same scene -- same environment geometry,
+same subject identity, same lighting/style -- not a freshly hallucinated place each time,
+while each video still follows its own prompt.
 
-The work targets the seam between the KV-RAG memory and the multi-shot boundary
-handling. Today a shot boundary re-pins the attention sink to the new shot's first frame
-(`multi_shot_sink`), applies a per-shot RoPE phase offset (`multi_shot_rope_offset`), and
-optionally clears the KV cache (`shot_clean_recache`). These reset the very anchors that
-establish a shared environment, and KV-RAG retrieval (content-matched on pre-RoPE
-summaries) can fail to surface same-scene tokens once the framing changes. The core
-design tension to resolve: at a perspective change, KEEP the scene but ALLOW the
-viewpoint to change. The whole KV state is currently treated as one bucket that is reset
-wholesale at cuts.
+The lever is the KV-cache RAG. A persistent "scene memory" partition is seeded from a
+reference perspective (perspective 0's clean anchors), preserved across independent
+`pipeline.inference()` calls (`preserve_scene_memory` + `_reset_kv_rag_keep_scene`), and
+force-injected into the first chunk of every subsequent perspective through the existing
+re-RoPE virtual-frame path. This substrate ALREADY EXISTS and is unit-tested
+(`utils/kv_rag.py`, `pipeline/causal_diffusion_inference.py`, `utils/dataset.py`
+`MultiViewPerspectiveDataset`); this plan does NOT rebuild it -- it treats it as the
+established, flag-gated baseline and a regression guard.
 
-A first-class part of this work is determining the best RAG design for this setting --
-in particular what the retrieval *key* (the lookup/index signal matched against the
-current query) and the retrieval *value* (the payload injected back into attention)
-should be. The current design indexes by a mean-pooled, per-head, pre-RoPE attention-key
-summary (one vector per stored chunk) and injects the raw frame-aligned K/V slices; both
-choices are treated here as OPEN and must be evaluated, because matching the *same scene
-from a different camera perspective* is exactly where the key representation matters most.
+The OPEN scientific question -- the center of this plan -- is: **which retrieval KEY (the
+signal a new perspective matches against the scene memory) and retrieval VALUE (the
+payload injected back) maximize cross-video consistency**, measured on REAL renders with a
+VBench-style metric suite, not a synthetic proxy. A prior round established on the 5B model
+that a GPU-free synthetic probe mis-ranked the keys -- plain `pooled` beat `salient_set` on
+rendered video (~2.5x the consistency gain) -- so selection here is render-confirmed by
+mandate, never proxy-only.
 
-The deliverable must be verifiable cheaply enough to run inside an unattended RLCR
-(`--yolo`) loop: GPU-free unit tests plus an offline metric, with full-model inference
-reserved for milestone gates only.
+This plan also strengthens the metric itself. Cross-video subject (DINO) and background
+(CLIP) consistency are extended with (a) subject-IDENTITY matching (the SAME subject across
+videos, not merely a similar-looking one) and (b) additional VBench dimensions adapted to
+the cross-video setting, with anti-cheating companions so a "make every video
+identical/frozen" collapse cannot score a fake win.
+
+Verification stays cheap per round: GPU-free unit tests + a GPU-free offline screen on
+every round. Real per-perspective renders + the VBench suite are reserved for milestone
+gates (the 5B checkpoint and GPU are available in this environment).
+
+### Prior-round context (honest baseline this plan builds on)
+
+- The independent-render + seeded-scene-memory protocol and the decoupled key/value
+  interface are implemented and tested (rounds 0-2).
+- The earlier *within-one-video cross-shot* approach, measured on the 5B model, did NOT
+  robustly beat baseline (won on 1/2 and 1/3 prompts; AC-7 failed). The cross-video VBench
+  protocol (committed `a4afab4`) is the agreed replacement and is BUILT BUT NEVER MEASURED.
+- Lesson carried forward (`BL-20260604-rendered-metric-over-probe`): never promote a
+  retrieval representation on a synthetic proxy alone -- confirm on rendered video.
 
 ## Acceptance Criteria
 
-Following TDD philosophy, each criterion includes positive and negative tests for
+Each criterion has positive (expected PASS) and negative (expected FAIL) tests for
 deterministic verification.
 
-- AC-1: KVRAGMemory exposes a persistent "scene-memory" partition that survives shot
-  boundaries, distinct from per-shot state that may still reset.
-  - Positive Tests (expected to PASS):
-    - After storing clean tokens in shot 0 and crossing a simulated shot boundary, the
-      scene-memory partition still contains the shot-0 anchor entries.
-    - The per-shot partition is cleared at the boundary when `shot_clean_recache` is on,
-      while the scene-memory partition is unaffected.
-  - Negative Tests (expected to FAIL):
-    - With the feature flag disabled, no persistent partition exists and behavior is
-      byte-identical to the current single-bucket reset (regression guard).
-    - Storing more than the configured scene-memory capacity must not grow memory without
-      bound (eviction policy is enforced, not silently ignored).
-
-- AC-2: At a shot boundary, scene-anchor tokens are force-injected into the attention
-  window of the new shot, re-RoPE'd to in-distribution relative positions.
+- AC-1: The independent-render + persistent seeded scene-memory substrate is an explicit,
+  flag-gated baseline that is preserved as a regression guard.
   - Positive Tests:
-    - On the first chunk after a boundary, the attention key/value sequence length
-      includes the injected scene-anchor tokens at the expected offset.
-    - Injected tokens carry RoPE positions consistent with the virtual-frame placement
-      used by the existing retrieval injection (no out-of-distribution positions).
+    - With `multiview_per_perspective` on, perspective 0 stores persistent anchors and
+      perspectives 1..N retrieve them across SEPARATE `inference()` calls
+      (`_reset_kv_rag_keep_scene` keeps the scene partition; per-shot partition resets).
+    - With the new flags off, control flow and outputs are byte-identical to baseline.
   - Negative Tests:
-    - Disabling injection yields no added tokens at the boundary (flag isolation).
-    - Injection must not duplicate tokens already present via the normal sink/window
-      (no double-counting of the same frame).
+    - Flags off -> no persistent partition exists (single-bucket behavior; regression).
+    - Storing beyond `scene_memory_max_entries` evicts rather than growing unbounded.
 
-- AC-3: The retrieval key and value representations are an explicit, evaluated design
-  choice, and the selected key surfaces same-scene tokens after a viewpoint change.
-  - Positive Tests (expected to PASS):
-    - At least two retrieval-KEY representations and at least two retrieval-VALUE
-      representations are implemented behind a config switch and selectable without code
-      changes (e.g. key in {pooled pre-RoPE attention key [baseline], alternative}; value
-      in {raw frame-aligned K/V [baseline], alternative}).
-    - Viewpoint-invariance probe: for two synthetic chunks that share scene/subject content
-      but differ in framing/viewpoint, the chosen key scores them as more similar than a
-      genuinely different scene at equal nominal content distance.
-    - Given a query from a new framing of the same scene, top-k retrieval returns at least
-      one same-scene anchor; scoring is deterministic for a fixed input.
-  - Negative Tests (expected to FAIL):
-    - Cross-scene contamination is rejected: a different scene's tokens are not
-      preferentially retrieved over same-scene tokens at equal content distance.
-    - A key representation that is NOT viewpoint-invariant (e.g. raw post-RoPE keys) fails
-      the viewpoint-invariance probe -- the probe must distinguish good keys from bad,
-      not pass vacuously.
-  - AC-3.1: A pluggable interface separates "how an entry is indexed" (key) from "what is
-    injected" (value), so key and value can be chosen independently (decoupled retrieval).
-    - Positive: selecting a semantic/external key while keeping raw-K/V values works.
-    - Negative: an unknown key/value name fails fast with a clear error.
-  - AC-3.2: A written comparison selects the key/value representation on the offline metric
-    (AC-6) with a recorded rationale (consistency win, cost, train-free preference).
-    - Positive: the comparison ranks the implemented variants and names a winner.
-    - Negative: a variant that regresses per-shot prompt adherence is not selected on
-      consistency score alone (anti-cheating tie-in to AC-7 guardrails).
-
-- AC-4: Backward compatibility -- all new behavior is gated behind config flags; the
-  single-shot path and the existing multi-shot path are unchanged when the new flags are
-  off.
+- AC-2: A cross-video VBench-style consistency SUITE scores a scene's per-perspective
+  videos, extended with subject-identity matching and additional VBench dimensions.
   - Positive Tests:
-    - Existing inference configs (no new flags) produce identical control flow through
-      the multi-shot scheduler (verified by the existing tests / a golden trace).
-    - The default key/value representation is the current one (pooled pre-RoPE key + raw
-      K/V), so disabling the new switch reproduces baseline retrieval exactly.
-  - Negative Tests:
-    - A config that sets a new flag without its required companion value fails fast with a
-      clear error rather than silently misbehaving.
+    - The suite computes, across a scene's videos: subject consistency (DINO),
+      background consistency (CLIP), subject-IDENTITY consistency (ArcFace embedding for
+      human subjects; DINO-patch / keypoint identity for non-human subjects, selected per
+      scene), and the adapted VBench dims `temporal_style`, `appearance_style`,
+      `overall_consistency` (CLIP text-video), `motion_smoothness`. It emits a per-dimension
+      JSON breakdown plus an aggregate, baseline vs. modified.
+    - The pure cross-video aggregation math is GPU-free unit-tested on synthetic
+      embeddings for every dimension and for identity; backbones load only under a
+      milestone flag (one-time DINO/CLIP/ArcFace download).
+  - Negative Tests (non-vacuous + anti-cheat):
+    - A degenerate "all videos identical / frozen" input scores high on raw consistency
+      but is flagged by `inter_video_diversity` and `dynamic_degree` (collapse visible).
+    - The identity metric scores same-subject synthetic embeddings strictly higher than
+      different-subject ones at equal global-feature distance (identity != mere similarity).
 
-- AC-5: GPU-free unit tests cover memory bucketing, persistence across a cut, injection
-  ordering, RoPE re-positioning, retrieval determinism, and the key/value representations.
+- AC-3: The best retrieval key/value is selected by a HYBRID procedure: a GPU-free offline
+  screen narrows candidates; finalists are render-confirmed on the AC-2 suite.
   - Positive Tests:
-    - The unit-test suite runs on CPU with no model checkpoint and passes.
+    - An offline, GPU-free screen ranks the implemented (key, value) candidates and is
+      LABELED a proxy/pre-filter (not the selector). The candidate set includes the
+      existing keys {`pooled`, `moment`, `multi_centroid`, `salient_set`, `positional`
+      [view-sensitive control]} plus >= 1 decoupled semantic key (DINO/CLIP on the decoded
+      reference anchor frame, or a caption-text embedding) and >= 1 identity-aware key; the
+      value set includes {`raw`, `mean_frame`} plus >= 1 compressed/subject-masked value.
+    - The top finalists (>= 2) are rendered per-perspective on the 5B model and scored on
+      the AC-2 suite; the WINNER is chosen on the rendered metric and is attributable
+      (settings recorded in the gate JSON).
+  - AC-3.1 (decoupling): key and value are chosen independently; a semantic/identity key
+    can index a faithful raw-K/V value. Unknown key/value names fail fast with a clear error.
   - Negative Tests:
-    - A deliberately broken injection offset is caught by the ordering/RoPE assertions.
+    - A candidate promoted on the offline proxy WITHOUT a rendered confirmation is rejected
+      (the `rendered-metric-over-probe` guard).
+    - Default key/value (current baseline) reproduces baseline retrieval exactly (AC-5 tie).
 
-- AC-6: An offline cross-perspective scene-consistency metric is added to
-  `scripts/evaluate_kv_rag.py`, runnable on `example/multiview_prompts/`.
+- AC-4: Measured cross-video win (milestone gate) -- with an HONEST null-result path.
   - Positive Tests:
-    - The script computes a per-video cross-shot consistency score from pre-rendered
-      frames and emits JSON, baseline vs. modified, without requiring a GPU render in the
-      same process.
-  - Negative Tests:
-    - The metric rejects degenerate "copy shot 0" outputs by also reporting per-shot
-      prompt-adherence / viewpoint-variation so a collapse is visible, not hidden.
+    - On the evaluated scenes, the selected config raises the AC-2 cross-video consistency
+      aggregate over the no-scene-memory baseline on >= ceil(N/2) scenes, WITHOUT regressing
+      per-video prompt adherence beyond tolerance or collapsing inter-video diversity. The
+      gate JSON records per-scene deltas + the modified settings.
+  - Negative Tests (anti-cheating / honesty -- the review MUST enforce these):
+    - A consistency gain bought by a prompt-adherence regression or a diversity/motion
+      collapse does NOT count as a pass.
+    - If no config clears the bar, a FABRICATED or cherry-picked win is the failure mode:
+      the acceptable deliverable is a recorded, evidence-backed null/partial result plus a
+      stated next hypothesis (e.g. baseline saturation on already-coherent scenes, metric
+      choice, or mechanism). "Method does not yet win, here is the evidence and the next
+      step" is a valid completion; "method wins" without committed rendered JSON is not.
 
-- AC-7 (milestone quality gate): On at least two vendored sample prompts, the modified
-  pipeline improves cross-perspective scene consistency over the baseline WITHOUT
-  regressing per-shot prompt adherence beyond a configured tolerance.
+- AC-5: Backward compatibility + GPU-free per-round verification.
   - Positive Tests:
-    - Consistency score (modified) > consistency score (baseline) on >= 2 prompts.
+    - Existing configs (no new flags) produce identical control flow; defaults reproduce
+      baseline. The per-round unit suite runs on CPU with no checkpoint and passes.
   - Negative Tests:
-    - Prompt-adherence (modified) does not drop below baseline minus tolerance on any
-      evaluated prompt (anti-cheating guard).
+    - A new flag set without its required companion value fails fast.
+    - A deliberately broken cross-video aggregation (e.g. wrong normalization) is caught by
+      the AC-2 unit assertions.
+
+- AC-6: A research ledger records the sweep.
+  - Positive Tests:
+    - `docs/retrieval-key-value-study.md` lists, per candidate, the offline-proxy rank AND
+      the rendered AC-2 breakdown (subject/background/identity/dims/companions), names the
+      winner with rationale, and gives the exact one-command reproduction.
+  - Negative Tests:
+    - A claimed winner with no committed rendered JSON evidence is rejected.
+
+- AC-7: Known-limitation transparency (no silent caps).
+  - Positive Tests:
+    - The single-GPU per-perspective eval is documented as the standing path; SP-pipeline
+      scene-memory mirroring and the DDP scene-contiguity caveat are recorded as explicit
+      known limitations.
+  - Negative Tests:
+    - A coverage bound (scene subset, seed count, finalist count) that is silently dropped
+      rather than logged is a defect.
 
 ## Path Boundaries
 
 ### Upper Bound (Maximum Acceptable Scope)
-Decoupled memory with two partitions -- a persistent "scene" partition (survives cuts,
-force-injected at boundaries) and a per-shot "composition/framing" partition (resets per
-shot) -- plus retrieval scoring biased toward same-scene anchors, plus optional
-reference-frame conditioning that keeps shot 0's clean anchors as a persistent sink. A
-pluggable, decoupled retrieval key/value layer is included, with several candidate KEY
-representations (pooled pre-RoPE key [baseline], spatially/region-structured or
-multi-centroid keys, and a viewpoint-invariant semantic key from a frozen encoder or a
-lightweight learned projection) and several VALUE representations (raw frame-aligned K/V
-[baseline], pooled/centroid anchors, subject-masked or compressed K/V), with the final
-choice selected empirically on the offline metric. Full GPU-free unit coverage and a
-complete cross-perspective metric integrated into the existing ablation harness.
+A full cross-video VBench suite (subject/background/identity + temporal_style/
+appearance_style/overall_consistency/motion_smoothness + anti-cheat companions), a candidate
+key/value matrix that adds a decoupled semantic key (frozen DINO/CLIP on a decoded anchor
+frame OR caption-text embedding) and an identity-aware key plus compressed/subject-masked
+values, a hybrid offline-screen -> rendered-confirm selection harness, and a milestone gate
+executed on the 5B model across a principled (non-cherry-picked) scene subset with the
+winner and rationale recorded. A lightweight learned retrieval projection is allowed ONLY as
+a small train-free-of-the-base-model add-on and may not become the default if it needs base
+retraining.
 
 ### Lower Bound (Minimum Acceptable Scope)
-A single persistent scene-anchor sink, populated from shot 0's clean recache and
-force-injected at every subsequent shot boundary (re-RoPE'd like existing retrieved
-tokens), gated behind one config flag, with GPU-free unit tests (AC-1, AC-2, AC-4, AC-5)
-and a working-but-minimal metric (AC-6). At minimum, the retrieval key/value study
-compares the current representation (pooled pre-RoPE key + raw K/V) against one
-alternative key and one alternative value and records the choice (AC-3). AC-7 (measured
-win) remains stretch within the lower bound.
+Extend the existing cross-video metric with subject-identity matching and at least
+`overall_consistency` + one more VBench dim (AC-2); add at least one decoupled semantic OR
+identity-aware key beyond the existing set (AC-3); run the hybrid screen and render-confirm
+at least the top-2 finalists on >= 2 non-saturated scenes (AC-3, AC-4); record the result
+honestly in the ledger (AC-6). The existing pooled/salient_set/multi_centroid keys and
+raw/mean_frame values count toward the candidate set. GPU-free unit coverage (AC-5) and the
+limitation note (AC-7) are mandatory.
 
 ### Allowed Choices
-- Can use: the existing KV-RAG infrastructure (`KVRAGMemory`, `KVRAGEntry`, the attention
-  store/retrieve hooks), new config flags with backward-compatible defaults, the existing
-  re-RoPE virtual-frame injection mechanism, existing evaluation/ablation scripts.
-- Can use for the key/value: pooled / spatially-structured / multi-centroid summaries; a
-  decoupled semantic key (DINO / CLIP on a decoded clean anchor frame, or a caption-text
-  embedding) computed once at store time; pooled/centroid, subject-masked, or
-  FP4-compressed K/V values (the repo already supports KV compression). A lightweight
-  learned retrieval projection is allowed ONLY as a small add-on that trains without
-  retraining the 5B base model.
-- Can use for the metric: an off-the-shelf frozen visual encoder (DINO / CLIP) and,
-  optionally, a face-embedding model for human subjects -- pinned and downloaded once.
-- Cannot use: any change that requires retraining the 5B base model from scratch, an
-  external document/corpus retrieval system, or that breaks existing config flags or the
-  single-shot path. A learned key/value cannot become the DEFAULT if it requires
-  base-model retraining. No new mandatory heavyweight dependency in the per-round test
-  path (the per-round unit tests must stay GPU-free and checkpoint-free).
+- Can use: the existing KV-RAG infra (`KVRAGMemory`, `KVRAGEntry`, `KVRAGConfig`, the
+  decoupled `retrieval_key_mode`/`retrieval_value_mode` switches), the re-RoPE virtual-frame
+  injection, `MultiViewPerspectiveDataset` + `preserve_scene_memory`, the ablation/gate
+  driver (`scripts/run_kv_rag_ablation.py --mode multiview_vbench`), and the evaluation
+  modules (`evaluation/vbench_consistency.py`, `evaluation/video_consistency.py`).
+- Can use for the metric: frozen DINO (`facebook/dino-vits16`), CLIP (`ViT-B/32`), an
+  ArcFace face-embedding model for human subjects, optical-flow proxies for dynamics --
+  pinned and downloaded once, milestone-only; the cross-video aggregation stays NumPy +
+  GPU-free unit-tested.
+- Can use for the key/value: pooled / moment / multi_centroid / salient_set summaries; a
+  decoupled semantic key (DINO/CLIP on a decoded clean anchor frame, or caption-text
+  embedding) computed once at store time; identity-aware keys; raw / mean_frame /
+  centroid / subject-masked / compressed values (the repo already supports KV compression).
+- Cannot use: any change that retrains the 5B base model, an external document/corpus
+  retrieval system, breaking existing config flags or the single-shot path, a new MANDATORY
+  heavyweight dependency in the per-round test path (per-round tests stay GPU-free and
+  checkpoint-free), or selecting a representation on the synthetic proxy alone.
 
-> Design-axis note: the injection *mechanism* (re-RoPE into a virtual frame block placed
-> before the local window) and the `KVRAGEntry` container layout are stable -- reuse them
-> rather than inventing a new injection path. However, the retrieval *key* (what populates
-> `summary` and how the query is matched) and the retrieval *value* (what is stored as the
-> injected payload) are explicitly OPEN and are a primary exploration axis of this plan;
-> upper and lower bounds do NOT converge for them.
-
-## Feasibility Hints and Suggestions
-
-> Reference only -- conceptual suggestions, not prescriptive requirements.
-
-### Conceptual Approach
-```
-# In KVRAGMemory: add an optional persistent partition.
-class KVRAGMemory:
-    scene_entries: list[KVRAGEntry]   # NOT cleared on shot boundary
-    shot_entries:  list[KVRAGEntry]   # cleared per existing reset policy
-
-    def store(entry, *, persistent: bool): ...
-    def reset_shot(): shot_entries.clear()           # scene_entries untouched
-    def retrieve(query, k):
-        # key_fn(query) vs key_fn(entry) similarity over scene_entries + shot_entries;
-        # optionally up-weight scene_entries; return value_fn(entry) payloads.
-        ...
-
-# In the multi-shot scheduler (pipeline/causal_diffusion_inference.py):
-on shot boundary:
-    if scene_memory_enabled:
-        anchors = memory.scene_entries top-N
-        force_inject(anchors)         # re-RoPE into the virtual frame block, like retrieval
-    apply existing multi_shot_sink / rope_offset / clean_recache as before
-
-# Populate scene_entries from shot 0's CLEAN recache (t=0), mirroring how KV-RAG
-# already stores clean slices -- just route shot-0 anchors into the persistent partition.
-```
-
-### Current baseline (what the key/value are today)
-Confirmed in `utils/kv_rag.py`:
-- Retrieval KEY: `KVRAGEntry.summary` = `_summarize(k_pre)` -- the pre-RoPE attention KEY
-  tensor `[B,T,H,D]` mean-pooled over tokens to `[B,H,D]` (per-head) and L2-normalized
-  (`_summarize`, `_score_batch`). One summary vector per stored chunk per layer; the query
-  is summarized the same way and matched by cosine. Position-invariant (pre-RoPE) but NOT
-  explicitly viewpoint-invariant, and chunk-level (the mean blends subject + background).
-- Retrieval VALUE: the raw frame-aligned per-token K/V slices (`entry.k`, `entry.v`),
-  optionally downsampled to whole frames and re-RoPE'd at injection (`reinject_rope`).
-- Granularity: store per chunk/layer; retrieve top_k chunks; matching is chunk-level.
-
-### Retrieval key/value design space (to explore and select)
-KEY (the lookup/index signal):
-- Pooled pre-RoPE attention key (baseline) -- coarse, view-sensitive mean.
-- Hidden-state (residual) summary instead of the attention-key projection.
-- Spatially-structured or multi-centroid keys (several vectors per chunk: foreground vs
-  background) to enable subject-region matching across views.
-- Viewpoint-invariant semantic key from a frozen encoder (DINO/CLIP) on the decoded clean
-  anchor frame, computed once at store time -- decoupled from the attention key space.
-- Caption/text-derived key (embed the shot caption) -- cheap, explicitly scene-aligned.
-- Lightweight learned retrieval projection (contrastive, view-invariant) -- powerful but
-  needs small add-on training; train-free options preferred.
-
-VALUE (the injected payload):
-- Raw frame-aligned K/V (baseline) -- faithful but per-layer and grows with top_k.
-- Pooled/centroid anchors -- bounded injected length; emphasize persistent scene/subject.
-- Subject-masked K/V -- inject identity/scene, not background (serves keep-subject/change-view).
-- Compressed K/V (the repo already has FP4 KV compression) -- cheaper storage.
-- Clean hidden states reprojected to K/V per layer at inject time -- avoids per-layer store.
-
-Central tension: the KEY should be viewpoint-invariant (match the same scene across
-camera angles) while the VALUE stays faithful enough to condition generation. Decoupling
-the key from the value (AC-3.1) lets a semantic/invariant key index a faithful raw-K/V
-payload -- likely the most promising starting point to evaluate.
+> Design-axis note: the injection MECHANISM (re-RoPE into a virtual frame block before the
+> local window; `virtual_frame_start()`) and the `KVRAGEntry` layout are STABLE -- reuse
+> them. The retrieval KEY (`summary` + how a query is matched) and the retrieval VALUE
+> (what is stored/injected) are the variables under study.
 
 ### Relevant References
-- `utils/kv_rag.py` - KVRAGConfig / KVRAGMemory / KVRAGEntry; `add` (store), `retrieve`,
-  `_summarize` (current key), `_score_batch` (matching). Primary site for the persistent
-  partition, eviction, and the pluggable key/value interface.
-- `wan_5b/modules/causal_model.py` - `CausalWanSelfAttention` store/retrieve/inject hooks
-  and the re-RoPE virtual-frame injection. Primary site for force-injection at boundaries.
-- `pipeline/causal_diffusion_inference.py` - per-shot scheduling, `_is_shot_boundary`,
-  `multi_shot_sink` / `rope_temporal_offset` / `shot_clean_recache`, `_reset_kv_rag`.
-  Primary site for boundary-time orchestration and flag gating.
-- `utils/dataset.py` - `MultiTextConcatDataset` directory mode (`0.json..N.json` +
-  `shot_durations.txt`) -- matches the vendored `example/multiview_prompts/` set.
-- `scripts/evaluate_kv_rag.py` - extend with the cross-perspective consistency metric.
-- `scripts/run_kv_rag_ablation.py` - baseline-vs-modified generation driver for the
-  milestone gate (AC-7).
-- `configs/inference_kv_rag.yaml` - where the new flags (incl. key/value selection) live
-  with safe defaults.
-- `example/multiview_prompts/` - vendored NVlabs single-scene multi-perspective prompts
-  (11 themes, 6-8 shots each); the standing evaluation set.
+- `utils/kv_rag.py` -- `KVRAGConfig`/`KVRAGMemory`/`KVRAGEntry`; `add` (store), `retrieve`,
+  `_compute_key` (key modes), `_apply_value_mode` (value modes), scene partition,
+  `reset_shot`, `_reset_kv_rag_keep_scene`, `virtual_frame_start`. Primary key/value site.
+- `pipeline/causal_diffusion_inference.py` -- `preserve_scene_memory`,
+  `_reset_kv_rag_keep_scene`, boundary force-inject orchestration.
+- `utils/dataset.py` -- `MultiViewPerspectiveDataset` (one sample per perspective; emits
+  `scene_name`, `perspective_index`, `is_first_perspective`).
+- `inference.py` -- per-prompt independent render loop; `multiview_per_perspective`.
+- `evaluation/vbench_consistency.py` -- cross-video subject(DINO)+background(CLIP) +
+  anti-cheat companions; EXTEND with identity + extra dims here.
+- `evaluation/video_consistency.py` -- `discover_videos`, `pair_cross_perspective_dirs`,
+  the `<prefix>-rankN-<scene>-pP-seedS_model` naming, CLIP prompt-adherence.
+- `scripts/run_kv_rag_ablation.py` -- baseline-vs-modified render/gate driver with
+  `--modified_retrieval_key_mode/_value_mode/...` overrides; `--mode multiview_vbench`.
+- `scripts/evaluate_kv_rag.py` -- offline metric entry; `--mode multiview_vbench`.
+- `docs/retrieval-key-value-study.md` -- the research ledger (extend).
+- `docs/multiview_gate_results/*.json` -- committed rendered evidence.
+- `example/multiview_prompts/` -- the standing scene set (11 scenes, 4-8 prompts each).
 
 ## Dependencies and Sequence
 
 ### Milestones
-1. Persistent scene memory (data layer): AC-1, AC-4, AC-5(partial)
-   - Phase A: add the scene partition + eviction to `KVRAGMemory`, flag-gated.
-   - Phase B: route shot-0 clean-recache anchors into the persistent partition.
-2. Boundary-time injection (attention layer): AC-2, AC-5
-   - Phase A: force-inject scene anchors at shot boundaries via the existing re-RoPE path.
-   - Phase B: ordering/positioning assertions; ensure no duplication with sink/window.
-3. Retrieval key/value design study: AC-3
-   - Step 1: add a pluggable, decoupled key/value interface (config switch) over the
-     existing `_summarize` / `entry.k,v` path; default reproduces the baseline.
-   - Step 2: implement >= 2 key and >= 2 value representations (including a
-     viewpoint-invariant key) + scene-aware scoring/up-weighting.
-   - Step 3: unit tests (determinism + viewpoint-invariance probe); compare on the offline
-     metric and select the winner.
-4. Evaluation (offline): AC-6
-   - Step 1: cross-perspective consistency metric + anti-cheating companion metrics.
-   - Step 2: wire into `evaluate_kv_rag.py`; consume pre-rendered frames.
-5. Milestone quality gate (expensive, few seeds): AC-7
-   - Step 1: render baseline + modified on >= 2 vendored prompts via the ablation driver.
-   - Step 2: report consistency win + prompt-adherence non-regression.
+1. Metric suite (offline, GPU-free math): AC-2, AC-5
+   - Phase A: subject-identity matching (ArcFace human / DINO-patch non-human) + synthetic
+     unit tests (same vs different subject is non-vacuous).
+   - Phase B: additional VBench dims (temporal_style, appearance_style, overall_consistency,
+     motion_smoothness) adapted to cross-video aggregation + unit tests; JSON breakdown.
+2. Candidate key/value space: AC-3, AC-3.1, AC-5
+   - Phase A: design the candidate matrix + the offline-proxy screen as an explicit
+     pre-filter (analyze).
+   - Phase B: implement the decoupled semantic key + identity-aware key (+ any new value);
+     default reproduces baseline; fail-fast; unit tests.
+3. Hybrid selection: AC-3
+   - Phase A: offline screen ranks all candidates (GPU-free).
+   - Phase B: render the finalists per-perspective on the 5B model; score on the AC-2 suite.
+4. Milestone gate + ledger: AC-4, AC-6
+   - Phase A: execute the gate on a principled scene subset; record per-scene deltas +
+     adherence/diversity non-regression; honest null path if no win.
+   - Phase B: write the ledger ranking + winner/rationale + reproduction command.
+5. Limitation note: AC-7.
 
-Milestone 2 depends on 1. Milestone 3 depends on 1 (and is evaluated via 4). Milestone 4
-depends on 1 (and 2/3 for meaningful eval). Milestone 5 depends on 3 and 4 (and a working 2).
+Milestone 2 depends on 1 (selection is judged by it). Milestone 3 depends on 1 and 2.
+Milestone 4 depends on 3. Milestone 5 is independent documentation.
 
 ## Task Breakdown
 
-Each task includes exactly one routing tag: `coding` (Claude) or `analyze` (Codex).
+Each task carries exactly one routing tag: `coding` (Claude) or `analyze` (Codex).
 
 | Task ID | Description | Target AC | Tag | Depends On |
 |---------|-------------|-----------|-----|------------|
-| task1 | Add flag-gated persistent scene partition + eviction to KVRAGMemory | AC-1, AC-4 | coding | - |
-| task2 | Route shot-0 clean-recache anchors into the persistent partition | AC-1 | coding | task1 |
-| task3 | Force-inject scene anchors at shot boundaries via existing re-RoPE virtual-frame path | AC-2 | coding | task2 |
-| task4 | GPU-free unit tests: persistence-across-cut, injection ordering, RoPE re-positioning, retrieval determinism | AC-5 | coding | task3 |
-| task5 | Review injection placement for OOD RoPE positions / duplication risk vs sink+window | AC-2 | analyze | task3 |
-| task6 | Scene-aware retrieval scoring/up-weighting | AC-3 | coding | task11 |
-| task7 | Cross-perspective consistency metric + anti-cheating companion metrics | AC-6 | coding | - |
-| task8 | Wire metric into evaluate_kv_rag.py; consume pre-rendered frames; emit JSON | AC-6 | coding | task7 |
-| task9 | Milestone gate: render baseline+modified on >=2 vendored prompts; report win + non-regression | AC-7 | analyze | task3, task8 |
-| task10 | Design study: enumerate/analyze candidate (key, value) representations; recommend a shortlist with rationale (viewpoint invariance, cost, train-free) | AC-3 | analyze | task1 |
-| task11 | Add pluggable, decoupled retrieval key/value interface (config switch); >=2 key reps and >=2 value reps incl. a viewpoint-invariant key; default = baseline | AC-3, AC-3.1, AC-4 | coding | task10 |
-| task12 | Unit tests per representation: determinism + viewpoint-invariance probe (good keys pass, view-sensitive keys fail) | AC-3, AC-5 | coding | task11 |
-| task13 | Compare implemented key/value variants on the offline metric; select with recorded rationale | AC-3.2 | analyze | task11, task8 |
+| task1 | Add subject-IDENTITY cross-video matching (ArcFace human / DINO-patch non-human, per-scene subject selector) to `evaluation/vbench_consistency.py`; GPU-free synthetic unit tests (same > different) | AC-2 | coding | - |
+| task2 | Add adapted cross-video VBench dims (temporal_style, appearance_style, overall_consistency, motion_smoothness); per-dim JSON breakdown + aggregate; GPU-free unit tests | AC-2 | coding | - |
+| task3 | Design the candidate (key, value) matrix incl. a decoupled semantic key + identity-aware key; specify the offline-proxy screen as a labeled pre-filter (NOT the selector) with its known failure modes | AC-3 | analyze | - |
+| task4 | Implement the decoupled semantic key (DINO/CLIP on decoded anchor frame OR caption-text) + identity-aware key (+ any new value rep); default = baseline; fail-fast on unknown names; unit tests | AC-3, AC-3.1, AC-5 | coding | task3 |
+| task5 | Hybrid sweep harness: offline screen ranks all candidates; finalists rendered per-perspective via `run_kv_rag_ablation.py --mode multiview_vbench`; settings recorded in gate JSON | AC-3 | coding | task1, task2, task4 |
+| task6 | Execute the milestone gate on a principled non-saturated scene subset; record per-scene consistency deltas + adherence/diversity non-regression; honest null path | AC-4 | coding | task5 |
+| task7 | GPU-free unit tests across new metric dims + key/value reps + backward-compat regression | AC-5 | coding | task1, task2, task4 |
+| task8 | Research ledger: rank candidates on the RENDERED AC-2 metric, name the winner + rationale, add the one-command reproduction; reject proxy-only claims | AC-6 | analyze | task5, task6 |
+| task9 | Document SP-pipeline scene-memory mirroring + DDP scene-contiguity as explicit known limitations; single-GPU eval as the standing path | AC-7 | analyze | - |
 
 ## Claude-Codex Deliberation
 
 ### Agreements
-- The persistent scene partition must be flag-gated with backward-compatible defaults.
-- Per-round verification must remain GPU-free and checkpoint-free; full render is a
-  milestone-only gate.
-- Injected scene anchors must reuse the existing re-RoPE virtual-frame placement to stay
-  in-distribution.
-- The retrieval key/value representation is an open design axis and must be selected
-  empirically, not assumed; the default representation reproduces today's behavior.
+- The independent-render + seeded-scene-memory substrate and the decoupled key/value
+  interface are established; this plan studies the key/value choice, it does not rebuild
+  the mechanism.
+- Selection of any retrieval representation MUST be confirmed on rendered video via the
+  AC-2 VBench suite; the GPU-free offline screen is a pre-filter only.
+- Per-round verification stays GPU-free and checkpoint-free; renders are milestone-only.
+- A null/partial result, recorded honestly with committed rendered evidence, is an
+  acceptable completion; a fabricated or proxy-only "win" is not.
 
 ### Resolved Disagreements
-- (To be populated by the RLCR loop's Codex review.) This plan was hand-authored from a
-  repo exploration rather than produced by `gen-plan`'s Claude-Codex deliberation, so the
-  loop's review pass is expected to exercise and refine these design decisions --
-  especially the key/value representation choice.
+- (To be populated by the RLCR loop's Codex review.) The prior cross-shot framing failed
+  its gate on the 5B model; this plan adopts the cross-video VBench protocol as primary and
+  is expected to be exercised/refined by the loop's review pass, especially the candidate
+  key/value matrix and the win/null bar in AC-4.
 
 ### Convergence Status
-- Final Status: `partially_converged` (pending Codex review during the loop and the user
-  decisions below).
+- Final Status: `partially_converged` (pending the loop's Codex review).
 
-## Pending User Decisions
+## Pending User Decisions (resolved)
 
-- DEC-1: Consistency-metric backbone.
-  - Claude Position: DINO features on the shared scene region (robust to framing changes),
-    with optional ArcFace for human subjects.
-  - Codex Position: (pending)
-  - Tradeoff Summary: DINO is viewpoint-robust and general; CLIP is cheaper but more
-    semantic; ArcFace is identity-specific but only applies to faces.
-  - Decision Status: PENDING
-
-- DEC-2: Scene-memory retention policy.
-  - Claude Position: keep shot-0 anchors as a fixed persistent sink (bounded, simple).
-  - Codex Position: (pending)
-  - Tradeoff Summary: fixed shot-0 sink is simple and cheap but may not represent later
-    scene state; a rolling/most-salient policy adapts but adds eviction complexity.
-  - Decision Status: PENDING
-
-- DEC-3: Milestone-gate compute budget (how many prompts / seeds / resolution for AC-7).
-  - Claude Position: 2 prompts x 1 seed at the existing inference resolution per gate.
-  - Codex Position: (pending)
-  - Tradeoff Summary: more prompts/seeds give a stronger signal but cost GPU time the
-    unattended loop should not spend every round.
-  - Decision Status: PENDING
-
-- DEC-4: Retrieval KEY representation.
-  - Claude Position: start from the baseline pooled pre-RoPE key, then add a decoupled
-    viewpoint-invariant key (DINO/CLIP on the clean anchor frame, or multi-centroid
-    pre-RoPE keys) and select on the metric. Prefer train-free.
-  - Codex Position: (pending)
-  - Tradeoff Summary: baseline is free but view-sensitive; a semantic key is view-robust
-    but adds an encoder + decode at store time; a learned key is strongest but needs
-    add-on training.
-  - Decision Status: PENDING
-
-- DEC-5: Retrieval VALUE representation.
-  - Claude Position: keep raw frame-aligned K/V as the faithful default; evaluate
-    pooled/centroid anchors and subject-masked K/V to bound injected length and emphasize
-    the persistent scene/subject.
-  - Codex Position: (pending)
-  - Tradeoff Summary: raw K/V is faithful but heavy; pooled/masked/compressed is cheaper
-    and more targeted but lossy.
-  - Decision Status: PENDING
-
-- DEC-6: Key/value coupling and matching granularity.
-  - Claude Position: decouple the key from the value (a semantic key indexing a raw-K/V
-    payload) and move from chunk-level toward region/centroid-level matching.
-  - Codex Position: (pending)
-  - Tradeoff Summary: decoupling + finer granularity should improve cross-view recall but
-    adds bookkeeping and store-time cost.
-  - Decision Status: PENDING
-
-## Implementation Notes
-
-### Code Style Requirements
-- Implementation code and comments must NOT contain plan-specific terminology such as
-  "AC-", "Milestone", "Step", "Phase", or similar workflow markers.
-- Use descriptive, domain-appropriate naming (e.g. `scene_memory`, `persistent_anchors`,
-  `inject_scene_anchors`, `retrieval_key_mode`, `retrieval_value_mode`) rather than plan
-  identifiers.
-- New behavior is additive and flag-gated; defaults preserve current outputs, including
-  the default retrieval key/value representation.
+- DEC-1: Consistency-metric backbones. RESOLVED -> cross-video subject (DINO) + background
+  (CLIP) + subject-IDENTITY (ArcFace for humans, DINO-patch/keypoint for non-humans) +
+  the adapted VBench dims (temporal_style, appearance_style, overall_consistency,
+  motion_smoothness), with the diversity/dynamics/adherence anti-cheats retained.
+- DEC-2: Scene-memory retention/seed policy. RESOLVED (default, treated as a sweep axis) ->
+  seed persistent anchors from reference perspective 0; bounded `scene_memory_max_entries`;
+  salient/rolling retention may be compared as part of the key/value study, not a blocker.
+- DEC-3: Experiment compute model. RESOLVED -> HYBRID: a GPU-free offline screen each round
+  narrows candidates; only finalists get a real per-perspective render + the AC-2 VBench
+  suite at milestone gates.
+- DEC-4: Retrieval KEY/VALUE selection. RESOLVED -> empirical, render-confirmed. Sweep the
+  existing keys plus a decoupled semantic key and an identity-aware key; values raw/
+  mean_frame plus a compressed/subject-masked option; pick the winner on the rendered
+  AC-2 metric (the synthetic proxy is a pre-filter, never the selector).

@@ -1,0 +1,237 @@
+{
+  "comparison": {
+    "baseline_summary": {
+      "cross_shot_scene_consistency": {
+        "count": 3,
+        "mean": 0.45973947103525675,
+        "std": 0.1560431899649611
+      },
+      "inter_shot_composition_diversity": {
+        "count": 3,
+        "mean": 0.11134077983150548,
+        "std": 0.024574178933408054
+      },
+      "num_shots": {
+        "count": 3,
+        "mean": 2.6666666666666665,
+        "std": 0.4714045207910317
+      },
+      "prompt_adherence_mean": {
+        "count": 3,
+        "mean": 0.2817749132712682,
+        "std": 0.018902348049811755
+      },
+      "prompt_adherence_min": {
+        "count": 3,
+        "mean": 0.26714762051900226,
+        "std": 0.027077523457743218
+      },
+      "within_shot_motion": {
+        "count": 3,
+        "mean": 0.0010609278429506554,
+        "std": 0.00020613016152204634
+      }
+    },
+    "delta_summary": {
+      "cross_shot_scene_consistency": {
+        "count": 3,
+        "mean": 0.013536777843030692,
+        "std": 0.04221916596470755
+      },
+      "inter_shot_composition_diversity": {
+        "count": 3,
+        "mean": 0.000219766557979173,
+        "std": 0.0027259334960109635
+      },
+      "prompt_adherence_mean": {
+        "count": 3,
+        "mean": -0.0020885748995675044,
+        "std": 0.004880332520646853
+      },
+      "prompt_adherence_min": {
+        "count": 3,
+        "mean": -0.004675745964050293,
+        "std": 0.005084238811846361
+      },
+      "within_shot_motion": {
+        "count": 3,
+        "mean": 1.7730027644170608e-05,
+        "std": 1.860416876542472e-05
+      }
+    },
+    "modified_summary": {
+      "cross_shot_scene_consistency": {
+        "count": 3,
+        "mean": 0.4732762488782874,
+        "std": 0.183135493041594
+      },
+      "inter_shot_composition_diversity": {
+        "count": 3,
+        "mean": 0.11156054638948465,
+        "std": 0.02701139217550189
+      },
+      "num_shots": {
+        "count": 3,
+        "mean": 2.6666666666666665,
+        "std": 0.4714045207910317
+      },
+      "prompt_adherence_mean": {
+        "count": 3,
+        "mean": 0.2796863383717007,
+        "std": 0.019319315200821217
+      },
+      "prompt_adherence_min": {
+        "count": 3,
+        "mean": 0.26247187455495197,
+        "std": 0.024741175519522075
+      },
+      "within_shot_motion": {
+        "count": 3,
+        "mean": 0.0010786578705948258,
+        "std": 0.00018999446535548402
+      }
+    },
+    "num_pairs": 3,
+    "records": [
+      {
+        "baseline": "videos/kv_rag_gate_ac7/baseline/baseline-rank0-aquamarine_underwater-seed0_regular.mp4",
+        "baseline_metrics": {
+          "cross_shot_scene_consistency": 0.240128696891843,
+          "inter_shot_composition_diversity": 0.09104785713942676,
+          "num_shots": 3.0,
+          "prompt_adherence_mean": 0.28116441766421,
+          "prompt_adherence_min": 0.2776535451412201,
+          "within_shot_motion": 0.0012264508986845613
+        },
+        "delta": {
+          "cross_shot_scene_consistency": -0.02471551227741428,
+          "inter_shot_composition_diversity": -0.00029859978877699866,
+          "prompt_adherence_mean": 0.004811892906824711,
+          "prompt_adherence_min": 0.00011941790580749512,
+          "within_shot_motion": 1.4952849596738815e-05
+        },
+        "modified": "videos/kv_rag_gate_ac7/kv_rag/kv_rag-rank0-aquamarine_underwater-seed0_regular.mp4",
+        "modified_metrics": {
+          "cross_shot_scene_consistency": 0.2154131846144287,
+          "inter_shot_composition_diversity": 0.09074925735064976,
+          "num_shots": 3.0,
+          "prompt_adherence_mean": 0.28597631057103473,
+          "prompt_adherence_min": 0.2777729630470276,
+          "within_shot_motion": 0.0012414037482813
+        },
+        "stem": "baseline-rank0-aquamarine_underwater-seed0_regular"
+      },
+      {
+        "baseline": "videos/kv_rag_gate_ac7/baseline/baseline-rank0-frying_egg_closeup-seed0_regular.mp4",
+        "baseline_metrics": {
+          "cross_shot_scene_consistency": 0.5507686334662303,
+          "inter_shot_composition_diversity": 0.14592048434820726,
+          "num_shots": 3.0,
+          "prompt_adherence_mean": 0.3052246769269307,
+          "prompt_adherence_min": 0.2937852144241333,
+          "within_shot_motion": 0.0011859788598182301
+        },
+        "delta": {
+          "cross_shot_scene_consistency": 0.07236504737461191,
+          "inter_shot_composition_diversity": 0.0037872034073810346,
+          "prompt_adherence_mean": -0.005657662947972597,
+          "prompt_adherence_min": -0.011713266372680664,
+          "within_shot_motion": -3.539452639718995e-06
+        },
+        "modified": "videos/kv_rag_gate_ac7/kv_rag/kv_rag-rank0-frying_egg_closeup-seed0_regular.mp4",
+        "modified_metrics": {
+          "cross_shot_scene_consistency": 0.6231336808408422,
+          "inter_shot_composition_diversity": 0.1497076877555883,
+          "num_shots": 3.0,
+          "prompt_adherence_mean": 0.29956701397895813,
+          "prompt_adherence_min": 0.28207194805145264,
+          "within_shot_motion": 0.0011824394071785111
+        },
+        "stem": "baseline-rank0-frying_egg_closeup-seed0_regular"
+      },
+      {
+        "baseline": "videos/kv_rag_gate_ac7/baseline/baseline-rank0-shimmering_puzzle_surface-seed0_regular.mp4",
+        "baseline_metrics": {
+          "cross_shot_scene_consistency": 0.588321082747697,
+          "inter_shot_composition_diversity": 0.09705399800688241,
+          "num_shots": 2.0,
+          "prompt_adherence_mean": 0.2589356452226639,
+          "prompt_adherence_min": 0.23000410199165344,
+          "within_shot_motion": 0.0007703537703491747
+        },
+        "delta": {
+          "cross_shot_scene_consistency": -0.0070392015681055575,
+          "inter_shot_composition_diversity": -0.002829303944666517,
+          "prompt_adherence_mean": -0.0054199546575546265,
+          "prompt_adherence_min": -0.00243338942527771,
+          "within_shot_motion": 4.1776685975492e-05
+        },
+        "modified": "videos/kv_rag_gate_ac7/kv_rag/kv_rag-rank0-shimmering_puzzle_surface-seed0_regular.mp4",
+        "modified_metrics": {
+          "cross_shot_scene_consistency": 0.5812818811795915,
+          "inter_shot_composition_diversity": 0.0942246940622159,
+          "num_shots": 2.0,
+          "prompt_adherence_mean": 0.25351569056510925,
+          "prompt_adherence_min": 0.22757071256637573,
+          "within_shot_motion": 0.0008121304563246667
+        },
+        "stem": "baseline-rank0-shimmering_puzzle_surface-seed0_regular"
+      }
+    ],
+    "skipped_stems": []
+  },
+  "gate": {
+    "ac7_evaluated": true,
+    "adherence_failures": [],
+    "adherence_ok": true,
+    "adherence_tolerance": 0.02,
+    "consistency_ok": false,
+    "consistency_wins": 1,
+    "min_consistency_wins": 2,
+    "modified_settings": {
+      "boundary_inject_anchors": 2,
+      "retrieval_key_mode": "pooled",
+      "retrieval_value_mode": "raw",
+      "scene_memory_enabled": true,
+      "scene_score_bonus": 0.1
+    },
+    "num_pairs": 3,
+    "passed": false,
+    "per_prompt": [
+      {
+        "adherence_baseline_mean": 0.28116441766421,
+        "adherence_baseline_min": 0.2776535451412201,
+        "adherence_modified_mean": 0.28597631057103473,
+        "adherence_modified_min": 0.2777729630470276,
+        "adherence_ok": true,
+        "consistency_baseline": 0.240128696891843,
+        "consistency_modified": 0.2154131846144287,
+        "consistency_win": false,
+        "stem": "baseline-rank0-aquamarine_underwater-seed0_regular"
+      },
+      {
+        "adherence_baseline_mean": 0.3052246769269307,
+        "adherence_baseline_min": 0.2937852144241333,
+        "adherence_modified_mean": 0.29956701397895813,
+        "adherence_modified_min": 0.28207194805145264,
+        "adherence_ok": true,
+        "consistency_baseline": 0.5507686334662303,
+        "consistency_modified": 0.6231336808408422,
+        "consistency_win": true,
+        "stem": "baseline-rank0-frying_egg_closeup-seed0_regular"
+      },
+      {
+        "adherence_baseline_mean": 0.2589356452226639,
+        "adherence_baseline_min": 0.23000410199165344,
+        "adherence_modified_mean": 0.25351569056510925,
+        "adherence_modified_min": 0.22757071256637573,
+        "adherence_ok": true,
+        "consistency_baseline": 0.588321082747697,
+        "consistency_modified": 0.5812818811795915,
+        "consistency_win": false,
+        "stem": "baseline-rank0-shimmering_puzzle_surface-seed0_regular"
+      }
+    ],
+    "require_adherence": true
+  }
+}
