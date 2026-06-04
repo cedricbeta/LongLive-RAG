@@ -580,10 +580,45 @@ def _parse_finalists(spec: str) -> list[tuple[str, str]]:
     return out
 
 
+def _missing_requested_backbones(backbones: dict) -> list[str]:
+    """Names of AC-2 backbones that were REQUESTED (--vbench_*) but failed to load."""
+    return sorted(
+        name for name, info in backbones.items()
+        if isinstance(info, dict) and info.get("requested") and not info.get("loaded")
+    )
+
+
+def _finalize_finalist_ranking(finalist_records: list, missing_requested_backbones: list):
+    """Rank finalists and decide winner/null -- FAIL-CLOSED on missing backbones.
+
+    If any REQUESTED AC-2 backbone failed to load, a winner must NOT be selected on
+    the reduced aggregate (the rendered selector is incomplete, so a reduced-suite
+    "win" would violate AC-3/AC-6): every finalist is forced ``passed=False`` with a
+    ``blocked_reason`` so the result is an explicit null. With all requested
+    backbones present, the best passing finalist (by mean rendered aggregate delta)
+    wins. Returns ``(ranked, winner, blocked_reason)``.
+    """
+    blocked_reason = None
+    if missing_requested_backbones:
+        blocked_reason = (
+            "requested AC-2 backbone(s) unavailable: "
+            f"{list(missing_requested_backbones)}; refusing to select a rendered winner "
+            "on a reduced AC-2 suite (fail-closed)."
+        )
+        for fr in finalist_records:
+            fr["passed"] = False
+            fr["blocked_reason"] = blocked_reason
+    ranked = sorted(finalist_records, key=lambda r: (r["passed"], r["mean_aggregate_delta"]),
+                    reverse=True)
+    winner = next((r for r in ranked if r["passed"]), None)
+    return ranked, winner, blocked_reason
+
+
 def _run_multiview_finalists(args, output_root: Path) -> None:
     """AC-3/AC-4/AC-6 consolidated finalist gate: render the baseline ONCE and each
     finalist (key,value) against it, score the FULL AC-2 suite, rank on the rendered
-    aggregate, and write one ranked JSON (winner or honest null)."""
+    aggregate, and write one ranked JSON (winner or honest null). FAIL-CLOSED: a
+    requested AC-2 backbone that cannot load forces a null, never a reduced-suite win."""
     from evaluation.vbench_consistency import (
         build_clip_image_encoder, build_dino_encoder, build_identity_encoder,
         compare_multiview_vbench_dirs, evaluate_multiview_vbench_gate,
@@ -683,15 +718,16 @@ def _run_multiview_finalists(args, output_root: Path) -> None:
             "gate": gate, "comparison": result,
         })
 
-    # Rank: passing finalists first, then by mean rendered aggregate delta.
-    ranked = sorted(finalist_records, key=lambda r: (r["passed"], r["mean_aggregate_delta"]),
-                    reverse=True)
-    winner = next((r for r in ranked if r["passed"]), None)
+    # Rank + decide winner/null, FAIL-CLOSED if a requested backbone is missing.
+    missing_requested = _missing_requested_backbones(backbones)
+    ranked, winner, blocked_reason = _finalize_finalist_ranking(finalist_records, missing_requested)
     consolidated = {
         "is_prefilter": False,
         "selector": "rendered AC-2 suite",
         "winner": ({"key": winner["key"], "value": winner["value"]} if winner else None),
         "is_null_result": winner is None,
+        "missing_requested_backbones": missing_requested,
+        "blocked_reason": blocked_reason,
         "ranking": [{"key": r["key"], "value": r["value"], "passed": r["passed"],
                      "mean_aggregate_delta": r["mean_aggregate_delta"],
                      "scene_wins": f"{r['scene_wins']}/{r['num_scenes']}"} for r in ranked],
@@ -707,12 +743,17 @@ def _run_multiview_finalists(args, output_root: Path) -> None:
     metrics_json = Path(args.metrics_json) if args.metrics_json else output_root / "multiview_finalist_gate.json"
     save_metrics_json(consolidated, metrics_json)
     print(f"Wrote metrics: {metrics_json.resolve()}")
+    if blocked_reason:
+        print(f"[finalist-gate] BLOCKED (fail-closed): {blocked_reason}")
     print("[finalist-gate] RANKING (rendered AC-2 aggregate):")
     for r in ranked:
         print(f"  {r['key']}+{r['value']}: mean_agg_delta={r['mean_aggregate_delta']:+.4f} "
               f"wins={r['scene_wins']}/{r['num_scenes']} passed={r['passed']}")
     if winner:
         print(f"[finalist-gate] WINNER: {winner['key']}+{winner['value']}")
+    elif blocked_reason:
+        print("[finalist-gate] RESULT: NULL (blocked) -- requested AC-2 backbone(s) "
+              "unavailable; no winner on a reduced suite.")
     else:
         print("[finalist-gate] RESULT: honest NULL -- no finalist passed all guards.")
 
