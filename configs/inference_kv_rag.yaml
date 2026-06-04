@@ -57,6 +57,27 @@ inference:
     # Set both false to reproduce the legacy stale-absolute-RoPE injection path.
     reinject_rope: true
     frame_aligned_store: true
+    # --- single-scene multi-perspective consistency (default off) ---
+    # Persistent "scene" partition that survives shot boundaries so different
+    # camera angles of one environment stay coherent. Defaults below are off, so
+    # this config behaves exactly like plain KV-RAG until you opt in. For the
+    # multi-view prompts in example/multiview_prompts/, enable all four:
+    #   scene_memory_enabled: true
+    #   boundary_inject_anchors: 2     # force-inject scene anchors at each cut
+    #   scene_score_bonus: 0.1         # prefer the shared scene during matching
+    #   retrieval_key_mode: salient_set  # recommended viewpoint-robust key
+    scene_memory_enabled: false
+    scene_memory_max_entries: 8
+    scene_score_bonus: 0.0
+    boundary_inject_anchors: 0
+    # --- decoupled retrieval key/value representations ---
+    # key in {pooled [baseline], moment, multi_centroid, salient_set, positional};
+    # value in {raw [baseline], mean_frame}. Defaults reproduce the baseline.
+    # See docs/retrieval-key-value-study.md for the comparison and selection.
+    retrieval_key_mode: pooled
+    retrieval_key_centroids: 4
+    retrieval_key_top_m: 8
+    retrieval_value_mode: raw
 
 checkpoints:
   generator_ckpt: /path/to/longlive2/generator_checkpoint.pt

@@ -182,6 +182,210 @@ def save_metrics_json(result: dict[str, object], output_path: str | Path) -> Non
         json.dump(result, f, indent=2, sort_keys=True)
 
 
+# ---------------------------------------------------------------------------
+# Cross-perspective scene consistency (single scene, multiple camera angles)
+# ---------------------------------------------------------------------------
+#
+# A multi-shot video can depict ONE scene from DIFFERENT viewpoints. We want
+# two things to be true at once and we report them separately so neither can
+# hide a failure of the other:
+#   * scene consistency  -- successive shots read as the SAME place (high),
+#     measured with a framing-robust global color signature;
+#   * viewpoint variation -- the shots are genuinely DIFFERENT framings (not a
+#     frozen copy of shot 0), measured with a framing-sensitive layout signature.
+# A model that cheats by repeating shot 0 maxes out scene consistency but
+# collapses viewpoint variation and within-shot motion, so the collapse is
+# visible rather than rewarded.
+
+
+def scene_color_signature(frame_rgb: np.ndarray) -> np.ndarray:
+    """Framing-robust global HSV color histogram (normalized).
+
+    Camera moves rearrange where things are but largely preserve the palette of
+    the scene, so this is a viewpoint-robust "same place" signal.
+    """
+    hsv = cv2.cvtColor(frame_rgb, cv2.COLOR_RGB2HSV)
+    hist = cv2.calcHist([hsv], [0, 1, 2], None, [16, 8, 8], [0, 180, 0, 256, 0, 256]).astype(np.float32)
+    hist = hist.reshape(-1)
+    hist /= max(float(hist.sum()), 1e-6)
+    return hist
+
+
+def composition_signature(frame_rgb: np.ndarray) -> np.ndarray:
+    """Framing-SENSITIVE spatial layout: downsampled luminance + edge map.
+
+    A different camera angle changes the spatial arrangement, so this signal
+    separates genuine viewpoint changes from a repeated frame.
+    """
+    gray = cv2.cvtColor(frame_rgb, cv2.COLOR_RGB2GRAY).astype(np.float32) / 255.0
+    small = cv2.resize(gray, (16, 16), interpolation=cv2.INTER_AREA).reshape(-1)
+    sobel_x = cv2.Sobel(gray, cv2.CV_32F, 1, 0, ksize=3)
+    sobel_y = cv2.Sobel(gray, cv2.CV_32F, 0, 1, ksize=3)
+    edge = cv2.resize(np.sqrt(sobel_x ** 2 + sobel_y ** 2), (16, 16), interpolation=cv2.INTER_AREA).reshape(-1)
+    feature = np.concatenate([small, edge], axis=0).astype(np.float32)
+    norm = float(np.linalg.norm(feature))
+    return feature / norm if norm > 0 else feature
+
+
+def shot_ranges(num_frames: int, *, num_shots: int | None = None,
+                boundaries: list[int] | None = None) -> list[tuple[int, int]]:
+    """Return ``[(start, end), ...]`` frame ranges per shot.
+
+    ``boundaries`` (sorted frame indices where each shot starts, first need not
+    be 0) takes precedence; otherwise the frames are split into ``num_shots``
+    contiguous, near-equal segments (the vendored multi-view prompts use equal
+    shot durations).
+    """
+    if num_frames <= 0:
+        return []
+    if boundaries:
+        starts = sorted({0, *[b for b in boundaries if 0 < b < num_frames]})
+        ends = starts[1:] + [num_frames]
+        return list(zip(starts, ends))
+    shots = max(1, int(num_shots or 1))
+    shots = min(shots, num_frames)
+    edges = [round(i * num_frames / shots) for i in range(shots + 1)]
+    return [(edges[i], edges[i + 1]) for i in range(shots) if edges[i + 1] > edges[i]]
+
+
+def _mean_pairwise(features: np.ndarray) -> float:
+    """Mean pairwise cosine similarity over rows of ``features`` ([N, D])."""
+    n = features.shape[0]
+    if n < 2:
+        return float("nan")
+    sims = []
+    for i in range(n):
+        for j in range(i + 1, n):
+            sims.append(cosine_similarity(features[i], features[j]))
+    return float(np.mean(sims)) if sims else float("nan")
+
+
+def cross_perspective_consistency(scene_feats: np.ndarray, comp_feats: np.ndarray) -> dict[str, float]:
+    """Pure scoring over per-shot feature means (no video decode).
+
+    Args:
+        scene_feats: ``[num_shots, D_scene]`` per-shot framing-robust signatures.
+        comp_feats:  ``[num_shots, D_comp]`` per-shot framing-sensitive signatures.
+    """
+    scene_feats = np.asarray(scene_feats, dtype=np.float64)
+    comp_feats = np.asarray(comp_feats, dtype=np.float64)
+    scene_consistency = _mean_pairwise(scene_feats)
+    comp_similarity = _mean_pairwise(comp_feats)
+    # diversity is high when shots are framed differently; ~0 means copy-collapse
+    diversity = float("nan") if np.isnan(comp_similarity) else 1.0 - comp_similarity
+    return {
+        "cross_shot_scene_consistency": scene_consistency,
+        "inter_shot_composition_diversity": diversity,
+        "num_shots": float(scene_feats.shape[0]),
+    }
+
+
+def cross_perspective_metrics(
+    frames: np.ndarray,
+    *,
+    num_shots: int | None = None,
+    boundaries: list[int] | None = None,
+) -> dict[str, float]:
+    """Cross-perspective scene-consistency metrics for one multi-shot video.
+
+    Reports scene consistency together with two anti-cheating companions
+    (viewpoint variation and within-shot motion) so a degenerate "copy shot 0"
+    output is visible instead of scoring a fake consistency win.
+    """
+    if frames.ndim != 4 or frames.shape[-1] != 3:
+        raise ValueError(f"Expected RGB video [T,H,W,3], got shape={frames.shape}")
+    ranges = shot_ranges(frames.shape[0], num_shots=num_shots, boundaries=boundaries)
+    if len(ranges) < 2:
+        raise ValueError("Need at least two shots to measure cross-perspective consistency")
+
+    scene_per_frame = np.stack([scene_color_signature(f) for f in frames], axis=0)
+    comp_per_frame = np.stack([composition_signature(f) for f in frames], axis=0)
+
+    scene_feats, comp_feats, within_motion = [], [], []
+    for start, end in ranges:
+        scene_feats.append(scene_per_frame[start:end].mean(axis=0))
+        comp_feats.append(comp_per_frame[start:end].mean(axis=0))
+        if end - start >= 2:
+            seg = comp_per_frame[start:end]
+            within_motion.append(float(np.mean(np.abs(np.diff(seg, axis=0)))))
+
+    result = cross_perspective_consistency(np.stack(scene_feats), np.stack(comp_feats))
+    result["within_shot_motion"] = float(np.mean(within_motion)) if within_motion else 0.0
+    return result
+
+
+def cross_perspective_evaluate_video(
+    path: str | Path,
+    *,
+    num_shots: int | None = None,
+    boundaries: list[int] | None = None,
+    max_frames: int | None = None,
+    stride: int = 1,
+) -> dict[str, float]:
+    frames = read_video(path, max_frames=max_frames, stride=stride)
+    return cross_perspective_metrics(frames, num_shots=num_shots, boundaries=boundaries)
+
+
+def compare_cross_perspective_dirs(
+    baseline_dir: str | Path,
+    modified_dir: str | Path,
+    *,
+    shots_for: "callable | int | None" = None,
+    max_frames: int | None = None,
+    stride: int = 1,
+) -> dict[str, object]:
+    """Baseline-vs-modified cross-perspective comparison over paired videos.
+
+    ``shots_for`` resolves the shot count per video: an int (same for all), a
+    callable ``stem -> int``, or None (auto = no split, which is rejected). The
+    delta on ``cross_shot_scene_consistency`` is the consistency win; the
+    companion deltas expose any viewpoint-variation / motion collapse.
+    """
+    pairs = pair_video_dirs(baseline_dir, modified_dir)
+    if not pairs:
+        raise ValueError(f"No comparable videos found in {baseline_dir} and {modified_dir}")
+
+    def resolve_shots(stem: str) -> int | None:
+        if callable(shots_for):
+            return shots_for(stem)
+        if isinstance(shots_for, int):
+            return shots_for
+        return None
+
+    records = []
+    for baseline_path, modified_path in pairs:
+        stem = baseline_path.stem
+        n = resolve_shots(stem)
+        baseline_metrics = cross_perspective_evaluate_video(
+            baseline_path, num_shots=n, max_frames=max_frames, stride=stride
+        )
+        modified_metrics = cross_perspective_evaluate_video(
+            modified_path, num_shots=n, max_frames=max_frames, stride=stride
+        )
+        deltas = {
+            key: modified_metrics[key] - baseline_metrics[key]
+            for key in baseline_metrics
+            if key in modified_metrics and key != "num_shots"
+        }
+        records.append(
+            {
+                "baseline": str(baseline_path),
+                "modified": str(modified_path),
+                "baseline_metrics": baseline_metrics,
+                "modified_metrics": modified_metrics,
+                "delta": deltas,
+            }
+        )
+
+    return {
+        "num_pairs": len(records),
+        "baseline_summary": summarize_records(records, "baseline_metrics"),
+        "modified_summary": summarize_records(records, "modified_metrics"),
+        "delta_summary": summarize_records(records, "delta"),
+        "records": records,
+    }
+
+
 def frame_feature(frame_rgb: np.ndarray) -> np.ndarray:
     """Extract a deterministic appearance feature without model downloads."""
     small = cv2.resize(frame_rgb, (32, 32), interpolation=cv2.INTER_AREA).astype(np.float32) / 255.0

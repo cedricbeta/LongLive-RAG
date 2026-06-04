@@ -169,6 +169,11 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
             return model.base_model.model
         return model
 
+    @property
+    def _scene_memory_active(self) -> bool:
+        """True when the persistent scene-memory partition is in use."""
+        return self.kv_rag_enabled and self.kv_rag_config.scene_memory_enabled
+
     def _reset_kv_rag(self):
         if not self.kv_rag_enabled:
             return
@@ -176,6 +181,25 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
             self.kv_rag_pos.clear()
         if self.kv_rag_neg is not None:
             self.kv_rag_neg.clear()
+
+    def _reset_kv_rag_shot(self):
+        """Drop the per-shot KV-RAG partition at a shot boundary, keeping the
+        persistent scene anchors. No-op unless scene memory is active."""
+        if not self._scene_memory_active:
+            return
+        if self.kv_rag_pos is not None:
+            self.kv_rag_pos.reset_shot()
+        if self.kv_rag_neg is not None:
+            self.kv_rag_neg.reset_shot()
+
+    def _set_kv_rag_boundary_inject(self, active: bool):
+        """Toggle boundary force-injection of scene anchors on both banks."""
+        if not self._scene_memory_active:
+            return
+        if self.kv_rag_pos is not None:
+            self.kv_rag_pos.set_boundary_inject(active)
+        if self.kv_rag_neg is not None:
+            self.kv_rag_neg.set_boundary_inject(active)
 
     def _kv_rag_call_kwargs(
         self,
@@ -185,6 +209,7 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
         store: bool = False,
         chunk_index: int | None = None,
         phase: str | None = None,
+        persistent: bool = False,
     ):
         if not self.kv_rag_enabled or bank is None:
             return {}
@@ -195,6 +220,7 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
             "kv_rag_meta": {
                 "chunk_index": chunk_index,
                 "phase": phase,
+                "persistent": bool(persistent),
             },
         }
 
@@ -495,6 +521,9 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
 
         # Multi-shot RoPE offset: track current shot index for phase offset.
         current_shot_index = 0
+        # Scene-memory shot index: incremented at every shot boundary regardless
+        # of the RoPE-offset setting; chunk shot 0 supplies the persistent anchors.
+        scene_shot_index = 0
         phi = self.multi_shot_rope_offset
         self._dit_model.rope_temporal_offset = 0.0
         streaming_decode = self.streaming_vae and not return_latents
@@ -601,11 +630,25 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
 
             # Update RoPE phase offset on shot boundaries.
             is_shot_boundary = self._is_shot_boundary(raw_prompts, chunk_index)
+            if is_shot_boundary:
+                scene_shot_index += 1
             if is_shot_boundary and phi != 0.0:
                 current_shot_index += 1
                 self._dit_model.rope_temporal_offset = current_shot_index * phi
                 print(f"[inference] multi-shot RoPE: shot_index={current_shot_index}, "
                       f"temporal_offset={self._dit_model.rope_temporal_offset:.4f}")
+
+            # Force-inject the persistent scene anchors on the first chunk of a
+            # new shot so the perspective change keeps the established scene.
+            self._set_kv_rag_boundary_inject(is_shot_boundary)
+            # A new shot drops the per-shot framing memory while the persistent
+            # scene anchors survive. Tied only to scene memory (not to the sink /
+            # clean-recache settings) so stale per-shot entries never bleed into
+            # the new shot's retrieval pool.
+            if is_shot_boundary:
+                self._reset_kv_rag_shot()
+            # Shot 0 supplies the persistent anchors; later shots store per-shot.
+            store_persistent = self._scene_memory_active and (scene_shot_index == 0)
 
             noisy_input = noise[
                 :, cache_start_frame - num_input_frames:cache_start_frame + current_num_frames - num_input_frames]
@@ -672,6 +715,10 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
             # Step 3.2: record the model's output
             output[:, cache_start_frame:cache_start_frame + current_num_frames] = latents
 
+            # The boundary scene-anchor pulse applies only to this chunk's
+            # denoising; clear it so the clean recache below never force-injects.
+            self._set_kv_rag_boundary_inject(False)
+
             # Step 3.3: rerun with timestep zero to update KV cache using clean context
             is_scene_cut = self._is_scene_cut(raw_prompts, chunk_index)
 
@@ -696,6 +743,7 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
                     store=self.kv_rag_config.store_after_recache,
                     chunk_index=chunk_index,
                     phase="clean_recache",
+                    persistent=store_persistent,
                 ),
             )
             if use_cfg:
@@ -713,6 +761,7 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
                         store=self.kv_rag_config.store_after_recache,
                         chunk_index=chunk_index,
                         phase="clean_recache_uncond",
+                        persistent=store_persistent,
                     ),
                 )
 

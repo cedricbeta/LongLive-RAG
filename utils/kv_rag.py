@@ -78,6 +78,42 @@ def _dtype_from_name(name: str | None) -> torch.dtype | None:
     return mapping[normalized]
 
 
+#: Retrieval KEY representations: how a stored chunk is indexed for matching.
+KEY_MODES = ("pooled", "moment", "multi_centroid", "salient_set", "positional")
+#: Retrieval VALUE representations: what payload is injected back into attention.
+VALUE_MODES = ("raw", "mean_frame")
+
+
+def virtual_frame_start(
+    *,
+    current_end: int,
+    frame_seqlen: int,
+    window_tokens: int,
+    prefix_tokens: int,
+    rag_frames: int,
+) -> int:
+    """Frame index where a re-RoPE'd retrieved/scene block is placed.
+
+    The retrieved (or force-injected scene) tokens are dropped into a virtual
+    frame block immediately *before* the current local window so the
+    query<->memory relative positions stay in the range the model was trained
+    on. The block spans ``[rag_start, rag_start + rag_frames)`` and the local
+    window starts at ``rag_start + rag_frames``; the two never overlap.
+
+    Args:
+        current_end: absolute end token of the current chunk in the cache.
+        frame_seqlen: tokens per frame (h*w after patchify).
+        window_tokens: total tokens in the attended window (incl. any prefix).
+        prefix_tokens: sink/pinned tokens prepended ahead of the local frames.
+        rag_frames: number of whole frames being injected.
+    """
+    if frame_seqlen <= 0:
+        raise ValueError("virtual_frame_start requires frame_seqlen > 0")
+    local_frames = (window_tokens - prefix_tokens) // frame_seqlen
+    local_start_frame = (current_end // frame_seqlen) - local_frames
+    return max(0, local_start_frame - rag_frames)
+
+
 @dataclass(frozen=True)
 class KVRAGConfig:
     enabled: bool = False
@@ -111,6 +147,45 @@ class KVRAGConfig:
     # Store/downsample whole frames (a prerequisite for clean re-RoPE) instead
     # of arbitrary uniform token subsets.
     frame_aligned_store: bool = True
+    # --- single-scene multi-perspective consistency ---
+    # A persistent "scene" partition that survives shot boundaries, holding the
+    # establishing anchors of the environment so a new camera angle reads as the
+    # same place rather than a freshly hallucinated scene. Disabled by default:
+    # only the per-shot partition exists and behavior matches the legacy
+    # single-bucket memory exactly.
+    scene_memory_enabled: bool = False
+    # Capacity (stored chunks per layer) of the persistent partition. The
+    # per-shot partition keeps using ``max_entries``.
+    scene_memory_max_entries: int = 8
+    # Additive similarity bonus applied to persistent-partition candidates so the
+    # shared scene is preferred over incidental per-shot matches. 0.0 = no bias.
+    scene_score_bonus: float = 0.0
+    # Number of persistent anchors force-injected at a shot boundary regardless
+    # of the content match, re-RoPE'd through the normal retrieval-injection
+    # path. 0 = off. Requires scene_memory_enabled.
+    boundary_inject_anchors: int = 0
+    # --- decoupled retrieval key/value representations ---
+    # How an entry is INDEXED: the lookup signal matched against the query.
+    #   "pooled"        -> mean-pooled (orderless) summary [baseline]
+    #   "moment"        -> mean+std summary (richer orderless signature)
+    #   "multi_centroid"-> several region centroids (subject vs background) so
+    #                      the same subject matches across camera angles
+    #   "salient_set"   -> bounded set of the most salient tokens matched by
+    #                      symmetric mutual-best cosine (Chamfer); finer than
+    #                      centroids and robust to which view a token appears in
+    #   "positional"    -> position-weighted pooling (view-sensitive; used to
+    #                      demonstrate the viewpoint-invariance probe rejects a
+    #                      bad key -- not recommended for production)
+    retrieval_key_mode: str = "pooled"
+    # Number of region centroids when retrieval_key_mode == "multi_centroid".
+    retrieval_key_centroids: int = 4
+    # Number of salient tokens kept when retrieval_key_mode == "salient_set".
+    retrieval_key_top_m: int = 8
+    # What is INJECTED back into attention (the payload), independent of the key.
+    #   "raw"        -> the stored frame-aligned K/V slice [baseline]
+    #   "mean_frame" -> the slice collapsed to a single representative frame
+    #                   (bounded injected length; stays frame-aligned/re-RoPE'able)
+    retrieval_value_mode: str = "raw"
 
     @classmethod
     def from_config(cls, value: Any) -> "KVRAGConfig":
@@ -148,6 +223,14 @@ class KVRAGConfig:
             summary_per_head=_as_bool(cfg.get("summary_per_head", True), True),
             reinject_rope=_as_bool(cfg.get("reinject_rope", True), True),
             frame_aligned_store=_as_bool(cfg.get("frame_aligned_store", True), True),
+            scene_memory_enabled=_as_bool(cfg.get("scene_memory_enabled", False), False),
+            scene_memory_max_entries=max(1, _as_int(cfg.get("scene_memory_max_entries", 8), 8)),
+            scene_score_bonus=float(cfg.get("scene_score_bonus", 0.0) or 0.0),
+            boundary_inject_anchors=max(0, _as_int(cfg.get("boundary_inject_anchors", 0), 0)),
+            retrieval_key_mode=str(cfg.get("retrieval_key_mode", "pooled")).lower(),
+            retrieval_key_centroids=max(1, _as_int(cfg.get("retrieval_key_centroids", 4), 4)),
+            retrieval_key_top_m=max(1, _as_int(cfg.get("retrieval_key_top_m", 8), 8)),
+            retrieval_value_mode=str(cfg.get("retrieval_value_mode", "raw")).lower(),
         )
 
     def layer_enabled(self, layer: int) -> bool:
@@ -165,7 +248,15 @@ class KVRAGConfig:
             f"retrieve_during_recache={self.retrieve_during_recache}, "
             f"store_after_recache={self.store_after_recache}, "
             f"summary_prerope={self.summary_prerope}, summary_per_head={self.summary_per_head}, "
-            f"reinject_rope={self.reinject_rope}, frame_aligned_store={self.frame_aligned_store}"
+            f"reinject_rope={self.reinject_rope}, frame_aligned_store={self.frame_aligned_store}, "
+            f"scene_memory_enabled={self.scene_memory_enabled}, "
+            f"scene_memory_max_entries={self.scene_memory_max_entries}, "
+            f"scene_score_bonus={self.scene_score_bonus}, "
+            f"boundary_inject_anchors={self.boundary_inject_anchors}, "
+            f"retrieval_key_mode={self.retrieval_key_mode}, "
+            f"retrieval_key_centroids={self.retrieval_key_centroids}, "
+            f"retrieval_key_top_m={self.retrieval_key_top_m}, "
+            f"retrieval_value_mode={self.retrieval_value_mode}"
         )
 
 
@@ -186,6 +277,9 @@ class KVRAGEntry:
     h: int = 0
     w: int = 0
     frame_seqlen: int = 0
+    # True when the entry lives in the persistent scene partition (survives shot
+    # boundaries); False for ordinary per-shot entries.
+    persistent: bool = False
 
     @property
     def num_tokens(self) -> int:
@@ -202,12 +296,22 @@ class KVRAGMemory:
 
     def __init__(self, config: KVRAGConfig):
         self.config = config
+        self._validate_config(config)
         self.entries_by_layer: dict[int, list[KVRAGEntry]] = {}
+        # Persistent partition: establishing anchors of the scene that survive
+        # shot boundaries. Always present but only populated when
+        # scene_memory_enabled, so the disabled path is byte-identical to legacy.
+        self.scene_entries_by_layer: dict[int, list[KVRAGEntry]] = {}
+        # Transient flag set by the scheduler on the first chunk of a new shot so
+        # retrieval force-injects the scene anchors at that boundary.
+        self._boundary_inject = False
         self.stats = {
             "stored_entries": 0,
+            "stored_scene_entries": 0,
             "retrieval_calls": 0,
             "retrieval_hits": 0,
             "retrieved_tokens": 0,
+            "boundary_injections": 0,
             # Phase 0 diagnostics: post-softmax attention mass on retrieved
             # tokens (sum over the rag columns, averaged over heads/query/batch).
             "rag_attention_mass": 0.0,
@@ -215,6 +319,30 @@ class KVRAGMemory:
         }
         self._warnings: set[str] = set()
         self._store_dtype = _dtype_from_name(config.store_dtype)
+
+    @staticmethod
+    def _validate_config(config: KVRAGConfig) -> None:
+        """Fail fast on unknown representations or flags missing a companion."""
+        if config.retrieval_key_mode not in KEY_MODES:
+            raise ValueError(
+                f"Unsupported KV-RAG retrieval_key_mode={config.retrieval_key_mode!r}; "
+                f"expected one of {KEY_MODES}"
+            )
+        if config.retrieval_value_mode not in VALUE_MODES:
+            raise ValueError(
+                f"Unsupported KV-RAG retrieval_value_mode={config.retrieval_value_mode!r}; "
+                f"expected one of {VALUE_MODES}"
+            )
+        if config.retrieval_key_mode == "multi_centroid" and config.retrieval_key_centroids < 2:
+            raise ValueError(
+                "KV-RAG retrieval_key_mode='multi_centroid' requires "
+                "retrieval_key_centroids >= 2"
+            )
+        if config.boundary_inject_anchors > 0 and not config.scene_memory_enabled:
+            raise ValueError(
+                "KV-RAG boundary_inject_anchors > 0 requires scene_memory_enabled=true; "
+                "there is no persistent partition to inject from otherwise"
+            )
 
     @property
     def enabled(self) -> bool:
@@ -229,6 +357,18 @@ class KVRAGMemory:
         return self.config.reinject_rope
 
     @property
+    def scene_memory_enabled(self) -> bool:
+        return self.config.scene_memory_enabled
+
+    def set_boundary_inject(self, active: bool) -> None:
+        """Toggle force-injection of scene anchors for the next retrieval(s).
+
+        The scheduler calls this on the first chunk of a new shot so the
+        persistent scene anchors are re-injected at the perspective change.
+        """
+        self._boundary_inject = bool(active) and self.config.boundary_inject_anchors > 0
+
+    @property
     def diag_enabled(self) -> bool:
         return self.config.verbose
 
@@ -241,10 +381,22 @@ class KVRAGMemory:
         return 0
 
     def clear(self) -> None:
+        """Full reset: drop both partitions (use between independent samples)."""
         self.entries_by_layer.clear()
+        self.scene_entries_by_layer.clear()
+        self._boundary_inject = False
         for key in self.stats:
             self.stats[key] = 0 if isinstance(self.stats[key], int) else 0.0
         self._warnings.clear()
+
+    def reset_shot(self) -> None:
+        """Reset only the per-shot partition at a shot boundary.
+
+        The persistent scene partition is left untouched so the establishing
+        anchors of the environment survive the cut; the transient per-shot
+        composition/framing memory is cleared like the legacy reset.
+        """
+        self.entries_by_layer.clear()
 
     def warn_once(self, key: str, message: str) -> None:
         if key in self._warnings:
@@ -267,6 +419,7 @@ class KVRAGMemory:
         frames: int = 0,
         chunk_index: int | None = None,
         phase: str | None = None,
+        persistent: bool = False,
     ) -> None:
         """Store one chunk's K/V slice.
 
@@ -274,11 +427,16 @@ class KVRAGMemory:
         default, the retrieval summary); ``k_post`` is the cached post-RoPE key
         (legacy injection / summary source). The caller passes both so this
         method can pick per-config without the model needing to know the flags.
+
+        ``persistent`` routes the entry into the scene partition (it survives
+        shot boundaries) when scene memory is enabled; otherwise it is ignored
+        and the entry lands in the per-shot partition exactly as before.
         """
         if not self.enabled or not self.config.layer_enabled(layer):
             return
         if v.numel() == 0:
             return
+        persistent = bool(persistent) and self.config.scene_memory_enabled
 
         with torch.no_grad():
             k_pre = None if k_pre is None else k_pre.detach()
@@ -305,12 +463,16 @@ class KVRAGMemory:
                 v = v.index_select(1, idx)
                 summary_src = summary_src.index_select(1, idx)
 
-            summary = self._summarize(summary_src)
+            # The retrieval KEY (index) is computed from the full content slice,
+            # independent of the VALUE (payload) representation -- so a
+            # viewpoint-robust key can index a faithful raw-K/V payload.
+            summary = self._compute_key(summary_src)
             if summary is None:
                 return
 
-            k_store = inject_src
-            v_store = v
+            k_store, v_store, stored_frames = self._apply_value_mode(
+                inject_src, v, int(kept_frames), int(frame_seqlen)
+            )
             if self._store_dtype is not None:
                 k_store = k_store.to(dtype=self._store_dtype)
                 v_store = v_store.to(dtype=self._store_dtype)
@@ -328,16 +490,24 @@ class KVRAGMemory:
                 end_token=int(end_token),
                 chunk_index=chunk_index,
                 phase=phase,
-                frames=int(kept_frames),
+                frames=int(stored_frames),
                 h=int(h),
                 w=int(w),
                 frame_seqlen=int(frame_seqlen),
+                persistent=persistent,
             )
-            layer_entries = self.entries_by_layer.setdefault(layer, [])
+            if persistent:
+                layer_entries = self.scene_entries_by_layer.setdefault(layer, [])
+                cap = self.config.scene_memory_max_entries
+                stat_key = "stored_scene_entries"
+            else:
+                layer_entries = self.entries_by_layer.setdefault(layer, [])
+                cap = self.config.max_entries
+                stat_key = "stored_entries"
             layer_entries.append(entry)
-            while len(layer_entries) > self.config.max_entries:
+            while len(layer_entries) > cap:
                 layer_entries.pop(0)
-            self.stats["stored_entries"] += 1
+            self.stats[stat_key] += 1
 
     def retrieve(
         self,
@@ -350,7 +520,8 @@ class KVRAGMemory:
         device: torch.device,
         use_relative_rope: bool = False,
     ) -> tuple[torch.Tensor, torch.Tensor, list[KVRAGEntry]] | None:
-        if not self.enabled or self.config.top_k <= 0:
+        force_n = self.config.boundary_inject_anchors if self._boundary_inject else 0
+        if not self.enabled or (self.config.top_k <= 0 and force_n <= 0):
             return None
         if not self.config.layer_enabled(layer):
             return None
@@ -362,25 +533,58 @@ class KVRAGMemory:
             )
             return None
 
-        entries = self.entries_by_layer.get(layer)
-        if not entries:
+        shot_entries = self.entries_by_layer.get(layer) or []
+        scene_entries = (
+            self.scene_entries_by_layer.get(layer) or []
+            if self.config.scene_memory_enabled
+            else []
+        )
+        if not shot_entries and not scene_entries:
             return None
 
         self.stats["retrieval_calls"] += 1
         min_end = int(current_start) - self.config.min_frame_gap * int(frame_seqlen)
-        candidates = [entry for entry in entries if entry.end_token <= min_end]
+        candidates = [e for e in shot_entries if e.end_token <= min_end]
+        candidates += [e for e in scene_entries if e.end_token <= min_end]
         if not candidates:
             return None
 
-        query_summary = self._summarize(query.detach())
-        if query_summary is None:
+        selected: list[KVRAGEntry] = []
+        chosen_ids: set[int] = set()
+
+        # Force-inject the persistent scene anchors at a shot boundary regardless
+        # of content match, so a perspective change keeps the established scene.
+        if force_n > 0 and scene_entries:
+            for entry in list(reversed(scene_entries))[:force_n]:
+                if id(entry) not in chosen_ids:
+                    selected.append(entry)
+                    chosen_ids.add(id(entry))
+            if selected:
+                self.stats["boundary_injections"] += 1
+
+        # Fill the remaining budget with content-matched candidates. Persistent
+        # entries receive an additive bonus so the shared scene is preferred.
+        if self.config.top_k > 0:
+            remaining = [e for e in candidates if id(e) not in chosen_ids]
+            if remaining:
+                query_summary = self._compute_key(query.detach())
+                if query_summary is not None:
+                    scores = self._score_candidates(query_summary, remaining)
+                    if self.config.scene_score_bonus:
+                        scores = [
+                            s + (self.config.scene_score_bonus if e.persistent else 0.0)
+                            for s, e in zip(scores, remaining)
+                        ]
+                    order = sorted(range(len(remaining)), key=lambda i: scores[i], reverse=True)
+                    for i in order[: self.config.top_k]:
+                        selected.append(remaining[i])
+                        chosen_ids.add(id(remaining[i]))
+
+        if not selected:
             return None
 
-        scores = self._score_batch(query_summary, candidates)
-        order = sorted(range(len(candidates)), key=lambda i: scores[i], reverse=True)
-        selected = [candidates[i] for i in order[: self.config.top_k]]
-        k_parts = [self._match_batch(entry.k, query.shape[0]).to(device=device, dtype=dtype) for entry in selected]
-        v_parts = [self._match_batch(entry.v, query.shape[0]).to(device=device, dtype=dtype) for entry in selected]
+        k_parts = [self._match_batch(e.k, query.shape[0]).to(device=device, dtype=dtype) for e in selected]
+        v_parts = [self._match_batch(e.v, query.shape[0]).to(device=device, dtype=dtype) for e in selected]
         rag_k = torch.cat(k_parts, dim=1).contiguous()
         rag_v = torch.cat(v_parts, dim=1).contiguous()
         self.stats["retrieval_hits"] += 1
@@ -390,14 +594,18 @@ class KVRAGMemory:
     def format_stats(self, prefix: str = "KV-RAG") -> str:
         layers = sum(1 for entries in self.entries_by_layer.values() if entries)
         live_entries = sum(len(entries) for entries in self.entries_by_layer.values())
+        live_scene = sum(len(entries) for entries in self.scene_entries_by_layer.values())
         mass_calls = self.stats["rag_mass_calls"]
         mass = self.stats["rag_attention_mass"] / mass_calls if mass_calls else 0.0
         return (
             f"[{prefix}] layers={layers}, live_entries={live_entries}, "
+            f"live_scene_entries={live_scene}, "
             f"stored_entries={self.stats['stored_entries']}, "
+            f"stored_scene_entries={self.stats['stored_scene_entries']}, "
             f"retrieval_calls={self.stats['retrieval_calls']}, "
             f"retrieval_hits={self.stats['retrieval_hits']}, "
             f"retrieved_tokens={self.stats['retrieved_tokens']}, "
+            f"boundary_injections={self.stats['boundary_injections']}, "
             f"rag_attn_mass={mass:.4f} (n={mass_calls})"
         )
 
@@ -450,12 +658,35 @@ class KVRAGMemory:
             raise ValueError(f"Unsupported KV-RAG token_policy={policy!r}")
         return idx, 0
 
+    def _compute_key(self, tensor: torch.Tensor) -> torch.Tensor | None:
+        """Build the retrieval KEY (index summary) for the active key mode.
+
+        Decoupled from the VALUE payload: the same content slice can be indexed
+        by a viewpoint-robust key while a faithful raw-K/V slice is injected.
+        """
+        mode = self.config.retrieval_key_mode
+        if mode == "pooled":
+            return self._summarize(tensor)
+        if mode == "moment":
+            return self._summarize_moment(tensor)
+        if mode == "multi_centroid":
+            return self._summarize_centroids(tensor, self.config.retrieval_key_centroids)
+        if mode == "salient_set":
+            return self._summarize_salient_set(tensor, self.config.retrieval_key_top_m)
+        if mode == "positional":
+            return self._summarize_positional(tensor)
+        raise ValueError(f"Unsupported KV-RAG retrieval_key_mode={mode!r}")
+
     def _summarize(self, tensor: torch.Tensor) -> torch.Tensor | None:
         """Mean-pool over tokens into a normalized content summary.
 
         With ``summary_per_head`` the per-head structure ``[B, H, D]`` is kept
         and normalized per head, so scoring does not mix independent head
         subspaces. Otherwise the heads are flattened into one vector.
+
+        Mean-pooling is orderless, so a viewpoint change (which rearranges
+        spatial tokens) leaves the summary unchanged -- the baseline key is
+        permutation-invariant, just coarse (it blends subject and background).
         """
         if tensor.numel() == 0:
             return None
@@ -468,6 +699,183 @@ class KVRAGMemory:
         else:
             pooled = tensor.float().reshape(tensor.shape[0], -1)
         return F.normalize(pooled, dim=-1, eps=1e-6)
+
+    def _summarize_moment(self, tensor: torch.Tensor) -> torch.Tensor | None:
+        """Orderless mean+std signature -- richer than the bare mean but still
+        permutation-invariant (viewpoint-robust)."""
+        if tensor.numel() == 0:
+            return None
+        f = tensor.float()
+        if f.dim() == 4:  # [B, T, H, D]
+            pooled = torch.cat([f.mean(dim=1), f.std(dim=1, unbiased=False)], dim=-1)
+            if not self.config.summary_per_head:
+                pooled = pooled.flatten(1)
+        elif f.dim() == 3:  # [B, T, D]
+            pooled = torch.cat([f.mean(dim=1), f.std(dim=1, unbiased=False)], dim=-1)
+        else:
+            pooled = f.reshape(f.shape[0], -1)
+        return F.normalize(pooled, dim=-1, eps=1e-6)
+
+    def _summarize_centroids(self, tensor: torch.Tensor, n: int) -> torch.Tensor | None:
+        """Several region centroids per chunk (subject vs background).
+
+        Tokens are ranked by activation magnitude and split into ``n`` contiguous
+        buckets, each mean-pooled. Ranking by magnitude is orderless, so the
+        centroids are permutation-invariant (viewpoint-robust) yet separate
+        salient subject regions from background -- enabling the same subject to
+        match across camera angles instead of being averaged away.
+        """
+        if tensor.numel() == 0:
+            return None
+        if tensor.dim() != 4:  # only the [B, T, H, D] attention-key layout is structured
+            base = self._summarize(tensor)
+            return None if base is None else base.unsqueeze(1)
+        f = tensor.float()
+        b, t, h, d = f.shape
+        n = max(1, min(int(n), t))
+        mag = f.reshape(b, t, h * d).norm(dim=-1)  # [B, T]
+        order = torch.argsort(mag, dim=1, stable=True)  # ascending; order-independent
+        bounds = torch.linspace(0, t, steps=n + 1).round().to(torch.long).tolist()
+        centroids = []
+        for i in range(n):
+            s, e = bounds[i], bounds[i + 1]
+            if e <= s:
+                e = s + 1
+            idxs = order[:, s:e]  # [B, bucket]
+            gathered = torch.gather(
+                f, 1, idxs.unsqueeze(-1).unsqueeze(-1).expand(-1, -1, h, d)
+            )
+            centroids.append(gathered.mean(dim=1))  # [B, H, D]
+        pooled = torch.stack(centroids, dim=1)  # [B, n, H, D]
+        return F.normalize(pooled, dim=-1, eps=1e-6)
+
+    def _summarize_salient_set(self, tensor: torch.Tensor, m: int) -> torch.Tensor | None:
+        """A bounded set of the most salient tokens, each L2-normalized.
+
+        Keeps the top-``m`` tokens by activation magnitude (an orderless,
+        viewpoint-robust selection) without averaging them, so individual scene
+        elements stay matchable across views via symmetric mutual-best cosine
+        (see ``_score_salient_set``) rather than being blended into one vector.
+        """
+        if tensor.numel() == 0:
+            return None
+        if tensor.dim() != 4:
+            base = self._summarize(tensor)
+            return None if base is None else base.unsqueeze(1)
+        f = tensor.float()
+        b, t, h, d = f.shape
+        m = max(1, min(int(m), t))
+        mag = f.reshape(b, t, h * d).norm(dim=-1)  # [B, T]
+        idx = torch.topk(mag, k=m, dim=1).indices
+        idx, _ = torch.sort(idx, dim=1)  # deterministic, order-independent
+        gathered = torch.gather(f, 1, idx.unsqueeze(-1).unsqueeze(-1).expand(-1, -1, h, d))
+        return F.normalize(gathered, dim=-1, eps=1e-6)  # [B, m, H, D]
+
+    def _summarize_positional(self, tensor: torch.Tensor) -> torch.Tensor | None:
+        """Position-weighted pooling -- intentionally view-SENSITIVE.
+
+        A linear token-position weighting makes the summary depend on token
+        order, so a spatial rearrangement (viewpoint change) shifts it. Used to
+        demonstrate that the viewpoint-invariance probe rejects a bad key; not a
+        production candidate.
+        """
+        if tensor.numel() == 0:
+            return None
+        f = tensor.float()
+        if f.dim() == 4:  # [B, T, H, D]
+            t = f.shape[1]
+            w = torch.linspace(0.0, 1.0, steps=t, device=f.device, dtype=f.dtype).view(1, t, 1, 1)
+            pooled = (f * w).sum(dim=1) / (w.sum() + 1e-6)  # [B, H, D]
+            if not self.config.summary_per_head:
+                pooled = pooled.flatten(1)
+        elif f.dim() == 3:  # [B, T, D]
+            t = f.shape[1]
+            w = torch.linspace(0.0, 1.0, steps=t, device=f.device, dtype=f.dtype).view(1, t, 1)
+            pooled = (f * w).sum(dim=1) / (w.sum() + 1e-6)
+        else:
+            pooled = f.reshape(f.shape[0], -1)
+        return F.normalize(pooled, dim=-1, eps=1e-6)
+
+    def _apply_value_mode(
+        self,
+        k: torch.Tensor,
+        v: torch.Tensor,
+        kept_frames: int,
+        frame_seqlen: int,
+    ) -> tuple[torch.Tensor, torch.Tensor, int]:
+        """Transform the stored payload per ``retrieval_value_mode``.
+
+        ``raw`` keeps the frame-aligned slice; ``mean_frame`` collapses it to a
+        single representative frame (bounded injected length) while preserving
+        ``frame_seqlen`` tokens so the payload stays re-RoPE'able.
+        """
+        mode = self.config.retrieval_value_mode
+        if mode == "raw":
+            return k, v, kept_frames
+        if mode == "mean_frame":
+            aligned = (
+                kept_frames > 0
+                and frame_seqlen > 0
+                and k.dim() == 4
+                and k.shape[1] == kept_frames * frame_seqlen
+            )
+            if not aligned:
+                return k, v, kept_frames  # cannot collapse safely -> keep raw
+
+            def collapse(t: torch.Tensor) -> torch.Tensor:
+                bsz, _, heads, dim = t.shape
+                return t.view(bsz, kept_frames, frame_seqlen, heads, dim).mean(dim=1)
+
+            return collapse(k), collapse(v), 1
+        raise ValueError(f"Unsupported KV-RAG retrieval_value_mode={mode!r}")
+
+    def _score_candidates(
+        self, query_summary: torch.Tensor, candidates: list[KVRAGEntry]
+    ) -> list[float]:
+        """Score candidates against the query for the active key mode."""
+        if self.config.retrieval_key_mode == "multi_centroid":
+            return [self._score_centroid(query_summary, c.summary) for c in candidates]
+        if self.config.retrieval_key_mode == "salient_set":
+            return [self._score_salient_set(query_summary, c.summary) for c in candidates]
+        return self._score_batch(query_summary, candidates)
+
+    def _score_salient_set(
+        self, query_summary: torch.Tensor, entry_summary: torch.Tensor
+    ) -> float:
+        """Symmetric mutual-best (Chamfer) cosine between two salient-token sets.
+
+        Each query token is matched to its best entry token and vice versa; the
+        two directions are averaged. A scene element present in both views scores
+        high regardless of where it sits in the frame, while background-only
+        overlap cannot inflate the score in both directions.
+        """
+        e = entry_summary.to(device=query_summary.device, dtype=query_summary.dtype)
+        q = query_summary
+        if q.dim() != 4 or e.dim() != 4:
+            return self._score(q, e)
+        sim = torch.einsum("bqhd,bkhd->bqkh", q, e)  # [B, Mq, Me, H]
+        q_to_e = sim.max(dim=2).values.mean()  # each query token's best match
+        e_to_q = sim.max(dim=1).values.mean()  # each entry token's best match
+        return float((0.5 * (q_to_e + e_to_q)).item())
+
+    def _score_centroid(
+        self, query_summary: torch.Tensor, entry_summary: torch.Tensor
+    ) -> float:
+        """Best-matching-centroid similarity between two centroid sets.
+
+        ``query_summary``/``entry_summary``: ``[B, Nc, H, D]`` (L2-normalized per
+        head). For each query centroid take its best match among the entry
+        centroids, then average over query centroids, heads and batch -- so the
+        same subject region scores high even when the rest of the frame differs.
+        """
+        e = entry_summary.to(device=query_summary.device, dtype=query_summary.dtype)
+        q = query_summary
+        if q.dim() != 4 or e.dim() != 4:
+            return self._score(q, e)
+        # cosine (already normalized) between every (query, entry) centroid pair
+        sim = torch.einsum("bqhd,bkhd->bqkh", q, e)  # [B, Nq, Ne, H]
+        best = sim.max(dim=2).values  # [B, Nq, H]
+        return float(best.mean().item())
 
     def _score_batch(
         self, query_summary: torch.Tensor, candidates: list[KVRAGEntry]

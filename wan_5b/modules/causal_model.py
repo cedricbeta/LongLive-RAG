@@ -33,6 +33,7 @@ from utils.position_embedding_utils import (
     compute_temporal_freqs as _compute_temporal_freqs,
     select_temporal_offset_for_sample,
 )
+from utils.kv_rag import virtual_frame_start
 
 
 # iter-21: cache freqs_i across causal_rope_apply calls within a chunk.
@@ -844,9 +845,16 @@ class CausalWanSelfAttention(nn.Module):
                             prefix_tokens += effective_sink
                         if prepend_pinned:
                             prefix_tokens += pinned_len_val
-                        local_frames = (window_k.shape[1] - prefix_tokens) // frame_seqlen
-                        local_start_frame = (current_end // frame_seqlen) - local_frames
-                        rag_start_frame = max(0, local_start_frame - rag_frames)
+                        # Place the re-RoPE'd memory block in a virtual frame slot
+                        # immediately before the local window (shared, unit-tested
+                        # position math).
+                        rag_start_frame = virtual_frame_start(
+                            current_end=current_end,
+                            frame_seqlen=frame_seqlen,
+                            window_tokens=window_k.shape[1],
+                            prefix_tokens=prefix_tokens,
+                            rag_frames=rag_frames,
+                        )
                         rag_grid = [(rag_frames, h, w)] * b
                         roped_rag_k = causal_rope_apply(
                             rag_k_pending, rag_grid, freqs,
@@ -1596,6 +1604,7 @@ class CausalWanModel(ModelMixin, ConfigMixin):
                                 frames=int(update_info.get("num_new_frames", 0)),
                                 chunk_index=meta.get("chunk_index", None),
                                 phase=meta.get("phase", None),
+                                persistent=bool(meta.get("persistent", False)),
                             )
                     except Exception as exc:
                         if getattr(kv_rag, "fail_open", True):
