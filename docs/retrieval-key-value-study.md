@@ -256,7 +256,20 @@ The honest-null blocker is motion. For the leading `semantic+raw` row on
 `motion_tolerance=0.3` guard. Every Gate B finalist has
 `motion_failures=["african_savanna"]`, `motion_ok=false`, and `passed=false`.
 
+> Caveat (semantic key implementation): the Gate B `semantic` finalist was
+> rendered with the pre-Round-4 semantic key, which (a) keyed the unconditional
+> CFG bank on the negative prompt (fixed in Round 3) and (b) pooled the caption
+> embedding as a flattened `[seq*D]` vector rather than the documented `[D]`
+> (fixed in Round 4). Both were consistent WITHIN that run (constant seq length,
+> same scene), so `semantic` was a functional, differentiating key here, but its
+> exact margin over `pooled` (+0.0075 vs +0.0066) is provisional and should be
+> re-confirmed with the corrected `[D]` scene-caption key. The honest-null
+> conclusion is unaffected: the blocker is the motion cost, which is
+> key-independent (all three finalists fail the same `african_savanna` motion
+> guard).
+
 Next hypotheses:
+- Re-confirm the `semantic` finalist with the corrected `[D]` scene-caption key.
 - Reduce the motion cost with motion-preserving injection or fewer injected
   anchors.
 - Revisit whether `motion_tolerance=0.3` is too strict for high-baseline-motion
