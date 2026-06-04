@@ -1040,10 +1040,12 @@ class KVRAGMemory:
             return [self._score_centroid(query_summary, c.summary) for c in candidates]
         if self.config.retrieval_key_mode == "salient_set":
             return [self._score_salient_set(query_summary, c.summary) for c in candidates]
-        if self.config.retrieval_key_mode == "subject_identity":
-            # The identity prototype is a per-head L2-normalized vector; its contract
-            # is plain COSINE matching, independent of config.similarity (so an l2
-            # sweep does not silently re-rank it via _score_batch).
+        if self.config.retrieval_key_mode in ("subject_identity", "semantic"):
+            # These keys are L2-normalized vectors whose contract is plain COSINE,
+            # independent of config.similarity. Falling through to _score_batch under
+            # similarity='l2' would put them on the L2 scale (near zero for
+            # high-dim/normalized vectors), where scene_score_bonus can dominate
+            # content matching. Force cosine for both.
             return [self._score_cosine(query_summary, c.summary) for c in candidates]
         return self._score_batch(query_summary, candidates)
 

@@ -549,28 +549,34 @@ def group_perspectives_by_scene(directory: str | Path) -> dict[str, list[Path]]:
     Matches ``<prefix>-rank<R>-<scene>-p<P>-seed<S>_<model>``; non-matching files
     are ignored. Returns ``{scene: [p0, p1, ...]}``.
 
-    Cross-VIEW consistency is scored within a SINGLE seed, so a scene must not
-    carry the same perspective index from more than one seed (e.g. ``num_samples
-    > 1`` or mixed-seed outputs). Such a directory is rejected with a clear error
-    rather than silently scoring seed-to-seed instead of cross-view consistency.
+    Cross-VIEW consistency is scored within a SINGLE seed, so ALL of a scene's
+    perspectives must come from the same seed. A scene that mixes seeds -- whether
+    the same perspective index from two seeds (``p0-seed0`` + ``p0-seed1``) or
+    different indices from different seeds (``p0-seed0`` + ``p1-seed1``) -- is
+    rejected with a clear error, rather than silently scoring seed-to-seed
+    variation as perspective consistency.
     """
-    scenes: dict[str, dict[int, tuple[int, Path]]] = {}
+    scenes: dict[str, dict[str, object]] = {}
     for path in discover_videos(directory):
         m = _PERSPECTIVE_STEM.match(path.stem)
         if not m:
             continue
         scene, persp, seed = m.group("scene"), int(m.group("persp")), int(m.group("seed"))
-        bucket = scenes.setdefault(scene, {})
-        if persp in bucket:
-            prev_seed = bucket[persp][0]
+        bucket = scenes.setdefault(scene, {"seed": seed, "persp": {}})
+        if seed != bucket["seed"]:
             raise ValueError(
-                f"Scene {scene!r} has perspective p{persp} from multiple seeds "
-                f"(seed{prev_seed} and seed{seed}); cross-view consistency is scored "
-                "within ONE seed -- render num_samples=1 or evaluate a single seed's "
-                "outputs per directory."
+                f"Scene {scene!r} has perspectives from multiple seeds "
+                f"(seed{bucket['seed']} and seed{seed}); cross-view consistency is "
+                "scored within ONE seed -- render num_samples=1 or evaluate a single "
+                "seed's outputs per directory."
             )
-        bucket[persp] = (seed, path)
-    return {s: [path for _persp, (_seed, path) in sorted(b.items())] for s, b in scenes.items()}
+        if persp in bucket["persp"]:
+            raise ValueError(
+                f"Scene {scene!r} has duplicate perspective p{persp} (seed{seed})."
+            )
+        bucket["persp"][persp] = path
+    return {s: [path for _persp, path in sorted(b["persp"].items())]
+            for s, b in scenes.items()}
 
 
 def score_scene(

@@ -151,6 +151,16 @@ class TestPerspectiveGrouping(unittest.TestCase):
         with self.assertRaises(ValueError):
             group_perspectives_by_scene(tmp)
 
+    def test_mixed_seed_distinct_perspectives_raises(self):
+        # Distinct perspective indices from DIFFERENT seeds (p0-seed0 + p1-seed1)
+        # must also be rejected -- a scene's perspectives must all share one seed.
+        tmp = Path(tempfile.mkdtemp())
+        for n in ["kv_rag-rank0-scene_a-p0-seed0_regular.mp4",
+                  "kv_rag-rank0-scene_a-p1-seed1_regular.mp4"]:  # different seeds
+            (tmp / n).write_bytes(b"")
+        with self.assertRaises(ValueError):
+            group_perspectives_by_scene(tmp)
+
     def test_single_seed_grouping_unaffected(self):
         tmp = Path(tempfile.mkdtemp())
         for n in ["kv_rag-rank0-scene_a-p0-seed0_regular.mp4",

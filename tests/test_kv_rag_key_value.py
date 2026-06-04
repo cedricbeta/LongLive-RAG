@@ -204,6 +204,25 @@ class TestSemanticKey(unittest.TestCase):
         mem.clear()
         self.assertIsNone(mem._context_key)
 
+    def test_semantic_scores_by_cosine_regardless_of_similarity(self):
+        # The caption key is a normalized vector scored by plain cosine; an l2
+        # config must NOT put it on the L2 scale (where scene_score_bonus would
+        # dominate). Scores must match the cosine config. (P2 fix.)
+        q = F.normalize(torch.tensor([1.0, 0.2, 0.0, 0.0]), dim=-1).reshape(1, -1)
+        a = F.normalize(torch.tensor([1.0, 0.0, 0.0, 0.0]), dim=-1).reshape(1, -1)
+        b = F.normalize(torch.tensor([0.0, 0.0, 1.0, 0.0]), dim=-1).reshape(1, -1)
+
+        def _fake(summary):
+            return type("E", (), {"summary": summary, "persistent": False})()
+
+        cos = _mem(retrieval_key_mode="semantic", similarity="cosine")
+        l2 = _mem(retrieval_key_mode="semantic", similarity="l2")
+        s_cos = cos._score_candidates(q, [_fake(a), _fake(b)])
+        s_l2 = l2._score_candidates(q, [_fake(a), _fake(b)])
+        self.assertAlmostEqual(s_cos[0], s_l2[0], places=6)
+        self.assertAlmostEqual(s_cos[1], s_l2[1], places=6)
+        self.assertAlmostEqual(s_l2[0], float((q * a).sum(-1).mean()), places=6)  # is cosine
+
 
 class TestTopFrameValue(unittest.TestCase):
     def test_requires_frame_aligned_store(self):
