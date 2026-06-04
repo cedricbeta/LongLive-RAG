@@ -148,6 +148,35 @@ class TestPerPerspectiveProtocol(unittest.TestCase):
         self.assertEqual(len(m.scene_entries_by_layer[0]), 3)   # B2 fix: not reseeded
         self.assertEqual(len(m.entries_by_layer[0]), 1)         # transient stored
 
+    def test_cross_clock_anchors_survive_window_overlap(self):
+        # A later perspective restarts at token 0, so a perspective-0 anchor stored
+        # at [0,8) numerically overlaps the new perspective's live window. Without
+        # the cross-clock mark the overlap dedup filters it (force-inject gets
+        # nothing); with the mark it is exempt and force-injected. (P1 fix.)
+        m = KVRAGMemory(self._cfg())
+        _store(m, persistent=True, start=0)   # perspective-0 anchor at [0, 8)
+        m.reset_shot()
+        exclude = [(0, 8)]                     # the new perspective's window range
+        m.set_boundary_inject(True)
+        self.assertIsNone(m.retrieve(
+            layer=0, query=torch.randn(1, 4, 2, 3), current_start=0, frame_seqlen=4,
+            dtype=torch.float32, device=CPU, exclude_token_ranges=exclude))
+
+        m.mark_scene_cross_clock()             # perspective boundary -> token clock restarted
+        m.set_boundary_inject(True)
+        out = m.retrieve(
+            layer=0, query=torch.randn(1, 4, 2, 3), current_start=0, frame_seqlen=4,
+            dtype=torch.float32, device=CPU, exclude_token_ranges=exclude)
+        self.assertIsNotNone(out)
+        self.assertGreaterEqual(m.stats["boundary_injections"], 1)
+
+    def test_clear_resets_cross_clock(self):
+        m = KVRAGMemory(self._cfg())
+        m.mark_scene_cross_clock()
+        self.assertTrue(m._scene_cross_clock)
+        m.clear()
+        self.assertFalse(m._scene_cross_clock)
+
     def test_no_boundary_inject_without_pulse(self):
         # Without the perspective-boundary pulse, no force-injection happens
         # (this is the pre-fix behavior the new force_scene_memory_boundary cures).

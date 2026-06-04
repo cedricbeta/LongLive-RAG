@@ -338,6 +338,13 @@ class KVRAGMemory:
         # perspective's caption-text embedding, set per inference() call. None
         # until provided; using semantic mode without it fails fast.
         self._context_key: torch.Tensor | None = None
+        # True when the persistent scene partition was carried across a per-video
+        # TOKEN-CLOCK restart (the cross-perspective path: each perspective is a
+        # separate inference() starting at token 0). The live-window overlap dedup
+        # must NOT apply to those anchors -- their [start,end) coincides with the
+        # new perspective's window only by numeric coincidence across DIFFERENT
+        # videos, not a real double-count. Set by _reset_kv_rag_keep_scene.
+        self._scene_cross_clock = False
         self.stats = {
             "stored_entries": 0,
             "stored_scene_entries": 0,
@@ -409,6 +416,17 @@ class KVRAGMemory:
         """
         self._boundary_inject = bool(active) and self.config.boundary_inject_anchors > 0
 
+    def mark_scene_cross_clock(self) -> None:
+        """Flag that the scene partition now spans a per-video token-clock restart.
+
+        Called when the persistent scene anchors are carried into a NEW perspective
+        (a separate ``inference()`` call restarting at token 0). After this, the
+        live-window overlap dedup is skipped for scene anchors during retrieval, so
+        perspective-0's establishing anchors are not spuriously filtered just
+        because their token range coincides with the new perspective's window.
+        """
+        self._scene_cross_clock = True
+
     @property
     def requires_context_key(self) -> bool:
         """True when the active key mode indexes by an external context vector."""
@@ -459,6 +477,7 @@ class KVRAGMemory:
         self.scene_entries_by_layer.clear()
         self._boundary_inject = False
         self._context_key = None
+        self._scene_cross_clock = False
         for key in self.stats:
             self.stats[key] = 0 if isinstance(self.stats[key], int) else 0.0
         self._warnings.clear()
@@ -651,13 +670,20 @@ class KVRAGMemory:
         # Persistent scene anchors are timeless establishing context: they survive
         # boundaries AND survive a per-video token-clock restart (cross-perspective
         # generation renders one video per viewpoint, each starting at token 0), so
-        # they are exempt from the per-shot causality filter -- only the live-window
-        # overlap dedup applies. Within a single rollout this is a no-op (shot-0
-        # anchors already satisfy causality).
-        scene_pool = [
-            e for e in scene_entries
-            if not self._overlaps_any(e.start_token, e.end_token, exclude_token_ranges)
-        ]
+        # they are exempt from the per-shot causality filter. The live-window
+        # overlap dedup avoids double-counting a frame ALREADY in the window -- valid
+        # WITHIN one rollout, but spurious across a token-clock restart, where a
+        # perspective-0 anchor's [start,end) coincides with the new perspective's
+        # window only by numeric coincidence (a DIFFERENT video's tokens). So once
+        # the scene partition is cross-clock, scene anchors skip the overlap dedup
+        # and the boundary force-inject can actually deliver them.
+        if self._scene_cross_clock:
+            scene_pool = list(scene_entries)
+        else:
+            scene_pool = [
+                e for e in scene_entries
+                if not self._overlaps_any(e.start_token, e.end_token, exclude_token_ranges)
+            ]
         candidates = [e for e in shot_entries if _eligible(e)]
         candidates += scene_pool
         if not candidates:
@@ -1014,7 +1040,18 @@ class KVRAGMemory:
             return [self._score_centroid(query_summary, c.summary) for c in candidates]
         if self.config.retrieval_key_mode == "salient_set":
             return [self._score_salient_set(query_summary, c.summary) for c in candidates]
+        if self.config.retrieval_key_mode == "subject_identity":
+            # The identity prototype is a per-head L2-normalized vector; its contract
+            # is plain COSINE matching, independent of config.similarity (so an l2
+            # sweep does not silently re-rank it via _score_batch).
+            return [self._score_cosine(query_summary, c.summary) for c in candidates]
         return self._score_batch(query_summary, candidates)
+
+    def _score_cosine(self, query_summary: torch.Tensor, entry_summary: torch.Tensor) -> float:
+        """Plain cosine (dot of L2-normalized summaries), independent of
+        ``config.similarity``; mean over any head/batch dims."""
+        e = entry_summary.to(device=query_summary.device, dtype=query_summary.dtype)
+        return float((query_summary * e).sum(dim=-1).mean().item())
 
     def _score_salient_set(
         self, query_summary: torch.Tensor, entry_summary: torch.Tensor

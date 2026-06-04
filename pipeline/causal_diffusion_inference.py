@@ -194,6 +194,10 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
             if bank is not None:
                 bank.reset_shot()          # clear per-shot partition only
                 bank.set_boundary_inject(False)
+                # The scene anchors now belong to a PRIOR perspective's token clock
+                # (this perspective restarts at token 0), so they must skip the
+                # live-window overlap dedup or the boundary force-inject filters them.
+                bank.mark_scene_cross_clock()
 
     def _reset_kv_rag_shot(self):
         """Drop the per-shot KV-RAG partition at a shot boundary, keeping the
