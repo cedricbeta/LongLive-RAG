@@ -46,6 +46,24 @@ def _records():
     ]
 
 
+class TestBackboneGuard(unittest.TestCase):
+    def test_try_build_backbone_returns_none_on_failure(self):
+        def boom():
+            raise RuntimeError("backbone unavailable")
+        self.assertIsNone(abl._try_build_backbone("x", boom))      # missing -> None (no crash)
+        self.assertEqual(abl._try_build_backbone("y", lambda: 42), 42)  # available -> value
+
+    def test_missing_requested_backbone_flags_fail_closed(self):
+        # The non-finalist gate marks a requested-but-unloaded backbone for fail-closed.
+        backbones = {
+            "subject_dino": {"requested": True, "loaded": False},
+            "background_clip": {"requested": False, "loaded": False},
+            "identity": {"requested": True, "loaded": True},
+            "subject_kind": "auto",
+        }
+        self.assertEqual(abl._missing_requested_backbones(backbones), ["subject_dino"])
+
+
 class TestMissingBackboneDetection(unittest.TestCase):
     def test_extracts_requested_but_unloaded(self):
         backbones = {

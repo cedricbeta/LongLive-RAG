@@ -387,6 +387,66 @@ class TestIdentityAutoLazyDino(unittest.TestCase):
             sys.modules.pop("insightface.app", None)
 
 
+class TestIdentityAutoFallback(unittest.TestCase):
+    """auto must try ArcFace then fall back to DINO when the reference has no face,
+    and keep ONE feature space across a scene's perspectives."""
+
+    def _install_fake_arcface(self, get_fn):
+        import types
+        fake_insight = types.ModuleType("insightface")
+        fake_app = types.ModuleType("insightface.app")
+
+        class _FakeApp:
+            def __init__(self, *a, **k):
+                pass
+
+            def prepare(self, *a, **k):
+                pass
+
+            def get(self, img):
+                return get_fn(img)
+
+        fake_app.FaceAnalysis = _FakeApp
+        fake_insight.app = fake_app
+        sys.modules["insightface"] = fake_insight
+        sys.modules["insightface.app"] = fake_app
+
+    def test_auto_falls_back_to_dino_when_no_face(self):
+        import evaluation.vbench_consistency as vc
+        self._install_fake_arcface(lambda img: [])  # ArcFace never finds a face
+        orig = vc._build_dino_patch_encoder
+
+        def fake_dino(*a, **k):
+            return lambda frames: np.ones((len(frames), 384), dtype=np.float32)
+
+        vc._build_dino_patch_encoder = fake_dino
+        try:
+            enc = vc.build_identity_encoder(subject_kind="auto", device="cpu")
+            out = enc([np.zeros((16, 16, 3), np.uint8), np.ones((16, 16, 3), np.uint8)])
+            self.assertEqual(tuple(np.asarray(out).shape), (2, 384))  # DINO space, no crash
+        finally:
+            vc._build_dino_patch_encoder = orig
+            sys.modules.pop("insightface", None)
+            sys.modules.pop("insightface.app", None)
+
+    def test_auto_face_scene_then_no_face_perspective_raises(self):
+        import evaluation.vbench_consistency as vc
+        face = type("F", (), {"bbox": [0.0, 0.0, 10.0, 10.0],
+                              "normed_embedding": np.ones(8, dtype=np.float32)})()
+        self._install_fake_arcface(lambda img: [face] if float(np.asarray(img).mean()) > 0 else [])
+        orig = vc._build_dino_patch_encoder
+        vc._build_dino_patch_encoder = lambda *a, **k: (_ for _ in ()).throw(RuntimeError("no DINO"))
+        try:
+            enc = vc.build_identity_encoder(subject_kind="auto", device="cpu")
+            enc([np.ones((16, 16, 3), np.uint8) * 40])  # reference HAS a face -> ArcFace mode
+            with self.assertRaises(RuntimeError):
+                enc([np.zeros((16, 16, 3), np.uint8)])  # later perspective has no face
+        finally:
+            vc._build_dino_patch_encoder = orig
+            sys.modules.pop("insightface", None)
+            sys.modules.pop("insightface.app", None)
+
+
 class TestMatchingPerspectives(unittest.TestCase):
     def test_validator_rejects_mismatched_sets(self):
         from evaluation.vbench_consistency import _assert_matching_perspectives

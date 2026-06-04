@@ -589,6 +589,17 @@ def _parse_finalists(spec: str) -> list[tuple[str, str]]:
     return out
 
 
+def _try_build_backbone(label: str, builder):
+    """Build an optional AC-2 backbone, returning None (with a logged warning) if it
+    cannot load -- so a missing model/package records reduced coverage instead of
+    crashing the gate post-render."""
+    try:
+        return builder()
+    except Exception as exc:
+        print(f"[multiview_vbench][warn] {label} backbone unavailable -> dim omitted: {exc}")
+        return None
+
+
 def _missing_requested_backbones(backbones: dict) -> list[str]:
     """Names of AC-2 backbones that were REQUESTED (--vbench_*) but failed to load."""
     return sorted(
@@ -712,20 +723,11 @@ def _run_multiview_finalists(args, output_root: Path) -> None:
         model_name=args.clip_model, pretrained=args.clip_pretrained, device=args.clip_device
     ) if require_adherence else None
 
-    def _try_build(label, builder):
-        # A requested backbone that cannot load is recorded as unavailable (honest
-        # null for that dim), not a crash that wastes the renders (AC-7).
-        try:
-            return builder()
-        except Exception as exc:
-            print(f"[finalist-gate][warn] {label} backbone unavailable -> dim omitted: {exc}")
-            return None
-
-    dino = _try_build("subject(DINO)", lambda: build_dino_encoder(device=args.clip_device)) \
+    dino = _try_build_backbone("subject(DINO)", lambda: build_dino_encoder(device=args.clip_device)) \
         if args.vbench_subject else None
-    clip = _try_build("background(CLIP)", lambda: build_clip_image_encoder(device=args.clip_device)) \
+    clip = _try_build_backbone("background(CLIP)", lambda: build_clip_image_encoder(device=args.clip_device)) \
         if args.vbench_background else None
-    identity = _try_build("identity", lambda: build_identity_encoder(
+    identity = _try_build_backbone("identity", lambda: build_identity_encoder(
         subject_kind=args.subject_kind, device=args.clip_device)) if args.vbench_identity else None
     backbones = {
         "subject_dino": {"requested": bool(args.vbench_subject), "loaded": bool(dino)},
@@ -887,12 +889,22 @@ def _run_multiview_vbench(args, output_root: Path) -> None:
             model_name=args.clip_model, pretrained=args.clip_pretrained, device=args.clip_device
         )
 
-    dino = build_dino_encoder(device=args.clip_device) if args.vbench_subject else None
-    clip = build_clip_image_encoder(device=args.clip_device) if args.vbench_background else None
-    identity = None
-    if args.vbench_identity:
-        identity = build_identity_encoder(subject_kind=args.subject_kind, device=args.clip_device)
-    if dino is None and clip is None and identity is None:
+    # Guard optional backbone loading so a missing model/package records reduced
+    # coverage (and fails the gate closed) instead of crashing AFTER the renders.
+    dino = _try_build_backbone("subject(DINO)", lambda: build_dino_encoder(device=args.clip_device)) \
+        if args.vbench_subject else None
+    clip = _try_build_backbone("background(CLIP)", lambda: build_clip_image_encoder(device=args.clip_device)) \
+        if args.vbench_background else None
+    identity = _try_build_backbone("identity", lambda: build_identity_encoder(
+        subject_kind=args.subject_kind, device=args.clip_device)) if args.vbench_identity else None
+    backbones = {
+        "subject_dino": {"requested": bool(args.vbench_subject), "loaded": bool(dino)},
+        "background_clip": {"requested": bool(args.vbench_background), "loaded": bool(clip)},
+        "identity": {"requested": bool(args.vbench_identity), "loaded": bool(identity)},
+        "subject_kind": args.subject_kind,
+    }
+    missing_backbones = _missing_requested_backbones(backbones)
+    if not (args.vbench_subject or args.vbench_background or args.vbench_identity):
         print("[multiview_vbench] note: no semantic backbones (--vbench_subject/"
               "_background/_identity) -> GPU-free dims only (temporal_style, "
               "appearance_style, overall_consistency) + companions feed the aggregate.")
@@ -913,8 +925,17 @@ def _run_multiview_vbench(args, output_root: Path) -> None:
     )
     gate["modified_settings"] = modified_settings
     gate["perspective_coverage"] = coverage
-    gate["backbones"] = {"subject_dino": bool(dino), "background_clip": bool(clip),
-                         "identity": bool(identity), "subject_kind": args.subject_kind}
+    gate["backbones"] = backbones
+    gate["missing_requested_backbones"] = missing_backbones
+    if missing_backbones:
+        # A requested AC-2 backbone could not load -> fail closed with a recorded
+        # result (reduced-suite pass would be misleading), never a post-render crash.
+        gate["blocked_reason"] = (
+            f"requested AC-2 backbone(s) unavailable: {missing_backbones}; "
+            "gate reports a reduced/null result (fail-closed)."
+        )
+        gate["passed"] = False
+        gate["is_null_result"] = True
     if not require_adherence:
         gate["note"] = "adherence guard NOT evaluated (--dry_run_without_adherence); not a pass."
         gate["passed"] = False

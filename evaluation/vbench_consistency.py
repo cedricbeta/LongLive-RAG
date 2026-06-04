@@ -441,29 +441,53 @@ def build_identity_encoder(*, subject_kind: str = "auto", device: str | None = N
 
     if kind == "object" or (kind == "auto" and face_embed is None):
         _dino_patch()  # fail fast: DINO is the only available identity path here
-    use_face = face_embed is not None  # ONE feature space per video (no mixing)
+
+    def _dino_encode(frames_rgb):
+        feats = _dino_patch()(frames_rgb)
+        embs = [_np.asarray(v, dtype=_np.float64) for v in feats]
+        if not embs:
+            raise RuntimeError("Identity encoder produced no embeddings for this video.")
+        return _np.stack(embs, axis=0)
+
+    def _face_encode(frames_rgb):
+        embs = []
+        for f in frames_rgb:
+            emb = face_embed(f)
+            if emb is not None:                       # no-face frames are SKIPPED (no mixing)
+                embs.append(_np.asarray(emb, dtype=_np.float64))
+        return _np.stack(embs, axis=0) if embs else None
+
+    # The encoder is shared across ALL of a scene's perspectives, and the
+    # cross-video stack needs ONE feature space -- so the choice (ArcFace vs DINO)
+    # is decided ONCE on the reference (first) video and reused. ``auto`` tries a
+    # face first and falls back to DINO when the reference has none; ``human``
+    # requires a face; otherwise DINO.
+    _choice: dict[str, str] = {}
 
     def _encode(frames_rgb):
-        if use_face:
-            # ArcFace-only: frames with no detected face are SKIPPED (never mixed
-            # with DINO patches, whose dimension differs and would break np.stack).
-            embs = []
-            for f in frames_rgb:
-                emb = face_embed(f)
-                if emb is not None:
-                    embs.append(_np.asarray(emb, dtype=_np.float64))
-            if not embs:
+        if "mode" not in _choice:
+            if face_embed is not None:
+                faces = _face_encode(frames_rgb)
+                if faces is not None:
+                    _choice["mode"] = "face"
+                    return faces
+                if kind == "human":
+                    raise RuntimeError(
+                        "subject_kind='human' but no face was detected in the reference "
+                        "perspective; pick subject_kind='object' for non-human scenes."
+                    )
+            _choice["mode"] = "dino"  # auto with no reference face, or no face backbone
+            return _dino_encode(frames_rgb)
+        if _choice["mode"] == "face":
+            faces = _face_encode(frames_rgb)
+            if faces is None:
                 raise RuntimeError(
-                    "Identity encoder (ArcFace) detected no face in any frame of this "
-                    "video; pick subject_kind='object' (DINO patches) for non-human scenes."
+                    "subject_kind chose ArcFace from the reference perspective but a "
+                    "later perspective has no detectable face; every perspective of an "
+                    "ArcFace-scored scene needs a face (or pin subject_kind='object')."
                 )
-        else:
-            # DINO patch space for the whole video (no face backbone).
-            feats = _dino_patch()(frames_rgb)
-            embs = [_np.asarray(v, dtype=_np.float64) for v in feats]
-            if not embs:
-                raise RuntimeError("Identity encoder produced no embeddings for this video.")
-        return _np.stack(embs, axis=0)
+            return faces
+        return _dino_encode(frames_rgb)
 
     return _encode
 
