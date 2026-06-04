@@ -428,16 +428,27 @@ def build_identity_encoder(*, subject_kind: str = "auto", device: str | None = N
                 ) from exc
             face_embed = None  # auto -> fall back to DINO patches
 
-    dino_patch = None
-    if kind in ("object", "auto") or face_embed is None:
-        dino_patch = _build_dino_patch_encoder(device=device)
+    # DINO patch fallback. Build it EAGERLY only when it is the sole identity path
+    # ("object", or "auto" with no face backbone). For "auto" WITH a working face
+    # backbone, build it LAZILY (only when a frame has no detectable face), so an
+    # environment with working ArcFace but no DINO can still score faces.
+    _dino_state: dict = {}
+
+    def _dino_patch():
+        if "enc" not in _dino_state:
+            _dino_state["enc"] = _build_dino_patch_encoder(device=device)
+        return _dino_state["enc"]
+
+    if kind == "object" or (kind == "auto" and face_embed is None):
+        _dino_patch()  # fail fast: DINO is the only available identity path here
+    allow_dino = kind != "human"  # 'human' is ArcFace-only; no-face frames are skipped
 
     def _encode(frames_rgb):
         embs = []
         for f in frames_rgb:
             emb = face_embed(f) if face_embed is not None else None
-            if emb is None and dino_patch is not None:
-                emb = dino_patch(f[None, ...])[0]
+            if emb is None and allow_dino:
+                emb = _dino_patch()(f[None, ...])[0]  # lazy build on first no-face frame
             if emb is not None:
                 embs.append(_np.asarray(emb, dtype=_np.float64))
         if not embs:

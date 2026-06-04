@@ -129,6 +129,28 @@ class TestSemanticKey(unittest.TestCase):
         self.assertEqual(key.shape, (1, 4))
         self.assertAlmostEqual(float(key.norm()), 1.0, places=5)
 
+    def test_context_key_pools_to_D_over_all_leading_dims(self):
+        # [D], [seq, D] and [blocks, seq, D] T5 prompt_embeds all reduce to the
+        # SAME shape-independent pooled [1, D] caption vector (not [seq*D]).
+        mem = _mem(retrieval_key_mode="semantic")
+        D = 4
+        for shape in [(D,), (6, D), (3, 6, D)]:
+            mem.set_context_key(torch.randn(*shape))
+            self.assertEqual(tuple(mem._context_key.shape), (1, D))
+
+    def test_context_key_is_mean_pool_not_flatten(self):
+        # All tokens identical -> the pooled key equals that (normalized) token,
+        # regardless of seq/block dims. A flatten-to-[seq*D] bug would fail this.
+        mem = _mem(retrieval_key_mode="semantic")
+        tok = torch.tensor([1.0, 2.0, 3.0, 4.0])
+        mem.set_context_key(tok.repeat(3, 6, 1))  # [3, 6, 4] all-equal tokens
+        expected = F.normalize(tok, dim=-1).reshape(1, -1)
+        self.assertTrue(torch.allclose(mem._context_key, expected, atol=1e-5))
+        # a pre-pooled [D] of the same content yields the SAME key (shape-independent).
+        mem2 = _mem(retrieval_key_mode="semantic")
+        mem2.set_context_key(tok)
+        self.assertTrue(torch.allclose(mem._context_key, mem2._context_key, atol=1e-5))
+
     def test_same_caption_matches_higher_than_different(self):
         # Store an entry under perspective 0's caption embedding, then retrieve as
         # a later perspective whose caption embedding is close vs far.

@@ -269,6 +269,51 @@ class TestAggregate(unittest.TestCase):
         self.assertTrue(np.isnan(aggregate_consistency({"dynamic_degree": 0.5})))
 
 
+class TestIdentityAutoLazyDino(unittest.TestCase):
+    """subject_kind='auto' must NOT build the DINO fallback when ArcFace is
+    available -- an env with working InsightFace but no DINO should still score."""
+
+    def test_auto_with_arcface_does_not_build_dino(self):
+        import types
+        import evaluation.vbench_consistency as vc
+
+        fake_face = types.SimpleNamespace(
+            bbox=[0.0, 0.0, 10.0, 10.0], normed_embedding=np.ones(8, dtype=np.float32))
+
+        class _FakeApp:
+            def __init__(self, *a, **k):
+                pass
+
+            def prepare(self, *a, **k):
+                pass
+
+            def get(self, img):
+                return [fake_face]
+
+        fake_insight = types.ModuleType("insightface")
+        fake_app = types.ModuleType("insightface.app")
+        fake_app.FaceAnalysis = _FakeApp
+        fake_insight.app = fake_app
+
+        orig_dino = vc._build_dino_patch_encoder
+
+        def _boom(*a, **k):  # DINO unavailable -> would raise if built
+            raise RuntimeError("DINO unavailable")
+
+        sys.modules["insightface"] = fake_insight
+        sys.modules["insightface.app"] = fake_app
+        vc._build_dino_patch_encoder = _boom
+        try:
+            # auto + working ArcFace + NO DINO must not raise (DINO is lazy here).
+            enc = vc.build_identity_encoder(subject_kind="auto", device="cpu")
+            out = enc([np.zeros((16, 16, 3), dtype=np.uint8)])  # the (fake) face is detected
+            self.assertEqual(tuple(np.asarray(out).shape), (1, 8))
+        finally:
+            vc._build_dino_patch_encoder = orig_dino
+            sys.modules.pop("insightface", None)
+            sys.modules.pop("insightface.app", None)
+
+
 class TestCollapseVisible(unittest.TestCase):
     def test_identical_perspectives_have_zero_diversity(self):
         # AC-2 negative anti-cheat: identical (copy-collapsed) perspectives max out

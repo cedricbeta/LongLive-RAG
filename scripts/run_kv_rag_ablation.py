@@ -597,23 +597,28 @@ def _missing_requested_backbones(backbones: dict) -> list[str]:
     )
 
 
-def _finalize_finalist_ranking(finalist_records: list, missing_requested_backbones: list):
-    """Rank finalists and decide winner/null -- FAIL-CLOSED on missing backbones.
+def _finalize_finalist_ranking(finalist_records: list, missing_requested_backbones: list,
+                               *, gate_evaluated: bool = True):
+    """Rank finalists and decide winner/null -- FAIL-CLOSED.
 
-    If any REQUESTED AC-2 backbone failed to load, a winner must NOT be selected on
-    the reduced aggregate (the rendered selector is incomplete, so a reduced-suite
-    "win" would violate AC-3/AC-6): every finalist is forced ``passed=False`` with a
-    ``blocked_reason`` so the result is an explicit null. With all requested
-    backbones present, the best passing finalist (by mean rendered aggregate delta)
-    wins. Returns ``(ranked, winner, blocked_reason)``.
+    A winner must NOT be selected when the rendered selector is incomplete or the
+    full gate did not run, because a reduced/unguarded "win" would violate AC-3/AC-6
+    and the AC-4 honest-null contract. Every finalist is forced ``passed=False`` with
+    a ``blocked_reason`` when EITHER:
+      * a REQUESTED AC-2 backbone failed to load (reduced suite), OR
+      * the adherence guard was skipped (``gate_evaluated=False``, i.e. a
+        ``--dry_run_without_adherence`` run -- the gate's ``passed`` is not a real pass).
+    Otherwise the best passing finalist (by mean rendered aggregate delta) wins.
+    Returns ``(ranked, winner, blocked_reason)``.
     """
-    blocked_reason = None
+    reasons = []
     if missing_requested_backbones:
-        blocked_reason = (
-            "requested AC-2 backbone(s) unavailable: "
-            f"{list(missing_requested_backbones)}; refusing to select a rendered winner "
-            "on a reduced AC-2 suite (fail-closed)."
-        )
+        reasons.append(f"requested AC-2 backbone(s) unavailable: {list(missing_requested_backbones)}")
+    if not gate_evaluated:
+        reasons.append("adherence guard skipped (--dry_run_without_adherence)")
+    blocked_reason = None
+    if reasons:
+        blocked_reason = "; ".join(reasons) + " -- refusing to select a rendered winner (fail-closed)."
         for fr in finalist_records:
             fr["passed"] = False
             fr["blocked_reason"] = blocked_reason
@@ -727,9 +732,11 @@ def _run_multiview_finalists(args, output_root: Path) -> None:
             "gate": gate, "comparison": result,
         })
 
-    # Rank + decide winner/null, FAIL-CLOSED if a requested backbone is missing.
+    # Rank + decide winner/null, FAIL-CLOSED if a requested backbone is missing OR
+    # the adherence guard was skipped (dry run is not a real pass).
     missing_requested = _missing_requested_backbones(backbones)
-    ranked, winner, blocked_reason = _finalize_finalist_ranking(finalist_records, missing_requested)
+    ranked, winner, blocked_reason = _finalize_finalist_ranking(
+        finalist_records, missing_requested, gate_evaluated=require_adherence)
     consolidated = {
         "is_prefilter": False,
         "selector": "rendered AC-2 suite",

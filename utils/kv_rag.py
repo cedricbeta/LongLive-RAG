@@ -422,15 +422,23 @@ class KVRAGMemory:
         entries stored during this perspective are indexed by it, and later
         perspectives match against THEIR own caption embedding, so the same scene
         is retrieved by what the prompt describes -- decoupled from the K/V
-        payload (which can stay ``raw``). Accepts any ``[..., D]`` tensor; it is
-        L2-normalized and flattened to a single ``[1, D]`` row. ``None`` clears it.
+        payload (which can stay ``raw``). Accepts any ``[..., D]`` tensor (e.g. a
+        pre-pooled ``[D]`` vector or T5 ``prompt_embeds`` of shape
+        ``[blocks, seq_len, D]``); ALL leading dimensions are mean-pooled while the
+        last embedding dim ``D`` is preserved, so the key is the shape-independent
+        pooled ``[1, D]`` caption vector. ``None`` clears it.
         """
         if vector is None:
             self._context_key = None
             return
         with torch.no_grad():
             v = vector.detach().float()
-            v = v.reshape(-1) if v.dim() == 1 else v.reshape(v.shape[0], -1).mean(dim=0)
+            if v.dim() == 0:
+                v = v.reshape(1)
+            elif v.dim() > 1:
+                # Pool every leading dim (blocks, tokens, ...) into one [D] vector;
+                # do NOT flatten seq into D (that would make the key seq-dependent).
+                v = v.reshape(-1, v.shape[-1]).mean(dim=0)
             self._context_key = F.normalize(v, dim=-1, eps=1e-6).reshape(1, -1)
 
     @property

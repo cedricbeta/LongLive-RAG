@@ -90,6 +90,22 @@ class TestFailClosed(unittest.TestCase):
         self.assertIsNone(winner)
         self.assertIsNone(reason)  # honest null (guards), NOT a backbone block
 
+    def test_dry_run_forces_null(self):
+        # A --dry_run_without_adherence run (gate_evaluated=False) cannot select a
+        # winner even if a finalist's gate reported passed=True (guard was skipped).
+        ranked, winner, reason = abl._finalize_finalist_ranking(_records(), [], gate_evaluated=False)
+        self.assertIsNone(winner)
+        self.assertIsNotNone(reason)
+        self.assertIn("dry_run", reason)
+        self.assertTrue(all(not r["passed"] for r in ranked))
+
+    def test_missing_backbone_and_dry_run_both_reported(self):
+        ranked, winner, reason = abl._finalize_finalist_ranking(
+            _records(), ["subject_dino"], gate_evaluated=False)
+        self.assertIsNone(winner)
+        self.assertIn("subject_dino", reason)
+        self.assertIn("dry_run", reason)
+
 
 def _write_scene(root: Path, name: str, n_perspectives: int):
     folder = root / name
