@@ -135,7 +135,10 @@ class MultiTextConcatDataset(Dataset):
         else:
             self._mode = "dir"
             self._caption_dir = path / "caption" if (path / "caption").is_dir() else path
-            self._folders = sorted([d for d in self._caption_dir.iterdir() if d.is_dir()])
+            self._folders = sorted([
+                d for d in self._caption_dir.iterdir()
+                if d.is_dir() and any(f.name != "global.json" for f in d.glob("*.json"))
+            ])
             assert len(self._folders) > 0, (
                 f"No caption subfolders found in {self._caption_dir}"
             )
@@ -184,6 +187,8 @@ class MultiTextConcatDataset(Dataset):
         return {
             "prompts": prompts,
             "idx": idx,
+            "sample_name": folder.name,
+            "shot_durations": shot_durations,
         }
 
     def _load_captions_from_folder(self, folder: Path):
@@ -934,6 +939,8 @@ def eval_collate_fn(batch):
         "prompts": prompts_list,
         "idx": idx,
     }
+    if "sample_name" in batch[0]:
+        result["sample_name"] = [b["sample_name"] for b in batch]
     if "shot_durations" in batch[0]:
         result["shot_durations"] = [b["shot_durations"] for b in batch]
     return result

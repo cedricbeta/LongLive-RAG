@@ -328,6 +328,9 @@ class CausalWanSelfAttention(nn.Module):
         method="linear",
         original_seq_len=None,
         temporal_offset=0.0,
+        kv_rag=None,
+        kv_rag_layer=None,
+        kv_rag_retrieve=True,
     ):
         r"""
         Args:
@@ -605,8 +608,15 @@ class CausalWanSelfAttention(nn.Module):
                     "local_end_index": local_end_index,
                     "new_k": key_to_cache,
                     "new_v": v,
+                    "current_start": current_start,
                     "current_end": current_end,
                     "pinned_shift": pinned_shift,
+                    # KV-RAG: pre-RoPE key + frame geometry for re-RoPE'able storage.
+                    "rag_k_prerope": k,
+                    "frame_seqlen": frame_seqlen,
+                    "grid_h": h,
+                    "grid_w": w,
+                    "num_new_frames": num_new_frames,
                 }
 
             else:
@@ -655,8 +665,15 @@ class CausalWanSelfAttention(nn.Module):
                     "local_end_index": local_end_index,
                     "new_k": key_to_cache,
                     "new_v": v,
+                    "current_start": current_start,
                     "current_end": current_end,
                     "pinned_shift": 0,
+                    # KV-RAG: pre-RoPE key + frame geometry for re-RoPE'able storage.
+                    "rag_k_prerope": k,
+                    "frame_seqlen": frame_seqlen,
+                    "grid_h": h,
+                    "grid_w": w,
+                    "num_new_frames": num_new_frames,
                 }
 
             window_start = max(0, local_end_index - self.max_attention_size)
@@ -711,6 +728,52 @@ class CausalWanSelfAttention(nn.Module):
             else:
                 window_k = temp_k[:, window_start:local_end_index]
                 window_v = temp_v[:, window_start:local_end_index]
+
+            rag_result = None
+            rag_k_pending = None
+            rag_v_pending = None
+            rag_prepended_tokens = 0
+            kv_rag_cfg = getattr(kv_rag, "config", None) if kv_rag is not None else None
+            kv_rag_summary_prerope = bool(getattr(kv_rag_cfg, "summary_prerope", True))
+            kv_rag_reinject = bool(getattr(kv_rag, "reinject_rope", False)) if kv_rag is not None else False
+            if kv_rag is not None and kv_rag_retrieve:
+                # Match on the pre-RoPE query so the same content at a different
+                # time still scores as similar (position-invariant retrieval).
+                if not use_relative_rope:
+                    rag_query = q if kv_rag_summary_prerope else roped_query
+                else:
+                    rag_query = q
+                try:
+                    rag_result = kv_rag.retrieve(
+                        layer=kv_rag_layer if kv_rag_layer is not None else -1,
+                        query=rag_query,
+                        current_start=current_start,
+                        frame_seqlen=frame_seqlen,
+                        dtype=v.dtype,
+                        device=v.device,
+                        use_relative_rope=use_relative_rope,
+                    )
+                except Exception as exc:
+                    if getattr(kv_rag, "fail_open", True):
+                        warn_once = getattr(kv_rag, "warn_once", None)
+                        if warn_once is not None:
+                            warn_once(
+                                "retrieve_failed",
+                                f"[KV-RAG][warn] retrieval failed once and will be skipped: {exc}",
+                            )
+                        rag_result = None
+                    else:
+                        raise
+            if rag_result is not None:
+                rag_k, rag_v, _ = rag_result
+                if kv_rag_reinject and not use_relative_rope:
+                    # Defer: keys are pre-RoPE and are re-RoPE'd into a virtual
+                    # frame block just before the local window (absolute path).
+                    rag_k_pending, rag_v_pending = rag_k, rag_v
+                else:
+                    window_k = torch.cat([rag_k, window_k], dim=1)
+                    window_v = torch.cat([rag_v, window_v], dim=1)
+                    rag_prepended_tokens = int(rag_k.shape[1])
 
             if use_relative_rope:
                 if prepend_sink:
@@ -767,6 +830,38 @@ class CausalWanSelfAttention(nn.Module):
 
                 x = attention(roped_query, roped_window_k, window_v)
             else:
+                if rag_k_pending is not None:
+                    # Re-RoPE the retrieved (pre-RoPE) memory keys into a virtual
+                    # frame block placed immediately before the local window, so
+                    # the query<->memory relative positions stay in the range the
+                    # model was trained on instead of carrying stale absolute
+                    # positions from the chunk's original location.
+                    rag_tokens = rag_k_pending.shape[1]
+                    rag_frames = rag_tokens // frame_seqlen
+                    if rag_frames > 0 and rag_frames * frame_seqlen == rag_tokens:
+                        prefix_tokens = 0
+                        if prepend_sink:
+                            prefix_tokens += effective_sink
+                        if prepend_pinned:
+                            prefix_tokens += pinned_len_val
+                        local_frames = (window_k.shape[1] - prefix_tokens) // frame_seqlen
+                        local_start_frame = (current_end // frame_seqlen) - local_frames
+                        rag_start_frame = max(0, local_start_frame - rag_frames)
+                        rag_grid = [(rag_frames, h, w)] * b
+                        roped_rag_k = causal_rope_apply(
+                            rag_k_pending, rag_grid, freqs,
+                            start_frame=rag_start_frame, t_scale=t_scale,
+                            method=method, original_seq_len=original_seq_len,
+                            temporal_offset=temporal_offset,
+                        ).type_as(v)
+                        window_k = torch.cat([roped_rag_k, window_k], dim=1)
+                        window_v = torch.cat([rag_v_pending, window_v], dim=1)
+                        rag_prepended_tokens = rag_tokens
+                    # else: not frame-aligned -> skip injection (fail open)
+                if (kv_rag is not None and rag_prepended_tokens > 0
+                        and getattr(kv_rag, "diag_enabled", False)
+                        and kv_rag_layer == getattr(kv_rag, "diag_layer", -999)):
+                    kv_rag.record_attention_mass(roped_query, window_k, rag_prepended_tokens)
                 x = attention(roped_query, window_k, window_v)
 
         # output
@@ -834,6 +929,9 @@ class CausalWanAttentionBlock(nn.Module):
         method="linear",
         original_seq_len=None,
         temporal_offset=0.0,
+        kv_rag=None,
+        kv_rag_layer=None,
+        kv_rag_retrieve=True,
     ):
         r"""
         Args:
@@ -867,7 +965,10 @@ class CausalWanAttentionBlock(nn.Module):
             freqs, block_mask, kv_cache, current_start, cache_start, t_scale=t_scale,
             use_relative_rope=use_relative_rope,
             method=method, original_seq_len=original_seq_len,
-            temporal_offset=temporal_offset)
+            temporal_offset=temporal_offset,
+            kv_rag=kv_rag,
+            kv_rag_layer=kv_rag_layer,
+            kv_rag_retrieve=kv_rag_retrieve)
         
         if kv_cache is not None:
             y, cache_update_info = self_attn_result
@@ -1356,7 +1457,14 @@ class CausalWanModel(ModelMixin, ConfigMixin):
 
         return block_mask
 
-    def _apply_cache_updates(self, kv_cache, cache_update_infos):
+    def _apply_cache_updates(
+        self,
+        kv_cache,
+        cache_update_infos,
+        kv_rag=None,
+        kv_rag_store: bool = False,
+        kv_rag_meta: dict | None = None,
+    ):
         """
         Applies cache updates collected from multiple blocks.
         Args:
@@ -1465,6 +1573,40 @@ class CausalWanModel(ModelMixin, ConfigMixin):
                         # Insert the new key/value tensors.
                         cache["k"][:, local_start_index:local_end_index] = new_k
                         cache["v"][:, local_start_index:local_end_index] = new_v
+
+                if kv_rag is not None and kv_rag_store:
+                    try:
+                        new_k = update_info.get("new_k", None)  # post-RoPE (cached)
+                        new_k_pre = update_info.get("rag_k_prerope", None)  # pre-RoPE
+                        new_v = update_info.get("new_v", None)
+                        if new_k is not None and new_v is not None:
+                            meta = kv_rag_meta or {}
+                            end_token = int(update_info.get("current_end", current_end))
+                            start_token = int(update_info.get("current_start", end_token - new_k.shape[1]))
+                            kv_rag.add(
+                                layer=block_index,
+                                k_pre=new_k_pre,
+                                k_post=new_k,
+                                v=new_v,
+                                start_token=start_token,
+                                end_token=end_token,
+                                frame_seqlen=int(update_info.get("frame_seqlen", 0)),
+                                h=int(update_info.get("grid_h", 0)),
+                                w=int(update_info.get("grid_w", 0)),
+                                frames=int(update_info.get("num_new_frames", 0)),
+                                chunk_index=meta.get("chunk_index", None),
+                                phase=meta.get("phase", None),
+                            )
+                    except Exception as exc:
+                        if getattr(kv_rag, "fail_open", True):
+                            warn_once = getattr(kv_rag, "warn_once", None)
+                            if warn_once is not None:
+                                warn_once(
+                                    "store_failed",
+                                    f"[KV-RAG][warn] store failed once and will be skipped: {exc}",
+                                )
+                        else:
+                            raise
             
             # Update cache indices.
             kv_cache[block_index]["global_end_index"].fill_(current_end)
@@ -1483,6 +1625,10 @@ class CausalWanModel(ModelMixin, ConfigMixin):
         current_start: int = 0,
         cache_start: int = 0,
         defer_cache_updates: bool = False,
+        kv_rag=None,
+        kv_rag_retrieve: bool = True,
+        kv_rag_store: bool = False,
+        kv_rag_meta: dict | None = None,
     ):
         r"""
         Run the diffusion model with kv caching.
@@ -1589,7 +1735,10 @@ class CausalWanModel(ModelMixin, ConfigMixin):
                     {
                         "kv_cache": kv_cache[block_index],
                         "current_start": current_start,
-                        "cache_start": cache_start
+                        "cache_start": cache_start,
+                        "kv_rag": kv_rag,
+                        "kv_rag_layer": block_index,
+                        "kv_rag_retrieve": kv_rag_retrieve,
                     }
                 )
                 result = torch.utils.checkpoint.checkpoint(
@@ -1612,7 +1761,10 @@ class CausalWanModel(ModelMixin, ConfigMixin):
                         "kv_cache": kv_cache[block_index],
                         "crossattn_cache": crossattn_cache[block_index],
                         "current_start": current_start,
-                        "cache_start": cache_start
+                        "cache_start": cache_start,
+                        "kv_rag": kv_rag,
+                        "kv_rag_layer": block_index,
+                        "kv_rag_retrieve": kv_rag_retrieve,
                     }
                 )
                 result = block(x, **kwargs)
@@ -1630,7 +1782,13 @@ class CausalWanModel(ModelMixin, ConfigMixin):
         # experiments this can be deferred to the eager wrapper so cache
         # mutation does not happen inside the compiled forward.
         if kv_cache is not None and cache_update_infos and not defer_cache_updates:
-            self._apply_cache_updates(kv_cache, cache_update_infos)
+            self._apply_cache_updates(
+                kv_cache,
+                cache_update_infos,
+                kv_rag=kv_rag,
+                kv_rag_store=kv_rag_store,
+                kv_rag_meta=kv_rag_meta,
+            )
 
         # head
         x = self.head(x, e.unsqueeze(2))

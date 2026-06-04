@@ -70,6 +70,7 @@
 - [NVFP4 Setup](https://nvlabs.github.io/LongLive/LongLive2/docs/#nvfp4-installation)
 - [Training](https://nvlabs.github.io/LongLive/LongLive2/docs/#training)
 - [Inference](https://nvlabs.github.io/LongLive/LongLive2/docs/#inference)
+- [KV-RAG Temporal Consistency](docs/KV_RAG.md)
 - [Data Organization](https://nvlabs.github.io/LongLive/LongLive2/docs/#training-data)
 
 ### Quick Start

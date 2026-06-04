@@ -5,6 +5,7 @@ tokenizers>=0.20.3
 accelerate>=1.1.1
 tqdm
 datasets
+decord
 imageio
 easydict
 ftfy

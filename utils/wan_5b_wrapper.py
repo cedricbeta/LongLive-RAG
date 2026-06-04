@@ -312,6 +312,7 @@ class WanDiffusionWrapper(torch.nn.Module):
     
         self.post_init()
         self._compiled_model_call = None
+        self._warned_kv_rag_compile_bypass = False
 
     def enable_gradient_checkpointing(self) -> None:
         self.model.enable_gradient_checkpointing()
@@ -376,7 +377,13 @@ class WanDiffusionWrapper(torch.nn.Module):
         if defer_kv_updates:
             kwargs["defer_cache_updates"] = True
 
-        if self._compiled_model_call is not None:
+        use_compiled_call = self._compiled_model_call is not None and kwargs.get("kv_rag", None) is None
+        if self._compiled_model_call is not None and kwargs.get("kv_rag", None) is not None:
+            if not self._warned_kv_rag_compile_bypass:
+                print("[KV-RAG][warn] bypassing torch.compile for KV-RAG calls")
+                self._warned_kv_rag_compile_bypass = True
+
+        if use_compiled_call:
             # iter-25: signal cudagraph allocator that a new "step" starts.
             # Required for mode=reduce-overhead when modules cache state
             # (KV cache rolling buffers, fp4-quant scale tensors) so the
@@ -397,7 +404,13 @@ class WanDiffusionWrapper(torch.nn.Module):
                 )
             output, cache_update_infos = result
             if cache_update_infos:
-                self.model._apply_cache_updates(kv_cache, cache_update_infos)
+                self.model._apply_cache_updates(
+                    kv_cache,
+                    cache_update_infos,
+                    kv_rag=kwargs.get("kv_rag", None),
+                    kv_rag_store=kwargs.get("kv_rag_store", False),
+                    kv_rag_meta=kwargs.get("kv_rag_meta", None),
+                )
             return output
         return result
 
@@ -462,6 +475,10 @@ class WanDiffusionWrapper(torch.nn.Module):
         aug_t: Optional[torch.Tensor] = None,
         cache_start: Optional[int] = None,
         rope_temporal_offset: Optional[torch.Tensor] = None,
+        kv_rag=None,
+        kv_rag_retrieve: bool = True,
+        kv_rag_store: bool = False,
+        kv_rag_meta: Optional[dict] = None,
     ) -> torch.Tensor:
         prompt_embeds = conditional_dict["prompt_embeds"]
 
@@ -489,7 +506,11 @@ class WanDiffusionWrapper(torch.nn.Module):
                 kv_cache=kv_cache,
                 crossattn_cache=crossattn_cache,
                 current_start=current_start,
-                cache_start=cache_start
+                cache_start=cache_start,
+                kv_rag=kv_rag,
+                kv_rag_retrieve=kv_rag_retrieve,
+                kv_rag_store=kv_rag_store,
+                kv_rag_meta=kv_rag_meta,
             ).permute(0, 2, 1, 3, 4)
         else:
             if clean_x is not None:

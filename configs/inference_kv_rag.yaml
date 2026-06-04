@@ -1,0 +1,73 @@
+# KV-RAG inference example for Wan2.2-TI2V-5B.
+# Copy checkpoint/data paths from configs/inference.yaml or your local yaml.
+
+model_kwargs:
+  model_name: Wan2.2-TI2V-5B
+  timestep_shift: 5.0
+  num_frame_per_block: 8
+  local_attn_size: 32
+
+use_ema: false
+output_folder: videos/longlive2_kv_rag
+num_samples: 1
+save_latents_only: false
+
+data:
+  data_path: /path/to/longlive2/inference_prompts
+  image_or_video_shape:
+  - 1
+  - 128
+  - 48
+  - 44
+  - 80
+
+inference:
+  sampling_steps: 4
+  sink_size: 8
+  guidance_scale: 1.0
+  multi_shot_sink: true
+  multi_shot_rope_offset: 8
+  streaming_vae: false
+  async_vae: false
+  vae_type: wan
+  vae_device: "cuda:2"
+
+  kv_rag:
+    enabled: true
+    # Store/retrieve only selected layers to bound memory. Use "all" for every layer.
+    layers: [0, 7, 14, 21, 29]
+    top_k: 2
+    max_entries: 32
+    max_tokens_per_entry: 1024
+    min_frame_gap: 0
+    retrieve_during_denoise: true
+    retrieve_during_recache: false
+    store_after_recache: true
+    token_policy: uniform
+    similarity: cosine
+    store_on_cpu: false
+    verbose: true
+    # --- retrieval-signal fixes (default on) ---
+    # Match on pre-RoPE content (position-invariant) and keep per-head structure.
+    summary_prerope: true
+    summary_per_head: true
+    # --- in-distribution injection (default on) ---
+    # Re-RoPE retrieved keys into a virtual frame block just before the local
+    # window. frame_aligned_store keeps whole frames so the slice can be re-RoPE'd.
+    # Set both false to reproduce the legacy stale-absolute-RoPE injection path.
+    reinject_rope: true
+    frame_aligned_store: true
+
+checkpoints:
+  generator_ckpt: /path/to/longlive2/generator_checkpoint.pt
+  lora_ckpt: /path/to/longlive2/lora_checkpoint.pt
+
+adapter:
+  type: lora
+  rank: 128
+  alpha: 128
+  dropout: 0.0
+  verbose: true
+
+logging:
+  seed: 0

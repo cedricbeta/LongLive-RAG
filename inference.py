@@ -33,6 +33,7 @@ if not hasattr(_tv_io, "read_video"):
     _tv_io.read_video = _shim_read_video
 
 import argparse
+import re
 import torch
 from omegaconf import OmegaConf
 from tqdm import tqdm
@@ -84,6 +85,13 @@ def save_prompts_to_txt(prompts_for_sample, prompt_txt_path: str, is_main_proces
     except Exception as e:
         if is_main_process:
             print(f"Warning: failed to save prompts to {prompt_txt_path}: {e}")
+
+
+def safe_filename_token(value, max_len: int = 120) -> str:
+    text = str(value).strip()
+    text = re.sub(r"[^A-Za-z0-9._-]+", "_", text)
+    text = re.sub(r"_+", "_", text).strip("._-")
+    return (text[:max_len] or "sample")
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--config_path", type=str, help="Path to the config file")
@@ -137,6 +145,19 @@ def _config_bool(value, default=False):
     if isinstance(value, str):
         return value.strip().lower() in {"1", "true", "yes", "y", "on"}
     return bool(value)
+
+
+def _kv_rag_enabled(config):
+    cfg = section_get(config, "inference", "kv_rag", getattr(config, "kv_rag", None))
+    if cfg is None:
+        return False
+    if isinstance(cfg, bool):
+        return cfg
+    if OmegaConf.is_config(cfg):
+        return _config_bool(cfg.get("enabled", False), default=False)
+    if isinstance(cfg, dict):
+        return _config_bool(cfg.get("enabled", False), default=False)
+    return _config_bool(getattr(cfg, "enabled", False), default=False)
 
 
 def _expected_inference_samples(config):
@@ -229,6 +250,10 @@ def materialize_quantized_generator(model, device, materialize_fn, stage_desc):
 
 
 def configure_generator_torch_compile(pipeline, config):
+    if _kv_rag_enabled(config):
+        if local_rank == 0:
+            print("[torch.compile] skipped: KV-RAG uses dynamic retrieval memory")
+        return
     compile_enabled, reason = _resolve_torch_compile(config)
     if not compile_enabled:
         if local_rank == 0 and str(getattr(config, "torch_compile", "false")).lower() == "auto":
@@ -541,6 +566,13 @@ for i, batch_data in tqdm(enumerate(dataloader), disable=(local_rank != 0)):
     block_prompts = list(batch['prompts'][0])
     prompt = block_prompts[0]  # for filename
     prompts = [block_prompts] * config.num_samples
+    sample_name = None
+    if isinstance(batch, dict) and "sample_name" in batch:
+        sample_name_value = batch["sample_name"]
+        if isinstance(sample_name_value, (list, tuple)) and sample_name_value:
+            sample_name = sample_name_value[0]
+        else:
+            sample_name = sample_name_value
 
     shape = config.image_or_video_shape
     sampled_noise = torch.randn(
@@ -592,10 +624,26 @@ for i, batch_data in tqdm(enumerate(dataloader), disable=(local_rank != 0)):
             model_type = "regular"
             
         for seed_idx in range(config.num_samples):
-            if config.save_with_index:
-                base_name = f'rank{rank}-{idx}-{seed_idx}_{model_type}'
+            filename_from_sample_name = section_get(
+                config,
+                "inference",
+                "filename_from_sample_name",
+                getattr(config, "filename_from_sample_name", False),
+            )
+            filename_prefix = section_get(
+                config,
+                "inference",
+                "filename_prefix",
+                getattr(config, "filename_prefix", ""),
+            )
+            prefix = f"{safe_filename_token(filename_prefix)}-" if filename_prefix else ""
+            if filename_from_sample_name and sample_name:
+                name_token = safe_filename_token(sample_name)
+            elif config.save_with_index:
+                name_token = str(idx)
             else:
-                base_name = f'rank{rank}-{prompt[:100]}-{seed_idx}_{model_type}'
+                name_token = safe_filename_token(prompt, max_len=100)
+            base_name = f'{prefix}rank{rank}-{name_token}-seed{seed_idx}_{model_type}'
 
             if save_latents_only:
                 latent_path = os.path.join(config.output_folder, f'{base_name}.pt')

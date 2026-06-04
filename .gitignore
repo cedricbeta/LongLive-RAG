@@ -4,7 +4,9 @@ __pycache__/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+venv/
 
+checkpoints/
 longlive_models/
 wan_models/
 videos/
@@ -23,6 +25,7 @@ pretrained/
 *.mp4
 *.pt
 *.pth
+*.safetensors
 
 # Optimization experiment records
 agent/logs/

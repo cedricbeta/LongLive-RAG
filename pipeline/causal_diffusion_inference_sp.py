@@ -196,6 +196,11 @@ class CausalDiffusionInferencePipelineSP(CausalDiffusionInferencePipeline):
             text_encoder=text_encoder,
             vae=vae,
         )
+        if getattr(self, "kv_rag_enabled", False):
+            sp_print("[KV-RAG][warn] Ulysses SP inference does not yet support KV-RAG; disabling it.")
+            self.kv_rag_enabled = False
+            self.kv_rag_pos = None
+            self.kv_rag_neg = None
         if self.quantize_kv:
             raise ValueError("kv_quant is not supported in Ulysses SP inference.")
         sp_print(

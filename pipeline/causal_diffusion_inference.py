@@ -20,6 +20,7 @@ from wan_5b.utils.fm_solvers_unipc import FlowUniPCMultistepScheduler
 from utils.wan_5b_wrapper import WanDiffusionWrapper, WanTextEncoder, build_vae_5b
 from utils.dataset import DEFAULT_SCENE_CUT_PREFIX
 from utils.config import section_get, wan_default_config
+from utils.kv_rag import KVRAGConfig, KVRAGMemory
 
 
 class CausalDiffusionInferencePipeline(torch.nn.Module):
@@ -145,6 +146,14 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
         self._rope_method_override = getattr(args, "rope_method", None)
         self._original_seq_len_override = getattr(args, "original_seq_len", None)
 
+        kv_rag_raw = section_get(args, "inference", "kv_rag", getattr(args, "kv_rag", None))
+        self.kv_rag_config = KVRAGConfig.from_config(kv_rag_raw)
+        self.kv_rag_enabled = self.kv_rag_config.enabled
+        self.kv_rag_pos = KVRAGMemory(self.kv_rag_config) if self.kv_rag_enabled else None
+        self.kv_rag_neg = KVRAGMemory(self.kv_rag_config) if self.kv_rag_enabled else None
+        if self.kv_rag_enabled:
+            print(f"[KV-RAG] {self.kv_rag_config.describe()}")
+
     @property
     def _dit_model(self):
         """Return the underlying CausalWanModel, unwrapping PeftModel if present.
@@ -159,6 +168,35 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
         if hasattr(model, 'base_model') and hasattr(model.base_model, 'model'):
             return model.base_model.model
         return model
+
+    def _reset_kv_rag(self):
+        if not self.kv_rag_enabled:
+            return
+        if self.kv_rag_pos is not None:
+            self.kv_rag_pos.clear()
+        if self.kv_rag_neg is not None:
+            self.kv_rag_neg.clear()
+
+    def _kv_rag_call_kwargs(
+        self,
+        bank,
+        *,
+        retrieve: bool,
+        store: bool = False,
+        chunk_index: int | None = None,
+        phase: str | None = None,
+    ):
+        if not self.kv_rag_enabled or bank is None:
+            return {}
+        return {
+            "kv_rag": bank,
+            "kv_rag_retrieve": bool(retrieve),
+            "kv_rag_store": bool(store),
+            "kv_rag_meta": {
+                "chunk_index": chunk_index,
+                "phase": phase,
+            },
+        }
 
     def inference(
         self,
@@ -216,6 +254,7 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
             device=noise.device,
             dtype=noise.dtype
         )
+        self._reset_kv_rag()
 
         # Step 1: Initialize KV cache to all zeros
         if self.kv_cache_pos is None:
@@ -376,7 +415,14 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
                     kv_cache=self.kv_cache_pos,
                     crossattn_cache=self.crossattn_cache_pos,
                     current_start=current_start_frame * self.frame_seq_length,
-                    cache_start=cache_start_frame * self.frame_seq_length
+                    cache_start=cache_start_frame * self.frame_seq_length,
+                    **self._kv_rag_call_kwargs(
+                        self.kv_rag_pos,
+                        retrieve=self.kv_rag_config.retrieve_during_recache,
+                        store=self.kv_rag_config.store_after_recache,
+                        chunk_index=-1,
+                        phase="initial_first_frame",
+                    ),
                 )
                 if use_cfg:
                     self.generator(
@@ -386,7 +432,14 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
                         kv_cache=self.kv_cache_neg,
                         crossattn_cache=self.crossattn_cache_neg,
                         current_start=current_start_frame * self.frame_seq_length,
-                        cache_start=cache_start_frame * self.frame_seq_length
+                        cache_start=cache_start_frame * self.frame_seq_length,
+                        **self._kv_rag_call_kwargs(
+                            self.kv_rag_neg,
+                            retrieve=self.kv_rag_config.retrieve_during_recache,
+                            store=self.kv_rag_config.store_after_recache,
+                            chunk_index=-1,
+                            phase="initial_first_frame_uncond",
+                        ),
                     )
                 current_start_frame += 1
                 cache_start_frame += 1
@@ -406,7 +459,14 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
                     kv_cache=self.kv_cache_pos,
                     crossattn_cache=self.crossattn_cache_pos,
                     current_start=current_start_frame * self.frame_seq_length,
-                    cache_start=cache_start_frame * self.frame_seq_length
+                    cache_start=cache_start_frame * self.frame_seq_length,
+                    **self._kv_rag_call_kwargs(
+                        self.kv_rag_pos,
+                        retrieve=self.kv_rag_config.retrieve_during_recache,
+                        store=self.kv_rag_config.store_after_recache,
+                        chunk_index=-1 - block_index,
+                        phase="initial_context",
+                    ),
                 )
                 if use_cfg:
                     self.generator(
@@ -416,7 +476,14 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
                         kv_cache=self.kv_cache_neg,
                         crossattn_cache=self.crossattn_cache_neg,
                         current_start=current_start_frame * self.frame_seq_length,
-                        cache_start=cache_start_frame * self.frame_seq_length
+                        cache_start=cache_start_frame * self.frame_seq_length,
+                        **self._kv_rag_call_kwargs(
+                            self.kv_rag_neg,
+                            retrieve=self.kv_rag_config.retrieve_during_recache,
+                            store=self.kv_rag_config.store_after_recache,
+                            chunk_index=-1 - block_index,
+                            phase="initial_context_uncond",
+                        ),
                     )
                 current_start_frame += self.num_frame_per_block
                 cache_start_frame += self.num_frame_per_block
@@ -559,7 +626,13 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
                     kv_cache=self.kv_cache_pos,
                     crossattn_cache=self.crossattn_cache_pos,
                     current_start=current_start_frame * self.frame_seq_length,
-                    cache_start=cache_start_frame * self.frame_seq_length
+                    cache_start=cache_start_frame * self.frame_seq_length,
+                    **self._kv_rag_call_kwargs(
+                        self.kv_rag_pos,
+                        retrieve=self.kv_rag_config.retrieve_during_denoise,
+                        chunk_index=chunk_index,
+                        phase="denoise",
+                    ),
                 )
                 if use_cfg:
                     flow_pred_uncond, _ = self.generator(
@@ -569,7 +642,13 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
                         kv_cache=self.kv_cache_neg,
                         crossattn_cache=self.crossattn_cache_neg,
                         current_start=current_start_frame * self.frame_seq_length,
-                        cache_start=cache_start_frame * self.frame_seq_length
+                        cache_start=cache_start_frame * self.frame_seq_length,
+                        **self._kv_rag_call_kwargs(
+                            self.kv_rag_neg,
+                            retrieve=self.kv_rag_config.retrieve_during_denoise,
+                            chunk_index=chunk_index,
+                            phase="denoise_uncond",
+                        ),
                     )
                     flow_pred = flow_pred_uncond + self.guidance_scale * (
                         flow_pred_cond - flow_pred_uncond)
@@ -610,7 +689,14 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
                 kv_cache=self.kv_cache_pos,
                 crossattn_cache=self.crossattn_cache_pos,
                 current_start=current_start_frame * self.frame_seq_length,
-                cache_start=cache_start_frame * self.frame_seq_length
+                cache_start=cache_start_frame * self.frame_seq_length,
+                **self._kv_rag_call_kwargs(
+                    self.kv_rag_pos,
+                    retrieve=self.kv_rag_config.retrieve_during_recache,
+                    store=self.kv_rag_config.store_after_recache,
+                    chunk_index=chunk_index,
+                    phase="clean_recache",
+                ),
             )
             if use_cfg:
                 self.generator(
@@ -620,7 +706,14 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
                     kv_cache=self.kv_cache_neg,
                     crossattn_cache=self.crossattn_cache_neg,
                     current_start=current_start_frame * self.frame_seq_length,
-                    cache_start=cache_start_frame * self.frame_seq_length
+                    cache_start=cache_start_frame * self.frame_seq_length,
+                    **self._kv_rag_call_kwargs(
+                        self.kv_rag_neg,
+                        retrieve=self.kv_rag_config.retrieve_during_recache,
+                        store=self.kv_rag_config.store_after_recache,
+                        chunk_index=chunk_index,
+                        phase="clean_recache_uncond",
+                    ),
                 )
 
             # Step 3.3b: pin the current chunk for multi-shot sink on scene cut.
@@ -701,6 +794,12 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
             _path = os.path.join(_LLV2_DUMP_LATENT_DIR, f"latent_{_existing:04d}.pt")
             torch.save(output.detach().cpu(), _path)
             print(f"[LLV2_DUMP] saved latent {tuple(output.shape)} -> {_path}", flush=True)
+
+        if self.kv_rag_enabled and self.kv_rag_config.verbose:
+            if self.kv_rag_pos is not None:
+                print(self.kv_rag_pos.format_stats("KV-RAG pos"), flush=True)
+            if use_cfg and self.kv_rag_neg is not None:
+                print(self.kv_rag_neg.format_stats("KV-RAG neg"), flush=True)
 
         # Step 4: Decode the output
 
@@ -855,6 +954,7 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
         self.kv_cache_neg = None
         self.crossattn_cache_pos = None
         self.crossattn_cache_neg = None
+        self._reset_kv_rag()
 
     def _initialize_sample_scheduler(self, noise):
         if self.sample_solver == 'unipc':
