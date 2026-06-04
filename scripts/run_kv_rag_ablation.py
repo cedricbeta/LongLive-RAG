@@ -13,6 +13,8 @@
 from __future__ import annotations
 
 import argparse
+import json
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -22,7 +24,24 @@ from omegaconf import OmegaConf
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from evaluation.video_consistency import compare_video_dirs, save_metrics_json
+from evaluation.multiview_prompts import build_spec_resolver
+from evaluation.video_consistency import (
+    build_clip_adherence_scorer,
+    compare_cross_perspective_dirs,
+    compare_video_dirs,
+    evaluate_cross_perspective_gate,
+    save_metrics_json,
+)
+
+# Recommended single-scene multi-perspective settings for the modified variant
+# (the AC-6 study's viewpoint-robust key + persistent scene anchors).
+MULTIVIEW_KV_RAG = {
+    "scene_memory_enabled": True,
+    "boundary_inject_anchors": 2,
+    "scene_score_bonus": 0.1,
+    "retrieval_key_mode": "salient_set",
+    "retrieval_value_mode": "raw",
+}
 
 
 DEFAULT_KV_RAG = {
@@ -55,7 +74,99 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--kv_rag_dir", default=None, help="Existing KV-RAG output directory.")
     parser.add_argument("--max_frames", type=int, default=None, help="Optional frame cap for evaluation.")
     parser.add_argument("--stride", type=int, default=1, help="Evaluation frame stride.")
+    parser.add_argument(
+        "--mode",
+        choices=("temporal", "cross_perspective"),
+        default="temporal",
+        help="temporal: adjacent/optical-flow consistency. cross_perspective: "
+        "single-scene multi-viewpoint milestone gate over a vendored prompt set.",
+    )
+    parser.add_argument(
+        "--prompts_dir",
+        default=None,
+        help="cross_perspective: vendored <theme>/{0..N}.json prompt set "
+        "(e.g. example/multiview_prompts). Used to build the render subset and to "
+        "resolve per-shot boundaries/captions during evaluation.",
+    )
+    parser.add_argument(
+        "--prompt_subset",
+        default=None,
+        help="cross_perspective: comma-separated theme folder names to render "
+        "(default: the first two sorted themes).",
+    )
+    parser.add_argument(
+        "--num_shots",
+        type=int,
+        default=None,
+        help="cross_perspective: equal-split shot count fallback when --prompts_dir is absent.",
+    )
+    parser.add_argument(
+        "--num_blocks",
+        type=int,
+        default=None,
+        help="cross_perspective: rendered chunk budget for clamping boundaries "
+        "(auto-derived from the config when generating).",
+    )
+    parser.add_argument(
+        "--min_consistency_wins",
+        type=int,
+        default=2,
+        help="cross_perspective: prompts where modified must beat baseline consistency.",
+    )
+    parser.add_argument(
+        "--adherence_tolerance",
+        type=float,
+        default=0.0,
+        help="cross_perspective: allowed per-prompt adherence drop (modified >= baseline - tol).",
+    )
+    parser.add_argument(
+        "--score_adherence",
+        action="store_true",
+        help="cross_perspective: enforce the CLIP prompt-adherence non-regression guard "
+        "(milestone-only; needs --prompts_dir and a CLIP checkpoint).",
+    )
+    parser.add_argument("--clip_model", default="ViT-B-32", help="open_clip model for adherence.")
+    parser.add_argument("--clip_pretrained", default="openai", help="open_clip pretrained tag.")
+    parser.add_argument("--clip_device", default=None, help="Device for the CLIP adherence scorer.")
     return parser.parse_args()
+
+
+def _num_blocks_from_cfg(cfg) -> int | None:
+    """Replicate inference.py's num_blocks = num_output_frames // num_frame_per_block."""
+    nfpb = _value(cfg, "model_kwargs", "num_frame_per_block")
+    if nfpb is None:
+        nfpb = getattr(cfg, "num_frame_per_block", 8)
+    nof = getattr(cfg, "num_output_frames", None)
+    if nof is None:
+        shape = _value(cfg, "data", "image_or_video_shape")
+        if shape is not None and len(shape) > 1:
+            nof = shape[1]
+    if not nof or not nfpb:
+        return None
+    return int(nof) // int(nfpb)
+
+
+def build_prompt_subset(prompts_dir: str, subset: list[str] | None, dest: Path) -> list[str]:
+    """Copy the chosen theme folders into a fresh subset dir for rendering."""
+    src = Path(prompts_dir)
+    caption_root = src / "caption" if (src / "caption").is_dir() else src
+    available = sorted(
+        p.name
+        for p in caption_root.iterdir()
+        if p.is_dir() and any(f.name != "global.json" for f in p.glob("*.json"))
+    )
+    chosen = subset or available[:2]
+    missing = [t for t in chosen if t not in available]
+    if missing:
+        raise ValueError(f"--prompt_subset themes not found in {prompts_dir}: {missing}")
+    if len(chosen) < 2:
+        raise ValueError("cross_perspective gate needs at least two themes to render")
+    if dest.exists():
+        shutil.rmtree(dest)
+    dest.mkdir(parents=True, exist_ok=True)
+    for theme in chosen:
+        shutil.copytree(caption_root / theme, dest / theme)
+    return chosen
 
 
 def _set_nested(cfg, section: str, key: str, value) -> None:
@@ -140,7 +251,13 @@ def _preflight_config(cfg, config_name: str) -> None:
         )
 
 
-def write_variant_configs(cfg, output_root: Path) -> tuple[Path, Path, Path, Path]:
+def write_variant_configs(
+    cfg,
+    output_root: Path,
+    *,
+    filename_from_sample_name: bool = False,
+    modified_kv_rag_extra: dict | None = None,
+) -> tuple[Path, Path, Path, Path]:
     output_root.mkdir(parents=True, exist_ok=True)
     config_dir = output_root / "configs"
     config_dir.mkdir(parents=True, exist_ok=True)
@@ -167,7 +284,15 @@ def write_variant_configs(cfg, output_root: Path) -> tuple[Path, Path, Path, Pat
     merged = dict(DEFAULT_KV_RAG)
     merged.update(existing)
     merged["enabled"] = True
+    if modified_kv_rag_extra:
+        merged.update(modified_kv_rag_extra)
     rag.inference.kv_rag = merged
+
+    # Theme-named output stems so the evaluator can match videos to prompt folders.
+    if filename_from_sample_name:
+        for variant in (baseline, rag):
+            variant.inference.filename_from_sample_name = True
+            variant.filename_from_sample_name = True
 
     baseline_cfg_path = config_dir / "baseline.yaml"
     rag_cfg_path = config_dir / "kv_rag.yaml"
@@ -181,10 +306,7 @@ def run_inference(config_path: Path) -> None:
     subprocess.run(cmd, cwd=str(ROOT), check=True)
 
 
-def main() -> None:
-    args = parse_args()
-    output_root = Path(args.output_root)
-
+def _run_temporal(args, output_root: Path) -> None:
     if args.skip_generation:
         if not args.baseline_dir or not args.kv_rag_dir:
             raise ValueError("--skip_generation requires --baseline_dir and --kv_rag_dir")
@@ -210,6 +332,103 @@ def main() -> None:
     print("Delta means (KV-RAG - baseline):")
     for name, stats in result["delta_summary"].items():
         print(f"  {name}: {stats['mean']:.6f}")
+
+
+def _run_cross_perspective(args, output_root: Path) -> None:
+    num_blocks = args.num_blocks
+    if args.skip_generation:
+        if not args.baseline_dir or not args.kv_rag_dir:
+            raise ValueError("--skip_generation requires --baseline_dir and --kv_rag_dir")
+        baseline_dir = Path(args.baseline_dir)
+        rag_dir = Path(args.kv_rag_dir)
+    else:
+        cfg = _apply_overrides(OmegaConf.load(args.config_path), args)
+        if args.prompts_dir:
+            subset = [s.strip() for s in args.prompt_subset.split(",")] if args.prompt_subset else None
+            chosen = build_prompt_subset(args.prompts_dir, subset, output_root / "prompt_subset")
+            _set_nested(cfg, "data", "data_path", str(output_root / "prompt_subset"))
+            print(f"[gate] rendering subset: {chosen}")
+        if num_blocks is None:
+            num_blocks = _num_blocks_from_cfg(cfg)
+        _preflight_config(cfg, args.config_path)
+        baseline_cfg, rag_cfg, baseline_dir, rag_dir = write_variant_configs(
+            cfg,
+            output_root,
+            filename_from_sample_name=True,
+            modified_kv_rag_extra=MULTIVIEW_KV_RAG,
+        )
+        run_inference(baseline_cfg)
+        run_inference(rag_cfg)
+
+    if args.prompts_dir:
+        print(f"[gate] resolving boundaries with num_blocks={num_blocks}")
+        shots_for = build_spec_resolver(
+            args.prompts_dir, with_captions=args.score_adherence, max_chunks=num_blocks
+        )
+    elif args.num_shots is not None:
+        shots_for = args.num_shots
+    else:
+        raise ValueError("cross_perspective mode requires --prompts_dir or --num_shots")
+
+    adherence_scorer = None
+    if args.score_adherence:
+        if not args.prompts_dir:
+            raise ValueError("--score_adherence requires --prompts_dir for shot captions")
+        adherence_scorer = build_clip_adherence_scorer(
+            model_name=args.clip_model, pretrained=args.clip_pretrained, device=args.clip_device
+        )
+
+    result = compare_cross_perspective_dirs(
+        baseline_dir,
+        rag_dir,
+        shots_for=shots_for,
+        adherence_scorer=adherence_scorer,
+        max_frames=args.max_frames,
+        stride=max(1, args.stride),
+    )
+    gate = evaluate_cross_perspective_gate(
+        result,
+        min_consistency_wins=args.min_consistency_wins,
+        adherence_tolerance=args.adherence_tolerance,
+        require_adherence=args.score_adherence,
+    )
+
+    metrics_json = Path(args.metrics_json) if args.metrics_json else output_root / "kv_rag_cross_perspective.json"
+    save_metrics_json({"gate": gate, "comparison": result}, metrics_json)
+    print(f"Wrote metrics: {metrics_json.resolve()}")
+    print(f"Compared pairs: {result['num_pairs']} (skipped: {result.get('skipped_stems', [])})")
+    print(
+        f"[gate] consistency wins: {gate['consistency_wins']}/{gate['num_pairs']} "
+        f"(need >= {gate['min_consistency_wins']})"
+    )
+    if gate["require_adherence"]:
+        print(
+            f"[gate] adherence guard: {'OK' if gate['adherence_ok'] else 'FAIL'} "
+            f"(tol={gate['adherence_tolerance']}, failures={gate['adherence_failures']})"
+        )
+    for p in gate["per_prompt"]:
+        line = (
+            f"  {p['stem']}: consistency {p['consistency_baseline']:.4f} -> "
+            f"{p['consistency_modified']:.4f} ({'win' if p['consistency_win'] else 'no win'})"
+        )
+        if "adherence_modified_mean" in p:
+            line += (
+                f" | adherence {p['adherence_baseline_mean']:.4f} -> "
+                f"{p['adherence_modified_mean']:.4f} ({'ok' if p['adherence_ok'] else 'REGRESS'})"
+            )
+        print(line)
+    print(f"[gate] RESULT: {'PASS' if gate['passed'] else 'FAIL'}")
+    if not gate["passed"]:
+        raise SystemExit(1)
+
+
+def main() -> None:
+    args = parse_args()
+    output_root = Path(args.output_root)
+    if args.mode == "cross_perspective":
+        _run_cross_perspective(args, output_root)
+    else:
+        _run_temporal(args, output_root)
 
 
 if __name__ == "__main__":

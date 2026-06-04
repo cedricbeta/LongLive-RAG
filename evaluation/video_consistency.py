@@ -248,6 +248,31 @@ def shot_ranges(num_frames: int, *, num_shots: int | None = None,
     return [(edges[i], edges[i + 1]) for i in range(shots) if edges[i + 1] > edges[i]]
 
 
+def chunk_durations_to_boundaries(
+    num_frames: int, chunk_durations: list[int]
+) -> list[int] | None:
+    """Map per-shot chunk counts to decoded-frame shot-start boundaries.
+
+    The prompt sets specify each shot as a number of generation chunks (e.g.
+    ``shot_durations.txt`` = ``7 7 7 7 7 7 6``), which need not be equal. After
+    decode the video has ``num_frames`` frames; a shot that owns a fraction of
+    the chunks owns the same fraction of the frames, so shot ``i`` starts at
+    ``round(cumulative_chunks_before_i * num_frames / total_chunks)``. Returns
+    the interior shot-start indices (shot 0 always starts at 0); ``None`` when
+    there is nothing to split.
+    """
+    durations = [int(d) for d in (chunk_durations or []) if int(d) > 0]
+    total = sum(durations)
+    if total <= 0 or len(durations) < 2 or num_frames <= 0:
+        return None
+    boundaries: list[int] = []
+    cumulative = 0
+    for d in durations[:-1]:
+        cumulative += d
+        boundaries.append(int(round(cumulative * num_frames / total)))
+    return boundaries
+
+
 def _mean_pairwise(features: np.ndarray) -> float:
     """Mean pairwise cosine similarity over rows of ``features`` ([N, D])."""
     n = features.shape[0]
@@ -314,16 +339,165 @@ def cross_perspective_metrics(
     return result
 
 
+# ---------------------------------------------------------------------------
+# Prompt-adherence guard (milestone-only; needs a frozen CLIP backbone)
+# ---------------------------------------------------------------------------
+#
+# The cross-perspective metric rewards "same place across shots", which a
+# degenerate model can game by freezing on shot 0. The companion diversity /
+# motion metrics expose a *copy* collapse, but not a model that stays coherent
+# while drifting away from each shot's prompt. The adherence guard scores each
+# shot's frames against its caption with a frozen CLIP encoder so the milestone
+# gate can require that the modified pipeline does not regress per-shot prompt
+# adherence. It is OPT-IN and never imported on the per-round CPU test path.
+
+
+def build_clip_adherence_scorer(
+    *, model_name: str = "ViT-B-32", pretrained: str = "openai", device: str | None = None
+):
+    """Return ``scorer(frames_rgb, caption) -> mean image/text cosine``.
+
+    Tries ``open_clip`` then HuggingFace ``transformers`` CLIP. Raises a clear
+    error if neither backend (or its checkpoint) is available, so a milestone
+    gate fails loudly instead of silently skipping the guard.
+    """
+    try:
+        import torch  # noqa: F401
+    except Exception as exc:  # pragma: no cover - torch is present in real runs
+        raise RuntimeError(
+            "Prompt-adherence scoring requires PyTorch, which is not importable."
+        ) from exc
+
+    import torch
+
+    resolved_device = device or ("cuda" if torch.cuda.is_available() else "cpu")
+
+    # Preferred backend: open_clip.
+    try:
+        import open_clip
+
+        model, _, preprocess = open_clip.create_model_and_transforms(
+            model_name, pretrained=pretrained
+        )
+        tokenizer = open_clip.get_tokenizer(model_name)
+        model = model.to(resolved_device).eval()
+
+        def _score_open_clip(frames_rgb: np.ndarray, caption: str) -> float:
+            from PIL import Image
+
+            images = torch.stack(
+                [preprocess(Image.fromarray(f.astype(np.uint8))) for f in frames_rgb]
+            ).to(resolved_device)
+            text = tokenizer([caption]).to(resolved_device)
+            with torch.no_grad():
+                img_feat = model.encode_image(images)
+                txt_feat = model.encode_text(text)
+                img_feat = img_feat / img_feat.norm(dim=-1, keepdim=True)
+                txt_feat = txt_feat / txt_feat.norm(dim=-1, keepdim=True)
+                sims = (img_feat @ txt_feat.T).squeeze(-1)
+            return float(sims.mean().item())
+
+        return _score_open_clip
+    except ImportError:
+        pass
+
+    # Fallback backend: transformers CLIP.
+    try:
+        from transformers import CLIPModel, CLIPProcessor
+    except ImportError as exc:
+        raise RuntimeError(
+            "Prompt-adherence scoring needs a CLIP backend. Install `open_clip_torch` "
+            "or `transformers` (plus a downloaded CLIP checkpoint)."
+        ) from exc
+
+    hf_name = "openai/clip-vit-base-patch32"
+    try:
+        model = CLIPModel.from_pretrained(hf_name).to(resolved_device).eval()
+        processor = CLIPProcessor.from_pretrained(hf_name)
+    except Exception as exc:
+        raise RuntimeError(
+            f"Could not load the CLIP checkpoint {hf_name!r} for prompt-adherence "
+            "scoring; ensure it is downloaded/cached."
+        ) from exc
+
+    def _score_transformers(frames_rgb: np.ndarray, caption: str) -> float:
+        from PIL import Image
+
+        images = [Image.fromarray(f.astype(np.uint8)) for f in frames_rgb]
+        inputs = processor(
+            text=[caption], images=images, return_tensors="pt", padding=True, truncation=True
+        ).to(resolved_device)
+        with torch.no_grad():
+            out = model(**inputs)
+            img_feat = out.image_embeds / out.image_embeds.norm(dim=-1, keepdim=True)
+            txt_feat = out.text_embeds / out.text_embeds.norm(dim=-1, keepdim=True)
+            sims = (img_feat @ txt_feat.T).squeeze(-1)
+        return float(sims.mean().item())
+
+    return _score_transformers
+
+
+def prompt_adherence_for_video(
+    frames: np.ndarray,
+    ranges: list[tuple[int, int]],
+    captions: list[str],
+    scorer,
+    *,
+    frames_per_shot: int = 3,
+) -> dict[str, float]:
+    """Mean/min per-shot CLIP adherence of a video to its shot captions.
+
+    A few evenly-spaced representative frames per shot are scored against that
+    shot's caption; ``prompt_adherence_min`` is the weakest shot (so a single
+    drifting shot is visible, not averaged away).
+    """
+    per_shot: list[float] = []
+    for (start, end), caption in zip(ranges, captions):
+        if not caption or end <= start:
+            continue
+        k = max(1, min(int(frames_per_shot), end - start))
+        idx = np.linspace(start, end - 1, num=k).round().astype(int)
+        per_shot.append(float(scorer(frames[idx], caption)))
+    if not per_shot:
+        return {"prompt_adherence_mean": float("nan"), "prompt_adherence_min": float("nan")}
+    return {
+        "prompt_adherence_mean": float(np.mean(per_shot)),
+        "prompt_adherence_min": float(np.min(per_shot)),
+    }
+
+
 def cross_perspective_evaluate_video(
     path: str | Path,
     *,
     num_shots: int | None = None,
     boundaries: list[int] | None = None,
+    chunk_durations: list[int] | None = None,
+    captions: list[str] | None = None,
+    adherence_scorer=None,
     max_frames: int | None = None,
     stride: int = 1,
 ) -> dict[str, float]:
+    """Cross-perspective metrics (plus optional adherence) for one video.
+
+    ``chunk_durations`` (per-shot generation-chunk counts) are converted to
+    exact decoded-frame boundaries after the decode, taking precedence over
+    ``boundaries``/``num_shots`` so uneven shot lengths are honored. When an
+    ``adherence_scorer`` and per-shot ``captions`` are supplied the prompt-
+    adherence guard metrics are merged in.
+    """
     frames = read_video(path, max_frames=max_frames, stride=stride)
-    return cross_perspective_metrics(frames, num_shots=num_shots, boundaries=boundaries)
+    if chunk_durations:
+        derived = chunk_durations_to_boundaries(frames.shape[0], chunk_durations)
+        if derived is not None:
+            boundaries = derived
+            num_shots = None
+    metrics = cross_perspective_metrics(frames, num_shots=num_shots, boundaries=boundaries)
+    if adherence_scorer is not None and captions:
+        ranges = shot_ranges(frames.shape[0], num_shots=num_shots, boundaries=boundaries)
+        metrics.update(
+            prompt_adherence_for_video(frames, ranges, captions, adherence_scorer)
+        )
+    return metrics
 
 
 def compare_cross_perspective_dirs(
@@ -331,37 +505,53 @@ def compare_cross_perspective_dirs(
     modified_dir: str | Path,
     *,
     shots_for: "callable | int | None" = None,
+    adherence_scorer=None,
     max_frames: int | None = None,
     stride: int = 1,
 ) -> dict[str, object]:
     """Baseline-vs-modified cross-perspective comparison over paired videos.
 
-    ``shots_for`` resolves the shot count per video: an int (same for all), a
-    callable ``stem -> int``, or None (auto = no split, which is rejected). The
-    delta on ``cross_shot_scene_consistency`` is the consistency win; the
-    companion deltas expose any viewpoint-variation / motion collapse.
+    ``shots_for`` resolves how to split each video, by stem. It may be an int
+    (same shot count for all), or a callable ``stem -> spec`` where ``spec`` is
+    one of: an int (shot count); a mapping with ``chunk_durations`` (exact,
+    possibly uneven shot lengths) and optional ``captions``; or ``None`` (no
+    match -> the pair is skipped). The delta on ``cross_shot_scene_consistency``
+    is the consistency win; the companion deltas expose any viewpoint-variation
+    / motion collapse, and (when ``adherence_scorer`` is given) prompt-adherence
+    deltas drive the milestone non-regression guard.
     """
     pairs = pair_video_dirs(baseline_dir, modified_dir)
     if not pairs:
         raise ValueError(f"No comparable videos found in {baseline_dir} and {modified_dir}")
 
-    def resolve_shots(stem: str) -> int | None:
-        if callable(shots_for):
-            return shots_for(stem)
-        if isinstance(shots_for, int):
-            return shots_for
-        return None
+    def resolve_spec(stem: str):
+        spec = shots_for(stem) if callable(shots_for) else shots_for
+        if spec is None:
+            return None
+        if isinstance(spec, int):
+            return {"num_shots": spec}
+        if isinstance(spec, dict):
+            return spec
+        raise TypeError(f"Unsupported shot spec for {stem!r}: {type(spec)!r}")
 
     records = []
+    skipped: list[str] = []
     for baseline_path, modified_path in pairs:
         stem = baseline_path.stem
-        n = resolve_shots(stem)
-        baseline_metrics = cross_perspective_evaluate_video(
-            baseline_path, num_shots=n, max_frames=max_frames, stride=stride
+        spec = resolve_spec(stem)
+        if spec is None:
+            skipped.append(stem)
+            continue
+        kwargs = dict(
+            num_shots=spec.get("num_shots"),
+            chunk_durations=spec.get("chunk_durations"),
+            captions=spec.get("captions"),
+            adherence_scorer=adherence_scorer,
+            max_frames=max_frames,
+            stride=stride,
         )
-        modified_metrics = cross_perspective_evaluate_video(
-            modified_path, num_shots=n, max_frames=max_frames, stride=stride
-        )
+        baseline_metrics = cross_perspective_evaluate_video(baseline_path, **kwargs)
+        modified_metrics = cross_perspective_evaluate_video(modified_path, **kwargs)
         deltas = {
             key: modified_metrics[key] - baseline_metrics[key]
             for key in baseline_metrics
@@ -369,6 +559,7 @@ def compare_cross_perspective_dirs(
         }
         records.append(
             {
+                "stem": stem,
                 "baseline": str(baseline_path),
                 "modified": str(modified_path),
                 "baseline_metrics": baseline_metrics,
@@ -377,12 +568,89 @@ def compare_cross_perspective_dirs(
             }
         )
 
+    if not records:
+        raise ValueError(
+            "No videos could be matched to a shot spec. Check --prompts_dir / "
+            f"--num_shots and the generated filenames (skipped stems: {skipped})."
+        )
+
     return {
         "num_pairs": len(records),
+        "skipped_stems": skipped,
         "baseline_summary": summarize_records(records, "baseline_metrics"),
         "modified_summary": summarize_records(records, "modified_metrics"),
         "delta_summary": summarize_records(records, "delta"),
         "records": records,
+    }
+
+
+def evaluate_cross_perspective_gate(
+    result: dict[str, object],
+    *,
+    min_consistency_wins: int = 2,
+    adherence_tolerance: float = 0.0,
+    require_adherence: bool = False,
+) -> dict[str, object]:
+    """Decide the milestone quality gate from a comparison ``result``.
+
+    Passes only when the modified pipeline beats the baseline on
+    ``cross_shot_scene_consistency`` for at least ``min_consistency_wins``
+    prompts AND (when ``require_adherence``) the modified per-shot prompt
+    adherence does not drop below baseline minus ``adherence_tolerance`` on any
+    evaluated prompt -- the anti-cheating guard that blocks a consistency win
+    bought by ignoring the prompts.
+    """
+    per_prompt = []
+    consistency_wins = 0
+    adherence_failures = []
+    for rec in result.get("records", []):
+        b = rec["baseline_metrics"]
+        m = rec["modified_metrics"]
+        stem = rec.get("stem", rec.get("modified", "?"))
+        win = m["cross_shot_scene_consistency"] > b["cross_shot_scene_consistency"]
+        consistency_wins += int(win)
+        entry = {
+            "stem": stem,
+            "consistency_baseline": b["cross_shot_scene_consistency"],
+            "consistency_modified": m["cross_shot_scene_consistency"],
+            "consistency_win": bool(win),
+        }
+        if require_adherence:
+            b_mean = b.get("prompt_adherence_mean", float("nan"))
+            m_mean = m.get("prompt_adherence_mean", float("nan"))
+            b_min = b.get("prompt_adherence_min", float("nan"))
+            m_min = m.get("prompt_adherence_min", float("nan"))
+            # A NaN (unscored) prompt cannot certify non-regression -> it fails.
+            ok = (
+                not (np.isnan(b_mean) or np.isnan(m_mean) or np.isnan(b_min) or np.isnan(m_min))
+                and m_mean >= b_mean - adherence_tolerance
+                and m_min >= b_min - adherence_tolerance
+            )
+            entry.update(
+                adherence_baseline_mean=b_mean,
+                adherence_modified_mean=m_mean,
+                adherence_baseline_min=b_min,
+                adherence_modified_min=m_min,
+                adherence_ok=bool(ok),
+            )
+            if not ok:
+                adherence_failures.append(stem)
+        per_prompt.append(entry)
+
+    consistency_ok = consistency_wins >= min_consistency_wins
+    adherence_ok = (not require_adherence) or not adherence_failures
+    passed = bool(consistency_ok and adherence_ok)
+    return {
+        "passed": passed,
+        "num_pairs": len(per_prompt),
+        "consistency_wins": consistency_wins,
+        "min_consistency_wins": min_consistency_wins,
+        "consistency_ok": bool(consistency_ok),
+        "require_adherence": bool(require_adherence),
+        "adherence_tolerance": adherence_tolerance,
+        "adherence_ok": bool(adherence_ok),
+        "adherence_failures": adherence_failures,
+        "per_prompt": per_prompt,
     }
 
 

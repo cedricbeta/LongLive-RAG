@@ -308,6 +308,9 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
                     [0], dtype=torch.long, device=noise.device)
                 self.kv_cache_pos[block_index]["pinned_start"].fill_(-1)
                 self.kv_cache_pos[block_index]["pinned_len"].zero_()
+                if "pinned_abs_start" in self.kv_cache_pos[block_index]:
+                    self.kv_cache_pos[block_index]["pinned_abs_start"].fill_(-1)
+                    self.kv_cache_pos[block_index]["pinned_abs_len"].zero_()
                 if use_cfg:
                     self.kv_cache_neg[block_index]["global_end_index"] = torch.tensor(
                         [0], dtype=torch.long, device=noise.device)
@@ -315,6 +318,9 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
                         [0], dtype=torch.long, device=noise.device)
                     self.kv_cache_neg[block_index]["pinned_start"].fill_(-1)
                     self.kv_cache_neg[block_index]["pinned_len"].zero_()
+                    if "pinned_abs_start" in self.kv_cache_neg[block_index]:
+                        self.kv_cache_neg[block_index]["pinned_abs_start"].fill_(-1)
+                        self.kv_cache_neg[block_index]["pinned_abs_len"].zero_()
 
         # Step 2: Cache context feature
         current_start_frame = start_frame_index
@@ -768,9 +774,14 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
             # Step 3.3b: pin the current chunk for multi-shot sink on scene cut.
             if is_scene_cut:
                 print(f"[inference] Scene cut at chunk {chunk_index}, pinning chunk as shot-sink")
-                self._pin_current_chunk(self.kv_cache_pos, current_num_frames)
+                pinned_abs_start_tokens = current_start_frame * self.frame_seq_length
+                self._pin_current_chunk(
+                    self.kv_cache_pos, current_num_frames, pinned_abs_start_tokens
+                )
                 if use_cfg:
-                    self._pin_current_chunk(self.kv_cache_neg, current_num_frames)
+                    self._pin_current_chunk(
+                        self.kv_cache_neg, current_num_frames, pinned_abs_start_tokens
+                    )
 
             if streaming_decode:
                 if async_vae:
@@ -925,6 +936,10 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
                     "local_end_index": torch.tensor([0], dtype=torch.long, device=device),
                     "pinned_start": torch.tensor([-1], dtype=torch.long, device=device),
                     "pinned_len": torch.tensor([0], dtype=torch.long, device=device),
+                    # Absolute (un-rolled) token provenance of the pinned chunk,
+                    # used by KV-RAG to avoid re-injecting frames already pinned.
+                    "pinned_abs_start": torch.tensor([-1], dtype=torch.long, device=device),
+                    "pinned_abs_len": torch.tensor([0], dtype=torch.long, device=device),
                 })
                 kv_cache_neg.append({
                     "k": [clone_quantized_tensor(zero_qt) for _ in range(max_blocks)],
@@ -938,6 +953,10 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
                     "local_end_index": torch.tensor([0], dtype=torch.long, device=device),
                     "pinned_start": torch.tensor([-1], dtype=torch.long, device=device),
                     "pinned_len": torch.tensor([0], dtype=torch.long, device=device),
+                    # Absolute (un-rolled) token provenance of the pinned chunk,
+                    # used by KV-RAG to avoid re-injecting frames already pinned.
+                    "pinned_abs_start": torch.tensor([-1], dtype=torch.long, device=device),
+                    "pinned_abs_len": torch.tensor([0], dtype=torch.long, device=device),
                 })
             else:
                 kv_cache_pos.append({
@@ -952,6 +971,10 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
                     "local_end_index": torch.tensor([0], dtype=torch.long, device=device),
                     "pinned_start": torch.tensor([-1], dtype=torch.long, device=device),
                     "pinned_len": torch.tensor([0], dtype=torch.long, device=device),
+                    # Absolute (un-rolled) token provenance of the pinned chunk,
+                    # used by KV-RAG to avoid re-injecting frames already pinned.
+                    "pinned_abs_start": torch.tensor([-1], dtype=torch.long, device=device),
+                    "pinned_abs_len": torch.tensor([0], dtype=torch.long, device=device),
                 })
                 kv_cache_neg.append({
                     "k": torch.zeros([batch_size, kv_cache_size, num_heads, head_dim], dtype=dtype, device=device),
@@ -965,6 +988,10 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
                     "local_end_index": torch.tensor([0], dtype=torch.long, device=device),
                     "pinned_start": torch.tensor([-1], dtype=torch.long, device=device),
                     "pinned_len": torch.tensor([0], dtype=torch.long, device=device),
+                    # Absolute (un-rolled) token provenance of the pinned chunk,
+                    # used by KV-RAG to avoid re-injecting frames already pinned.
+                    "pinned_abs_start": torch.tensor([-1], dtype=torch.long, device=device),
+                    "pinned_abs_len": torch.tensor([0], dtype=torch.long, device=device),
                 })
 
         self.kv_cache_pos = kv_cache_pos  # always store the clean cache
@@ -1130,12 +1157,16 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
             block_cache["k"][:, dst_slice] = block_cache["k"][:, src_slice].clone()
             block_cache["v"][:, dst_slice] = block_cache["v"][:, src_slice].clone()
 
-    def _pin_current_chunk(self, kv_cache, current_num_frames):
+    def _pin_current_chunk(self, kv_cache, current_num_frames, current_start_tokens=None):
         """Mark the current chunk's buffer position as pinned for multi-shot sink.
 
         The pinned region REPLACES the original sink on the next rolling event.
         No data is copied here — relocation happens inside the attention layer
         during rolling, ensuring zero duplication.
+
+        ``current_start_tokens`` is the chunk's ABSOLUTE start token (unaffected
+        by rolling); recording it lets KV-RAG skip re-injecting frames that are
+        still live in the pinned sink.
         """
         chunk_tokens = current_num_frames * self.frame_seq_length
         pin_len = min(self.sink_size * self.frame_seq_length, chunk_tokens)
@@ -1147,6 +1178,9 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
         for block_cache in kv_cache:
             block_cache["pinned_start"].fill_(chunk_start)
             block_cache["pinned_len"].fill_(pin_len)
+            if current_start_tokens is not None and "pinned_abs_start" in block_cache:
+                block_cache["pinned_abs_start"].fill_(int(current_start_tokens))
+                block_cache["pinned_abs_len"].fill_(pin_len)
 
     def _zero_kv_data(self, kv_cache, current_start_tokens):
         """Reset KV cache for clean recache, preserving global sink."""
@@ -1156,3 +1190,6 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
             block_cache["global_end_index"].fill_(current_start_tokens)
             block_cache["pinned_start"].fill_(-1)
             block_cache["pinned_len"].zero_()
+            if "pinned_abs_start" in block_cache:
+                block_cache["pinned_abs_start"].fill_(-1)
+                block_cache["pinned_abs_len"].zero_()

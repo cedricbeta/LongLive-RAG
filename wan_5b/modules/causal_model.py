@@ -727,6 +727,7 @@ class CausalWanSelfAttention(nn.Module):
                     [temp_v[:, pinned_start_val:pinned_start_val + pinned_len_val],
                      temp_v[:, local_window_start:local_end_index]], dim=1)
             else:
+                local_window_start = window_start
                 window_k = temp_k[:, window_start:local_end_index]
                 window_v = temp_v[:, window_start:local_end_index]
 
@@ -744,6 +745,26 @@ class CausalWanSelfAttention(nn.Module):
                     rag_query = q if kv_rag_summary_prerope else roped_query
                 else:
                     rag_query = q
+                # Absolute token ranges already live in the attended window, so
+                # KV-RAG does not re-inject the same frames (no double-counting
+                # of the global sink, the multi-shot pinned sink, or the local
+                # sliding window -- esp. a scene anchor still in the window after
+                # a cut). The local window's last token is the current chunk end
+                # (current_end), so its absolute span is recoverable even though
+                # the buffer rolls; the pinned sink carries its own absolute
+                # provenance (pinned_abs_*), falling open to no exclusion if the
+                # provenance is unavailable.
+                exclude_ranges = []
+                if global_sink_tokens > 0:
+                    exclude_ranges.append((0, global_sink_tokens))
+                if has_pinned:
+                    _pa_start = _CURRENT_GRID_META.get("pinned_abs_start", -1) if _CURRENT_GRID_META else -1
+                    _pa_len = _CURRENT_GRID_META.get("pinned_abs_len", 0) if _CURRENT_GRID_META else 0
+                    if _pa_start >= 0 and _pa_len > 0:
+                        exclude_ranges.append((_pa_start, _pa_start + _pa_len))
+                local_count = local_end_index - local_window_start
+                if local_count > 0:
+                    exclude_ranges.append((current_end - local_count, current_end))
                 try:
                     rag_result = kv_rag.retrieve(
                         layer=kv_rag_layer if kv_rag_layer is not None else -1,
@@ -753,6 +774,7 @@ class CausalWanSelfAttention(nn.Module):
                         dtype=v.dtype,
                         device=v.device,
                         use_relative_rope=use_relative_rope,
+                        exclude_token_ranges=exclude_ranges,
                     )
                 except Exception as exc:
                     if getattr(kv_rag, "fail_open", True):

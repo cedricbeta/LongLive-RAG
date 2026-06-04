@@ -1,11 +1,14 @@
 # Retrieval Key/Value Study (single-scene multi-perspective KV-RAG)
 
 This note records the decoupled retrieval **key** (index) and **value** (payload)
-representations implemented in `utils/kv_rag.py`, ranks them on a GPU-free
-viewpoint-invariance probe, and records the selection and its rationale. The
-matching frame-level comparison on rendered video (the `AC-6` offline metric)
-runs at the milestone gate; this study uses the synthetic probe as the offline
-signal available inside the unattended loop.
+representations implemented in `utils/kv_rag.py` and ranks them on a GPU-free
+viewpoint-invariance probe. The probe is a **proxy** available inside the
+unattended loop; it is **not** the authoritative selector. The authoritative
+selection is the frame-level comparison on rendered video (the `AC-6` offline
+metric, enforced by the `AC-7` gate), which is now a single on-demand command
+(see **Status**). No rendered-video winner is claimed here yet: the default
+stays the byte-identical baseline (`pooled` + `raw`) and `salient_set` is the
+*recommended candidate to confirm on video*, not a measured winner.
 
 ## Why the key matters here
 
@@ -101,5 +104,36 @@ final on-video selection at the milestone gate must show a consistency win
 
 - Key/value interface, alternatives, scene-aware scoring, and the probe: **done,
   unit-tested, GPU-free.**
-- On-rendered-video ranking via the `AC-6` metric / `AC-7` gate: **pending a GPU
-  render** (deferred in the unattended loop; runnable on demand).
+- Rendered-video evaluation harness (resolver, exact shot boundaries,
+  prompt-adherence guard, pass/fail gate): **done, unit-tested, GPU-free**
+  (`evaluation/multiview_prompts.py`, `evaluation/video_consistency.py`,
+  `scripts/run_kv_rag_ablation.py --mode cross_perspective`).
+- On-rendered-video ranking / winner selection via the `AC-6` metric: **pending a
+  GPU render** (the unattended loop must not spend a multi-minute 5B render per
+  round). It is now a single on-demand command and is the authoritative selector.
+
+### How to produce the rendered ranking (on a GPU box)
+
+Render baseline + each candidate on the same two-prompt subset and read the
+per-prompt consistency / diversity / motion / adherence deltas the gate prints:
+
+```bash
+# winner candidates to compare: pooled+raw (baseline), salient_set+raw
+# (recommended), salient_set+mean_frame (bounded payload).
+python scripts/run_kv_rag_ablation.py \
+  --config_path configs/inference_kv_rag.yaml \
+  --mode cross_perspective \
+  --prompts_dir example/multiview_prompts \
+  --prompt_subset frying_egg_closeup,african_savanna \
+  --score_adherence --adherence_tolerance 0.02 \
+  --generator_ckpt <ckpt> --lora_ckpt <lora> \
+  --output_root videos/kv_rag_gate
+```
+
+The modified variant defaults to the recommended multi-view settings
+(`scene_memory_enabled`, `boundary_inject_anchors=2`, `scene_score_bonus=0.1`,
+`retrieval_key_mode=salient_set`). Re-run with the kv_rag config's
+`retrieval_key_mode` / `retrieval_value_mode` set to each candidate to rank them.
+Record the per-prompt deltas here and promote the winner only if its consistency
+gain does **not** collapse `inter_shot_composition_diversity` / `within_shot_motion`
+or regress `prompt_adherence_*` beyond tolerance.

@@ -368,6 +368,15 @@ class WanDiffusionWrapper(torch.nn.Module):
                 else:
                     _CURRENT_GRID_META["pinned_start"] = -1
                     _CURRENT_GRID_META["pinned_len"] = 0
+                _pabs = first_block_cache.get("pinned_abs_start", None)
+                if _pabs is not None and hasattr(_pabs, "item"):
+                    _CURRENT_GRID_META["pinned_abs_start"] = int(_pabs.item())
+                    _CURRENT_GRID_META["pinned_abs_len"] = int(
+                        first_block_cache["pinned_abs_len"].item()
+                    )
+                else:
+                    _CURRENT_GRID_META["pinned_abs_start"] = -1
+                    _CURRENT_GRID_META["pinned_abs_len"] = 0
             except (KeyError, AttributeError, ImportError):
                 pass
         defer_kv_updates = (

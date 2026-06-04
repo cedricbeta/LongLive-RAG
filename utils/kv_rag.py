@@ -509,6 +509,18 @@ class KVRAGMemory:
                 layer_entries.pop(0)
             self.stats[stat_key] += 1
 
+    @staticmethod
+    def _overlaps_any(
+        start: int, end: int, ranges: list[tuple[int, int]] | None
+    ) -> bool:
+        """True when ``[start, end)`` intersects any half-open range in ``ranges``."""
+        if not ranges:
+            return False
+        for rs, re in ranges:
+            if start < re and rs < end:
+                return True
+        return False
+
     def retrieve(
         self,
         *,
@@ -519,7 +531,17 @@ class KVRAGMemory:
         dtype: torch.dtype,
         device: torch.device,
         use_relative_rope: bool = False,
+        exclude_token_ranges: list[tuple[int, int]] | None = None,
     ) -> tuple[torch.Tensor, torch.Tensor, list[KVRAGEntry]] | None:
+        """Return re-injectable K/V for the current query, or None.
+
+        ``exclude_token_ranges`` lists absolute ``[start, end)`` token spans that
+        are already live in the attended sink / pinned / local window. Any stored
+        entry whose ``[start_token, end_token)`` overlaps one of them is dropped
+        from BOTH the force-injected scene anchors and the content-matched pool,
+        so a boundary anchor (or a content hit) is never double-counted against
+        the same frames already in the window.
+        """
         force_n = self.config.boundary_inject_anchors if self._boundary_inject else 0
         if not self.enabled or (self.config.top_k <= 0 and force_n <= 0):
             return None
@@ -544,8 +566,17 @@ class KVRAGMemory:
 
         self.stats["retrieval_calls"] += 1
         min_end = int(current_start) - self.config.min_frame_gap * int(frame_seqlen)
-        candidates = [e for e in shot_entries if e.end_token <= min_end]
-        candidates += [e for e in scene_entries if e.end_token <= min_end]
+
+        def _eligible(entry: KVRAGEntry) -> bool:
+            if entry.end_token > min_end:
+                return False
+            return not self._overlaps_any(
+                entry.start_token, entry.end_token, exclude_token_ranges
+            )
+
+        scene_pool = [e for e in scene_entries if _eligible(e)]
+        candidates = [e for e in shot_entries if _eligible(e)]
+        candidates += scene_pool
         if not candidates:
             return None
 
@@ -554,8 +585,10 @@ class KVRAGMemory:
 
         # Force-inject the persistent scene anchors at a shot boundary regardless
         # of content match, so a perspective change keeps the established scene.
-        if force_n > 0 and scene_entries:
-            for entry in list(reversed(scene_entries))[:force_n]:
+        # Anchors overlapping the live window were already filtered out of
+        # ``scene_pool``, so a frame still in the sink/window is not re-injected.
+        if force_n > 0 and scene_pool:
+            for entry in list(reversed(scene_pool))[:force_n]:
                 if id(entry) not in chosen_ids:
                     selected.append(entry)
                     chosen_ids.add(id(entry))
