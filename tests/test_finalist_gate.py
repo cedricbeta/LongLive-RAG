@@ -107,6 +107,30 @@ class TestFailClosed(unittest.TestCase):
         self.assertIn("dry_run", reason)
 
 
+class TestFinalistKvRagMerge(unittest.TestCase):
+    def test_base_kv_rag_honored_then_settings_win(self):
+        # The requested config's KV-RAG block (layers/limits/hyperparams) must be
+        # merged before the finalist key/value settings, which take precedence. (P2 fix.)
+        base = {"layers": [0, 5, 10], "top_k": 4, "max_tokens_per_entry": 512,
+                "retrieval_key_mode": "pooled"}
+        settings = {"retrieval_key_mode": "semantic", "retrieval_value_mode": "raw",
+                    "scene_memory_enabled": True}
+        merged = abl._finalist_kv_rag(base, settings)
+        self.assertEqual(merged["layers"], [0, 5, 10])             # base honored
+        self.assertEqual(merged["top_k"], 4)
+        self.assertEqual(merged["max_tokens_per_entry"], 512)
+        self.assertTrue(merged["enabled"])
+        self.assertEqual(merged["retrieval_key_mode"], "semantic")  # finalist setting wins
+        self.assertTrue(merged["scene_memory_enabled"])
+
+    def test_empty_base_falls_back_to_defaults(self):
+        merged = abl._finalist_kv_rag({}, {"retrieval_key_mode": "pooled",
+                                           "retrieval_value_mode": "raw"})
+        self.assertTrue(merged["enabled"])
+        self.assertIn("layers", merged)  # from DEFAULT_KV_RAG
+        self.assertEqual(merged["layers"], abl.DEFAULT_KV_RAG["layers"])
+
+
 def _write_scene(root: Path, name: str, n_perspectives: int):
     folder = root / name
     folder.mkdir(parents=True, exist_ok=True)

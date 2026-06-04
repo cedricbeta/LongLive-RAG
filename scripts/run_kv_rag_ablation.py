@@ -628,6 +628,30 @@ def _finalize_finalist_ranking(finalist_records: list, missing_requested_backbon
     return ranked, winner, blocked_reason
 
 
+def _finalist_kv_rag(base_kv_rag: dict | None, settings: dict) -> dict:
+    """Merge the modified-variant KV-RAG block for one finalist.
+
+    Mirrors ``write_variant_configs``: start from ``DEFAULT_KV_RAG``, overlay the
+    base config's own ``inference.kv_rag`` block (so layers / token limits / key
+    hyperparameters from the requested YAML are honored), force ``enabled``, then
+    apply the finalist key/value/scene-memory ``settings`` LAST so they win.
+    """
+    merged = dict(DEFAULT_KV_RAG)
+    merged.update(base_kv_rag or {})
+    merged["enabled"] = True
+    merged.update(settings)
+    return merged
+
+
+def _base_kv_rag_block(cfg) -> dict:
+    """The base config's ``inference.kv_rag`` block as a plain dict (or {})."""
+    inf = cfg.get("inference") if "inference" in cfg else None
+    block = inf.get("kv_rag") if (inf is not None and "kv_rag" in inf) else None
+    if block is None and "kv_rag" in cfg:
+        block = cfg.get("kv_rag")
+    return OmegaConf.to_container(block, resolve=True) or {} if block is not None else {}
+
+
 def _run_multiview_finalists(args, output_root: Path) -> None:
     """AC-3/AC-4/AC-6 consolidated finalist gate: render the baseline ONCE and each
     finalist (key,value) against it, score the FULL AC-2 suite, rank on the rendered
@@ -656,6 +680,7 @@ def _run_multiview_finalists(args, output_root: Path) -> None:
         max_perspectives=args.max_perspectives,
     )
     _set_nested(cfg, "data", "data_path", str(output_root / "prompt_subset"))
+    base_kv_rag = _base_kv_rag_block(cfg)  # honor the requested config's KV-RAG block
     print(f"[finalist-gate] subset: {chosen}")
     print(f"[finalist-gate] perspective coverage (AC-7 -- logged): {coverage}")
     print(f"[finalist-gate] finalists: {finalists}")
@@ -703,7 +728,7 @@ def _run_multiview_finalists(args, output_root: Path) -> None:
             "scene_score_bonus": float(args.modified_scene_score_bonus),
             "retrieval_key_mode": key, "retrieval_value_mode": value,
         }
-        merged = dict(DEFAULT_KV_RAG); merged["enabled"] = True; merged.update(settings)
+        merged = _finalist_kv_rag(base_kv_rag, settings)
         name = f"mod_{key}_{value}"
         mod_cfg, mod_dir = _write_one_variant(
             cfg, output_root, name, kv_rag_settings=merged, multiview_per_perspective=True

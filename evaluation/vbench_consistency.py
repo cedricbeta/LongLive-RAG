@@ -59,9 +59,9 @@ from evaluation.video_consistency import (
 )
 
 # Per-perspective output stem: "<prefix>-rank<R>-<scene>-p<P>-seed<S>_<model>"
-# (scene tokens are filename-safe, no hyphens). Captures scene + perspective.
+# (scene tokens are filename-safe, no hyphens). Captures scene + perspective + seed.
 _PERSPECTIVE_STEM = re.compile(
-    r"^(?:.*?-)?rank\d+-(?P<scene>.+)-p(?P<persp>\d+)-seed\d+_[^-]*$"
+    r"^(?:.*?-)?rank\d+-(?P<scene>.+)-p(?P<persp>\d+)-seed(?P<seed>\d+)_[^-]*$"
 )
 
 
@@ -548,14 +548,29 @@ def group_perspectives_by_scene(directory: str | Path) -> dict[str, list[Path]]:
 
     Matches ``<prefix>-rank<R>-<scene>-p<P>-seed<S>_<model>``; non-matching files
     are ignored. Returns ``{scene: [p0, p1, ...]}``.
+
+    Cross-VIEW consistency is scored within a SINGLE seed, so a scene must not
+    carry the same perspective index from more than one seed (e.g. ``num_samples
+    > 1`` or mixed-seed outputs). Such a directory is rejected with a clear error
+    rather than silently scoring seed-to-seed instead of cross-view consistency.
     """
-    scenes: dict[str, list[tuple[int, Path]]] = {}
+    scenes: dict[str, dict[int, tuple[int, Path]]] = {}
     for path in discover_videos(directory):
         m = _PERSPECTIVE_STEM.match(path.stem)
         if not m:
             continue
-        scenes.setdefault(m.group("scene"), []).append((int(m.group("persp")), path))
-    return {s: [p for _, p in sorted(v)] for s, v in scenes.items()}
+        scene, persp, seed = m.group("scene"), int(m.group("persp")), int(m.group("seed"))
+        bucket = scenes.setdefault(scene, {})
+        if persp in bucket:
+            prev_seed = bucket[persp][0]
+            raise ValueError(
+                f"Scene {scene!r} has perspective p{persp} from multiple seeds "
+                f"(seed{prev_seed} and seed{seed}); cross-view consistency is scored "
+                "within ONE seed -- render num_samples=1 or evaluate a single seed's "
+                "outputs per directory."
+            )
+        bucket[persp] = (seed, path)
+    return {s: [path for _persp, (_seed, path) in sorted(b.items())] for s, b in scenes.items()}
 
 
 def score_scene(

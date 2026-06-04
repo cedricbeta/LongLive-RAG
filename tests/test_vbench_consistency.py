@@ -140,6 +140,26 @@ class TestPerspectiveGrouping(unittest.TestCase):
         ])
         self.assertEqual(len(groups["african_savanna"]), 2)
 
+    def test_duplicate_perspective_across_seeds_raises(self):
+        # p0 from two seeds must not be silently grouped as two perspectives
+        # (that would measure seed-to-seed, not cross-view, consistency). (P2 fix.)
+        tmp = Path(tempfile.mkdtemp())
+        for n in ["kv_rag-rank0-scene_a-p0-seed0_regular.mp4",
+                  "kv_rag-rank0-scene_a-p1-seed0_regular.mp4",
+                  "kv_rag-rank0-scene_a-p0-seed1_regular.mp4"]:  # p0 from seed0 AND seed1
+            (tmp / n).write_bytes(b"")
+        with self.assertRaises(ValueError):
+            group_perspectives_by_scene(tmp)
+
+    def test_single_seed_grouping_unaffected(self):
+        tmp = Path(tempfile.mkdtemp())
+        for n in ["kv_rag-rank0-scene_a-p0-seed0_regular.mp4",
+                  "kv_rag-rank0-scene_a-p1-seed0_regular.mp4"]:
+            (tmp / n).write_bytes(b"")
+        groups = group_perspectives_by_scene(tmp)
+        self.assertEqual(set(groups), {"scene_a"})
+        self.assertEqual(len(groups["scene_a"]), 2)
+
 
 class TestNormalizationGuard(unittest.TestCase):
     """AC-5 negative: a broken (missing) per-frame normalization is caught."""
