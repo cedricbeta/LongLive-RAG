@@ -1,0 +1,436 @@
+{
+  "comparison": {
+    "num_scenes": 2,
+    "records": [
+      {
+        "baseline_metrics": {
+          "aggregate_consistency": 0.7523631187497591,
+          "appearance_style": 0.938889867299109,
+          "dynamic_degree": 2.6132678389549255,
+          "dynamic_degree_min": 2.5955185095469155,
+          "inter_video_diversity": 0.22488614574210697,
+          "motion_smoothness": 0.6527936458587646,
+          "motion_smoothness_min": 0.6471314132213593,
+          "num_videos": 2.0,
+          "overall_consistency": 0.31820476055145264,
+          "prompt_adherence_mean": 0.31820476055145264,
+          "prompt_adherence_min": 0.31754428148269653,
+          "temporal_style": 0.9999947283987156
+        },
+        "delta": {
+          "aggregate_consistency": 0.002446838575555832,
+          "appearance_style": 0.007986421072969208,
+          "dynamic_degree": -0.39163657526175166,
+          "dynamic_degree_min": -0.7832731505235035,
+          "inter_video_diversity": 0.0057132729892864775,
+          "motion_smoothness": -0.0454583466053009,
+          "motion_smoothness_min": -0.07959222793579102,
+          "overall_consistency": -0.0005463063716888428,
+          "prompt_adherence_mean": -0.0005463063716888428,
+          "prompt_adherence_min": 0.0,
+          "temporal_style": -9.959897461242484e-05
+        },
+        "modified_metrics": {
+          "aggregate_consistency": 0.754809957325315,
+          "appearance_style": 0.9468762883720782,
+          "dynamic_degree": 2.221631263693174,
+          "dynamic_degree_min": 1.812245359023412,
+          "inter_video_diversity": 0.23059941873139345,
+          "motion_smoothness": 0.6073352992534637,
+          "motion_smoothness_min": 0.5675391852855682,
+          "num_videos": 2.0,
+          "overall_consistency": 0.3176584541797638,
+          "prompt_adherence_mean": 0.3176584541797638,
+          "prompt_adherence_min": 0.31754428148269653,
+          "temporal_style": 0.9998951294241032
+        },
+        "scene": "african_savanna"
+      },
+      {
+        "baseline_metrics": {
+          "aggregate_consistency": 0.7689032965324579,
+          "appearance_style": 0.9835701284261438,
+          "dynamic_degree": 2.9862960030635195,
+          "dynamic_degree_min": 2.606393943230311,
+          "inter_video_diversity": 0.2861080539795249,
+          "motion_smoothness": 0.735834613442421,
+          "motion_smoothness_min": 0.6781337857246399,
+          "num_videos": 2.0,
+          "overall_consistency": 0.3252878785133362,
+          "prompt_adherence_mean": 0.3252878785133362,
+          "prompt_adherence_min": 0.3152327239513397,
+          "temporal_style": 0.9978518826578937
+        },
+        "delta": {
+          "aggregate_consistency": 0.0017518769761755149,
+          "appearance_style": 0.0010179644305590152,
+          "dynamic_degree": -0.2111583650112152,
+          "dynamic_degree_min": 0.0,
+          "inter_video_diversity": -0.00010663626730789133,
+          "motion_smoothness": 0.006860911846160889,
+          "motion_smoothness_min": 0.0,
+          "overall_consistency": 0.003209531307220459,
+          "prompt_adherence_mean": 0.003209531307220459,
+          "prompt_adherence_min": 0.006419062614440918,
+          "temporal_style": 0.0010281351907471814
+        },
+        "modified_metrics": {
+          "aggregate_consistency": 0.7706551735086334,
+          "appearance_style": 0.9845880928567028,
+          "dynamic_degree": 2.7751376380523043,
+          "dynamic_degree_min": 2.606393943230311,
+          "inter_video_diversity": 0.286001417712217,
+          "motion_smoothness": 0.7426955252885818,
+          "motion_smoothness_min": 0.6781337857246399,
+          "num_videos": 2.0,
+          "overall_consistency": 0.32849740982055664,
+          "prompt_adherence_mean": 0.32849740982055664,
+          "prompt_adherence_min": 0.32165178656578064,
+          "temporal_style": 0.9988800178486409
+        },
+        "scene": "frying_egg_closeup"
+      }
+    ]
+  },
+  "gate": {
+    "adherence_failures": [],
+    "adherence_ok": true,
+    "adherence_tolerance": 0.02,
+    "backbones": {
+      "background_clip": false,
+      "identity": false,
+      "subject_dino": false,
+      "subject_kind": "auto"
+    },
+    "consistency_ok": true,
+    "diversity_failures": [],
+    "diversity_ok": true,
+    "diversity_tolerance": 0.05,
+    "is_null_result": false,
+    "metric": "aggregate_consistency",
+    "min_scene_wins": 1,
+    "modified_settings": {
+      "boundary_inject_anchors": 2,
+      "retrieval_key_mode": "subject_identity",
+      "retrieval_value_mode": "raw",
+      "scene_memory_enabled": true,
+      "scene_score_bonus": 0.1
+    },
+    "num_scenes": 2,
+    "passed": true,
+    "per_scene": [
+      {
+        "adherence_baseline_mean": 0.31820476055145264,
+        "adherence_baseline_min": 0.31754428148269653,
+        "adherence_modified_mean": 0.3176584541797638,
+        "adherence_modified_min": 0.31754428148269653,
+        "adherence_ok": true,
+        "baseline": 0.7523631187497591,
+        "delta": 0.002446838575555832,
+        "diversity_baseline": 0.22488614574210697,
+        "diversity_modified": 0.23059941873139345,
+        "diversity_ok": true,
+        "metric": "aggregate_consistency",
+        "modified": 0.754809957325315,
+        "scene": "african_savanna",
+        "win": true
+      },
+      {
+        "adherence_baseline_mean": 0.3252878785133362,
+        "adherence_baseline_min": 0.3152327239513397,
+        "adherence_modified_mean": 0.32849740982055664,
+        "adherence_modified_min": 0.32165178656578064,
+        "adherence_ok": true,
+        "baseline": 0.7689032965324579,
+        "delta": 0.0017518769761755149,
+        "diversity_baseline": 0.2861080539795249,
+        "diversity_modified": 0.286001417712217,
+        "diversity_ok": true,
+        "metric": "aggregate_consistency",
+        "modified": 0.7706551735086334,
+        "scene": "frying_egg_closeup",
+        "win": true
+      }
+    ],
+    "perspective_coverage": {
+      "african_savanna": 2,
+      "frying_egg_closeup": 2
+    },
+    "require_adherence": true,
+    "scene_wins": 2
+  },
+  "offline_screen": {
+    "cells": [
+      {
+        "key": "pooled",
+        "key_margin": 1.1717608869075775,
+        "key_passes": true,
+        "render_candidate": true,
+        "value": "raw",
+        "value_reropeable": true
+      },
+      {
+        "key": "pooled",
+        "key_margin": 1.1717608869075775,
+        "key_passes": true,
+        "render_candidate": true,
+        "value": "mean_frame",
+        "value_reropeable": true
+      },
+      {
+        "key": "pooled",
+        "key_margin": 1.1717608869075775,
+        "key_passes": true,
+        "render_candidate": true,
+        "value": "top_frame",
+        "value_reropeable": true
+      },
+      {
+        "key": "moment",
+        "key_margin": 0.3822009563446045,
+        "key_passes": true,
+        "render_candidate": true,
+        "value": "raw",
+        "value_reropeable": true
+      },
+      {
+        "key": "moment",
+        "key_margin": 0.3822009563446045,
+        "key_passes": true,
+        "render_candidate": true,
+        "value": "mean_frame",
+        "value_reropeable": true
+      },
+      {
+        "key": "moment",
+        "key_margin": 0.3822009563446045,
+        "key_passes": true,
+        "render_candidate": true,
+        "value": "top_frame",
+        "value_reropeable": true
+      },
+      {
+        "key": "multi_centroid",
+        "key_margin": 0.41651982069015503,
+        "key_passes": true,
+        "render_candidate": true,
+        "value": "raw",
+        "value_reropeable": true
+      },
+      {
+        "key": "multi_centroid",
+        "key_margin": 0.41651982069015503,
+        "key_passes": true,
+        "render_candidate": true,
+        "value": "mean_frame",
+        "value_reropeable": true
+      },
+      {
+        "key": "multi_centroid",
+        "key_margin": 0.41651982069015503,
+        "key_passes": true,
+        "render_candidate": true,
+        "value": "top_frame",
+        "value_reropeable": true
+      },
+      {
+        "key": "salient_set",
+        "key_margin": 0.7904700040817261,
+        "key_passes": true,
+        "render_candidate": true,
+        "value": "raw",
+        "value_reropeable": true
+      },
+      {
+        "key": "salient_set",
+        "key_margin": 0.7904700040817261,
+        "key_passes": true,
+        "render_candidate": true,
+        "value": "mean_frame",
+        "value_reropeable": true
+      },
+      {
+        "key": "salient_set",
+        "key_margin": 0.7904700040817261,
+        "key_passes": true,
+        "render_candidate": true,
+        "value": "top_frame",
+        "value_reropeable": true
+      },
+      {
+        "key": "positional",
+        "key_margin": 0.4057590067386627,
+        "key_passes": false,
+        "render_candidate": false,
+        "value": "raw",
+        "value_reropeable": true
+      },
+      {
+        "key": "positional",
+        "key_margin": 0.4057590067386627,
+        "key_passes": false,
+        "render_candidate": false,
+        "value": "mean_frame",
+        "value_reropeable": true
+      },
+      {
+        "key": "positional",
+        "key_margin": 0.4057590067386627,
+        "key_passes": false,
+        "render_candidate": false,
+        "value": "top_frame",
+        "value_reropeable": true
+      },
+      {
+        "key": "subject_identity",
+        "key_margin": 1.1613516807556152,
+        "key_passes": true,
+        "render_candidate": true,
+        "value": "raw",
+        "value_reropeable": true
+      },
+      {
+        "key": "subject_identity",
+        "key_margin": 1.1613516807556152,
+        "key_passes": true,
+        "render_candidate": true,
+        "value": "mean_frame",
+        "value_reropeable": true
+      },
+      {
+        "key": "subject_identity",
+        "key_margin": 1.1613516807556152,
+        "key_passes": true,
+        "render_candidate": true,
+        "value": "top_frame",
+        "value_reropeable": true
+      },
+      {
+        "key": "semantic",
+        "key_margin": 0.8614735007286072,
+        "key_passes": true,
+        "render_candidate": true,
+        "value": "raw",
+        "value_reropeable": true
+      },
+      {
+        "key": "semantic",
+        "key_margin": 0.8614735007286072,
+        "key_passes": true,
+        "render_candidate": true,
+        "value": "mean_frame",
+        "value_reropeable": true
+      },
+      {
+        "key": "semantic",
+        "key_margin": 0.8614735007286072,
+        "key_passes": true,
+        "render_candidate": true,
+        "value": "top_frame",
+        "value_reropeable": true
+      }
+    ],
+    "is_prefilter": true,
+    "keys_ranked": [
+      {
+        "different_scene": -0.1718432605266571,
+        "is_negative_control": false,
+        "key": "pooled",
+        "margin": 1.1717608869075775,
+        "passes_prefilter": true,
+        "same_scene": 0.9999176263809204
+      },
+      {
+        "different_scene": -0.16143375635147095,
+        "is_negative_control": false,
+        "key": "subject_identity",
+        "margin": 1.1613516807556152,
+        "passes_prefilter": true,
+        "same_scene": 0.9999179244041443
+      },
+      {
+        "different_scene": 0.12964987754821777,
+        "is_negative_control": false,
+        "key": "semantic",
+        "margin": 0.8614735007286072,
+        "passes_prefilter": true,
+        "same_scene": 0.991123378276825
+      },
+      {
+        "different_scene": 0.20952993631362915,
+        "is_negative_control": false,
+        "key": "salient_set",
+        "margin": 0.7904700040817261,
+        "passes_prefilter": true,
+        "same_scene": 0.9999999403953552
+      },
+      {
+        "different_scene": 0.35946398973464966,
+        "is_negative_control": false,
+        "key": "multi_centroid",
+        "margin": 0.41651982069015503,
+        "passes_prefilter": true,
+        "same_scene": 0.7759838104248047
+      },
+      {
+        "different_scene": -0.23356276750564575,
+        "is_negative_control": true,
+        "key": "positional",
+        "margin": 0.4057590067386627,
+        "passes_prefilter": false,
+        "same_scene": 0.17219623923301697
+      },
+      {
+        "different_scene": 0.6177715063095093,
+        "is_negative_control": false,
+        "key": "moment",
+        "margin": 0.3822009563446045,
+        "passes_prefilter": true,
+        "same_scene": 0.9999724626541138
+      }
+    ],
+    "note": "PROXY ONLY (BL-20260604-rendered-metric-over-probe): this ranking PRUNES broken cells and orders a shortlist; it MUST NOT pick a winner. Promotion requires a rendered AC-2 confirmation.",
+    "selector": "rendered AC-2 suite (evaluation/vbench_consistency.py)",
+    "shortlist_keys": [
+      "pooled",
+      "subject_identity",
+      "semantic",
+      "salient_set",
+      "multi_centroid",
+      "moment"
+    ],
+    "thresholds": {
+      "min_margin": 0.1,
+      "min_same_scene": 0.6
+    },
+    "values": [
+      {
+        "bounded": false,
+        "frame_aligned": true,
+        "input_tokens": 12,
+        "reropeable": true,
+        "stored_frames": 3,
+        "stored_tokens": 12,
+        "value": "raw"
+      },
+      {
+        "bounded": true,
+        "frame_aligned": true,
+        "input_tokens": 12,
+        "reropeable": true,
+        "stored_frames": 1,
+        "stored_tokens": 4,
+        "value": "mean_frame"
+      },
+      {
+        "bounded": true,
+        "frame_aligned": true,
+        "input_tokens": 12,
+        "reropeable": true,
+        "stored_frames": 1,
+        "stored_tokens": 4,
+        "value": "top_frame"
+      }
+    ]
+  }
+}

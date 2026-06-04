@@ -153,3 +153,100 @@ python scripts/run_kv_rag_ablation.py \
   --generator_ckpt checkpoints/longlive2_5b/longlive2_merged_generator.pt \
   --no_lora_adapter --output_root videos/kv_rag_gate
 ```
+
+## Round 0: cross-video VBench protocol (multiview_vbench)
+
+Date: 2026-06-04.
+
+This round extends the sweep to 7 retrieval keys x 3 retrieval values = 21
+cells. The two new keys are `semantic` (caption-text context supplied via
+`memory.set_context_key(...)`) and `subject_identity` (per-head subject prototype
+on K/V tensors). The new value is `top_frame`, a bounded single-frame payload.
+
+| key | key signal | `raw` | `mean_frame` | `top_frame` |
+|-----|------------|-------|--------------|-------------|
+| `pooled` | mean-pooled pre-RoPE K summary | cell | cell | cell |
+| `moment` | mean + std token summary | cell | cell | cell |
+| `multi_centroid` | activation-ranked token buckets | cell | cell | cell |
+| `salient_set` | top-M high-norm token set | cell | cell | cell |
+| `positional` | position-weighted pooled K summary; negative control | screen-only | screen-only | screen-only |
+| `subject_identity` | per-head subject prototype on K/V tensors | cell | cell | cell |
+| `semantic` | caption-text context key via `memory.set_context_key(...)` | cell | cell | cell |
+
+### Offline-proxy pre-filter
+
+The GPU-free offline screen is a pre-filter, not the selector
+(`BL-20260604-rendered-metric-over-probe`). The JSON `offline_screen` ranked key
+margins as:
+
+| rank | key | margin | result |
+|------|-----|-------:|--------|
+| 1 | `pooled` | 1.172 | shortlisted |
+| 2 | `subject_identity` | 1.161 | shortlisted |
+| 3 | `semantic` | 0.861 | shortlisted |
+| 4 | `salient_set` | 0.790 | shortlisted |
+| 5 | `multi_centroid` | 0.417 | shortlisted |
+| 6 | `positional` | 0.406 | FAILS - negative control |
+| 7 | `moment` | 0.382 | shortlisted |
+
+Shortlist excludes `positional`: `pooled`, `subject_identity`, `semantic`,
+`salient_set`, `multi_centroid`, and `moment`.
+
+### Rendered AC-2 result
+
+The authoritative selector is the rendered AC-2 suite. For the rendered finalist
+`subject_identity+raw` against the no-scene-memory baseline on the 5B model, the
+gate PASSED with 2/2 `aggregate_consistency` wins:
+
+| scene | baseline | modified | delta |
+|-------|---------:|---------:|------:|
+| `african_savanna` | 0.7524 | 0.7548 | +0.0024 |
+| `frying_egg_closeup` | 0.7689 | 0.7707 | +0.0018 |
+
+Per-dimension deltas: `appearance_style` african +0.0080 / frying +0.0010;
+`overall_consistency` african -0.0005 / frying +0.0032; `temporal_style` ~flat;
+`inter_video_diversity` african +0.0057 / frying -0.0001 (no collapse).
+`prompt_adherence` stayed within tolerance.
+
+### Caveats / risks
+
+- This gate scored GPU-free dimensions only. DINO subject, CLIP background, and
+  ArcFace/DINO-patch identity backbones were NOT loaded (`backbones` are all
+  false in the JSON), so `aggregate_consistency` here is only
+  mean(`temporal_style`, `appearance_style`, `overall_consistency`).
+- Coverage is minimal: 2 scenes x 2 perspectives, with `num_output_frames=16`
+  (2 blocks).
+- `dynamic_degree` dropped notably: african 2.61 -> 2.22 and frying 2.99 ->
+  2.78. This is a reduction in motion, not a collapse (`inter_video_diversity`
+  held), but it is a flagged risk.
+
+This is a real but SMALL, narrow-coverage win, not yet a final winner. The next
+hypothesis is to add a `dynamic_degree` non-regression guard, then render the
+other finalists (`semantic+raw`, `pooled+raw` control) with the full semantic
+backbones across more scenes/perspectives before declaring a render-confirmed
+WINNER.
+
+> Update (same round): the `dynamic_degree` non-regression guard is now
+> implemented (`evaluate_multiview_vbench_gate(..., motion_tolerance=...)`, exposed
+> as `--motion_tolerance`). It is OFF by default so this committed result -- which
+> did not enforce it -- is reported faithfully rather than retroactively failed;
+> future gates can enable it.
+
+### Reproduce
+
+```bash
+python scripts/run_kv_rag_ablation.py \
+  --config_path configs/inference_kv_rag_round0gate.yaml \
+  --mode multiview_vbench \
+  --prompts_dir example/multiview_prompts \
+  --prompt_subset frying_egg_closeup,african_savanna \
+  --max_perspectives 2 \
+  --modified_retrieval_key_mode subject_identity \
+  --modified_retrieval_value_mode raw \
+  --adherence_tolerance 0.02 \
+  --diversity_tolerance 0.05 \
+  --generator_ckpt checkpoints/longlive2_5b/longlive2_merged_generator.pt \
+  --no_lora_adapter \
+  --metrics_json docs/multiview_gate_results/round0_subject_identity_2persp.json \
+  --output_root videos/round0_vbench_gate
+```

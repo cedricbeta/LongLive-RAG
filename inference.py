@@ -530,7 +530,10 @@ else:
 collate_fn = eval_collate_fn
 _prev_scene_name = None
 if local_rank == 0:
-    print(f"[data] data_path={data_path}, mode={dataset._mode}, num_blocks={num_blocks}")
+    # MultiViewPerspectiveDataset has no _mode attribute; fall back to its class
+    # name so the per-perspective render path does not crash on this log line.
+    dataset_mode = getattr(dataset, "_mode", type(dataset).__name__)
+    print(f"[data] data_path={data_path}, mode={dataset_mode}, num_blocks={num_blocks}")
 num_prompts = len(dataset)
 print(f"Number of prompts: {num_prompts}")
 

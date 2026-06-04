@@ -71,10 +71,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--stride", type=int, default=1, help="Evaluation frame stride.")
     parser.add_argument(
         "--mode",
-        choices=("temporal", "cross_perspective"),
+        choices=("temporal", "cross_perspective", "multiview_vbench"),
         default="temporal",
         help="temporal: adjacent/optical-flow consistency. cross_perspective: "
-        "single-scene multi-viewpoint milestone gate over a vendored prompt set.",
+        "within-one-video multi-shot scene consistency. multiview_vbench: render "
+        "ONE video per perspective (multiview_per_perspective) for baseline + "
+        "modified and score the AC-2 cross-video VBench suite (identity + dims) "
+        "with the AC-4 gate.",
     )
     parser.add_argument(
         "--prompts_dir",
@@ -125,6 +128,26 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--clip_model", default="ViT-B-32", help="open_clip model for adherence.")
     parser.add_argument("--clip_pretrained", default="openai", help="open_clip pretrained tag.")
     parser.add_argument("--clip_device", default=None, help="Device for the CLIP adherence scorer.")
+    # multiview_vbench: which milestone backbones to load (off => GPU-free dims
+    # only: temporal_style/appearance_style/overall_consistency + companions).
+    parser.add_argument("--vbench_subject", action="store_true",
+                        help="multiview_vbench: enable DINO subject-consistency (needs DINO).")
+    parser.add_argument("--vbench_background", action="store_true",
+                        help="multiview_vbench: enable CLIP background-consistency (needs CLIP).")
+    parser.add_argument("--vbench_identity", action="store_true",
+                        help="multiview_vbench: enable subject-IDENTITY consistency (ArcFace/DINO-patch).")
+    parser.add_argument("--subject_kind", default="auto", choices=("auto", "human", "object"),
+                        help="multiview_vbench: identity subject kind when --vbench_identity is set.")
+    parser.add_argument("--max_perspectives", type=int, default=None,
+                        help="multiview_vbench: cap perspectives rendered per scene (a LOGGED "
+                        "coverage bound, AC-7; omit to render all).")
+    parser.add_argument("--diversity_tolerance", type=float, default=0.0,
+                        help="multiview_vbench: allowed inter_video_diversity drop (anti-collapse).")
+    parser.add_argument("--motion_tolerance", type=float, default=None,
+                        help="multiview_vbench: allowed dynamic_degree drop (motion-collapse "
+                        "guard). Omit to report motion changes without failing on them.")
+    parser.add_argument("--min_scene_wins", type=int, default=None,
+                        help="multiview_vbench: scenes the modified aggregate must win (default ceil(N/2)).")
     # Modified-variant knobs so the AC-3.2 rendered ranking can vary the
     # key/value representation per run (defaults = recommended multi-view).
     parser.add_argument("--modified_retrieval_key_mode", default="salient_set")
@@ -187,6 +210,47 @@ def build_prompt_subset(prompts_dir: str, subset: list[str] | None, dest: Path) 
     for theme in chosen:
         shutil.copytree(caption_root / theme, dest / theme)
     return chosen
+
+
+def build_multiview_subset(prompts_dir: str, subset: list[str] | None, dest: Path,
+                           *, max_perspectives: int | None = None) -> tuple[list[str], dict]:
+    """Copy chosen theme folders for per-perspective rendering, optionally capping
+    perspectives per scene. Returns ``(chosen_themes, coverage)`` where coverage
+    records the per-scene perspective counts actually rendered (AC-7: no silent
+    caps -- the cap is logged, not hidden)."""
+    src = Path(prompts_dir)
+    caption_root = src / "caption" if (src / "caption").is_dir() else src
+    available = sorted(
+        p.name for p in caption_root.iterdir()
+        if p.is_dir() and any(f.name != "global.json" for f in p.glob("*.json"))
+    )
+    chosen = subset or available[:2]
+    missing = [t for t in chosen if t not in available]
+    if missing:
+        raise ValueError(f"--prompt_subset themes not found in {prompts_dir}: {missing}")
+    if len(chosen) < 2:
+        raise ValueError("multiview_vbench gate needs at least two themes")
+    if dest.exists():
+        shutil.rmtree(dest)
+    dest.mkdir(parents=True, exist_ok=True)
+    coverage: dict[str, int] = {}
+    for theme in chosen:
+        out_dir = dest / theme
+        out_dir.mkdir(parents=True, exist_ok=True)
+        persp_jsons = sorted(
+            (f for f in (caption_root / theme).glob("*.json") if f.name != "global.json"),
+            key=lambda p: (not p.stem.isdigit(), int(p.stem) if p.stem.isdigit() else 0, p.stem),
+        )
+        if max_perspectives is not None and max_perspectives > 0:
+            persp_jsons = persp_jsons[:max_perspectives]
+        for jf in persp_jsons:
+            shutil.copy2(jf, out_dir / jf.name)
+        for extra in ("global.json", "shot_durations.txt"):
+            ep = caption_root / theme / extra
+            if ep.exists():
+                shutil.copy2(ep, out_dir / extra)
+        coverage[theme] = len(persp_jsons)
+    return chosen, coverage
 
 
 def _set_nested(cfg, section: str, key: str, value) -> None:
@@ -276,6 +340,7 @@ def write_variant_configs(
     output_root: Path,
     *,
     filename_from_sample_name: bool = False,
+    multiview_per_perspective: bool = False,
     modified_kv_rag_extra: dict | None = None,
 ) -> tuple[Path, Path, Path, Path]:
     output_root.mkdir(parents=True, exist_ok=True)
@@ -313,6 +378,14 @@ def write_variant_configs(
         for variant in (baseline, rag):
             variant.inference.filename_from_sample_name = True
             variant.filename_from_sample_name = True
+
+    # One video per perspective (scenes contiguous so scene memory persists across
+    # a scene's perspectives); the sample_name -> "<scene>-p<P>" stem is what the
+    # VBench evaluator groups on.
+    if multiview_per_perspective:
+        for variant in (baseline, rag):
+            variant.inference.multiview_per_perspective = True
+            variant.multiview_per_perspective = True
 
     baseline_cfg_path = config_dir / "baseline.yaml"
     rag_cfg_path = config_dir / "kv_rag.yaml"
@@ -462,11 +535,131 @@ def _run_cross_perspective(args, output_root: Path) -> None:
         raise SystemExit(1)
 
 
+def _run_multiview_vbench(args, output_root: Path) -> None:
+    """AC-3/AC-4 driver: render ONE video per perspective for baseline + modified,
+    score the AC-2 cross-video VBench suite, and decide the gate. The offline
+    GPU-free screen ranking is recorded alongside as a labeled pre-filter only."""
+    from evaluation.vbench_consistency import (
+        build_clip_image_encoder,
+        build_dino_encoder,
+        build_identity_encoder,
+        compare_multiview_vbench_dirs,
+        evaluate_multiview_vbench_gate,
+    )
+    from evaluation.multiview_prompts import load_shot_specs
+    from evaluation.retrieval_screen import run_screen
+
+    require_adherence = not args.dry_run_without_adherence
+    modified_settings = _modified_kv_rag_from_args(args)
+    coverage: dict | None = None
+
+    if require_adherence and not args.prompts_dir:
+        raise ValueError(
+            "The multiview_vbench gate requires --prompts_dir (per-perspective "
+            "captions + the CLIP adherence guard). Use --dry_run_without_adherence "
+            "for a consistency-only non-gate run."
+        )
+
+    if args.skip_generation:
+        if not args.baseline_dir or not args.kv_rag_dir:
+            raise ValueError("--skip_generation requires --baseline_dir and --kv_rag_dir")
+        baseline_dir = Path(args.baseline_dir)
+        rag_dir = Path(args.kv_rag_dir)
+    else:
+        if not args.prompts_dir:
+            raise ValueError("multiview_vbench requires --prompts_dir for the perspective set")
+        cfg = _apply_overrides(OmegaConf.load(args.config_path), args)
+        subset = [s.strip() for s in args.prompt_subset.split(",")] if args.prompt_subset else None
+        chosen, coverage = build_multiview_subset(
+            args.prompts_dir, subset, output_root / "prompt_subset",
+            max_perspectives=args.max_perspectives,
+        )
+        _set_nested(cfg, "data", "data_path", str(output_root / "prompt_subset"))
+        print(f"[gate] rendering per-perspective subset: {chosen}")
+        print(f"[gate] perspective coverage (AC-7 -- logged, not capped silently): {coverage}")
+        print(f"[gate] modified variant: {modified_settings}")
+        _preflight_config(cfg, args.config_path)
+        baseline_cfg, rag_cfg, baseline_dir, rag_dir = write_variant_configs(
+            cfg, output_root,
+            filename_from_sample_name=True,
+            multiview_per_perspective=True,
+            modified_kv_rag_extra=modified_settings,
+        )
+        run_inference(baseline_cfg)
+        run_inference(rag_cfg)
+
+    captions_for = None
+    adherence_scorer = None
+    if args.prompts_dir:
+        captions_for = {s: v["captions"] for s, v in load_shot_specs(args.prompts_dir).items()}
+    if require_adherence:
+        adherence_scorer = build_clip_adherence_scorer(
+            model_name=args.clip_model, pretrained=args.clip_pretrained, device=args.clip_device
+        )
+
+    dino = build_dino_encoder(device=args.clip_device) if args.vbench_subject else None
+    clip = build_clip_image_encoder(device=args.clip_device) if args.vbench_background else None
+    identity = None
+    if args.vbench_identity:
+        identity = build_identity_encoder(subject_kind=args.subject_kind, device=args.clip_device)
+    if dino is None and clip is None and identity is None:
+        print("[multiview_vbench] note: no semantic backbones (--vbench_subject/"
+              "_background/_identity) -> GPU-free dims only (temporal_style, "
+              "appearance_style, overall_consistency) + companions feed the aggregate.")
+
+    result = compare_multiview_vbench_dirs(
+        baseline_dir, rag_dir,
+        dino_encoder=dino, clip_encoder=clip, identity_encoder=identity,
+        adherence_scorer=adherence_scorer, captions_for=captions_for,
+        max_frames=args.max_frames, stride=max(1, args.stride),
+    )
+    gate = evaluate_multiview_vbench_gate(
+        result,
+        min_scene_wins=args.min_scene_wins,
+        adherence_tolerance=args.adherence_tolerance,
+        diversity_tolerance=args.diversity_tolerance,
+        motion_tolerance=args.motion_tolerance,
+        require_adherence=require_adherence,
+    )
+    gate["modified_settings"] = modified_settings
+    gate["perspective_coverage"] = coverage
+    gate["backbones"] = {"subject_dino": bool(dino), "background_clip": bool(clip),
+                         "identity": bool(identity), "subject_kind": args.subject_kind}
+    if not require_adherence:
+        gate["note"] = "adherence guard NOT evaluated (--dry_run_without_adherence); not a pass."
+        gate["passed"] = False
+
+    metrics_json = Path(args.metrics_json) if args.metrics_json else output_root / "multiview_vbench_gate.json"
+    save_metrics_json(
+        {"gate": gate, "comparison": result,
+         "offline_screen": run_screen()},
+        metrics_json,
+    )
+    print(f"Wrote metrics: {metrics_json.resolve()}")
+    print(f"Scenes compared: {result['num_scenes']}")
+    print(f"[gate] aggregate wins: {gate['scene_wins']}/{gate['num_scenes']} "
+          f"(need >= {gate['min_scene_wins']})")
+    if require_adherence:
+        print(f"[gate] adherence guard: {'OK' if gate['adherence_ok'] else 'FAIL'} "
+              f"(failures={gate['adherence_failures']})")
+    print(f"[gate] diversity guard: {'OK' if gate['diversity_ok'] else 'FAIL'} "
+          f"(failures={gate['diversity_failures']})")
+    for p in gate["per_scene"]:
+        print(f"  {p['scene']}: {p['metric']} {p['baseline']:.4f} -> {p['modified']:.4f} "
+              f"({'win' if p['win'] else 'no win'})")
+    if not require_adherence:
+        print("[gate] RESULT: DRY RUN -- adherence not evaluated; not a pass.")
+        return
+    print(f"[gate] RESULT: {'PASS' if gate['passed'] else 'NULL/FAIL (honest result recorded)'}")
+
+
 def main() -> None:
     args = parse_args()
     output_root = Path(args.output_root)
     if args.mode == "cross_perspective":
         _run_cross_perspective(args, output_root)
+    elif args.mode == "multiview_vbench":
+        _run_multiview_vbench(args, output_root)
     else:
         _run_temporal(args, output_root)
 

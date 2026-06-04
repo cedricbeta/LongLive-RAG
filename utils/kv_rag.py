@@ -79,9 +79,26 @@ def _dtype_from_name(name: str | None) -> torch.dtype | None:
 
 
 #: Retrieval KEY representations: how a stored chunk is indexed for matching.
-KEY_MODES = ("pooled", "moment", "multi_centroid", "salient_set", "positional")
+#:   pooled/moment/multi_centroid/salient_set/positional -> computed from the
+#:     stored K/V attention tensors (see _compute_key);
+#:   subject_identity -> identity-aware prototype on the K/V tensors (subject
+#:     tokens minus background), decoupled from appearance;
+#:   semantic -> a DECOUPLED external embedding (the perspective's caption-text
+#:     vector) set per-perspective via set_context_key(); indexes the same scene
+#:     across views by what the prompt DESCRIBES rather than by token statistics.
+KEY_MODES = (
+    "pooled", "moment", "multi_centroid", "salient_set", "positional",
+    "subject_identity", "semantic",
+)
+#: KEY modes that ignore the K/V tensors and require an external context vector
+#: (set via set_context_key); using one without its companion fails fast.
+CONTEXT_KEY_MODES = ("semantic",)
 #: Retrieval VALUE representations: what payload is injected back into attention.
-VALUE_MODES = ("raw", "mean_frame")
+#:   raw -> the stored frame-aligned K/V slice;
+#:   mean_frame -> collapsed to one mean frame (bounded, re-RoPE'able);
+#:   top_frame -> the single most subject-salient (highest-norm) frame kept
+#:     (bounded, re-RoPE'able) -- a compressed, subject-masked payload.
+VALUE_MODES = ("raw", "mean_frame", "top_frame")
 
 
 def virtual_frame_start(
@@ -176,15 +193,27 @@ class KVRAGConfig:
     #   "positional"    -> position-weighted pooling (view-sensitive; used to
     #                      demonstrate the viewpoint-invariance probe rejects a
     #                      bad key -- not recommended for production)
+    #   "subject_identity" -> identity-aware prototype: the top-M highest-norm
+    #                      (subject) tokens minus the per-head background mean,
+    #                      L2-normalized; matches the SAME subject across views
+    #                      independent of background, decoupled from appearance
+    #   "semantic"      -> a decoupled EXTERNAL embedding (caption-text vector)
+    #                      supplied per-perspective via set_context_key(); indexes
+    #                      the same scene by what the prompt describes. Requires a
+    #                      context-key provider (fails fast without one).
     retrieval_key_mode: str = "pooled"
     # Number of region centroids when retrieval_key_mode == "multi_centroid".
     retrieval_key_centroids: int = 4
-    # Number of salient tokens kept when retrieval_key_mode == "salient_set".
+    # Number of salient tokens kept when retrieval_key_mode in
+    # {"salient_set", "subject_identity"}.
     retrieval_key_top_m: int = 8
     # What is INJECTED back into attention (the payload), independent of the key.
     #   "raw"        -> the stored frame-aligned K/V slice [baseline]
     #   "mean_frame" -> the slice collapsed to a single representative frame
     #                   (bounded injected length; stays frame-aligned/re-RoPE'able)
+    #   "top_frame"  -> the single most subject-salient (highest mean token-norm)
+    #                   frame kept (bounded, re-RoPE'able); requires
+    #                   frame_aligned_store (fails fast otherwise)
     retrieval_value_mode: str = "raw"
 
     @classmethod
@@ -305,6 +334,10 @@ class KVRAGMemory:
         # Transient flag set by the scheduler on the first chunk of a new shot so
         # retrieval force-injects the scene anchors at that boundary.
         self._boundary_inject = False
+        # External context key for retrieval_key_mode == "semantic": the current
+        # perspective's caption-text embedding, set per inference() call. None
+        # until provided; using semantic mode without it fails fast.
+        self._context_key: torch.Tensor | None = None
         self.stats = {
             "stored_entries": 0,
             "stored_scene_entries": 0,
@@ -338,6 +371,14 @@ class KVRAGMemory:
                 "KV-RAG retrieval_key_mode='multi_centroid' requires "
                 "retrieval_key_centroids >= 2"
             )
+        if config.retrieval_value_mode == "top_frame" and not config.frame_aligned_store:
+            # top_frame selects one whole frame from a frame-aligned slice; without
+            # frame_aligned_store there are no frames to choose from. Fail fast
+            # rather than silently fall back to raw (AC-5 companion check).
+            raise ValueError(
+                "KV-RAG retrieval_value_mode='top_frame' requires "
+                "frame_aligned_store=true (there is no frame to select otherwise)"
+            )
         if config.boundary_inject_anchors > 0 and not config.scene_memory_enabled:
             raise ValueError(
                 "KV-RAG boundary_inject_anchors > 0 requires scene_memory_enabled=true; "
@@ -369,6 +410,30 @@ class KVRAGMemory:
         self._boundary_inject = bool(active) and self.config.boundary_inject_anchors > 0
 
     @property
+    def requires_context_key(self) -> bool:
+        """True when the active key mode indexes by an external context vector."""
+        return self.config.retrieval_key_mode in CONTEXT_KEY_MODES
+
+    def set_context_key(self, vector: torch.Tensor | None) -> None:
+        """Set the external semantic key for the current perspective.
+
+        For ``retrieval_key_mode == "semantic"`` the pipeline supplies the
+        perspective's caption-text embedding here (once per ``inference()`` call):
+        entries stored during this perspective are indexed by it, and later
+        perspectives match against THEIR own caption embedding, so the same scene
+        is retrieved by what the prompt describes -- decoupled from the K/V
+        payload (which can stay ``raw``). Accepts any ``[..., D]`` tensor; it is
+        L2-normalized and flattened to a single ``[1, D]`` row. ``None`` clears it.
+        """
+        if vector is None:
+            self._context_key = None
+            return
+        with torch.no_grad():
+            v = vector.detach().float()
+            v = v.reshape(-1) if v.dim() == 1 else v.reshape(v.shape[0], -1).mean(dim=0)
+            self._context_key = F.normalize(v, dim=-1, eps=1e-6).reshape(1, -1)
+
+    @property
     def diag_enabled(self) -> bool:
         return self.config.verbose
 
@@ -385,6 +450,7 @@ class KVRAGMemory:
         self.entries_by_layer.clear()
         self.scene_entries_by_layer.clear()
         self._boundary_inject = False
+        self._context_key = None
         for key in self.stats:
             self.stats[key] = 0 if isinstance(self.stats[key], int) else 0.0
         self._warnings.clear()
@@ -710,6 +776,17 @@ class KVRAGMemory:
         by a viewpoint-robust key while a faithful raw-K/V slice is injected.
         """
         mode = self.config.retrieval_key_mode
+        if mode == "semantic":
+            # Decoupled external key: ignore the K/V tensor and index by the
+            # perspective's caption-text embedding. Fail fast if the companion
+            # context vector was never provided (AC-5 companion check).
+            if self._context_key is None:
+                raise RuntimeError(
+                    "KV-RAG retrieval_key_mode='semantic' requires a context key; "
+                    "call set_context_key(caption_embedding) per perspective before "
+                    "storing/retrieving (no caption-text provider was wired)."
+                )
+            return self._context_key.to(device=tensor.device, dtype=torch.float32)
         if mode == "pooled":
             return self._summarize(tensor)
         if mode == "moment":
@@ -718,6 +795,8 @@ class KVRAGMemory:
             return self._summarize_centroids(tensor, self.config.retrieval_key_centroids)
         if mode == "salient_set":
             return self._summarize_salient_set(tensor, self.config.retrieval_key_top_m)
+        if mode == "subject_identity":
+            return self._summarize_subject_identity(tensor, self.config.retrieval_key_top_m)
         if mode == "positional":
             return self._summarize_positional(tensor)
         raise ValueError(f"Unsupported KV-RAG retrieval_key_mode={mode!r}")
@@ -816,6 +895,32 @@ class KVRAGMemory:
         gathered = torch.gather(f, 1, idx.unsqueeze(-1).unsqueeze(-1).expand(-1, -1, h, d))
         return F.normalize(gathered, dim=-1, eps=1e-6)  # [B, m, H, D]
 
+    def _summarize_subject_identity(self, tensor: torch.Tensor, m: int) -> torch.Tensor | None:
+        """Identity-aware prototype: the subject token mean MINUS the background.
+
+        Background is the per-head mean over all tokens; the subject is the mean
+        of the top-``m`` highest-norm tokens (an orderless, viewpoint-robust
+        selection). Subtracting the background before normalizing isolates the
+        subject's distinctive direction from the shared scene, so the SAME subject
+        matches across camera angles (and across views that share a background but
+        differ in subject) -- the failure mode plain ``pooled`` blends away.
+        Returns one ``[B, H, D]`` prototype per head, scored by plain cosine.
+        """
+        if tensor.numel() == 0:
+            return None
+        if tensor.dim() != 4:  # only the [B, T, H, D] attention-key layout is structured
+            return self._summarize(tensor)
+        f = tensor.float()
+        b, t, h, d = f.shape
+        m = max(1, min(int(m), t))
+        background = f.mean(dim=1, keepdim=True)  # [B, 1, H, D]
+        mag = f.reshape(b, t, h * d).norm(dim=-1)  # [B, T]
+        idx = torch.topk(mag, k=m, dim=1).indices
+        idx, _ = torch.sort(idx, dim=1)
+        subject = torch.gather(f, 1, idx.unsqueeze(-1).unsqueeze(-1).expand(-1, -1, h, d))
+        proto = (subject - background).mean(dim=1)  # [B, H, D] subject minus background
+        return F.normalize(proto, dim=-1, eps=1e-6)
+
     def _summarize_positional(self, tensor: torch.Tensor) -> torch.Tensor | None:
         """Position-weighted pooling -- intentionally view-SENSITIVE.
 
@@ -857,13 +962,13 @@ class KVRAGMemory:
         mode = self.config.retrieval_value_mode
         if mode == "raw":
             return k, v, kept_frames
+        aligned = (
+            kept_frames > 0
+            and frame_seqlen > 0
+            and k.dim() == 4
+            and k.shape[1] == kept_frames * frame_seqlen
+        )
         if mode == "mean_frame":
-            aligned = (
-                kept_frames > 0
-                and frame_seqlen > 0
-                and k.dim() == 4
-                and k.shape[1] == kept_frames * frame_seqlen
-            )
             if not aligned:
                 return k, v, kept_frames  # cannot collapse safely -> keep raw
 
@@ -872,6 +977,25 @@ class KVRAGMemory:
                 return t.view(bsz, kept_frames, frame_seqlen, heads, dim).mean(dim=1)
 
             return collapse(k), collapse(v), 1
+        if mode == "top_frame":
+            # Keep only the single most subject-salient frame (highest mean token
+            # norm) -- a compressed, subject-masked payload that stays a whole
+            # frame (re-RoPE'able). Falls back to raw if not frame-aligned.
+            if not aligned:
+                return k, v, kept_frames
+
+            def frame_view(t: torch.Tensor) -> torch.Tensor:
+                bsz, _, heads, dim = t.shape
+                return t.view(bsz, kept_frames, frame_seqlen, heads, dim)
+
+            kf = frame_view(k)
+            vf = frame_view(v)
+            # rank frames by mean token L2-norm of the key (subject saliency),
+            # averaged over batch so a single frame is chosen for the whole slice.
+            frame_norm = kf.float().norm(dim=-1).mean(dim=(0, 2, 3))  # [kept_frames]
+            top = int(torch.argmax(frame_norm).item())
+            return (kf[:, top].reshape(k.shape[0], frame_seqlen, k.shape[2], k.shape[3]),
+                    vf[:, top].reshape(v.shape[0], frame_seqlen, v.shape[2], v.shape[3]), 1)
         raise ValueError(f"Unsupported KV-RAG retrieval_value_mode={mode!r}")
 
     def _score_candidates(
