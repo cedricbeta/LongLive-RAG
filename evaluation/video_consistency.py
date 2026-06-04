@@ -12,6 +12,7 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 from typing import Iterable
 
@@ -66,6 +67,65 @@ def pair_video_dirs(baseline_dir: str | Path, rag_dir: str | Path) -> list[tuple
     if common:
         return [(baseline_by_stem[stem], rag_by_stem[stem]) for stem in common]
     return list(zip(baseline, rag))
+
+
+# A generated stem is "<prefix>-rank<R>-<name>-seed<S>_<model>"; the variant
+# prefix (baseline/kv_rag) is the ONLY part that differs between the two sides,
+# so the pair key drops it (negative lookahead so a "rank0-" with no prefix is
+# not mistaken for the prefix).
+_PAIR_KEY_RE = re.compile(r"^(?:(?!rank\d)[^-]+-)?(rank\d+-.+-seed\d+_[^-]*)$")
+
+
+def cross_perspective_pair_key(stem: str) -> str:
+    """Variant-independent pairing key for a generated video stem.
+
+    Strips the leading ``baseline-``/``kv_rag-`` (or any non-``rank`` prefix) so
+    the matching baseline and modified renders of the SAME prompt/rank/seed share
+    a key. Falls back to the full stem when the name is not in the generated
+    format (then pairing degrades to exact-stem matching, never silent zip).
+    """
+    m = _PAIR_KEY_RE.match(stem)
+    return m.group(1) if m else stem
+
+
+def pair_cross_perspective_dirs(
+    baseline_dir: str | Path, modified_dir: str | Path
+) -> list[tuple[Path, Path]]:
+    """Pair baseline/modified videos by variant-independent key.
+
+    Unlike ``pair_video_dirs`` there is NO zip fallback: the official gate
+    outputs differ only by prefix, so zip pairing could silently compare
+    different prompts after a missing/extra render. Raises on a duplicate key
+    within a directory (ambiguous) or any key present on only one side
+    (missing/extra).
+    """
+    def index(videos: list[Path], label: str) -> dict[str, Path]:
+        by_key: dict[str, Path] = {}
+        for path in videos:
+            key = cross_perspective_pair_key(path.stem)
+            if key in by_key:
+                raise ValueError(
+                    f"Ambiguous {label} videos for pair key {key!r}: "
+                    f"{by_key[key].name} and {path.name}"
+                )
+            by_key[key] = path
+        return by_key
+
+    baseline = index(discover_videos(baseline_dir), "baseline")
+    modified = index(discover_videos(modified_dir), "modified")
+    only_baseline = sorted(set(baseline) - set(modified))
+    only_modified = sorted(set(modified) - set(baseline))
+    if only_baseline or only_modified:
+        raise ValueError(
+            "Unpaired cross-perspective videos (a missing or extra render would "
+            f"silently misalign the gate): baseline-only={only_baseline}, "
+            f"modified-only={only_modified}"
+        )
+    if not baseline:
+        raise ValueError(
+            f"No videos found to pair in {baseline_dir} and {modified_dir}"
+        )
+    return [(baseline[k], modified[k]) for k in sorted(baseline)]
 
 
 def evaluate_video(path: str | Path, *, max_frames: int | None = None, stride: int = 1) -> dict[str, float]:
@@ -372,7 +432,9 @@ def build_clip_adherence_scorer(
 
     resolved_device = device or ("cuda" if torch.cuda.is_available() else "cpu")
 
-    # Preferred backend: open_clip.
+    # Preferred backend: open_clip. Fall back to transformers on ANY failure
+    # (not just ImportError) so an offline box with a cached transformers CLIP
+    # but no open_clip weights still scores adherence instead of hard-failing.
     try:
         import open_clip
 
@@ -398,7 +460,7 @@ def build_clip_adherence_scorer(
             return float(sims.mean().item())
 
         return _score_open_clip
-    except ImportError:
+    except Exception:
         pass
 
     # Fallback backend: transformers CLIP.
@@ -520,9 +582,7 @@ def compare_cross_perspective_dirs(
     / motion collapse, and (when ``adherence_scorer`` is given) prompt-adherence
     deltas drive the milestone non-regression guard.
     """
-    pairs = pair_video_dirs(baseline_dir, modified_dir)
-    if not pairs:
-        raise ValueError(f"No comparable videos found in {baseline_dir} and {modified_dir}")
+    pairs = pair_cross_perspective_dirs(baseline_dir, modified_dir)
 
     def resolve_spec(stem: str):
         spec = shots_for(stem) if callable(shots_for) else shots_for

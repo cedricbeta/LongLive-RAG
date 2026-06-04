@@ -33,15 +33,10 @@ from evaluation.video_consistency import (
     save_metrics_json,
 )
 
-# Recommended single-scene multi-perspective settings for the modified variant
-# (the AC-6 study's viewpoint-robust key + persistent scene anchors).
-MULTIVIEW_KV_RAG = {
-    "scene_memory_enabled": True,
-    "boundary_inject_anchors": 2,
-    "scene_score_bonus": 0.1,
-    "retrieval_key_mode": "salient_set",
-    "retrieval_value_mode": "raw",
-}
+# The recommended single-scene multi-perspective settings for the modified
+# variant (viewpoint-robust key + persistent scene anchors) are the argparse
+# defaults of the --modified_* flags; build_kv_rag_from_args reads them so the
+# AC-3.2 ranking can vary the key/value per run.
 
 
 DEFAULT_KV_RAG = {
@@ -120,15 +115,40 @@ def parse_args() -> argparse.Namespace:
         help="cross_perspective: allowed per-prompt adherence drop (modified >= baseline - tol).",
     )
     parser.add_argument(
-        "--score_adherence",
+        "--dry_run_without_adherence",
         action="store_true",
-        help="cross_perspective: enforce the CLIP prompt-adherence non-regression guard "
-        "(milestone-only; needs --prompts_dir and a CLIP checkpoint).",
+        help="cross_perspective: consistency-only NON-GATE run that skips the CLIP "
+        "prompt-adherence guard. This does NOT evaluate AC-7 and never reports a "
+        "pass; for offline metric exploration only. The real gate enforces "
+        "adherence by default.",
     )
     parser.add_argument("--clip_model", default="ViT-B-32", help="open_clip model for adherence.")
     parser.add_argument("--clip_pretrained", default="openai", help="open_clip pretrained tag.")
     parser.add_argument("--clip_device", default=None, help="Device for the CLIP adherence scorer.")
+    # Modified-variant knobs so the AC-3.2 rendered ranking can vary the
+    # key/value representation per run (defaults = recommended multi-view).
+    parser.add_argument("--modified_retrieval_key_mode", default="salient_set")
+    parser.add_argument("--modified_retrieval_value_mode", default="raw")
+    parser.add_argument("--modified_scene_score_bonus", type=float, default=0.1)
+    parser.add_argument("--modified_boundary_inject_anchors", type=int, default=2)
+    parser.add_argument(
+        "--modified_scene_memory_enabled",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Toggle the persistent scene partition for the modified variant.",
+    )
     return parser.parse_args()
+
+
+def _modified_kv_rag_from_args(args) -> dict:
+    """Build the modified-variant KV-RAG overrides from CLI (defaults=recommended)."""
+    return {
+        "scene_memory_enabled": bool(args.modified_scene_memory_enabled),
+        "boundary_inject_anchors": int(args.modified_boundary_inject_anchors),
+        "scene_score_bonus": float(args.modified_scene_score_bonus),
+        "retrieval_key_mode": args.modified_retrieval_key_mode,
+        "retrieval_value_mode": args.modified_retrieval_value_mode,
+    }
 
 
 def _num_blocks_from_cfg(cfg) -> int | None:
@@ -335,6 +355,18 @@ def _run_temporal(args, output_root: Path) -> None:
 
 
 def _run_cross_perspective(args, output_root: Path) -> None:
+    # AC-7 enforces prompt adherence; only an explicit dry run skips it (and that
+    # run is NOT a gate -- it can never report a pass).
+    require_adherence = not args.dry_run_without_adherence
+    modified_settings = _modified_kv_rag_from_args(args)
+
+    if require_adherence and not args.prompts_dir:
+        raise ValueError(
+            "The AC-7 gate requires --prompts_dir (for shot captions + the CLIP "
+            "adherence guard). For a consistency-only non-gate run use "
+            "--dry_run_without_adherence."
+        )
+
     num_blocks = args.num_blocks
     if args.skip_generation:
         if not args.baseline_dir or not args.kv_rag_dir:
@@ -350,12 +382,13 @@ def _run_cross_perspective(args, output_root: Path) -> None:
             print(f"[gate] rendering subset: {chosen}")
         if num_blocks is None:
             num_blocks = _num_blocks_from_cfg(cfg)
+        print(f"[gate] modified variant: {modified_settings}")
         _preflight_config(cfg, args.config_path)
         baseline_cfg, rag_cfg, baseline_dir, rag_dir = write_variant_configs(
             cfg,
             output_root,
             filename_from_sample_name=True,
-            modified_kv_rag_extra=MULTIVIEW_KV_RAG,
+            modified_kv_rag_extra=modified_settings,
         )
         run_inference(baseline_cfg)
         run_inference(rag_cfg)
@@ -363,7 +396,7 @@ def _run_cross_perspective(args, output_root: Path) -> None:
     if args.prompts_dir:
         print(f"[gate] resolving boundaries with num_blocks={num_blocks}")
         shots_for = build_spec_resolver(
-            args.prompts_dir, with_captions=args.score_adherence, max_chunks=num_blocks
+            args.prompts_dir, with_captions=require_adherence, max_chunks=num_blocks
         )
     elif args.num_shots is not None:
         shots_for = args.num_shots
@@ -371,9 +404,7 @@ def _run_cross_perspective(args, output_root: Path) -> None:
         raise ValueError("cross_perspective mode requires --prompts_dir or --num_shots")
 
     adherence_scorer = None
-    if args.score_adherence:
-        if not args.prompts_dir:
-            raise ValueError("--score_adherence requires --prompts_dir for shot captions")
+    if require_adherence:
         adherence_scorer = build_clip_adherence_scorer(
             model_name=args.clip_model, pretrained=args.clip_pretrained, device=args.clip_device
         )
@@ -390,8 +421,14 @@ def _run_cross_perspective(args, output_root: Path) -> None:
         result,
         min_consistency_wins=args.min_consistency_wins,
         adherence_tolerance=args.adherence_tolerance,
-        require_adherence=args.score_adherence,
+        require_adherence=require_adherence,
     )
+    gate["ac7_evaluated"] = require_adherence
+    gate["modified_settings"] = modified_settings
+    if not require_adherence:
+        # Consistency-only dry run is not an AC-7 result; never claim a pass.
+        gate["note"] = "AC-7 NOT evaluated: --dry_run_without_adherence skips the adherence guard."
+        gate["passed"] = False
 
     metrics_json = Path(args.metrics_json) if args.metrics_json else output_root / "kv_rag_cross_perspective.json"
     save_metrics_json({"gate": gate, "comparison": result}, metrics_json)
@@ -401,7 +438,7 @@ def _run_cross_perspective(args, output_root: Path) -> None:
         f"[gate] consistency wins: {gate['consistency_wins']}/{gate['num_pairs']} "
         f"(need >= {gate['min_consistency_wins']})"
     )
-    if gate["require_adherence"]:
+    if require_adherence:
         print(
             f"[gate] adherence guard: {'OK' if gate['adherence_ok'] else 'FAIL'} "
             f"(tol={gate['adherence_tolerance']}, failures={gate['adherence_failures']})"
@@ -417,6 +454,9 @@ def _run_cross_perspective(args, output_root: Path) -> None:
                 f"{p['adherence_modified_mean']:.4f} ({'ok' if p['adherence_ok'] else 'REGRESS'})"
             )
         print(line)
+    if not require_adherence:
+        print("[gate] RESULT: DRY RUN -- AC-7 NOT evaluated (no adherence guard); not a pass.")
+        return
     print(f"[gate] RESULT: {'PASS' if gate['passed'] else 'FAIL'}")
     if not gate["passed"]:
         raise SystemExit(1)

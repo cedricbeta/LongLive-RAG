@@ -36,7 +36,9 @@ from evaluation.multiview_prompts import (
 )
 from evaluation.video_consistency import (
     chunk_durations_to_boundaries,
+    cross_perspective_pair_key,
     evaluate_cross_perspective_gate,
+    pair_cross_perspective_dirs,
     prompt_adherence_for_video,
     shot_ranges,
 )
@@ -197,6 +199,66 @@ class TestGateDecision(unittest.TestCase):
         result = {"records": [_record("a", 0.5, 0.6), _record("b", 0.5, 0.7)]}
         gate = evaluate_cross_perspective_gate(result, require_adherence=True)
         self.assertFalse(gate["passed"])  # unscored adherence cannot certify
+
+
+class TestPairing(unittest.TestCase):
+    def test_pair_key_strips_variant_prefix(self):
+        b = cross_perspective_pair_key("baseline-rank0-frying_egg_closeup-seed0_regular")
+        m = cross_perspective_pair_key("kv_rag-rank0-frying_egg_closeup-seed0_regular")
+        self.assertEqual(b, m)
+        self.assertEqual(b, "rank0-frying_egg_closeup-seed0_regular")
+
+    def test_pair_key_handles_no_prefix(self):
+        self.assertEqual(
+            cross_perspective_pair_key("rank0-african_savanna-seed0_regular"),
+            "rank0-african_savanna-seed0_regular",
+        )
+
+    def test_pair_key_non_generated_falls_back_to_stem(self):
+        self.assertEqual(cross_perspective_pair_key("some_random_name"), "some_random_name")
+
+    def _touch(self, d, names):
+        d.mkdir(parents=True, exist_ok=True)
+        for n in names:
+            (d / n).write_bytes(b"")
+
+    def test_pairs_official_filenames(self):
+        tmp = Path(tempfile.mkdtemp())
+        self._touch(tmp / "baseline", [
+            "baseline-rank0-frying_egg_closeup-seed0_regular.mp4",
+            "baseline-rank0-african_savanna-seed0_regular.mp4",
+        ])
+        self._touch(tmp / "kv_rag", [
+            "kv_rag-rank0-frying_egg_closeup-seed0_regular.mp4",
+            "kv_rag-rank0-african_savanna-seed0_regular.mp4",
+        ])
+        pairs = pair_cross_perspective_dirs(tmp / "baseline", tmp / "kv_rag")
+        self.assertEqual(len(pairs), 2)
+        for b, m in pairs:  # paired by prompt, never zip-mismatched
+            self.assertEqual(
+                cross_perspective_pair_key(b.stem), cross_perspective_pair_key(m.stem)
+            )
+
+    def test_missing_render_raises(self):
+        tmp = Path(tempfile.mkdtemp())
+        self._touch(tmp / "baseline", [
+            "baseline-rank0-frying_egg_closeup-seed0_regular.mp4",
+            "baseline-rank0-african_savanna-seed0_regular.mp4",
+        ])
+        self._touch(tmp / "kv_rag", ["kv_rag-rank0-frying_egg_closeup-seed0_regular.mp4"])
+        with self.assertRaises(ValueError):
+            pair_cross_perspective_dirs(tmp / "baseline", tmp / "kv_rag")
+
+    def test_duplicate_key_raises(self):
+        tmp = Path(tempfile.mkdtemp())
+        # Two baseline files collapse to the same pair key (different prefixes) -> ambiguous.
+        self._touch(tmp / "baseline", [
+            "baseline-rank0-african_savanna-seed0_regular.mp4",
+            "other-rank0-african_savanna-seed0_regular.mp4",
+        ])
+        self._touch(tmp / "kv_rag", ["kv_rag-rank0-african_savanna-seed0_regular.mp4"])
+        with self.assertRaises(ValueError):
+            pair_cross_perspective_dirs(tmp / "baseline", tmp / "kv_rag")
 
 
 if __name__ == "__main__":
