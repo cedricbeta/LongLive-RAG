@@ -111,6 +111,7 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
         self.negative_prompt = section_get(args, "inference", "negative_prompt", getattr(args, "negative_prompt", ""))
         self.streaming_vae = section_get(args, "inference", "streaming_vae", getattr(args, "streaming_vae", False))
         self.async_vae = section_get(args, "inference", "async_vae", getattr(args, "async_vae", False))
+        self.vae_decode_chunk_size = int(section_get(args, "inference", "vae_decode_chunk_size", 0))
         vae_device = section_get(args, "inference", "vae_device", getattr(args, "vae_device", None))
         self.vae_device = torch.device(vae_device) if vae_device else None
 
@@ -229,10 +230,13 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
         if hasattr(self.vae.model, "cached_decode"):
             return self.vae.model.cached_decode(chunk_bcthw, vae_scale).float().clamp_(-1, 1)
         chunk_btchw = chunk_bcthw.permute(0, 2, 1, 3, 4).contiguous()
+        chunk_size = self.vae_decode_chunk_size
+        if chunk_size <= 0:
+            chunk_size = int(chunk_btchw.shape[1])
         decoded_btchw = self.vae.decode_to_pixel_chunk(
             chunk_btchw,
             use_cache=False,
-            chunk_size=max(1, int(chunk_btchw.shape[1])),
+            chunk_size=max(1, chunk_size),
         )
         return decoded_btchw.permute(0, 2, 1, 3, 4).contiguous()
 

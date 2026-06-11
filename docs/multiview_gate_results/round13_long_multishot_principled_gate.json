@@ -1,0 +1,2747 @@
+{
+  "blocked_reason": null,
+  "finalists": [
+    {
+      "comparison": {
+        "baseline_summary": {
+          "anchor_centroid_consistency": {
+            "count": 4,
+            "mean": 0.9587051015263279,
+            "std": 0.016276224603242496
+          },
+          "background_anchor_consistency": {
+            "count": 4,
+            "mean": 0.979983139755185,
+            "std": 0.009936905120416976
+          },
+          "dynamic_degree": {
+            "count": 4,
+            "mean": 61.77598871539036,
+            "std": 59.909932975077936
+          },
+          "inter_shot_composition_diversity": {
+            "count": 4,
+            "mean": 0.11706302376357464,
+            "std": 0.029144000480348604
+          },
+          "invariant_margin_mean": {
+            "count": 4,
+            "mean": 0.017514444887638092,
+            "std": 0.01641820344088756
+          },
+          "invariant_margin_min": {
+            "count": 4,
+            "mean": 0.007074765861034393,
+            "std": 0.01815708071018876
+          },
+          "motion_profile_agreement": {
+            "count": 4,
+            "mean": 0.9981554683555562,
+            "std": 0.001239882925852567
+          },
+          "num_shots": {
+            "count": 4,
+            "mean": 5.5,
+            "std": 0.8660254037844386
+          },
+          "palette_agreement": {
+            "count": 4,
+            "mean": 0.770594399688111,
+            "std": 0.08288898854921223
+          },
+          "prompt_adherence_mean": {
+            "count": 4,
+            "mean": 0.2677470960964759,
+            "std": 0.02348611924581703
+          },
+          "prompt_adherence_min": {
+            "count": 4,
+            "mean": 0.24060054495930672,
+            "std": 0.02973357050989471
+          },
+          "subject_anchor_consistency": {
+            "count": 4,
+            "mean": 0.9374270632974708,
+            "std": 0.029391407932776475
+          },
+          "within_shot_motion": {
+            "count": 4,
+            "mean": 0.002676084612176055,
+            "std": 0.0011787496544884831
+          }
+        },
+        "delta_summary": {
+          "anchor_centroid_consistency": {
+            "count": 4,
+            "mean": -0.0035208813540134887,
+            "std": 0.002796115717152491
+          },
+          "background_anchor_consistency": {
+            "count": 4,
+            "mean": -0.001856618577721264,
+            "std": 0.0020280441721534613
+          },
+          "dynamic_degree": {
+            "count": 4,
+            "mean": 0.3927353235582478,
+            "std": 2.6073730121488867
+          },
+          "inter_shot_composition_diversity": {
+            "count": 4,
+            "mean": 0.005482681266793549,
+            "std": 0.006488973928096289
+          },
+          "invariant_margin_mean": {
+            "count": 4,
+            "mean": 0.00011145385603110111,
+            "std": 0.000922702192839327
+          },
+          "invariant_margin_min": {
+            "count": 4,
+            "mean": 0.00016801059246063232,
+            "std": 0.0023866113816442477
+          },
+          "motion_profile_agreement": {
+            "count": 4,
+            "mean": -0.0006513014140429318,
+            "std": 0.0003792250193587612
+          },
+          "palette_agreement": {
+            "count": 4,
+            "mean": -0.010774708230040148,
+            "std": 0.033409595365219306
+          },
+          "prompt_adherence_mean": {
+            "count": 4,
+            "mean": -0.0013365770379702366,
+            "std": 0.002378162941885727
+          },
+          "prompt_adherence_min": {
+            "count": 4,
+            "mean": -0.004386227577924728,
+            "std": 0.005820800050697208
+          },
+          "subject_anchor_consistency": {
+            "count": 4,
+            "mean": -0.005185144130305797,
+            "std": 0.004844295144117191
+          },
+          "within_shot_motion": {
+            "count": 4,
+            "mean": -1.3461907049835129e-05,
+            "std": 8.459835087828187e-05
+          }
+        },
+        "modified_summary": {
+          "anchor_centroid_consistency": {
+            "count": 4,
+            "mean": 0.9551842201723144,
+            "std": 0.01865589302740736
+          },
+          "background_anchor_consistency": {
+            "count": 4,
+            "mean": 0.9781265211774638,
+            "std": 0.0119481746291473
+          },
+          "dynamic_degree": {
+            "count": 4,
+            "mean": 62.16872403894862,
+            "std": 61.485713618641824
+          },
+          "inter_shot_composition_diversity": {
+            "count": 4,
+            "mean": 0.12254570503036818,
+            "std": 0.03225252555021898
+          },
+          "invariant_margin_mean": {
+            "count": 4,
+            "mean": 0.017625898743669193,
+            "std": 0.01689805739580971
+          },
+          "invariant_margin_min": {
+            "count": 4,
+            "mean": 0.007242776453495026,
+            "std": 0.017153486134650266
+          },
+          "motion_profile_agreement": {
+            "count": 4,
+            "mean": 0.9975041669415133,
+            "std": 0.0015108587124176701
+          },
+          "num_shots": {
+            "count": 4,
+            "mean": 5.5,
+            "std": 0.8660254037844386
+          },
+          "palette_agreement": {
+            "count": 4,
+            "mean": 0.7598196914580709,
+            "std": 0.11150937697473569
+          },
+          "prompt_adherence_mean": {
+            "count": 4,
+            "mean": 0.26641051905850566,
+            "std": 0.023238240829298373
+          },
+          "prompt_adherence_min": {
+            "count": 4,
+            "mean": 0.236214317381382,
+            "std": 0.033058299955494246
+          },
+          "subject_anchor_consistency": {
+            "count": 4,
+            "mean": 0.9322419191671651,
+            "std": 0.0333340737396731
+          },
+          "within_shot_motion": {
+            "count": 4,
+            "mean": 0.00266262270512622,
+            "std": 0.0011761202331667074
+          }
+        },
+        "num_pairs": 4,
+        "records": [
+          {
+            "baseline": "videos/round13_long_multishot_principled_gate6/baseline/baseline-rank0-frying_egg_closeup-seed0_regular.mp4",
+            "baseline_metrics": {
+              "anchor_centroid_consistency": 0.9693489387084575,
+              "background_anchor_consistency": 0.988187012155663,
+              "dynamic_degree": 11.583613197008768,
+              "inter_shot_composition_diversity": 0.07460084691269497,
+              "invariant_margin_mean": 0.001384340226650238,
+              "invariant_margin_min": -0.015305489301681519,
+              "motion_profile_agreement": 0.9961504817913687,
+              "num_shots": 4.0,
+              "palette_agreement": 0.8185649058490072,
+              "prompt_adherence_mean": 0.30017708986997604,
+              "prompt_adherence_min": 0.2813876271247864,
+              "subject_anchor_consistency": 0.9505108652612522,
+              "within_shot_motion": 0.00400237602298148
+            },
+            "delta": {
+              "anchor_centroid_consistency": 0.00047195419665357896,
+              "background_anchor_consistency": -0.0005225281598461029,
+              "dynamic_degree": 0.8289026121298484,
+              "inter_shot_composition_diversity": -0.003822781804149522,
+              "invariant_margin_mean": -0.0013949275016784668,
+              "invariant_margin_min": 0.000645756721496582,
+              "motion_profile_agreement": -0.0011632500472478213,
+              "palette_agreement": -0.0008470118181110875,
+              "prompt_adherence_mean": -0.000626102089881897,
+              "prompt_adherence_min": 0.001010507345199585,
+              "subject_anchor_consistency": 0.0014664365531531498,
+              "within_shot_motion": -0.00010232033673673868
+            },
+            "modified": "videos/round13_long_multishot_principled_gate6/mod_subject_identity_raw/mod_subject_identity_raw-rank0-frying_egg_closeup-seed0_regular.mp4",
+            "modified_metrics": {
+              "anchor_centroid_consistency": 0.9698208929051111,
+              "background_anchor_consistency": 0.9876644839958169,
+              "dynamic_degree": 12.412515809138617,
+              "inter_shot_composition_diversity": 0.07077806510854545,
+              "invariant_margin_mean": -1.058727502822876e-05,
+              "invariant_margin_min": -0.014659732580184937,
+              "motion_profile_agreement": 0.9949872317441208,
+              "num_shots": 4.0,
+              "palette_agreement": 0.8177178940308961,
+              "prompt_adherence_mean": 0.29955098778009415,
+              "prompt_adherence_min": 0.28239813446998596,
+              "subject_anchor_consistency": 0.9519773018144053,
+              "within_shot_motion": 0.003900055686244741
+            },
+            "negative_control": true,
+            "stem": "baseline-rank0-frying_egg_closeup-seed0_regular",
+            "theme": "frying_egg_closeup"
+          },
+          {
+            "baseline": "videos/round13_long_multishot_principled_gate6/baseline/baseline-rank0-frying_egg_same_event-seed0_regular.mp4",
+            "baseline_metrics": {
+              "anchor_centroid_consistency": 0.9752979660052694,
+              "background_anchor_consistency": 0.9889121752795172,
+              "dynamic_degree": 26.94659462571144,
+              "inter_shot_composition_diversity": 0.15691177167533432,
+              "invariant_margin_mean": 0.0033766627311706543,
+              "invariant_margin_min": -0.004200845956802368,
+              "motion_profile_agreement": 0.9980991552747617,
+              "num_shots": 6.0,
+              "palette_agreement": 0.8812219694366098,
+              "prompt_adherence_mean": 0.24683312823375067,
+              "prompt_adherence_min": 0.21838709712028503,
+              "subject_anchor_consistency": 0.9616837567310216,
+              "within_shot_motion": 0.0013901827866599585
+            },
+            "delta": {
+              "anchor_centroid_consistency": -0.0025116521578161244,
+              "background_anchor_consistency": 1.160190290461216e-05,
+              "dynamic_degree": 0.6874953061342239,
+              "inter_shot_composition_diversity": 0.002659592879248218,
+              "invariant_margin_mean": 0.0009038746356964111,
+              "invariant_margin_min": 0.0033656954765319824,
+              "motion_profile_agreement": -0.0003449089578961839,
+              "palette_agreement": 0.0248334860069519,
+              "prompt_adherence_mean": 0.0022447208563486643,
+              "prompt_adherence_min": 0.0010330229997634888,
+              "subject_anchor_consistency": -0.00503490621853675,
+              "within_shot_motion": 5.737891721461575e-05
+            },
+            "modified": "videos/round13_long_multishot_principled_gate6/mod_subject_identity_raw/mod_subject_identity_raw-rank0-frying_egg_same_event-seed0_regular.mp4",
+            "modified_metrics": {
+              "anchor_centroid_consistency": 0.9727863138474533,
+              "background_anchor_consistency": 0.9889237771824219,
+              "dynamic_degree": 27.634089931845665,
+              "inter_shot_composition_diversity": 0.15957136455458254,
+              "invariant_margin_mean": 0.004280537366867065,
+              "invariant_margin_min": -0.0008351504802703857,
+              "motion_profile_agreement": 0.9977542463168655,
+              "num_shots": 6.0,
+              "palette_agreement": 0.9060554554435617,
+              "prompt_adherence_mean": 0.24907784909009933,
+              "prompt_adherence_min": 0.21942012012004852,
+              "subject_anchor_consistency": 0.9566488505124848,
+              "within_shot_motion": 0.0014475617038745743
+            },
+            "negative_control": false,
+            "stem": "baseline-rank0-frying_egg_same_event-seed0_regular",
+            "theme": "frying_egg_same_event"
+          },
+          {
+            "baseline": "videos/round13_long_multishot_principled_gate6/baseline/baseline-rank0-skateboarder_high_motion-seed0_regular.mp4",
+            "baseline_metrics": {
+              "anchor_centroid_consistency": 0.9328366778576929,
+              "background_anchor_consistency": 0.9785289592953444,
+              "dynamic_degree": 163.49028714497885,
+              "inter_shot_composition_diversity": 0.11961811268296363,
+              "invariant_margin_mean": 0.041595454017321266,
+              "invariant_margin_min": 0.03178763389587402,
+              "motion_profile_agreement": 0.9992145635681805,
+              "num_shots": 6.0,
+              "palette_agreement": 0.6777669804560188,
+              "prompt_adherence_mean": 0.2800304690996806,
+              "prompt_adherence_min": 0.255878210067749,
+              "subject_anchor_consistency": 0.8871443964200414,
+              "within_shot_motion": 0.003691359500711163
+            },
+            "delta": {
+              "anchor_centroid_consistency": -0.006970978331092059,
+              "background_anchor_consistency": -0.0017178875214495237,
+              "dynamic_degree": 3.6775677998860488,
+              "inter_shot_composition_diversity": 0.011150233346078231,
+              "invariant_margin_mean": 0.0008244762818018642,
+              "invariant_margin_min": 0.0,
+              "motion_profile_agreement": -0.0008632867684700285,
+              "palette_agreement": -0.06564828334437323,
+              "prompt_adherence_mean": -0.0036855762203534814,
+              "prompt_adherence_min": -0.006749466061592102,
+              "subject_anchor_consistency": -0.012224069140734817,
+              "within_shot_motion": 8.372558901707317e-05
+            },
+            "modified": "videos/round13_long_multishot_principled_gate6/mod_subject_identity_raw/mod_subject_identity_raw-rank0-skateboarder_high_motion-seed0_regular.mp4",
+            "modified_metrics": {
+              "anchor_centroid_consistency": 0.9258656995266008,
+              "background_anchor_consistency": 0.9768110717738949,
+              "dynamic_degree": 167.1678549448649,
+              "inter_shot_composition_diversity": 0.13076834602904186,
+              "invariant_margin_mean": 0.04241993029912313,
+              "invariant_margin_min": 0.03178763389587402,
+              "motion_profile_agreement": 0.9983512767997105,
+              "num_shots": 6.0,
+              "palette_agreement": 0.6121186971116456,
+              "prompt_adherence_mean": 0.2763448928793271,
+              "prompt_adherence_min": 0.24912874400615692,
+              "subject_anchor_consistency": 0.8749203272793066,
+              "within_shot_motion": 0.003775085089728236
+            },
+            "negative_control": false,
+            "stem": "baseline-rank0-skateboarder_high_motion-seed0_regular",
+            "theme": "skateboarder_high_motion"
+          },
+          {
+            "baseline": "videos/round13_long_multishot_principled_gate6/baseline/baseline-rank0-sunlit_balcony_tour-seed0_regular.mp4",
+            "baseline_metrics": {
+              "anchor_centroid_consistency": 0.957336823533892,
+              "background_anchor_consistency": 0.9643044122902157,
+              "dynamic_degree": 45.083459893862404,
+              "inter_shot_composition_diversity": 0.11712136378330562,
+              "invariant_margin_mean": 0.023701322575410206,
+              "invariant_margin_min": 0.016017764806747437,
+              "motion_profile_agreement": 0.9991576727879142,
+              "num_shots": 6.0,
+              "palette_agreement": 0.7048237430108085,
+              "prompt_adherence_mean": 0.2439476971824964,
+              "prompt_adherence_min": 0.20674924552440643,
+              "subject_anchor_consistency": 0.9503692347775684,
+              "within_shot_motion": 0.0016204201383516192
+            },
+            "delta": {
+              "anchor_centroid_consistency": -0.00507284912379935,
+              "background_anchor_consistency": -0.005197660532494042,
+              "dynamic_degree": -3.62302442391713,
+              "inter_shot_composition_diversity": 0.011943680645997268,
+              "invariant_margin_mean": 0.00011239200830459595,
+              "invariant_margin_min": -0.003339409828186035,
+              "motion_profile_agreement": -0.00023375988255769364,
+              "palette_agreement": -0.0014370237646281758,
+              "prompt_adherence_mean": -0.003279350697994232,
+              "prompt_adherence_min": -0.012838974595069885,
+              "subject_anchor_consistency": -0.004948037715104769,
+              "within_shot_motion": -9.263179769429075e-05
+            },
+            "modified": "videos/round13_long_multishot_principled_gate6/mod_subject_identity_raw/mod_subject_identity_raw-rank0-sunlit_balcony_tour-seed0_regular.mp4",
+            "modified_metrics": {
+              "anchor_centroid_consistency": 0.9522639744100927,
+              "background_anchor_consistency": 0.9591067517577216,
+              "dynamic_degree": 41.460435469945274,
+              "inter_shot_composition_diversity": 0.1290650444293029,
+              "invariant_margin_mean": 0.023813714583714802,
+              "invariant_margin_min": 0.012678354978561401,
+              "motion_profile_agreement": 0.9989239129053565,
+              "num_shots": 6.0,
+              "palette_agreement": 0.7033867192461803,
+              "prompt_adherence_mean": 0.24066834648450217,
+              "prompt_adherence_min": 0.19391027092933655,
+              "subject_anchor_consistency": 0.9454211970624636,
+              "within_shot_motion": 0.0015277883406573285
+            },
+            "negative_control": false,
+            "stem": "baseline-rank0-sunlit_balcony_tour-seed0_regular",
+            "theme": "sunlit_balcony_tour"
+          }
+        ],
+        "skipped_stems": []
+      },
+      "gate": {
+        "adherence_failures": [],
+        "adherence_ok": true,
+        "adherence_tolerance": 0.02,
+        "blocked_reason": "negative control indicates text override: ['baseline-rank0-frying_egg_closeup-seed0_regular']",
+        "consistency_ok": false,
+        "consistency_wins": 0,
+        "diversity_failures": [],
+        "diversity_ok": true,
+        "diversity_tolerance_relative": 0.1,
+        "invariant_failures": [
+          "baseline-rank0-frying_egg_closeup-seed0_regular",
+          "baseline-rank0-sunlit_balcony_tour-seed0_regular"
+        ],
+        "invariant_ok": false,
+        "invariant_tolerance": 0.0,
+        "is_null_result": true,
+        "metric": "anchor_centroid_consistency",
+        "min_consistency_wins": 2,
+        "modified_settings": {
+          "boundary_inject_anchors": 2,
+          "retrieval_key_mode": "subject_identity",
+          "retrieval_value_mode": "raw",
+          "scene_memory_enabled": true,
+          "scene_score_bonus": 0.15
+        },
+        "motion_failures": [],
+        "motion_ok": true,
+        "motion_tolerance_relative": 0.2,
+        "negative_control_failures": [
+          "baseline-rank0-frying_egg_closeup-seed0_regular"
+        ],
+        "negative_control_ok": false,
+        "num_pairs": 4,
+        "passed": false,
+        "per_prompt": [
+          {
+            "adherence_baseline_mean": 0.30017708986997604,
+            "adherence_baseline_min": 0.2813876271247864,
+            "adherence_modified_mean": 0.29955098778009415,
+            "adherence_modified_min": 0.28239813446998596,
+            "adherence_ok": true,
+            "background_anchor_baseline": 0.988187012155663,
+            "background_anchor_modified": 0.9876644839958169,
+            "consistency_baseline": 0.9693489387084575,
+            "consistency_modified": 0.9698208929051111,
+            "consistency_win": true,
+            "diversity_baseline": 0.07460084691269497,
+            "diversity_modified": 0.07077806510854545,
+            "diversity_ok": true,
+            "dynamic_degree_baseline": 11.583613197008768,
+            "dynamic_degree_modified": 12.412515809138617,
+            "invariant_margin_baseline_mean": 0.001384340226650238,
+            "invariant_margin_baseline_min": -0.015305489301681519,
+            "invariant_margin_modified_mean": -1.058727502822876e-05,
+            "invariant_margin_modified_min": -0.014659732580184937,
+            "invariant_ok": false,
+            "metric": "anchor_centroid_consistency",
+            "motion_ok": true,
+            "motion_profile_agreement_baseline": 0.9961504817913687,
+            "motion_profile_agreement_modified": 0.9949872317441208,
+            "motion_tolerance_relative": 0.2,
+            "negative_control": true,
+            "negative_control_ok": false,
+            "negative_control_reason": "consistency win without adherence loss is text-override evidence, not a pass",
+            "palette_agreement_baseline": 0.8185649058490072,
+            "palette_agreement_modified": 0.8177178940308961,
+            "stem": "baseline-rank0-frying_egg_closeup-seed0_regular",
+            "subject_anchor_baseline": 0.9505108652612522,
+            "subject_anchor_modified": 0.9519773018144053,
+            "theme": "frying_egg_closeup"
+          },
+          {
+            "adherence_baseline_mean": 0.24683312823375067,
+            "adherence_baseline_min": 0.21838709712028503,
+            "adherence_modified_mean": 0.24907784909009933,
+            "adherence_modified_min": 0.21942012012004852,
+            "adherence_ok": true,
+            "background_anchor_baseline": 0.9889121752795172,
+            "background_anchor_modified": 0.9889237771824219,
+            "consistency_baseline": 0.9752979660052694,
+            "consistency_modified": 0.9727863138474533,
+            "consistency_win": false,
+            "diversity_baseline": 0.15691177167533432,
+            "diversity_modified": 0.15957136455458254,
+            "diversity_ok": true,
+            "dynamic_degree_baseline": 26.94659462571144,
+            "dynamic_degree_modified": 27.634089931845665,
+            "invariant_margin_baseline_mean": 0.0033766627311706543,
+            "invariant_margin_baseline_min": -0.004200845956802368,
+            "invariant_margin_modified_mean": 0.004280537366867065,
+            "invariant_margin_modified_min": -0.0008351504802703857,
+            "invariant_ok": true,
+            "metric": "anchor_centroid_consistency",
+            "motion_ok": true,
+            "motion_profile_agreement_baseline": 0.9980991552747617,
+            "motion_profile_agreement_modified": 0.9977542463168655,
+            "motion_tolerance_relative": 0.2,
+            "negative_control": false,
+            "palette_agreement_baseline": 0.8812219694366098,
+            "palette_agreement_modified": 0.9060554554435617,
+            "stem": "baseline-rank0-frying_egg_same_event-seed0_regular",
+            "subject_anchor_baseline": 0.9616837567310216,
+            "subject_anchor_modified": 0.9566488505124848,
+            "theme": "frying_egg_same_event"
+          },
+          {
+            "adherence_baseline_mean": 0.2800304690996806,
+            "adherence_baseline_min": 0.255878210067749,
+            "adherence_modified_mean": 0.2763448928793271,
+            "adherence_modified_min": 0.24912874400615692,
+            "adherence_ok": true,
+            "background_anchor_baseline": 0.9785289592953444,
+            "background_anchor_modified": 0.9768110717738949,
+            "consistency_baseline": 0.9328366778576929,
+            "consistency_modified": 0.9258656995266008,
+            "consistency_win": false,
+            "diversity_baseline": 0.11961811268296363,
+            "diversity_modified": 0.13076834602904186,
+            "diversity_ok": true,
+            "dynamic_degree_baseline": 163.49028714497885,
+            "dynamic_degree_modified": 167.1678549448649,
+            "invariant_margin_baseline_mean": 0.041595454017321266,
+            "invariant_margin_baseline_min": 0.03178763389587402,
+            "invariant_margin_modified_mean": 0.04241993029912313,
+            "invariant_margin_modified_min": 0.03178763389587402,
+            "invariant_ok": true,
+            "metric": "anchor_centroid_consistency",
+            "motion_ok": true,
+            "motion_profile_agreement_baseline": 0.9992145635681805,
+            "motion_profile_agreement_modified": 0.9983512767997105,
+            "motion_tolerance_relative": 0.2,
+            "negative_control": false,
+            "palette_agreement_baseline": 0.6777669804560188,
+            "palette_agreement_modified": 0.6121186971116456,
+            "stem": "baseline-rank0-skateboarder_high_motion-seed0_regular",
+            "subject_anchor_baseline": 0.8871443964200414,
+            "subject_anchor_modified": 0.8749203272793066,
+            "theme": "skateboarder_high_motion"
+          },
+          {
+            "adherence_baseline_mean": 0.2439476971824964,
+            "adherence_baseline_min": 0.20674924552440643,
+            "adherence_modified_mean": 0.24066834648450217,
+            "adherence_modified_min": 0.19391027092933655,
+            "adherence_ok": true,
+            "background_anchor_baseline": 0.9643044122902157,
+            "background_anchor_modified": 0.9591067517577216,
+            "consistency_baseline": 0.957336823533892,
+            "consistency_modified": 0.9522639744100927,
+            "consistency_win": false,
+            "diversity_baseline": 0.11712136378330562,
+            "diversity_modified": 0.1290650444293029,
+            "diversity_ok": true,
+            "dynamic_degree_baseline": 45.083459893862404,
+            "dynamic_degree_modified": 41.460435469945274,
+            "invariant_margin_baseline_mean": 0.023701322575410206,
+            "invariant_margin_baseline_min": 0.016017764806747437,
+            "invariant_margin_modified_mean": 0.023813714583714802,
+            "invariant_margin_modified_min": 0.012678354978561401,
+            "invariant_ok": false,
+            "metric": "anchor_centroid_consistency",
+            "motion_ok": true,
+            "motion_profile_agreement_baseline": 0.9991576727879142,
+            "motion_profile_agreement_modified": 0.9989239129053565,
+            "motion_tolerance_relative": 0.2,
+            "negative_control": false,
+            "palette_agreement_baseline": 0.7048237430108085,
+            "palette_agreement_modified": 0.7033867192461803,
+            "stem": "baseline-rank0-sunlit_balcony_tour-seed0_regular",
+            "subject_anchor_baseline": 0.9503692347775684,
+            "subject_anchor_modified": 0.9454211970624636,
+            "theme": "sunlit_balcony_tour"
+          }
+        ],
+        "prompt_lint": {
+          "frying_egg_closeup": {
+            "floor": 0.12,
+            "matrix": [
+              [
+                1.0000000000000004,
+                0.7967780563670533,
+                0.7936850718311237,
+                0.7995481974516578
+              ],
+              [
+                0.7967780563670533,
+                1.0000000000000004,
+                0.859868433781727,
+                0.9085869850164807
+              ],
+              [
+                0.7936850718311237,
+                0.859868433781727,
+                0.9999999999999998,
+                0.8407968535523334
+              ],
+              [
+                0.7995481974516578,
+                0.9085869850164807,
+                0.8407968535523334,
+                1.0
+              ]
+            ],
+            "min_pairwise": 0.7936850718311237,
+            "negative_control": true,
+            "passed": true
+          },
+          "frying_egg_same_event": {
+            "floor": 0.12,
+            "matrix": [
+              [
+                1.0,
+                0.7548020035078462,
+                0.77643021035236,
+                0.8396255089728915,
+                0.8173126901610719,
+                0.8759036423177611
+              ],
+              [
+                0.7548020035078462,
+                0.9999999999999996,
+                0.7841997157195555,
+                0.817574896522361,
+                0.8708318556315339,
+                0.8057840060931445
+              ],
+              [
+                0.77643021035236,
+                0.7841997157195555,
+                1.0000000000000002,
+                0.7917920174931408,
+                0.8427206621430487,
+                0.8297757296569575
+              ],
+              [
+                0.8396255089728915,
+                0.817574896522361,
+                0.7917920174931408,
+                0.9999999999999998,
+                0.8769486588599936,
+                0.8728386859958155
+              ],
+              [
+                0.8173126901610719,
+                0.8708318556315339,
+                0.8427206621430487,
+                0.8769486588599936,
+                0.9999999999999998,
+                0.8947935292165838
+              ],
+              [
+                0.8759036423177611,
+                0.8057840060931445,
+                0.8297757296569575,
+                0.8728386859958155,
+                0.8947935292165838,
+                1.0000000000000002
+              ]
+            ],
+            "min_pairwise": 0.7548020035078462,
+            "negative_control": false,
+            "passed": true
+          },
+          "skateboarder_high_motion": {
+            "floor": 0.12,
+            "matrix": [
+              [
+                1.0,
+                0.8741254533277274,
+                0.8806125983720546,
+                0.8563131717635452,
+                0.8113810099628482,
+                0.880976064575675
+              ],
+              [
+                0.8741254533277274,
+                0.9999999999999999,
+                0.8575199757116649,
+                0.8792743713216671,
+                0.7960083992336959,
+                0.8384281713730786
+              ],
+              [
+                0.8806125983720546,
+                0.8575199757116649,
+                1.0000000000000009,
+                0.805521449838106,
+                0.7872898453389755,
+                0.8414707562237052
+              ],
+              [
+                0.8563131717635452,
+                0.8792743713216671,
+                0.805521449838106,
+                1.0,
+                0.8526413007899729,
+                0.8437340789564267
+              ],
+              [
+                0.8113810099628482,
+                0.7960083992336959,
+                0.7872898453389755,
+                0.8526413007899729,
+                0.9999999999999992,
+                0.7911365684969349
+              ],
+              [
+                0.880976064575675,
+                0.8384281713730786,
+                0.8414707562237052,
+                0.8437340789564267,
+                0.7911365684969349,
+                1.0000000000000002
+              ]
+            ],
+            "min_pairwise": 0.7872898453389755,
+            "negative_control": false,
+            "passed": true
+          },
+          "sunlit_balcony_tour": {
+            "floor": 0.12,
+            "matrix": [
+              [
+                1.0,
+                0.8092134689099204,
+                0.8018266158014808,
+                0.8238195173320971,
+                0.8299318508848914,
+                0.8595771207903924
+              ],
+              [
+                0.8092134689099204,
+                0.9999999999999996,
+                0.8015636147599536,
+                0.8245541305527571,
+                0.8020696761357073,
+                0.8398186113716863
+              ],
+              [
+                0.8018266158014808,
+                0.8015636147599536,
+                1.0000000000000004,
+                0.8839326064649152,
+                0.7840743404581407,
+                0.8453080045284787
+              ],
+              [
+                0.8238195173320971,
+                0.8245541305527571,
+                0.8839326064649152,
+                0.9999999999999996,
+                0.7830060894699169,
+                0.8531539130661885
+              ],
+              [
+                0.8299318508848914,
+                0.8020696761357073,
+                0.7840743404581407,
+                0.7830060894699169,
+                0.9999999999999999,
+                0.793062209219814
+              ],
+              [
+                0.8595771207903924,
+                0.8398186113716863,
+                0.8453080045284787,
+                0.8531539130661885,
+                0.793062209219814,
+                1.0000000000000007
+              ]
+            ],
+            "min_pairwise": 0.7830060894699169,
+            "negative_control": false,
+            "passed": true
+          }
+        },
+        "require_adherence": true,
+        "require_invariant": true,
+        "scorable_ok": true,
+        "scorer_coverage": {
+          "adherence_clip": {
+            "loaded": true,
+            "requested": true
+          },
+          "background_clip": {
+            "loaded": true,
+            "requested": true
+          },
+          "dynamic_degree": {
+            "loaded": true,
+            "requested": "raft"
+          },
+          "prompt_lint_clip_text": {
+            "loaded": true,
+            "requested": true
+          },
+          "subject_dino": {
+            "loaded": true,
+            "requested": true
+          }
+        },
+        "unscorable": []
+      },
+      "key": "subject_identity",
+      "mean_aggregate_delta": -0.004851826537569178,
+      "num_scenes": 3,
+      "passed": false,
+      "scene_wins": 0,
+      "settings": {
+        "boundary_inject_anchors": 2,
+        "retrieval_key_mode": "subject_identity",
+        "retrieval_value_mode": "raw",
+        "scene_memory_enabled": true,
+        "scene_score_bonus": 0.15
+      },
+      "value": "raw"
+    },
+    {
+      "comparison": {
+        "baseline_summary": {
+          "anchor_centroid_consistency": {
+            "count": 4,
+            "mean": 0.9587051015263279,
+            "std": 0.016276224603242496
+          },
+          "background_anchor_consistency": {
+            "count": 4,
+            "mean": 0.979983139755185,
+            "std": 0.009936905120416976
+          },
+          "dynamic_degree": {
+            "count": 4,
+            "mean": 61.77598871539036,
+            "std": 59.909932975077936
+          },
+          "inter_shot_composition_diversity": {
+            "count": 4,
+            "mean": 0.11706302376357464,
+            "std": 0.029144000480348604
+          },
+          "invariant_margin_mean": {
+            "count": 4,
+            "mean": 0.017514444887638092,
+            "std": 0.01641820344088756
+          },
+          "invariant_margin_min": {
+            "count": 4,
+            "mean": 0.007074765861034393,
+            "std": 0.01815708071018876
+          },
+          "motion_profile_agreement": {
+            "count": 4,
+            "mean": 0.9981554683555562,
+            "std": 0.001239882925852567
+          },
+          "num_shots": {
+            "count": 4,
+            "mean": 5.5,
+            "std": 0.8660254037844386
+          },
+          "palette_agreement": {
+            "count": 4,
+            "mean": 0.770594399688111,
+            "std": 0.08288898854921223
+          },
+          "prompt_adherence_mean": {
+            "count": 4,
+            "mean": 0.2677470960964759,
+            "std": 0.02348611924581703
+          },
+          "prompt_adherence_min": {
+            "count": 4,
+            "mean": 0.24060054495930672,
+            "std": 0.02973357050989471
+          },
+          "subject_anchor_consistency": {
+            "count": 4,
+            "mean": 0.9374270632974708,
+            "std": 0.029391407932776475
+          },
+          "within_shot_motion": {
+            "count": 4,
+            "mean": 0.002676084612176055,
+            "std": 0.0011787496544884831
+          }
+        },
+        "delta_summary": {
+          "anchor_centroid_consistency": {
+            "count": 4,
+            "mean": -0.003188461369136003,
+            "std": 0.003028867321718444
+          },
+          "background_anchor_consistency": {
+            "count": 4,
+            "mean": -0.002013462504289465,
+            "std": 0.0015273976445846747
+          },
+          "dynamic_degree": {
+            "count": 4,
+            "mean": -0.10780373588204561,
+            "std": 2.395079877597047
+          },
+          "inter_shot_composition_diversity": {
+            "count": 4,
+            "mean": 0.004023404769449401,
+            "std": 0.0075342416869217796
+          },
+          "invariant_margin_mean": {
+            "count": 4,
+            "mean": 0.0003194548189640056,
+            "std": 0.0007498329802677856
+          },
+          "invariant_margin_min": {
+            "count": 4,
+            "mean": -0.0003189966082572937,
+            "std": 0.001814621392827707
+          },
+          "motion_profile_agreement": {
+            "count": 4,
+            "mean": -0.000509872052915139,
+            "std": 0.000419749535566431
+          },
+          "palette_agreement": {
+            "count": 4,
+            "mean": -0.014563465571626355,
+            "std": 0.029196122347118755
+          },
+          "prompt_adherence_mean": {
+            "count": 4,
+            "mean": -0.001122885073224708,
+            "std": 0.0025201093443276367
+          },
+          "prompt_adherence_min": {
+            "count": 4,
+            "mean": -0.004619322717189789,
+            "std": 0.00564566272126046
+          },
+          "subject_anchor_consistency": {
+            "count": 4,
+            "mean": -0.004363460233982597,
+            "std": 0.005311216639671605
+          },
+          "within_shot_motion": {
+            "count": 4,
+            "mean": -7.652763694447227e-06,
+            "std": 8.407378540945647e-05
+          }
+        },
+        "modified_summary": {
+          "anchor_centroid_consistency": {
+            "count": 4,
+            "mean": 0.955516640157192,
+            "std": 0.018618888914201485
+          },
+          "background_anchor_consistency": {
+            "count": 4,
+            "mean": 0.9779696772508957,
+            "std": 0.011394634494743526
+          },
+          "dynamic_degree": {
+            "count": 4,
+            "mean": 61.66818497950832,
+            "std": 61.25242849044258
+          },
+          "inter_shot_composition_diversity": {
+            "count": 4,
+            "mean": 0.12108642853302404,
+            "std": 0.03105966187723855
+          },
+          "invariant_margin_mean": {
+            "count": 4,
+            "mean": 0.017833899706602097,
+            "std": 0.01636685957577553
+          },
+          "invariant_margin_min": {
+            "count": 4,
+            "mean": 0.0067557692527771,
+            "std": 0.017401770938025998
+          },
+          "motion_profile_agreement": {
+            "count": 4,
+            "mean": 0.9976455963026412,
+            "std": 0.0014547195771370531
+          },
+          "num_shots": {
+            "count": 4,
+            "mean": 5.5,
+            "std": 0.8660254037844386
+          },
+          "palette_agreement": {
+            "count": 4,
+            "mean": 0.7560309341164847,
+            "std": 0.10577425917179357
+          },
+          "prompt_adherence_mean": {
+            "count": 4,
+            "mean": 0.2666242110232512,
+            "std": 0.023163896108615304
+          },
+          "prompt_adherence_min": {
+            "count": 4,
+            "mean": 0.23598122224211693,
+            "std": 0.03342212944173587
+          },
+          "subject_anchor_consistency": {
+            "count": 4,
+            "mean": 0.9330636030634882,
+            "std": 0.03343158285556317
+          },
+          "within_shot_motion": {
+            "count": 4,
+            "mean": 0.0026684318484816076,
+            "std": 0.0011770000069828508
+          }
+        },
+        "num_pairs": 4,
+        "records": [
+          {
+            "baseline": "videos/round13_long_multishot_principled_gate6/baseline/baseline-rank0-frying_egg_closeup-seed0_regular.mp4",
+            "baseline_metrics": {
+              "anchor_centroid_consistency": 0.9693489387084575,
+              "background_anchor_consistency": 0.988187012155663,
+              "dynamic_degree": 11.583613197008768,
+              "inter_shot_composition_diversity": 0.07460084691269497,
+              "invariant_margin_mean": 0.001384340226650238,
+              "invariant_margin_min": -0.015305489301681519,
+              "motion_profile_agreement": 0.9961504817913687,
+              "num_shots": 4.0,
+              "palette_agreement": 0.8185649058490072,
+              "prompt_adherence_mean": 0.30017708986997604,
+              "prompt_adherence_min": 0.2813876271247864,
+              "subject_anchor_consistency": 0.9505108652612522,
+              "within_shot_motion": 0.00400237602298148
+            },
+            "delta": {
+              "anchor_centroid_consistency": 0.0015571905840809919,
+              "background_anchor_consistency": -0.00035268975690683213,
+              "dynamic_degree": 0.8678217828273773,
+              "inter_shot_composition_diversity": -0.004434004067189523,
+              "invariant_margin_mean": -0.0005227178335189819,
+              "invariant_margin_min": 0.000645756721496582,
+              "motion_profile_agreement": -0.0009740005353323644,
+              "palette_agreement": 0.0005748059766744751,
+              "prompt_adherence_mean": -0.0005003884434700012,
+              "prompt_adherence_min": 0.001513361930847168,
+              "subject_anchor_consistency": 0.003467070925068594,
+              "within_shot_motion": -9.008863708004355e-05
+            },
+            "modified": "videos/round13_long_multishot_principled_gate6/mod_attention_native_raw/mod_attention_native_raw-rank0-frying_egg_closeup-seed0_regular.mp4",
+            "modified_metrics": {
+              "anchor_centroid_consistency": 0.9709061292925385,
+              "background_anchor_consistency": 0.9878343223987561,
+              "dynamic_degree": 12.451434979836145,
+              "inter_shot_composition_diversity": 0.07016684284550545,
+              "invariant_margin_mean": 0.0008616223931312561,
+              "invariant_margin_min": -0.014659732580184937,
+              "motion_profile_agreement": 0.9951764812560363,
+              "num_shots": 4.0,
+              "palette_agreement": 0.8191397118256817,
+              "prompt_adherence_mean": 0.29967670142650604,
+              "prompt_adherence_min": 0.28290098905563354,
+              "subject_anchor_consistency": 0.9539779361863208,
+              "within_shot_motion": 0.003912287385901436
+            },
+            "negative_control": true,
+            "stem": "baseline-rank0-frying_egg_closeup-seed0_regular",
+            "theme": "frying_egg_closeup"
+          },
+          {
+            "baseline": "videos/round13_long_multishot_principled_gate6/baseline/baseline-rank0-frying_egg_same_event-seed0_regular.mp4",
+            "baseline_metrics": {
+              "anchor_centroid_consistency": 0.9752979660052694,
+              "background_anchor_consistency": 0.9889121752795172,
+              "dynamic_degree": 26.94659462571144,
+              "inter_shot_composition_diversity": 0.15691177167533432,
+              "invariant_margin_mean": 0.0033766627311706543,
+              "invariant_margin_min": -0.004200845956802368,
+              "motion_profile_agreement": 0.9980991552747617,
+              "num_shots": 6.0,
+              "palette_agreement": 0.8812219694366098,
+              "prompt_adherence_mean": 0.24683312823375067,
+              "prompt_adherence_min": 0.21838709712028503,
+              "subject_anchor_consistency": 0.9616837567310216,
+              "within_shot_motion": 0.0013901827866599585
+            },
+            "delta": {
+              "anchor_centroid_consistency": -0.003007753596767415,
+              "background_anchor_consistency": -0.0014207107481749581,
+              "dynamic_degree": -0.29816995561122894,
+              "inter_shot_composition_diversity": -0.002513833440758173,
+              "invariant_margin_mean": 0.0015004028876622515,
+              "invariant_margin_min": 0.0014176666736602783,
+              "motion_profile_agreement": 2.895626221244285e-05,
+              "palette_agreement": 0.007252907234153727,
+              "prompt_adherence_mean": 0.0027346735199292316,
+              "prompt_adherence_min": -0.00040221214294433594,
+              "subject_anchor_consistency": -0.004594796445359872,
+              "within_shot_motion": 6.766637185743685e-05
+            },
+            "modified": "videos/round13_long_multishot_principled_gate6/mod_attention_native_raw/mod_attention_native_raw-rank0-frying_egg_same_event-seed0_regular.mp4",
+            "modified_metrics": {
+              "anchor_centroid_consistency": 0.972290212408502,
+              "background_anchor_consistency": 0.9874914645313423,
+              "dynamic_degree": 26.648424670100212,
+              "inter_shot_composition_diversity": 0.15439793823457615,
+              "invariant_margin_mean": 0.004877065618832906,
+              "invariant_margin_min": -0.00278317928314209,
+              "motion_profile_agreement": 0.9981281115369741,
+              "num_shots": 6.0,
+              "palette_agreement": 0.8884748766707635,
+              "prompt_adherence_mean": 0.2495678017536799,
+              "prompt_adherence_min": 0.2179848849773407,
+              "subject_anchor_consistency": 0.9570889602856617,
+              "within_shot_motion": 0.0014578491585173954
+            },
+            "negative_control": false,
+            "stem": "baseline-rank0-frying_egg_same_event-seed0_regular",
+            "theme": "frying_egg_same_event"
+          },
+          {
+            "baseline": "videos/round13_long_multishot_principled_gate6/baseline/baseline-rank0-skateboarder_high_motion-seed0_regular.mp4",
+            "baseline_metrics": {
+              "anchor_centroid_consistency": 0.9328366778576929,
+              "background_anchor_consistency": 0.9785289592953444,
+              "dynamic_degree": 163.49028714497885,
+              "inter_shot_composition_diversity": 0.11961811268296363,
+              "invariant_margin_mean": 0.041595454017321266,
+              "invariant_margin_min": 0.03178763389587402,
+              "motion_profile_agreement": 0.9992145635681805,
+              "num_shots": 6.0,
+              "palette_agreement": 0.6777669804560188,
+              "prompt_adherence_mean": 0.2800304690996806,
+              "prompt_adherence_min": 0.255878210067749,
+              "subject_anchor_consistency": 0.8871443964200414,
+              "within_shot_motion": 0.003691359500711163
+            },
+            "delta": {
+              "anchor_centroid_consistency": -0.006653582142684744,
+              "background_anchor_consistency": -0.001783193593541288,
+              "dynamic_degree": 2.789644877115876,
+              "inter_shot_composition_diversity": 0.011087009771829082,
+              "invariant_margin_mean": 0.0003594954808553083,
+              "invariant_margin_min": 0.0,
+              "motion_profile_agreement": -0.0008604450978506595,
+              "palette_agreement": -0.06483473357875003,
+              "prompt_adherence_mean": -0.0035866275429725647,
+              "prompt_adherence_min": -0.006749466061592102,
+              "subject_anchor_consistency": -0.0115239706918282,
+              "within_shot_motion": 8.473025324443962e-05
+            },
+            "modified": "videos/round13_long_multishot_principled_gate6/mod_attention_native_raw/mod_attention_native_raw-rank0-skateboarder_high_motion-seed0_regular.mp4",
+            "modified_metrics": {
+              "anchor_centroid_consistency": 0.9261830957150081,
+              "background_anchor_consistency": 0.9767457657018032,
+              "dynamic_degree": 166.27993202209473,
+              "inter_shot_composition_diversity": 0.1307051224547927,
+              "invariant_margin_mean": 0.041954949498176575,
+              "invariant_margin_min": 0.03178763389587402,
+              "motion_profile_agreement": 0.9983541184703298,
+              "num_shots": 6.0,
+              "palette_agreement": 0.6129322468772688,
+              "prompt_adherence_mean": 0.27644384155670804,
+              "prompt_adherence_min": 0.24912874400615692,
+              "subject_anchor_consistency": 0.8756204257282132,
+              "within_shot_motion": 0.0037760897539556026
+            },
+            "negative_control": false,
+            "stem": "baseline-rank0-skateboarder_high_motion-seed0_regular",
+            "theme": "skateboarder_high_motion"
+          },
+          {
+            "baseline": "videos/round13_long_multishot_principled_gate6/baseline/baseline-rank0-sunlit_balcony_tour-seed0_regular.mp4",
+            "baseline_metrics": {
+              "anchor_centroid_consistency": 0.957336823533892,
+              "background_anchor_consistency": 0.9643044122902157,
+              "dynamic_degree": 45.083459893862404,
+              "inter_shot_composition_diversity": 0.11712136378330562,
+              "invariant_margin_mean": 0.023701322575410206,
+              "invariant_margin_min": 0.016017764806747437,
+              "motion_profile_agreement": 0.9991576727879142,
+              "num_shots": 6.0,
+              "palette_agreement": 0.7048237430108085,
+              "prompt_adherence_mean": 0.2439476971824964,
+              "prompt_adherence_min": 0.20674924552440643,
+              "subject_anchor_consistency": 0.9503692347775684,
+              "within_shot_motion": 0.0016204201383516192
+            },
+            "delta": {
+              "anchor_centroid_consistency": -0.004649700321172845,
+              "background_anchor_consistency": -0.004497255918534782,
+              "dynamic_degree": -3.790511647860207,
+              "inter_shot_composition_diversity": 0.01195444681391622,
+              "invariant_margin_mean": -5.936125914255547e-05,
+              "invariant_margin_min": -0.003339409828186035,
+              "motion_profile_agreement": -0.00023399884068997512,
+              "palette_agreement": -0.0012468419185835966,
+              "prompt_adherence_mean": -0.003139197826385498,
+              "prompt_adherence_min": -0.012838974595069885,
+              "subject_anchor_consistency": -0.004802144723810908,
+              "within_shot_motion": -9.291904279962182e-05
+            },
+            "modified": "videos/round13_long_multishot_principled_gate6/mod_attention_native_raw/mod_attention_native_raw-rank0-sunlit_balcony_tour-seed0_regular.mp4",
+            "modified_metrics": {
+              "anchor_centroid_consistency": 0.9526871232127192,
+              "background_anchor_consistency": 0.9598071563716809,
+              "dynamic_degree": 41.2929482460022,
+              "inter_shot_composition_diversity": 0.12907581059722184,
+              "invariant_margin_mean": 0.02364196131626765,
+              "invariant_margin_min": 0.012678354978561401,
+              "motion_profile_agreement": 0.9989236739472243,
+              "num_shots": 6.0,
+              "palette_agreement": 0.7035769010922249,
+              "prompt_adherence_mean": 0.2408084993561109,
+              "prompt_adherence_min": 0.19391027092933655,
+              "subject_anchor_consistency": 0.9455670900537575,
+              "within_shot_motion": 0.0015275010955519974
+            },
+            "negative_control": false,
+            "stem": "baseline-rank0-sunlit_balcony_tour-seed0_regular",
+            "theme": "sunlit_balcony_tour"
+          }
+        ],
+        "skipped_stems": []
+      },
+      "gate": {
+        "adherence_failures": [],
+        "adherence_ok": true,
+        "adherence_tolerance": 0.02,
+        "blocked_reason": "negative control indicates text override: ['baseline-rank0-frying_egg_closeup-seed0_regular']",
+        "consistency_ok": false,
+        "consistency_wins": 0,
+        "diversity_failures": [],
+        "diversity_ok": true,
+        "diversity_tolerance_relative": 0.1,
+        "invariant_failures": [
+          "baseline-rank0-frying_egg_closeup-seed0_regular",
+          "baseline-rank0-sunlit_balcony_tour-seed0_regular"
+        ],
+        "invariant_ok": false,
+        "invariant_tolerance": 0.0,
+        "is_null_result": true,
+        "metric": "anchor_centroid_consistency",
+        "min_consistency_wins": 2,
+        "modified_settings": {
+          "boundary_inject_anchors": 2,
+          "retrieval_key_mode": "attention_native",
+          "retrieval_value_mode": "raw",
+          "scene_memory_enabled": true,
+          "scene_score_bonus": 0.15
+        },
+        "motion_failures": [],
+        "motion_ok": true,
+        "motion_tolerance_relative": 0.2,
+        "negative_control_failures": [
+          "baseline-rank0-frying_egg_closeup-seed0_regular"
+        ],
+        "negative_control_ok": false,
+        "num_pairs": 4,
+        "passed": false,
+        "per_prompt": [
+          {
+            "adherence_baseline_mean": 0.30017708986997604,
+            "adherence_baseline_min": 0.2813876271247864,
+            "adherence_modified_mean": 0.29967670142650604,
+            "adherence_modified_min": 0.28290098905563354,
+            "adherence_ok": true,
+            "background_anchor_baseline": 0.988187012155663,
+            "background_anchor_modified": 0.9878343223987561,
+            "consistency_baseline": 0.9693489387084575,
+            "consistency_modified": 0.9709061292925385,
+            "consistency_win": true,
+            "diversity_baseline": 0.07460084691269497,
+            "diversity_modified": 0.07016684284550545,
+            "diversity_ok": true,
+            "dynamic_degree_baseline": 11.583613197008768,
+            "dynamic_degree_modified": 12.451434979836145,
+            "invariant_margin_baseline_mean": 0.001384340226650238,
+            "invariant_margin_baseline_min": -0.015305489301681519,
+            "invariant_margin_modified_mean": 0.0008616223931312561,
+            "invariant_margin_modified_min": -0.014659732580184937,
+            "invariant_ok": false,
+            "metric": "anchor_centroid_consistency",
+            "motion_ok": true,
+            "motion_profile_agreement_baseline": 0.9961504817913687,
+            "motion_profile_agreement_modified": 0.9951764812560363,
+            "motion_tolerance_relative": 0.2,
+            "negative_control": true,
+            "negative_control_ok": false,
+            "negative_control_reason": "consistency win without adherence loss is text-override evidence, not a pass",
+            "palette_agreement_baseline": 0.8185649058490072,
+            "palette_agreement_modified": 0.8191397118256817,
+            "stem": "baseline-rank0-frying_egg_closeup-seed0_regular",
+            "subject_anchor_baseline": 0.9505108652612522,
+            "subject_anchor_modified": 0.9539779361863208,
+            "theme": "frying_egg_closeup"
+          },
+          {
+            "adherence_baseline_mean": 0.24683312823375067,
+            "adherence_baseline_min": 0.21838709712028503,
+            "adherence_modified_mean": 0.2495678017536799,
+            "adherence_modified_min": 0.2179848849773407,
+            "adherence_ok": true,
+            "background_anchor_baseline": 0.9889121752795172,
+            "background_anchor_modified": 0.9874914645313423,
+            "consistency_baseline": 0.9752979660052694,
+            "consistency_modified": 0.972290212408502,
+            "consistency_win": false,
+            "diversity_baseline": 0.15691177167533432,
+            "diversity_modified": 0.15439793823457615,
+            "diversity_ok": true,
+            "dynamic_degree_baseline": 26.94659462571144,
+            "dynamic_degree_modified": 26.648424670100212,
+            "invariant_margin_baseline_mean": 0.0033766627311706543,
+            "invariant_margin_baseline_min": -0.004200845956802368,
+            "invariant_margin_modified_mean": 0.004877065618832906,
+            "invariant_margin_modified_min": -0.00278317928314209,
+            "invariant_ok": true,
+            "metric": "anchor_centroid_consistency",
+            "motion_ok": true,
+            "motion_profile_agreement_baseline": 0.9980991552747617,
+            "motion_profile_agreement_modified": 0.9981281115369741,
+            "motion_tolerance_relative": 0.2,
+            "negative_control": false,
+            "palette_agreement_baseline": 0.8812219694366098,
+            "palette_agreement_modified": 0.8884748766707635,
+            "stem": "baseline-rank0-frying_egg_same_event-seed0_regular",
+            "subject_anchor_baseline": 0.9616837567310216,
+            "subject_anchor_modified": 0.9570889602856617,
+            "theme": "frying_egg_same_event"
+          },
+          {
+            "adherence_baseline_mean": 0.2800304690996806,
+            "adherence_baseline_min": 0.255878210067749,
+            "adherence_modified_mean": 0.27644384155670804,
+            "adherence_modified_min": 0.24912874400615692,
+            "adherence_ok": true,
+            "background_anchor_baseline": 0.9785289592953444,
+            "background_anchor_modified": 0.9767457657018032,
+            "consistency_baseline": 0.9328366778576929,
+            "consistency_modified": 0.9261830957150081,
+            "consistency_win": false,
+            "diversity_baseline": 0.11961811268296363,
+            "diversity_modified": 0.1307051224547927,
+            "diversity_ok": true,
+            "dynamic_degree_baseline": 163.49028714497885,
+            "dynamic_degree_modified": 166.27993202209473,
+            "invariant_margin_baseline_mean": 0.041595454017321266,
+            "invariant_margin_baseline_min": 0.03178763389587402,
+            "invariant_margin_modified_mean": 0.041954949498176575,
+            "invariant_margin_modified_min": 0.03178763389587402,
+            "invariant_ok": true,
+            "metric": "anchor_centroid_consistency",
+            "motion_ok": true,
+            "motion_profile_agreement_baseline": 0.9992145635681805,
+            "motion_profile_agreement_modified": 0.9983541184703298,
+            "motion_tolerance_relative": 0.2,
+            "negative_control": false,
+            "palette_agreement_baseline": 0.6777669804560188,
+            "palette_agreement_modified": 0.6129322468772688,
+            "stem": "baseline-rank0-skateboarder_high_motion-seed0_regular",
+            "subject_anchor_baseline": 0.8871443964200414,
+            "subject_anchor_modified": 0.8756204257282132,
+            "theme": "skateboarder_high_motion"
+          },
+          {
+            "adherence_baseline_mean": 0.2439476971824964,
+            "adherence_baseline_min": 0.20674924552440643,
+            "adherence_modified_mean": 0.2408084993561109,
+            "adherence_modified_min": 0.19391027092933655,
+            "adherence_ok": true,
+            "background_anchor_baseline": 0.9643044122902157,
+            "background_anchor_modified": 0.9598071563716809,
+            "consistency_baseline": 0.957336823533892,
+            "consistency_modified": 0.9526871232127192,
+            "consistency_win": false,
+            "diversity_baseline": 0.11712136378330562,
+            "diversity_modified": 0.12907581059722184,
+            "diversity_ok": true,
+            "dynamic_degree_baseline": 45.083459893862404,
+            "dynamic_degree_modified": 41.2929482460022,
+            "invariant_margin_baseline_mean": 0.023701322575410206,
+            "invariant_margin_baseline_min": 0.016017764806747437,
+            "invariant_margin_modified_mean": 0.02364196131626765,
+            "invariant_margin_modified_min": 0.012678354978561401,
+            "invariant_ok": false,
+            "metric": "anchor_centroid_consistency",
+            "motion_ok": true,
+            "motion_profile_agreement_baseline": 0.9991576727879142,
+            "motion_profile_agreement_modified": 0.9989236739472243,
+            "motion_tolerance_relative": 0.2,
+            "negative_control": false,
+            "palette_agreement_baseline": 0.7048237430108085,
+            "palette_agreement_modified": 0.7035769010922249,
+            "stem": "baseline-rank0-sunlit_balcony_tour-seed0_regular",
+            "subject_anchor_baseline": 0.9503692347775684,
+            "subject_anchor_modified": 0.9455670900537575,
+            "theme": "sunlit_balcony_tour"
+          }
+        ],
+        "prompt_lint": {
+          "frying_egg_closeup": {
+            "floor": 0.12,
+            "matrix": [
+              [
+                1.0000000000000004,
+                0.7967780563670533,
+                0.7936850718311237,
+                0.7995481974516578
+              ],
+              [
+                0.7967780563670533,
+                1.0000000000000004,
+                0.859868433781727,
+                0.9085869850164807
+              ],
+              [
+                0.7936850718311237,
+                0.859868433781727,
+                0.9999999999999998,
+                0.8407968535523334
+              ],
+              [
+                0.7995481974516578,
+                0.9085869850164807,
+                0.8407968535523334,
+                1.0
+              ]
+            ],
+            "min_pairwise": 0.7936850718311237,
+            "negative_control": true,
+            "passed": true
+          },
+          "frying_egg_same_event": {
+            "floor": 0.12,
+            "matrix": [
+              [
+                1.0,
+                0.7548020035078462,
+                0.77643021035236,
+                0.8396255089728915,
+                0.8173126901610719,
+                0.8759036423177611
+              ],
+              [
+                0.7548020035078462,
+                0.9999999999999996,
+                0.7841997157195555,
+                0.817574896522361,
+                0.8708318556315339,
+                0.8057840060931445
+              ],
+              [
+                0.77643021035236,
+                0.7841997157195555,
+                1.0000000000000002,
+                0.7917920174931408,
+                0.8427206621430487,
+                0.8297757296569575
+              ],
+              [
+                0.8396255089728915,
+                0.817574896522361,
+                0.7917920174931408,
+                0.9999999999999998,
+                0.8769486588599936,
+                0.8728386859958155
+              ],
+              [
+                0.8173126901610719,
+                0.8708318556315339,
+                0.8427206621430487,
+                0.8769486588599936,
+                0.9999999999999998,
+                0.8947935292165838
+              ],
+              [
+                0.8759036423177611,
+                0.8057840060931445,
+                0.8297757296569575,
+                0.8728386859958155,
+                0.8947935292165838,
+                1.0000000000000002
+              ]
+            ],
+            "min_pairwise": 0.7548020035078462,
+            "negative_control": false,
+            "passed": true
+          },
+          "skateboarder_high_motion": {
+            "floor": 0.12,
+            "matrix": [
+              [
+                1.0,
+                0.8741254533277274,
+                0.8806125983720546,
+                0.8563131717635452,
+                0.8113810099628482,
+                0.880976064575675
+              ],
+              [
+                0.8741254533277274,
+                0.9999999999999999,
+                0.8575199757116649,
+                0.8792743713216671,
+                0.7960083992336959,
+                0.8384281713730786
+              ],
+              [
+                0.8806125983720546,
+                0.8575199757116649,
+                1.0000000000000009,
+                0.805521449838106,
+                0.7872898453389755,
+                0.8414707562237052
+              ],
+              [
+                0.8563131717635452,
+                0.8792743713216671,
+                0.805521449838106,
+                1.0,
+                0.8526413007899729,
+                0.8437340789564267
+              ],
+              [
+                0.8113810099628482,
+                0.7960083992336959,
+                0.7872898453389755,
+                0.8526413007899729,
+                0.9999999999999992,
+                0.7911365684969349
+              ],
+              [
+                0.880976064575675,
+                0.8384281713730786,
+                0.8414707562237052,
+                0.8437340789564267,
+                0.7911365684969349,
+                1.0000000000000002
+              ]
+            ],
+            "min_pairwise": 0.7872898453389755,
+            "negative_control": false,
+            "passed": true
+          },
+          "sunlit_balcony_tour": {
+            "floor": 0.12,
+            "matrix": [
+              [
+                1.0,
+                0.8092134689099204,
+                0.8018266158014808,
+                0.8238195173320971,
+                0.8299318508848914,
+                0.8595771207903924
+              ],
+              [
+                0.8092134689099204,
+                0.9999999999999996,
+                0.8015636147599536,
+                0.8245541305527571,
+                0.8020696761357073,
+                0.8398186113716863
+              ],
+              [
+                0.8018266158014808,
+                0.8015636147599536,
+                1.0000000000000004,
+                0.8839326064649152,
+                0.7840743404581407,
+                0.8453080045284787
+              ],
+              [
+                0.8238195173320971,
+                0.8245541305527571,
+                0.8839326064649152,
+                0.9999999999999996,
+                0.7830060894699169,
+                0.8531539130661885
+              ],
+              [
+                0.8299318508848914,
+                0.8020696761357073,
+                0.7840743404581407,
+                0.7830060894699169,
+                0.9999999999999999,
+                0.793062209219814
+              ],
+              [
+                0.8595771207903924,
+                0.8398186113716863,
+                0.8453080045284787,
+                0.8531539130661885,
+                0.793062209219814,
+                1.0000000000000007
+              ]
+            ],
+            "min_pairwise": 0.7830060894699169,
+            "negative_control": false,
+            "passed": true
+          }
+        },
+        "require_adherence": true,
+        "require_invariant": true,
+        "scorable_ok": true,
+        "scorer_coverage": {
+          "adherence_clip": {
+            "loaded": true,
+            "requested": true
+          },
+          "background_clip": {
+            "loaded": true,
+            "requested": true
+          },
+          "dynamic_degree": {
+            "loaded": true,
+            "requested": "raft"
+          },
+          "prompt_lint_clip_text": {
+            "loaded": true,
+            "requested": true
+          },
+          "subject_dino": {
+            "loaded": true,
+            "requested": true
+          }
+        },
+        "unscorable": []
+      },
+      "key": "attention_native",
+      "mean_aggregate_delta": -0.004770345353541668,
+      "num_scenes": 3,
+      "passed": false,
+      "scene_wins": 0,
+      "settings": {
+        "boundary_inject_anchors": 2,
+        "retrieval_key_mode": "attention_native",
+        "retrieval_value_mode": "raw",
+        "scene_memory_enabled": true,
+        "scene_score_bonus": 0.15
+      },
+      "value": "raw"
+    },
+    {
+      "comparison": {
+        "baseline_summary": {
+          "anchor_centroid_consistency": {
+            "count": 4,
+            "mean": 0.9587051015263279,
+            "std": 0.016276224603242496
+          },
+          "background_anchor_consistency": {
+            "count": 4,
+            "mean": 0.979983139755185,
+            "std": 0.009936905120416976
+          },
+          "dynamic_degree": {
+            "count": 4,
+            "mean": 61.77598871539036,
+            "std": 59.909932975077936
+          },
+          "inter_shot_composition_diversity": {
+            "count": 4,
+            "mean": 0.11706302376357464,
+            "std": 0.029144000480348604
+          },
+          "invariant_margin_mean": {
+            "count": 4,
+            "mean": 0.017514444887638092,
+            "std": 0.01641820344088756
+          },
+          "invariant_margin_min": {
+            "count": 4,
+            "mean": 0.007074765861034393,
+            "std": 0.01815708071018876
+          },
+          "motion_profile_agreement": {
+            "count": 4,
+            "mean": 0.9981554683555562,
+            "std": 0.001239882925852567
+          },
+          "num_shots": {
+            "count": 4,
+            "mean": 5.5,
+            "std": 0.8660254037844386
+          },
+          "palette_agreement": {
+            "count": 4,
+            "mean": 0.770594399688111,
+            "std": 0.08288898854921223
+          },
+          "prompt_adherence_mean": {
+            "count": 4,
+            "mean": 0.2677470960964759,
+            "std": 0.02348611924581703
+          },
+          "prompt_adherence_min": {
+            "count": 4,
+            "mean": 0.24060054495930672,
+            "std": 0.02973357050989471
+          },
+          "subject_anchor_consistency": {
+            "count": 4,
+            "mean": 0.9374270632974708,
+            "std": 0.029391407932776475
+          },
+          "within_shot_motion": {
+            "count": 4,
+            "mean": 0.002676084612176055,
+            "std": 0.0011787496544884831
+          }
+        },
+        "delta_summary": {
+          "anchor_centroid_consistency": {
+            "count": 4,
+            "mean": -0.0035208813540134887,
+            "std": 0.002796115717152491
+          },
+          "background_anchor_consistency": {
+            "count": 4,
+            "mean": -0.001856618577721264,
+            "std": 0.0020280441721534613
+          },
+          "dynamic_degree": {
+            "count": 4,
+            "mean": 0.3927353235582478,
+            "std": 2.6073730121488867
+          },
+          "inter_shot_composition_diversity": {
+            "count": 4,
+            "mean": 0.005482681266793549,
+            "std": 0.006488973928096289
+          },
+          "invariant_margin_mean": {
+            "count": 4,
+            "mean": 0.00011145385603110111,
+            "std": 0.000922702192839327
+          },
+          "invariant_margin_min": {
+            "count": 4,
+            "mean": 0.00016801059246063232,
+            "std": 0.0023866113816442477
+          },
+          "motion_profile_agreement": {
+            "count": 4,
+            "mean": -0.0006513014140429318,
+            "std": 0.0003792250193587612
+          },
+          "palette_agreement": {
+            "count": 4,
+            "mean": -0.010774708230040148,
+            "std": 0.033409595365219306
+          },
+          "prompt_adherence_mean": {
+            "count": 4,
+            "mean": -0.0013365770379702366,
+            "std": 0.002378162941885727
+          },
+          "prompt_adherence_min": {
+            "count": 4,
+            "mean": -0.004386227577924728,
+            "std": 0.005820800050697208
+          },
+          "subject_anchor_consistency": {
+            "count": 4,
+            "mean": -0.005185144130305797,
+            "std": 0.004844295144117191
+          },
+          "within_shot_motion": {
+            "count": 4,
+            "mean": -1.3461907049835129e-05,
+            "std": 8.459835087828187e-05
+          }
+        },
+        "modified_summary": {
+          "anchor_centroid_consistency": {
+            "count": 4,
+            "mean": 0.9551842201723144,
+            "std": 0.01865589302740736
+          },
+          "background_anchor_consistency": {
+            "count": 4,
+            "mean": 0.9781265211774638,
+            "std": 0.0119481746291473
+          },
+          "dynamic_degree": {
+            "count": 4,
+            "mean": 62.16872403894862,
+            "std": 61.485713618641824
+          },
+          "inter_shot_composition_diversity": {
+            "count": 4,
+            "mean": 0.12254570503036818,
+            "std": 0.03225252555021898
+          },
+          "invariant_margin_mean": {
+            "count": 4,
+            "mean": 0.017625898743669193,
+            "std": 0.01689805739580971
+          },
+          "invariant_margin_min": {
+            "count": 4,
+            "mean": 0.007242776453495026,
+            "std": 0.017153486134650266
+          },
+          "motion_profile_agreement": {
+            "count": 4,
+            "mean": 0.9975041669415133,
+            "std": 0.0015108587124176701
+          },
+          "num_shots": {
+            "count": 4,
+            "mean": 5.5,
+            "std": 0.8660254037844386
+          },
+          "palette_agreement": {
+            "count": 4,
+            "mean": 0.7598196914580709,
+            "std": 0.11150937697473569
+          },
+          "prompt_adherence_mean": {
+            "count": 4,
+            "mean": 0.26641051905850566,
+            "std": 0.023238240829298373
+          },
+          "prompt_adherence_min": {
+            "count": 4,
+            "mean": 0.236214317381382,
+            "std": 0.033058299955494246
+          },
+          "subject_anchor_consistency": {
+            "count": 4,
+            "mean": 0.9322419191671651,
+            "std": 0.0333340737396731
+          },
+          "within_shot_motion": {
+            "count": 4,
+            "mean": 0.00266262270512622,
+            "std": 0.0011761202331667074
+          }
+        },
+        "num_pairs": 4,
+        "records": [
+          {
+            "baseline": "videos/round13_long_multishot_principled_gate6/baseline/baseline-rank0-frying_egg_closeup-seed0_regular.mp4",
+            "baseline_metrics": {
+              "anchor_centroid_consistency": 0.9693489387084575,
+              "background_anchor_consistency": 0.988187012155663,
+              "dynamic_degree": 11.583613197008768,
+              "inter_shot_composition_diversity": 0.07460084691269497,
+              "invariant_margin_mean": 0.001384340226650238,
+              "invariant_margin_min": -0.015305489301681519,
+              "motion_profile_agreement": 0.9961504817913687,
+              "num_shots": 4.0,
+              "palette_agreement": 0.8185649058490072,
+              "prompt_adherence_mean": 0.30017708986997604,
+              "prompt_adherence_min": 0.2813876271247864,
+              "subject_anchor_consistency": 0.9505108652612522,
+              "within_shot_motion": 0.00400237602298148
+            },
+            "delta": {
+              "anchor_centroid_consistency": 0.00047195419665357896,
+              "background_anchor_consistency": -0.0005225281598461029,
+              "dynamic_degree": 0.8289026121298484,
+              "inter_shot_composition_diversity": -0.003822781804149522,
+              "invariant_margin_mean": -0.0013949275016784668,
+              "invariant_margin_min": 0.000645756721496582,
+              "motion_profile_agreement": -0.0011632500472478213,
+              "palette_agreement": -0.0008470118181110875,
+              "prompt_adherence_mean": -0.000626102089881897,
+              "prompt_adherence_min": 0.001010507345199585,
+              "subject_anchor_consistency": 0.0014664365531531498,
+              "within_shot_motion": -0.00010232033673673868
+            },
+            "modified": "videos/round13_long_multishot_principled_gate6/mod_subject_identity_attention_mass/mod_subject_identity_attention_mass-rank0-frying_egg_closeup-seed0_regular.mp4",
+            "modified_metrics": {
+              "anchor_centroid_consistency": 0.9698208929051111,
+              "background_anchor_consistency": 0.9876644839958169,
+              "dynamic_degree": 12.412515809138617,
+              "inter_shot_composition_diversity": 0.07077806510854545,
+              "invariant_margin_mean": -1.058727502822876e-05,
+              "invariant_margin_min": -0.014659732580184937,
+              "motion_profile_agreement": 0.9949872317441208,
+              "num_shots": 4.0,
+              "palette_agreement": 0.8177178940308961,
+              "prompt_adherence_mean": 0.29955098778009415,
+              "prompt_adherence_min": 0.28239813446998596,
+              "subject_anchor_consistency": 0.9519773018144053,
+              "within_shot_motion": 0.003900055686244741
+            },
+            "negative_control": true,
+            "stem": "baseline-rank0-frying_egg_closeup-seed0_regular",
+            "theme": "frying_egg_closeup"
+          },
+          {
+            "baseline": "videos/round13_long_multishot_principled_gate6/baseline/baseline-rank0-frying_egg_same_event-seed0_regular.mp4",
+            "baseline_metrics": {
+              "anchor_centroid_consistency": 0.9752979660052694,
+              "background_anchor_consistency": 0.9889121752795172,
+              "dynamic_degree": 26.94659462571144,
+              "inter_shot_composition_diversity": 0.15691177167533432,
+              "invariant_margin_mean": 0.0033766627311706543,
+              "invariant_margin_min": -0.004200845956802368,
+              "motion_profile_agreement": 0.9980991552747617,
+              "num_shots": 6.0,
+              "palette_agreement": 0.8812219694366098,
+              "prompt_adherence_mean": 0.24683312823375067,
+              "prompt_adherence_min": 0.21838709712028503,
+              "subject_anchor_consistency": 0.9616837567310216,
+              "within_shot_motion": 0.0013901827866599585
+            },
+            "delta": {
+              "anchor_centroid_consistency": -0.0025116521578161244,
+              "background_anchor_consistency": 1.160190290461216e-05,
+              "dynamic_degree": 0.6874953061342239,
+              "inter_shot_composition_diversity": 0.002659592879248218,
+              "invariant_margin_mean": 0.0009038746356964111,
+              "invariant_margin_min": 0.0033656954765319824,
+              "motion_profile_agreement": -0.0003449089578961839,
+              "palette_agreement": 0.0248334860069519,
+              "prompt_adherence_mean": 0.0022447208563486643,
+              "prompt_adherence_min": 0.0010330229997634888,
+              "subject_anchor_consistency": -0.00503490621853675,
+              "within_shot_motion": 5.737891721461575e-05
+            },
+            "modified": "videos/round13_long_multishot_principled_gate6/mod_subject_identity_attention_mass/mod_subject_identity_attention_mass-rank0-frying_egg_same_event-seed0_regular.mp4",
+            "modified_metrics": {
+              "anchor_centroid_consistency": 0.9727863138474533,
+              "background_anchor_consistency": 0.9889237771824219,
+              "dynamic_degree": 27.634089931845665,
+              "inter_shot_composition_diversity": 0.15957136455458254,
+              "invariant_margin_mean": 0.004280537366867065,
+              "invariant_margin_min": -0.0008351504802703857,
+              "motion_profile_agreement": 0.9977542463168655,
+              "num_shots": 6.0,
+              "palette_agreement": 0.9060554554435617,
+              "prompt_adherence_mean": 0.24907784909009933,
+              "prompt_adherence_min": 0.21942012012004852,
+              "subject_anchor_consistency": 0.9566488505124848,
+              "within_shot_motion": 0.0014475617038745743
+            },
+            "negative_control": false,
+            "stem": "baseline-rank0-frying_egg_same_event-seed0_regular",
+            "theme": "frying_egg_same_event"
+          },
+          {
+            "baseline": "videos/round13_long_multishot_principled_gate6/baseline/baseline-rank0-skateboarder_high_motion-seed0_regular.mp4",
+            "baseline_metrics": {
+              "anchor_centroid_consistency": 0.9328366778576929,
+              "background_anchor_consistency": 0.9785289592953444,
+              "dynamic_degree": 163.49028714497885,
+              "inter_shot_composition_diversity": 0.11961811268296363,
+              "invariant_margin_mean": 0.041595454017321266,
+              "invariant_margin_min": 0.03178763389587402,
+              "motion_profile_agreement": 0.9992145635681805,
+              "num_shots": 6.0,
+              "palette_agreement": 0.6777669804560188,
+              "prompt_adherence_mean": 0.2800304690996806,
+              "prompt_adherence_min": 0.255878210067749,
+              "subject_anchor_consistency": 0.8871443964200414,
+              "within_shot_motion": 0.003691359500711163
+            },
+            "delta": {
+              "anchor_centroid_consistency": -0.006970978331092059,
+              "background_anchor_consistency": -0.0017178875214495237,
+              "dynamic_degree": 3.6775677998860488,
+              "inter_shot_composition_diversity": 0.011150233346078231,
+              "invariant_margin_mean": 0.0008244762818018642,
+              "invariant_margin_min": 0.0,
+              "motion_profile_agreement": -0.0008632867684700285,
+              "palette_agreement": -0.06564828334437323,
+              "prompt_adherence_mean": -0.0036855762203534814,
+              "prompt_adherence_min": -0.006749466061592102,
+              "subject_anchor_consistency": -0.012224069140734817,
+              "within_shot_motion": 8.372558901707317e-05
+            },
+            "modified": "videos/round13_long_multishot_principled_gate6/mod_subject_identity_attention_mass/mod_subject_identity_attention_mass-rank0-skateboarder_high_motion-seed0_regular.mp4",
+            "modified_metrics": {
+              "anchor_centroid_consistency": 0.9258656995266008,
+              "background_anchor_consistency": 0.9768110717738949,
+              "dynamic_degree": 167.1678549448649,
+              "inter_shot_composition_diversity": 0.13076834602904186,
+              "invariant_margin_mean": 0.04241993029912313,
+              "invariant_margin_min": 0.03178763389587402,
+              "motion_profile_agreement": 0.9983512767997105,
+              "num_shots": 6.0,
+              "palette_agreement": 0.6121186971116456,
+              "prompt_adherence_mean": 0.2763448928793271,
+              "prompt_adherence_min": 0.24912874400615692,
+              "subject_anchor_consistency": 0.8749203272793066,
+              "within_shot_motion": 0.003775085089728236
+            },
+            "negative_control": false,
+            "stem": "baseline-rank0-skateboarder_high_motion-seed0_regular",
+            "theme": "skateboarder_high_motion"
+          },
+          {
+            "baseline": "videos/round13_long_multishot_principled_gate6/baseline/baseline-rank0-sunlit_balcony_tour-seed0_regular.mp4",
+            "baseline_metrics": {
+              "anchor_centroid_consistency": 0.957336823533892,
+              "background_anchor_consistency": 0.9643044122902157,
+              "dynamic_degree": 45.083459893862404,
+              "inter_shot_composition_diversity": 0.11712136378330562,
+              "invariant_margin_mean": 0.023701322575410206,
+              "invariant_margin_min": 0.016017764806747437,
+              "motion_profile_agreement": 0.9991576727879142,
+              "num_shots": 6.0,
+              "palette_agreement": 0.7048237430108085,
+              "prompt_adherence_mean": 0.2439476971824964,
+              "prompt_adherence_min": 0.20674924552440643,
+              "subject_anchor_consistency": 0.9503692347775684,
+              "within_shot_motion": 0.0016204201383516192
+            },
+            "delta": {
+              "anchor_centroid_consistency": -0.00507284912379935,
+              "background_anchor_consistency": -0.005197660532494042,
+              "dynamic_degree": -3.62302442391713,
+              "inter_shot_composition_diversity": 0.011943680645997268,
+              "invariant_margin_mean": 0.00011239200830459595,
+              "invariant_margin_min": -0.003339409828186035,
+              "motion_profile_agreement": -0.00023375988255769364,
+              "palette_agreement": -0.0014370237646281758,
+              "prompt_adherence_mean": -0.003279350697994232,
+              "prompt_adherence_min": -0.012838974595069885,
+              "subject_anchor_consistency": -0.004948037715104769,
+              "within_shot_motion": -9.263179769429075e-05
+            },
+            "modified": "videos/round13_long_multishot_principled_gate6/mod_subject_identity_attention_mass/mod_subject_identity_attention_mass-rank0-sunlit_balcony_tour-seed0_regular.mp4",
+            "modified_metrics": {
+              "anchor_centroid_consistency": 0.9522639744100927,
+              "background_anchor_consistency": 0.9591067517577216,
+              "dynamic_degree": 41.460435469945274,
+              "inter_shot_composition_diversity": 0.1290650444293029,
+              "invariant_margin_mean": 0.023813714583714802,
+              "invariant_margin_min": 0.012678354978561401,
+              "motion_profile_agreement": 0.9989239129053565,
+              "num_shots": 6.0,
+              "palette_agreement": 0.7033867192461803,
+              "prompt_adherence_mean": 0.24066834648450217,
+              "prompt_adherence_min": 0.19391027092933655,
+              "subject_anchor_consistency": 0.9454211970624636,
+              "within_shot_motion": 0.0015277883406573285
+            },
+            "negative_control": false,
+            "stem": "baseline-rank0-sunlit_balcony_tour-seed0_regular",
+            "theme": "sunlit_balcony_tour"
+          }
+        ],
+        "skipped_stems": []
+      },
+      "gate": {
+        "adherence_failures": [],
+        "adherence_ok": true,
+        "adherence_tolerance": 0.02,
+        "blocked_reason": "negative control indicates text override: ['baseline-rank0-frying_egg_closeup-seed0_regular']",
+        "consistency_ok": false,
+        "consistency_wins": 0,
+        "diversity_failures": [],
+        "diversity_ok": true,
+        "diversity_tolerance_relative": 0.1,
+        "invariant_failures": [
+          "baseline-rank0-frying_egg_closeup-seed0_regular",
+          "baseline-rank0-sunlit_balcony_tour-seed0_regular"
+        ],
+        "invariant_ok": false,
+        "invariant_tolerance": 0.0,
+        "is_null_result": true,
+        "metric": "anchor_centroid_consistency",
+        "min_consistency_wins": 2,
+        "modified_settings": {
+          "boundary_inject_anchors": 2,
+          "retrieval_key_mode": "subject_identity",
+          "retrieval_value_mode": "attention_mass",
+          "scene_memory_enabled": true,
+          "scene_score_bonus": 0.15
+        },
+        "motion_failures": [],
+        "motion_ok": true,
+        "motion_tolerance_relative": 0.2,
+        "negative_control_failures": [
+          "baseline-rank0-frying_egg_closeup-seed0_regular"
+        ],
+        "negative_control_ok": false,
+        "num_pairs": 4,
+        "passed": false,
+        "per_prompt": [
+          {
+            "adherence_baseline_mean": 0.30017708986997604,
+            "adherence_baseline_min": 0.2813876271247864,
+            "adherence_modified_mean": 0.29955098778009415,
+            "adherence_modified_min": 0.28239813446998596,
+            "adherence_ok": true,
+            "background_anchor_baseline": 0.988187012155663,
+            "background_anchor_modified": 0.9876644839958169,
+            "consistency_baseline": 0.9693489387084575,
+            "consistency_modified": 0.9698208929051111,
+            "consistency_win": true,
+            "diversity_baseline": 0.07460084691269497,
+            "diversity_modified": 0.07077806510854545,
+            "diversity_ok": true,
+            "dynamic_degree_baseline": 11.583613197008768,
+            "dynamic_degree_modified": 12.412515809138617,
+            "invariant_margin_baseline_mean": 0.001384340226650238,
+            "invariant_margin_baseline_min": -0.015305489301681519,
+            "invariant_margin_modified_mean": -1.058727502822876e-05,
+            "invariant_margin_modified_min": -0.014659732580184937,
+            "invariant_ok": false,
+            "metric": "anchor_centroid_consistency",
+            "motion_ok": true,
+            "motion_profile_agreement_baseline": 0.9961504817913687,
+            "motion_profile_agreement_modified": 0.9949872317441208,
+            "motion_tolerance_relative": 0.2,
+            "negative_control": true,
+            "negative_control_ok": false,
+            "negative_control_reason": "consistency win without adherence loss is text-override evidence, not a pass",
+            "palette_agreement_baseline": 0.8185649058490072,
+            "palette_agreement_modified": 0.8177178940308961,
+            "stem": "baseline-rank0-frying_egg_closeup-seed0_regular",
+            "subject_anchor_baseline": 0.9505108652612522,
+            "subject_anchor_modified": 0.9519773018144053,
+            "theme": "frying_egg_closeup"
+          },
+          {
+            "adherence_baseline_mean": 0.24683312823375067,
+            "adherence_baseline_min": 0.21838709712028503,
+            "adherence_modified_mean": 0.24907784909009933,
+            "adherence_modified_min": 0.21942012012004852,
+            "adherence_ok": true,
+            "background_anchor_baseline": 0.9889121752795172,
+            "background_anchor_modified": 0.9889237771824219,
+            "consistency_baseline": 0.9752979660052694,
+            "consistency_modified": 0.9727863138474533,
+            "consistency_win": false,
+            "diversity_baseline": 0.15691177167533432,
+            "diversity_modified": 0.15957136455458254,
+            "diversity_ok": true,
+            "dynamic_degree_baseline": 26.94659462571144,
+            "dynamic_degree_modified": 27.634089931845665,
+            "invariant_margin_baseline_mean": 0.0033766627311706543,
+            "invariant_margin_baseline_min": -0.004200845956802368,
+            "invariant_margin_modified_mean": 0.004280537366867065,
+            "invariant_margin_modified_min": -0.0008351504802703857,
+            "invariant_ok": true,
+            "metric": "anchor_centroid_consistency",
+            "motion_ok": true,
+            "motion_profile_agreement_baseline": 0.9980991552747617,
+            "motion_profile_agreement_modified": 0.9977542463168655,
+            "motion_tolerance_relative": 0.2,
+            "negative_control": false,
+            "palette_agreement_baseline": 0.8812219694366098,
+            "palette_agreement_modified": 0.9060554554435617,
+            "stem": "baseline-rank0-frying_egg_same_event-seed0_regular",
+            "subject_anchor_baseline": 0.9616837567310216,
+            "subject_anchor_modified": 0.9566488505124848,
+            "theme": "frying_egg_same_event"
+          },
+          {
+            "adherence_baseline_mean": 0.2800304690996806,
+            "adherence_baseline_min": 0.255878210067749,
+            "adherence_modified_mean": 0.2763448928793271,
+            "adherence_modified_min": 0.24912874400615692,
+            "adherence_ok": true,
+            "background_anchor_baseline": 0.9785289592953444,
+            "background_anchor_modified": 0.9768110717738949,
+            "consistency_baseline": 0.9328366778576929,
+            "consistency_modified": 0.9258656995266008,
+            "consistency_win": false,
+            "diversity_baseline": 0.11961811268296363,
+            "diversity_modified": 0.13076834602904186,
+            "diversity_ok": true,
+            "dynamic_degree_baseline": 163.49028714497885,
+            "dynamic_degree_modified": 167.1678549448649,
+            "invariant_margin_baseline_mean": 0.041595454017321266,
+            "invariant_margin_baseline_min": 0.03178763389587402,
+            "invariant_margin_modified_mean": 0.04241993029912313,
+            "invariant_margin_modified_min": 0.03178763389587402,
+            "invariant_ok": true,
+            "metric": "anchor_centroid_consistency",
+            "motion_ok": true,
+            "motion_profile_agreement_baseline": 0.9992145635681805,
+            "motion_profile_agreement_modified": 0.9983512767997105,
+            "motion_tolerance_relative": 0.2,
+            "negative_control": false,
+            "palette_agreement_baseline": 0.6777669804560188,
+            "palette_agreement_modified": 0.6121186971116456,
+            "stem": "baseline-rank0-skateboarder_high_motion-seed0_regular",
+            "subject_anchor_baseline": 0.8871443964200414,
+            "subject_anchor_modified": 0.8749203272793066,
+            "theme": "skateboarder_high_motion"
+          },
+          {
+            "adherence_baseline_mean": 0.2439476971824964,
+            "adherence_baseline_min": 0.20674924552440643,
+            "adherence_modified_mean": 0.24066834648450217,
+            "adherence_modified_min": 0.19391027092933655,
+            "adherence_ok": true,
+            "background_anchor_baseline": 0.9643044122902157,
+            "background_anchor_modified": 0.9591067517577216,
+            "consistency_baseline": 0.957336823533892,
+            "consistency_modified": 0.9522639744100927,
+            "consistency_win": false,
+            "diversity_baseline": 0.11712136378330562,
+            "diversity_modified": 0.1290650444293029,
+            "diversity_ok": true,
+            "dynamic_degree_baseline": 45.083459893862404,
+            "dynamic_degree_modified": 41.460435469945274,
+            "invariant_margin_baseline_mean": 0.023701322575410206,
+            "invariant_margin_baseline_min": 0.016017764806747437,
+            "invariant_margin_modified_mean": 0.023813714583714802,
+            "invariant_margin_modified_min": 0.012678354978561401,
+            "invariant_ok": false,
+            "metric": "anchor_centroid_consistency",
+            "motion_ok": true,
+            "motion_profile_agreement_baseline": 0.9991576727879142,
+            "motion_profile_agreement_modified": 0.9989239129053565,
+            "motion_tolerance_relative": 0.2,
+            "negative_control": false,
+            "palette_agreement_baseline": 0.7048237430108085,
+            "palette_agreement_modified": 0.7033867192461803,
+            "stem": "baseline-rank0-sunlit_balcony_tour-seed0_regular",
+            "subject_anchor_baseline": 0.9503692347775684,
+            "subject_anchor_modified": 0.9454211970624636,
+            "theme": "sunlit_balcony_tour"
+          }
+        ],
+        "prompt_lint": {
+          "frying_egg_closeup": {
+            "floor": 0.12,
+            "matrix": [
+              [
+                1.0000000000000004,
+                0.7967780563670533,
+                0.7936850718311237,
+                0.7995481974516578
+              ],
+              [
+                0.7967780563670533,
+                1.0000000000000004,
+                0.859868433781727,
+                0.9085869850164807
+              ],
+              [
+                0.7936850718311237,
+                0.859868433781727,
+                0.9999999999999998,
+                0.8407968535523334
+              ],
+              [
+                0.7995481974516578,
+                0.9085869850164807,
+                0.8407968535523334,
+                1.0
+              ]
+            ],
+            "min_pairwise": 0.7936850718311237,
+            "negative_control": true,
+            "passed": true
+          },
+          "frying_egg_same_event": {
+            "floor": 0.12,
+            "matrix": [
+              [
+                1.0,
+                0.7548020035078462,
+                0.77643021035236,
+                0.8396255089728915,
+                0.8173126901610719,
+                0.8759036423177611
+              ],
+              [
+                0.7548020035078462,
+                0.9999999999999996,
+                0.7841997157195555,
+                0.817574896522361,
+                0.8708318556315339,
+                0.8057840060931445
+              ],
+              [
+                0.77643021035236,
+                0.7841997157195555,
+                1.0000000000000002,
+                0.7917920174931408,
+                0.8427206621430487,
+                0.8297757296569575
+              ],
+              [
+                0.8396255089728915,
+                0.817574896522361,
+                0.7917920174931408,
+                0.9999999999999998,
+                0.8769486588599936,
+                0.8728386859958155
+              ],
+              [
+                0.8173126901610719,
+                0.8708318556315339,
+                0.8427206621430487,
+                0.8769486588599936,
+                0.9999999999999998,
+                0.8947935292165838
+              ],
+              [
+                0.8759036423177611,
+                0.8057840060931445,
+                0.8297757296569575,
+                0.8728386859958155,
+                0.8947935292165838,
+                1.0000000000000002
+              ]
+            ],
+            "min_pairwise": 0.7548020035078462,
+            "negative_control": false,
+            "passed": true
+          },
+          "skateboarder_high_motion": {
+            "floor": 0.12,
+            "matrix": [
+              [
+                1.0,
+                0.8741254533277274,
+                0.8806125983720546,
+                0.8563131717635452,
+                0.8113810099628482,
+                0.880976064575675
+              ],
+              [
+                0.8741254533277274,
+                0.9999999999999999,
+                0.8575199757116649,
+                0.8792743713216671,
+                0.7960083992336959,
+                0.8384281713730786
+              ],
+              [
+                0.8806125983720546,
+                0.8575199757116649,
+                1.0000000000000009,
+                0.805521449838106,
+                0.7872898453389755,
+                0.8414707562237052
+              ],
+              [
+                0.8563131717635452,
+                0.8792743713216671,
+                0.805521449838106,
+                1.0,
+                0.8526413007899729,
+                0.8437340789564267
+              ],
+              [
+                0.8113810099628482,
+                0.7960083992336959,
+                0.7872898453389755,
+                0.8526413007899729,
+                0.9999999999999992,
+                0.7911365684969349
+              ],
+              [
+                0.880976064575675,
+                0.8384281713730786,
+                0.8414707562237052,
+                0.8437340789564267,
+                0.7911365684969349,
+                1.0000000000000002
+              ]
+            ],
+            "min_pairwise": 0.7872898453389755,
+            "negative_control": false,
+            "passed": true
+          },
+          "sunlit_balcony_tour": {
+            "floor": 0.12,
+            "matrix": [
+              [
+                1.0,
+                0.8092134689099204,
+                0.8018266158014808,
+                0.8238195173320971,
+                0.8299318508848914,
+                0.8595771207903924
+              ],
+              [
+                0.8092134689099204,
+                0.9999999999999996,
+                0.8015636147599536,
+                0.8245541305527571,
+                0.8020696761357073,
+                0.8398186113716863
+              ],
+              [
+                0.8018266158014808,
+                0.8015636147599536,
+                1.0000000000000004,
+                0.8839326064649152,
+                0.7840743404581407,
+                0.8453080045284787
+              ],
+              [
+                0.8238195173320971,
+                0.8245541305527571,
+                0.8839326064649152,
+                0.9999999999999996,
+                0.7830060894699169,
+                0.8531539130661885
+              ],
+              [
+                0.8299318508848914,
+                0.8020696761357073,
+                0.7840743404581407,
+                0.7830060894699169,
+                0.9999999999999999,
+                0.793062209219814
+              ],
+              [
+                0.8595771207903924,
+                0.8398186113716863,
+                0.8453080045284787,
+                0.8531539130661885,
+                0.793062209219814,
+                1.0000000000000007
+              ]
+            ],
+            "min_pairwise": 0.7830060894699169,
+            "negative_control": false,
+            "passed": true
+          }
+        },
+        "require_adherence": true,
+        "require_invariant": true,
+        "scorable_ok": true,
+        "scorer_coverage": {
+          "adherence_clip": {
+            "loaded": true,
+            "requested": true
+          },
+          "background_clip": {
+            "loaded": true,
+            "requested": true
+          },
+          "dynamic_degree": {
+            "loaded": true,
+            "requested": "raft"
+          },
+          "prompt_lint_clip_text": {
+            "loaded": true,
+            "requested": true
+          },
+          "subject_dino": {
+            "loaded": true,
+            "requested": true
+          }
+        },
+        "unscorable": []
+      },
+      "key": "subject_identity",
+      "mean_aggregate_delta": -0.004851826537569178,
+      "num_scenes": 3,
+      "passed": false,
+      "scene_wins": 0,
+      "settings": {
+        "boundary_inject_anchors": 2,
+        "retrieval_key_mode": "subject_identity",
+        "retrieval_value_mode": "attention_mass",
+        "scene_memory_enabled": true,
+        "scene_score_bonus": 0.15
+      },
+      "value": "attention_mass"
+    }
+  ],
+  "guards": {
+    "adherence_tolerance": 0.02,
+    "diversity_tolerance_relative": 0.1,
+    "invariant_tolerance": 0.0,
+    "motion_tolerance_relative": 0.2,
+    "require_adherence": true
+  },
+  "is_null_result": true,
+  "is_prefilter": false,
+  "render_attempted": true,
+  "lint_passing_main_scenes": [
+    "frying_egg_same_event",
+    "sunlit_balcony_tour",
+    "skateboarder_high_motion"
+  ],
+  "negative_controls": [
+    "frying_egg_closeup"
+  ],
+  "prompt_lint": {
+    "frying_egg_closeup": {
+      "floor": 0.12,
+      "matrix": [
+        [
+          1.0000000000000004,
+          0.7967780563670533,
+          0.7936850718311237,
+          0.7995481974516578
+        ],
+        [
+          0.7967780563670533,
+          1.0000000000000004,
+          0.859868433781727,
+          0.9085869850164807
+        ],
+        [
+          0.7936850718311237,
+          0.859868433781727,
+          0.9999999999999998,
+          0.8407968535523334
+        ],
+        [
+          0.7995481974516578,
+          0.9085869850164807,
+          0.8407968535523334,
+          1.0
+        ]
+      ],
+      "min_pairwise": 0.7936850718311237,
+      "negative_control": true,
+      "passed": true
+    },
+    "frying_egg_same_event": {
+      "floor": 0.12,
+      "matrix": [
+        [
+          1.0,
+          0.7548020035078462,
+          0.77643021035236,
+          0.8396255089728915,
+          0.8173126901610719,
+          0.8759036423177611
+        ],
+        [
+          0.7548020035078462,
+          0.9999999999999996,
+          0.7841997157195555,
+          0.817574896522361,
+          0.8708318556315339,
+          0.8057840060931445
+        ],
+        [
+          0.77643021035236,
+          0.7841997157195555,
+          1.0000000000000002,
+          0.7917920174931408,
+          0.8427206621430487,
+          0.8297757296569575
+        ],
+        [
+          0.8396255089728915,
+          0.817574896522361,
+          0.7917920174931408,
+          0.9999999999999998,
+          0.8769486588599936,
+          0.8728386859958155
+        ],
+        [
+          0.8173126901610719,
+          0.8708318556315339,
+          0.8427206621430487,
+          0.8769486588599936,
+          0.9999999999999998,
+          0.8947935292165838
+        ],
+        [
+          0.8759036423177611,
+          0.8057840060931445,
+          0.8297757296569575,
+          0.8728386859958155,
+          0.8947935292165838,
+          1.0000000000000002
+        ]
+      ],
+      "min_pairwise": 0.7548020035078462,
+      "negative_control": false,
+      "passed": true
+    },
+    "skateboarder_high_motion": {
+      "floor": 0.12,
+      "matrix": [
+        [
+          1.0,
+          0.8741254533277274,
+          0.8806125983720546,
+          0.8563131717635452,
+          0.8113810099628482,
+          0.880976064575675
+        ],
+        [
+          0.8741254533277274,
+          0.9999999999999999,
+          0.8575199757116649,
+          0.8792743713216671,
+          0.7960083992336959,
+          0.8384281713730786
+        ],
+        [
+          0.8806125983720546,
+          0.8575199757116649,
+          1.0000000000000009,
+          0.805521449838106,
+          0.7872898453389755,
+          0.8414707562237052
+        ],
+        [
+          0.8563131717635452,
+          0.8792743713216671,
+          0.805521449838106,
+          1.0,
+          0.8526413007899729,
+          0.8437340789564267
+        ],
+        [
+          0.8113810099628482,
+          0.7960083992336959,
+          0.7872898453389755,
+          0.8526413007899729,
+          0.9999999999999992,
+          0.7911365684969349
+        ],
+        [
+          0.880976064575675,
+          0.8384281713730786,
+          0.8414707562237052,
+          0.8437340789564267,
+          0.7911365684969349,
+          1.0000000000000002
+        ]
+      ],
+      "min_pairwise": 0.7872898453389755,
+      "negative_control": false,
+      "passed": true
+    },
+    "sunlit_balcony_tour": {
+      "floor": 0.12,
+      "matrix": [
+        [
+          1.0,
+          0.8092134689099204,
+          0.8018266158014808,
+          0.8238195173320971,
+          0.8299318508848914,
+          0.8595771207903924
+        ],
+        [
+          0.8092134689099204,
+          0.9999999999999996,
+          0.8015636147599536,
+          0.8245541305527571,
+          0.8020696761357073,
+          0.8398186113716863
+        ],
+        [
+          0.8018266158014808,
+          0.8015636147599536,
+          1.0000000000000004,
+          0.8839326064649152,
+          0.7840743404581407,
+          0.8453080045284787
+        ],
+        [
+          0.8238195173320971,
+          0.8245541305527571,
+          0.8839326064649152,
+          0.9999999999999996,
+          0.7830060894699169,
+          0.8531539130661885
+        ],
+        [
+          0.8299318508848914,
+          0.8020696761357073,
+          0.7840743404581407,
+          0.7830060894699169,
+          0.9999999999999999,
+          0.793062209219814
+        ],
+        [
+          0.8595771207903924,
+          0.8398186113716863,
+          0.8453080045284787,
+          0.8531539130661885,
+          0.793062209219814,
+          1.0000000000000007
+        ]
+      ],
+      "min_pairwise": 0.7830060894699169,
+      "negative_control": false,
+      "passed": true
+    }
+  },
+  "ranking": [
+    {
+      "key": "attention_native",
+      "mean_aggregate_delta": -0.004770345353541668,
+      "passed": false,
+      "scene_wins": "0/3",
+      "value": "raw"
+    },
+    {
+      "key": "subject_identity",
+      "mean_aggregate_delta": -0.004851826537569178,
+      "passed": false,
+      "scene_wins": "0/3",
+      "value": "raw"
+    },
+    {
+      "key": "subject_identity",
+      "mean_aggregate_delta": -0.004851826537569178,
+      "passed": false,
+      "scene_wins": "0/3",
+      "value": "attention_mass"
+    }
+  ],
+  "scorer_coverage": {
+    "adherence_clip": {
+      "loaded": true,
+      "requested": true
+    },
+    "background_clip": {
+      "loaded": true,
+      "requested": true
+    },
+    "dynamic_degree": {
+      "loaded": true,
+      "requested": "raft"
+    },
+    "prompt_lint_clip_text": {
+      "loaded": true,
+      "requested": true
+    },
+    "subject_dino": {
+      "loaded": true,
+      "requested": true
+    }
+  },
+  "selector": "long_multishot shot-anchor centroid gate",
+  "winner": null
+}

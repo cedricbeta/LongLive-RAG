@@ -69,6 +69,7 @@ https://openaccess.thecvf.com/content/ICCV2025/papers/Li_VMem_Consistent_Interac
 ## Gate Command
 
 ```bash
+CUDA_VISIBLE_DEVICES=3 PYTORCH_ALLOC_CONF=expandable_segments:True \
 python scripts/run_kv_rag_ablation.py \
   --config_path configs/inference_kv_rag_long_multishot.yaml \
   --mode long_multishot \
@@ -80,10 +81,13 @@ python scripts/run_kv_rag_ablation.py \
   --adherence_tolerance 0.02 \
   --generator_ckpt checkpoints/longlive2_5b/longlive2_merged_generator.pt \
   --no_lora_adapter \
-  --metrics_json docs/multiview_gate_results/round13_long_multishot_principled_blocked.json \
-  --output_root videos/round13_long_multishot_principled
+  --metrics_json docs/multiview_gate_results/round13_long_multishot_principled_gate.json \
+  --output_root videos/round13_long_multishot_principled_gate6
 ```
 
 Current recorded result:
-`docs/multiview_gate_results/round13_long_multishot_principled_blocked.json`.
-It is a fail-closed scorer-prerequisite blocked null, not a rendered method win.
+`docs/multiview_gate_results/round13_long_multishot_principled_gate.json`.
+It is a rendered honest null: all scorer backbones loaded, three non-control
+scenes passed prompt lint, the negative control was included, and no finalist
+won the centroid aggregate on any non-control scene (`0/3` wins for all
+finalists).

@@ -111,6 +111,7 @@ https://openaccess.thecvf.com/content/ICCV2025/papers/Li_VMem_Consistent_Interac
 ## Gate Command
 
 ```bash
+CUDA_VISIBLE_DEVICES=3 PYTORCH_ALLOC_CONF=expandable_segments:True \
 python scripts/run_kv_rag_ablation.py \
   --config_path configs/inference_kv_rag_long_multishot.yaml \
   --mode long_multishot \
@@ -122,11 +123,18 @@ python scripts/run_kv_rag_ablation.py \
   --adherence_tolerance 0.02 \
   --generator_ckpt checkpoints/longlive2_5b/longlive2_merged_generator.pt \
   --no_lora_adapter \
-  --metrics_json docs/multiview_gate_results/round13_long_multishot_principled_blocked.json \
-  --output_root videos/round13_long_multishot_principled
+  --metrics_json docs/multiview_gate_results/round13_long_multishot_principled_gate.json \
+  --output_root videos/round13_long_multishot_principled_gate6
 ```
 
 PASS requires a finalist to win `anchor_centroid_consistency` on at least
 `ceil(N/2)` lint-passing non-control scenes, zero guard failures, and a sane
 negative control. A committed JSON null with a named blocker or next hypothesis
 is a valid result; JSON-less claims are not.
+
+Current result:
+`docs/multiview_gate_results/round13_long_multishot_principled_gate.json` is a
+rendered honest null. All required scorers loaded, the three non-control scenes
+passed prompt lint, and every finalist scored `0/3` centroid wins. Motion,
+diversity, and adherence guards passed; the invariant probe and inverted
+negative control prevented a false pass.

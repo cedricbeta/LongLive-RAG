@@ -31,9 +31,10 @@ inference:
   guidance_scale: 1.0
   multi_shot_sink: true
   multi_shot_rope_offset: 8
-  scene_cut_prefix: "The camera cuts to another shot of the same continuous cooking event. "
-  streaming_vae: false
+  scene_cut_prefix: "The camera cuts to another shot of the same continuous event. "
+  streaming_vae: true
   async_vae: false
+  vae_decode_chunk_size: 1
   vae_type: wan
   vae_device: "cuda:0"
 

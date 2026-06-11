@@ -1040,6 +1040,7 @@ def _run_long_multishot_finalists(args, output_root: Path) -> None:
         "winner": ({"key": winner["key"], "value": winner["value"]} if winner else None),
         "is_null_result": winner is None,
         "blocked_reason": blocked_reason,
+        "render_attempted": True,
         "prompt_lint": chosen_lint,
         "lint_passing_main_scenes": lint_passing_main,
         "negative_controls": negative_controls,

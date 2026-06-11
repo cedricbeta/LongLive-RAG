@@ -66,21 +66,36 @@ no camera-pose stream.
 
 Guarded result:
 
-- JSON: `docs/multiview_gate_results/round13_long_multishot_principled_blocked.json`.
-- Winner: `null`.
-- `render_attempted=false`.
-- Reason: fail-closed before rendering because the mandatory metric stack is
-  unavailable in the current Python environment: `subject_dino`,
-  `background_clip`, `adherence_clip`, `prompt_lint_clip_text`, and RAFT
-  `dynamic_degree` did not load. Prompt text lint therefore could not certify
-  the three non-control scenes.
-- Conclusion: this is not a method win and not a rendered method null; it is a
-  scorer-prerequisite blocked null with committed JSON. No selector claim is
-  made.
+- JSON: `docs/multiview_gate_results/round13_long_multishot_principled_gate.json`.
+- Render: 5B, one seed, baseline vs `subject_identity+raw`,
+  `attention_native+raw`, and `subject_identity+attention_mass`.
+- Scenes: three lint-passing non-control scenes
+  (`frying_egg_same_event`, `sunlit_balcony_tour`, `skateboarder_high_motion`)
+  plus the inverted negative control (`frying_egg_closeup`).
+- Scorer coverage: DINO subject, CLIP background/adherence/text lint, and
+  torchvision RAFT `dynamic_degree` all loaded.
+- Winner: `null`; `render_attempted=true`; `is_null_result=true`.
+- Ranking: `attention_native+raw` mean centroid delta `-0.00477`, `0/3` wins;
+  `subject_identity+raw` mean centroid delta `-0.00485`, `0/3` wins;
+  `subject_identity+attention_mass` mean centroid delta `-0.00485`, `0/3` wins.
+- Guards: motion, diversity, and adherence passed for all finalists. The
+  invariant probe failed on `sunlit_balcony_tour`, and the negative control
+  correctly flagged consistency gain without adherence loss as text-override
+  evidence rather than a pass.
+- Conclusion: rendered honest null. Under the current trustworthy gate, neither
+  the heuristic continuity candidate nor the two principled key/value candidates
+  improve cross-shot centroid consistency in a long multi-shot video. The
+  negative control is sane and prevents a false pass.
 
-Reproduce the blocked gate:
+The earlier pre-render blocked artifact is retained as superseded environment
+history at
+`docs/multiview_gate_results/round13_long_multishot_principled_blocked.json`
+(`render_attempted=false` because the scorer stack was unavailable then).
+
+Reproduce the rendered gate:
 
 ```bash
+CUDA_VISIBLE_DEVICES=3 PYTORCH_ALLOC_CONF=expandable_segments:True \
 python scripts/run_kv_rag_ablation.py \
   --config_path configs/inference_kv_rag_long_multishot.yaml \
   --mode long_multishot \
@@ -92,16 +107,15 @@ python scripts/run_kv_rag_ablation.py \
   --adherence_tolerance 0.02 \
   --generator_ckpt checkpoints/longlive2_5b/longlive2_merged_generator.pt \
   --no_lora_adapter \
-  --metrics_json docs/multiview_gate_results/round13_long_multishot_principled_blocked.json \
-  --output_root videos/round13_long_multishot_principled
+  --metrics_json docs/multiview_gate_results/round13_long_multishot_principled_gate.json \
+  --output_root videos/round13_long_multishot_principled_gate6
 ```
 
-Named next hypothesis: after repairing the metric environment with a real
-`torchvision` package exposing `torchvision.transforms` and
-`torchvision.models.optical_flow`, plus a loadable CLIP backend, run the same
-command unchanged. The first scientific hypothesis to test is whether
-`attention_native+raw` preserves the Round 5 consistency gain while reducing the
-motion-regression failure caused by heuristic subject anchoring.
+Named next hypothesis: current boundary scene-memory injection appears more
+likely to create invariant/text-override risk than useful cross-shot centroid
+gain. The next test should keep the AC-5 key/value set fixed and vary only the
+memory-injection policy (for example lower `boundary_inject_anchors` or
+`scene_score_bonus`) before adding any new retrieval representation.
 
 ## Implemented representations
 

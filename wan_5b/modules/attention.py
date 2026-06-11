@@ -14,13 +14,13 @@ except Exception:
 try:
     import flash_attn_interface
     FLASH_ATTN_3_AVAILABLE = True
-except ModuleNotFoundError:
+except Exception:
     FLASH_ATTN_3_AVAILABLE = False
 
 try:
     import flash_attn
     FLASH_ATTN_2_AVAILABLE = True
-except ModuleNotFoundError:
+except Exception:
     FLASH_ATTN_2_AVAILABLE = False
 
 # TE 2.13 ships a `DotProductAttention` Module whose cuDNN-backed
@@ -237,8 +237,7 @@ def flash_attention(
         if isinstance(out, (tuple, list)):
             out = out[0]
         x = out.unflatten(0, (b, lq))
-    else:
-        assert FLASH_ATTN_2_AVAILABLE
+    elif FLASH_ATTN_2_AVAILABLE:
         x = flash_attn.flash_attn_varlen_func(
             q=q,
             k=k,
@@ -252,6 +251,17 @@ def flash_attention(
             causal=causal,
             window_size=window_size,
             deterministic=deterministic).unflatten(0, (b, lq))
+    else:
+        # Direct callers (notably cross-attention) use flash_attention() rather
+        # than the wrapper below, so an ABI-broken flash-attn install must still
+        # fall back instead of asserting at runtime.
+        q4 = q.unflatten(0, (b, lq)).transpose(1, 2)
+        k4 = k.unflatten(0, (b, lk)).transpose(1, 2)
+        v4 = v.unflatten(0, (b, lk)).transpose(1, 2)
+        x = torch.nn.functional.scaled_dot_product_attention(
+            q4, k4, v4, attn_mask=None, is_causal=causal,
+            dropout_p=dropout_p, scale=softmax_scale,
+        ).transpose(1, 2).contiguous()
 
     # output
     return x.type(out_dtype)
