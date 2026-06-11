@@ -124,6 +124,7 @@ class MultiTextConcatDataset(Dataset):
         scene_cut_prefix: str = DEFAULT_SCENE_CUT_PREFIX,
         caption_field: str = "caption",
         global_caption_separator: str = "\n\nShot-specific description:\n",
+        ignore_global_json: bool = False,
         deterministic: bool = False,
     ):
         self.num_blocks = num_blocks
@@ -131,6 +132,7 @@ class MultiTextConcatDataset(Dataset):
         self.scene_cut_prefix = scene_cut_prefix
         self.caption_field = caption_field
         self.global_caption_separator = global_caption_separator
+        self.ignore_global_json = bool(ignore_global_json)
         self.deterministic = deterministic
 
         path = Path(data_path)
@@ -178,7 +180,7 @@ class MultiTextConcatDataset(Dataset):
     def _get_dir_item(self, idx):
         folder = self._folders[idx % len(self._folders)]
         raw_captions = self._load_captions_from_folder(folder)
-        global_caption = self._load_global_caption_from_folder(folder)
+        global_caption = "" if self.ignore_global_json else self._load_global_caption_from_folder(folder)
         raw_captions = self._apply_global_caption(raw_captions, global_caption)
         if not raw_captions:
             raw_captions = [""]

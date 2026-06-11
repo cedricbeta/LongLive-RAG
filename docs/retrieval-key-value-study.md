@@ -8,9 +8,10 @@ offline metric (the authoritative selector, enforced by the AC-7 gate).
 **Prior cross-shot context, not the current cross-video answer:** an earlier
 cross-shot protocol selected **`pooled` key + `raw` value** as its winner because
 it gave the largest cross-shot consistency gain in that older setup. That result
-is retained below only as history. **Current-plan conclusion:** see **Round 5:
-corrected content-match conclusion (supersedes Round 1 Gate B)** below. The
-Round 1 Gate B `semantic+raw` leading-key claim is superseded history.
+is retained below only as history. **Current long-video conclusion:** see
+**Round 14: scene-memory mechanism sweep** below. The Round 1 Gate B
+`semantic+raw` leading-key claim is superseded history; Round 5 remains the
+corrected cross-video answer.
 
 ## Why the key matters here
 
@@ -19,6 +20,97 @@ frame. The retrieval **key** must therefore be *viewpoint-invariant* (match the
 same scene across camera angles) while the **value** stays faithful enough to
 condition generation. The two are decoupled (`AC-3.1`) so a viewpoint-robust key
 can index a faithful raw-K/V payload.
+
+## Round 14: scene-memory mechanism sweep
+
+Date: 2026-06-11.
+
+Purpose: after the Round 13 principled key/value gate returned an honest null,
+the follow-up fixed the key/value family and varied only the smallest orthogonal
+scene-memory injection mechanisms: shot-0 versus rolling completed-shot memory,
+boundary versus every-chunk injection, and a single 8-anchor dose increase.
+This tests whether the null is a memory-placement/dose problem rather than a
+retrieval-representation problem.
+
+Setup:
+
+- JSON: `docs/multiview_gate_results/round14_scene_memory_mechanism_sweep.json`.
+- Render: 5B, seed 0 for arms, baseline seeds `0,1,2` to estimate per-scene
+  noise.
+- Selector: `long_multishot scene-memory mechanism sweep`.
+- Data: existing prompt folders only, using
+  `example/long_multishot_prompts:example/multiview_prompts`; sparse
+  long-multishot mode ignores `global.json` and uses numbered shot captions.
+- Main scenes admitted by lint/diversity:
+  `african_savanna`, `brown_bear_river`, `sunlit_balcony_tour`,
+  `skateboarder_high_motion`.
+- Negative control: `shimmering_puzzle_surface`.
+- Scorer coverage: DINO subject, CLIP background/adherence/text lint, and
+  torchvision RAFT `dynamic_degree` all loaded.
+- No silent caps: all selected scenes rendered for baseline seeds and all five
+  arms.
+
+Arms and ranking:
+
+| rank | arm | mechanism | mean delta | wins |
+|---:|---|---|---:|---:|
+| 1 | `B_rolling_boundary` | rolling completed-shot memory + boundary pulse | -0.002154 | 0/4 |
+| 2 | `D_rolling_every_chunk_anchors8` | rolling memory + every-chunk pulse + 8 anchors | -0.003688 | 0/4 |
+| 3 | `C_rolling_every_chunk` | rolling memory + every-chunk pulse | -0.003893 | 0/4 |
+| 4 | `A_incumbent_shot0_boundary` | shot-0 seed + boundary pulse | -0.004024 | 0/4 |
+| 5 | `E_shot0_every_chunk` | shot-0 seed + every-chunk pulse | -0.004097 | 0/4 |
+
+Guarded result:
+
+- Winner: `null`; `render_attempted=true`; `is_null_result=true`.
+- Motion, diversity, adherence, and negative-control sanity passed for all
+  arms.
+- Full gate did not pass because no arm cleared the 2-sigma consistency noise
+  floor on any of the four main scenes, and the invariant guard remained false
+  for the legacy/multiview-derived scene set.
+- Raw positive deltas existed only as sub-noise effects: max main-scene delta was
+  `+0.003803` on `sunlit_balcony_tour` for the 8-anchor every-chunk arm, below
+  that scene's `0.026644` noise threshold.
+- Negative control stayed sane: every arm had a negative consistency delta on
+  `shimmering_puzzle_surface`, so there was no text-override "pass" to reject.
+- Attention diagnostics moved as intended: mean persistent attention mass rose
+  from about `0.0069` for shot-0 arms to `0.0130` for rolling-boundary, `0.0167`
+  for rolling every-chunk, and `0.0181` for the 8-anchor dose. Higher received
+  memory attention did not produce a noise-cleared consistency gain.
+
+Current conclusion: honest null. Under the trusted long-multishot gate, changing
+the injection schedule/dose for `subject_identity+raw` scene memory does not
+improve cross-shot centroid consistency. The best mechanism is the least
+intrusive rolling-boundary arm, but it still wins `0/4` scenes.
+
+Named next hypothesis: the limiting factor is not injected-memory dose; it is
+write/read admission quality. A next gate should keep the winning-lowest-dose
+schedule (`rolling_boundary`) and test whether attention-native retrieval or
+attention-mass value admission can suppress stale cross-shot memory on a fully
+authored long-multishot prompt set with invariant captions for every admitted
+scene.
+
+Reproduce:
+
+```bash
+CUDA_VISIBLE_DEVICES=3 PYTORCH_ALLOC_CONF=expandable_segments:True \
+python scripts/run_kv_rag_ablation.py \
+  --config_path configs/inference_kv_rag_long_multishot.yaml \
+  --mode long_multishot \
+  --mechanism_sweep \
+  --prompts_dir example/long_multishot_prompts:example/multiview_prompts \
+  --prompt_subset african_savanna,brown_bear_river,sunlit_balcony_tour,skateboarder_high_motion,shimmering_puzzle_surface \
+  --baseline_seeds 0,1,2 \
+  --admission_diversity_floor 0.03 \
+  --noise_sigma_multiplier 2.0 \
+  --motion_tolerance 0.2 \
+  --diversity_tolerance 0.1 \
+  --adherence_tolerance 0.02 \
+  --generator_ckpt checkpoints/longlive2_5b/longlive2_merged_generator.pt \
+  --no_lora_adapter \
+  --metrics_json docs/multiview_gate_results/round14_scene_memory_mechanism_sweep.json \
+  --output_root videos/round14_scene_memory_mechanism_sweep
+```
 
 ## Round 13 pivot: long_multishot principled gate
 

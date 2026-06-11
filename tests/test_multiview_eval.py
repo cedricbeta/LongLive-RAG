@@ -40,6 +40,7 @@ from evaluation.video_consistency import (
     evaluate_cross_perspective_gate,
     pair_cross_perspective_dirs,
     prompt_adherence_for_video,
+    shot_anchor_centroid_consistency,
     shot_ranges,
 )
 
@@ -146,6 +147,17 @@ class TestAdherenceReduction(unittest.TestCase):
         frames = np.zeros((4, 4, 4, 3), dtype=np.uint8)
         out = prompt_adherence_for_video(frames, [(0, 4)], [""], lambda f, c: 1.0)
         self.assertTrue(np.isnan(out["prompt_adherence_mean"]))
+
+
+class TestAnchorMetrics(unittest.TestCase):
+    def test_centroid_metric_reports_to_shot0_readout(self):
+        emb = np.asarray([[1.0, 0.0], [0.8, 0.6], [0.6, 0.8]], dtype=np.float64)
+        out = shot_anchor_centroid_consistency(emb, emb)
+
+        self.assertIn("anchor_centroid_consistency", out)
+        self.assertIn("anchor_to_shot0_consistency", out)
+        self.assertLess(out["anchor_to_shot0_consistency"], 1.0)
+        self.assertGreater(out["anchor_to_shot0_consistency"], 0.0)
 
 
 def _record(stem, b_cons, m_cons, b_adh=None, m_adh=None):

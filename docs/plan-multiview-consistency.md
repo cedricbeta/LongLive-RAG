@@ -68,6 +68,30 @@ https://openaccess.thecvf.com/content/ICCV2025/papers/Li_VMem_Consistent_Interac
 
 ## Gate Command
 
+Current mechanism-sweep gate:
+
+```bash
+CUDA_VISIBLE_DEVICES=3 PYTORCH_ALLOC_CONF=expandable_segments:True \
+python scripts/run_kv_rag_ablation.py \
+  --config_path configs/inference_kv_rag_long_multishot.yaml \
+  --mode long_multishot \
+  --mechanism_sweep \
+  --prompts_dir example/long_multishot_prompts:example/multiview_prompts \
+  --prompt_subset african_savanna,brown_bear_river,sunlit_balcony_tour,skateboarder_high_motion,shimmering_puzzle_surface \
+  --baseline_seeds 0,1,2 \
+  --admission_diversity_floor 0.03 \
+  --noise_sigma_multiplier 2.0 \
+  --motion_tolerance 0.2 \
+  --diversity_tolerance 0.1 \
+  --adherence_tolerance 0.02 \
+  --generator_ckpt checkpoints/longlive2_5b/longlive2_merged_generator.pt \
+  --no_lora_adapter \
+  --metrics_json docs/multiview_gate_results/round14_scene_memory_mechanism_sweep.json \
+  --output_root videos/round14_scene_memory_mechanism_sweep
+```
+
+Round 13 principled key/value gate:
+
 ```bash
 CUDA_VISIBLE_DEVICES=3 PYTORCH_ALLOC_CONF=expandable_segments:True \
 python scripts/run_kv_rag_ablation.py \
@@ -86,8 +110,9 @@ python scripts/run_kv_rag_ablation.py \
 ```
 
 Current recorded result:
-`docs/multiview_gate_results/round13_long_multishot_principled_gate.json`.
-It is a rendered honest null: all scorer backbones loaded, three non-control
-scenes passed prompt lint, the negative control was included, and no finalist
-won the centroid aggregate on any non-control scene (`0/3` wins for all
-finalists).
+`docs/multiview_gate_results/round14_scene_memory_mechanism_sweep.json`.
+It is a rendered honest null: all scorer backbones loaded, four non-control
+scenes passed prompt lint and diversity admission, the negative control was
+sanity-checked, and no mechanism arm cleared the 2-sigma centroid noise floor on
+any non-control scene (`0/4` wins for all arms). Best arm:
+`B_rolling_boundary`, mean delta `-0.002154`.

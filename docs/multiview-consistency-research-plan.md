@@ -110,6 +110,30 @@ https://openaccess.thecvf.com/content/ICCV2025/papers/Li_VMem_Consistent_Interac
 
 ## Gate Command
 
+Current mechanism-sweep command:
+
+```bash
+CUDA_VISIBLE_DEVICES=3 PYTORCH_ALLOC_CONF=expandable_segments:True \
+python scripts/run_kv_rag_ablation.py \
+  --config_path configs/inference_kv_rag_long_multishot.yaml \
+  --mode long_multishot \
+  --mechanism_sweep \
+  --prompts_dir example/long_multishot_prompts:example/multiview_prompts \
+  --prompt_subset african_savanna,brown_bear_river,sunlit_balcony_tour,skateboarder_high_motion,shimmering_puzzle_surface \
+  --baseline_seeds 0,1,2 \
+  --admission_diversity_floor 0.03 \
+  --noise_sigma_multiplier 2.0 \
+  --motion_tolerance 0.2 \
+  --diversity_tolerance 0.1 \
+  --adherence_tolerance 0.02 \
+  --generator_ckpt checkpoints/longlive2_5b/longlive2_merged_generator.pt \
+  --no_lora_adapter \
+  --metrics_json docs/multiview_gate_results/round14_scene_memory_mechanism_sweep.json \
+  --output_root videos/round14_scene_memory_mechanism_sweep
+```
+
+Original Round 13 principled key/value command:
+
 ```bash
 CUDA_VISIBLE_DEVICES=3 PYTORCH_ALLOC_CONF=expandable_segments:True \
 python scripts/run_kv_rag_ablation.py \
@@ -133,8 +157,10 @@ negative control. A committed JSON null with a named blocker or next hypothesis
 is a valid result; JSON-less claims are not.
 
 Current result:
-`docs/multiview_gate_results/round13_long_multishot_principled_gate.json` is a
-rendered honest null. All required scorers loaded, the three non-control scenes
-passed prompt lint, and every finalist scored `0/3` centroid wins. Motion,
-diversity, and adherence guards passed; the invariant probe and inverted
-negative control prevented a false pass.
+`docs/multiview_gate_results/round14_scene_memory_mechanism_sweep.json` is a
+rendered honest null. Four non-control scenes passed prompt lint and diversity
+admission, the negative control was sanity-checked, and every mechanism arm
+scored `0/4` noise-floor centroid wins. Motion, diversity, adherence, and
+negative-control sanity passed; no arm cleared the consistency noise floor, and
+the invariant guard remained false for the legacy/multiview-derived scene set.
+The best arm was `B_rolling_boundary` with mean delta `-0.002154`.

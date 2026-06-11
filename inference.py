@@ -33,6 +33,7 @@ if not hasattr(_tv_io, "read_video"):
     _tv_io.read_video = _shim_read_video
 
 import argparse
+import json
 import re
 import torch
 from omegaconf import OmegaConf
@@ -509,6 +510,10 @@ num_blocks = config.num_output_frames // nfpb
 data_path = config.data_path
 chunks_per_shot = getattr(config, 'chunks_per_shot', 0)
 scene_cut_prefix = getattr(config, 'scene_cut_prefix', "The scene transitions. ")
+sparse_long_multishot = section_get(
+    config, "inference", "sparse_long_multishot",
+    getattr(config, "sparse_long_multishot", False),
+)
 # Cross-perspective protocol: one video per prompt/perspective (scenes contiguous
 # so KV-RAG scene memory can persist across a scene's perspectives). Flag-gated;
 # default off reproduces the concatenated multi-shot behavior.
@@ -525,6 +530,7 @@ else:
         num_blocks=num_blocks,
         chunks_per_shot=chunks_per_shot,
         scene_cut_prefix=scene_cut_prefix,
+        ignore_global_json=bool(sparse_long_multishot),
         deterministic=True,
     )
 collate_fn = eval_collate_fn
@@ -699,6 +705,14 @@ for i, batch_data in tqdm(enumerate(dataloader), disable=(local_rank != 0)):
                 prompt_txt_path,
                 is_main_process=(rank == 0),
             )
+            if getattr(pipeline, "kv_rag_enabled", False):
+                diag_path = os.path.join(config.output_folder, f'{base_name}_kv_rag_diag.json')
+                try:
+                    with open(diag_path, "w", encoding="utf-8") as f:
+                        json.dump(pipeline.kv_rag_diagnostics(), f, indent=2, sort_keys=True)
+                except Exception as exc:
+                    if rank == 0:
+                        print(f"Warning: failed to save KV-RAG diagnostics to {diag_path}: {exc}")
 
     if config.inference_iter != -1 and i >= config.inference_iter:
         break

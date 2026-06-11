@@ -187,6 +187,17 @@ class KVRAGConfig:
     # of the content match, re-RoPE'd through the normal retrieval-injection
     # path. 0 = off. Requires scene_memory_enabled.
     boundary_inject_anchors: int = 0
+    # When true, every completed shot contributes clean-recache anchors to the
+    # persistent scene partition. When false, only the initial shot seeds it.
+    scene_memory_rolling: bool = False
+    # "boundary" preserves the incumbent shot-cut pulse. "every_chunk" pulses
+    # persistent entries during every denoise chunk, exposing dose/structure
+    # without changing the retrieval representation.
+    scene_memory_injection_schedule: str = "boundary"
+    # Structured diagnostic: per shot/layer post-softmax attention mass received
+    # by injected persistent entries during denoise. Disabled by default.
+    attention_diagnostic: bool = False
+    attention_diag_max_query_rows: int = 16
     # --- decoupled retrieval key/value representations ---
     # How an entry is INDEXED: the lookup signal matched against the query.
     #   "pooled"        -> mean-pooled (orderless) summary [baseline]
@@ -269,6 +280,14 @@ class KVRAGConfig:
             scene_memory_max_entries=max(1, _as_int(cfg.get("scene_memory_max_entries", 8), 8)),
             scene_score_bonus=float(cfg.get("scene_score_bonus", 0.0) or 0.0),
             boundary_inject_anchors=max(0, _as_int(cfg.get("boundary_inject_anchors", 0), 0)),
+            scene_memory_rolling=_as_bool(cfg.get("scene_memory_rolling", False), False),
+            scene_memory_injection_schedule=str(
+                cfg.get("scene_memory_injection_schedule", "boundary")
+            ).lower().replace("-", "_"),
+            attention_diagnostic=_as_bool(cfg.get("attention_diagnostic", False), False),
+            attention_diag_max_query_rows=max(
+                1, _as_int(cfg.get("attention_diag_max_query_rows", 16), 16)
+            ),
             retrieval_key_mode=str(cfg.get("retrieval_key_mode", "pooled")).lower(),
             retrieval_key_centroids=max(1, _as_int(cfg.get("retrieval_key_centroids", 4), 4)),
             retrieval_key_top_m=max(1, _as_int(cfg.get("retrieval_key_top_m", 8), 8)),
@@ -295,6 +314,9 @@ class KVRAGConfig:
             f"scene_memory_max_entries={self.scene_memory_max_entries}, "
             f"scene_score_bonus={self.scene_score_bonus}, "
             f"boundary_inject_anchors={self.boundary_inject_anchors}, "
+            f"scene_memory_rolling={self.scene_memory_rolling}, "
+            f"scene_memory_injection_schedule={self.scene_memory_injection_schedule}, "
+            f"attention_diagnostic={self.attention_diagnostic}, "
             f"retrieval_key_mode={self.retrieval_key_mode}, "
             f"retrieval_key_centroids={self.retrieval_key_centroids}, "
             f"retrieval_key_top_m={self.retrieval_key_top_m}, "
@@ -358,6 +380,12 @@ class KVRAGMemory:
         # new perspective's window only by numeric coincidence across DIFFERENT
         # videos, not a real double-count. Set by _reset_kv_rag_keep_scene.
         self._scene_cross_clock = False
+        self._runtime_context = {
+            "chunk_index": None,
+            "shot_index": None,
+            "phase": None,
+        }
+        self.attention_mass_by_shot_layer: dict[str, dict[str, dict[str, float | int]]] = {}
         self.stats = {
             "stored_entries": 0,
             "stored_scene_entries": 0,
@@ -369,6 +397,8 @@ class KVRAGMemory:
             # tokens (sum over the rag columns, averaged over heads/query/batch).
             "rag_attention_mass": 0.0,
             "rag_mass_calls": 0,
+            "persistent_rag_attention_mass": 0.0,
+            "persistent_rag_mass_calls": 0,
         }
         self._warnings: set[str] = set()
         self._store_dtype = _dtype_from_name(config.store_dtype)
@@ -404,6 +434,17 @@ class KVRAGMemory:
                 "KV-RAG boundary_inject_anchors > 0 requires scene_memory_enabled=true; "
                 "there is no persistent partition to inject from otherwise"
             )
+        if config.scene_memory_injection_schedule not in {"boundary", "every_chunk"}:
+            raise ValueError(
+                "KV-RAG scene_memory_injection_schedule must be 'boundary' or "
+                f"'every_chunk', got {config.scene_memory_injection_schedule!r}"
+            )
+        if (config.scene_memory_rolling or config.scene_memory_injection_schedule == "every_chunk") \
+                and not config.scene_memory_enabled:
+            raise ValueError(
+                "KV-RAG scene_memory_rolling/every_chunk schedule requires "
+                "scene_memory_enabled=true."
+            )
 
     @property
     def enabled(self) -> bool:
@@ -428,6 +469,20 @@ class KVRAGMemory:
         persistent scene anchors are re-injected at the perspective change.
         """
         self._boundary_inject = bool(active) and self.config.boundary_inject_anchors > 0
+
+    def set_runtime_context(
+        self,
+        *,
+        chunk_index: int | None = None,
+        shot_index: int | None = None,
+        phase: str | None = None,
+    ) -> None:
+        """Record lightweight inference context for diagnostics."""
+        self._runtime_context = {
+            "chunk_index": chunk_index,
+            "shot_index": shot_index,
+            "phase": phase,
+        }
 
     def mark_scene_cross_clock(self) -> None:
         """Flag that the scene partition now spans a per-video token-clock restart.
@@ -479,7 +534,7 @@ class KVRAGMemory:
 
     @property
     def diag_enabled(self) -> bool:
-        return self.config.verbose
+        return self.config.attention_diagnostic
 
     @property
     def diag_layer(self) -> int:
@@ -496,6 +551,8 @@ class KVRAGMemory:
         self._boundary_inject = False
         self._context_key = None
         self._scene_cross_clock = False
+        self._runtime_context = {"chunk_index": None, "shot_index": None, "phase": None}
+        self.attention_mass_by_shot_layer.clear()
         for key in self.stats:
             self.stats[key] = 0 if isinstance(self.stats[key], int) else 0.0
         self._warnings.clear()
@@ -508,6 +565,38 @@ class KVRAGMemory:
         composition/framing memory is cleared like the legacy reset.
         """
         self.entries_by_layer.clear()
+
+    def export_diagnostics(self) -> dict[str, object]:
+        """JSON-serializable diagnostic summary for gate sidecars."""
+        stats = dict(self.stats)
+        mass_calls = int(stats.get("rag_mass_calls", 0) or 0)
+        persistent_calls = int(stats.get("persistent_rag_mass_calls", 0) or 0)
+        stats["rag_attention_mass_mean"] = (
+            float(stats.get("rag_attention_mass", 0.0)) / mass_calls if mass_calls else 0.0
+        )
+        stats["persistent_rag_attention_mass_mean"] = (
+            float(stats.get("persistent_rag_attention_mass", 0.0)) / persistent_calls
+            if persistent_calls else 0.0
+        )
+        by_shot: dict[str, dict[str, dict[str, float | int]]] = {}
+        for shot, layers in sorted(self.attention_mass_by_shot_layer.items()):
+            by_shot[shot] = {}
+            for layer, rec in sorted(layers.items(), key=lambda kv: int(kv[0])):
+                calls = int(rec.get("calls", 0) or 0)
+                mass_sum = float(rec.get("mass_sum", 0.0) or 0.0)
+                by_shot[shot][layer] = {
+                    "mean_mass": mass_sum / calls if calls else 0.0,
+                    "calls": calls,
+                    "mass_sum": mass_sum,
+                    "persistent_tokens_mean": (
+                        float(rec.get("persistent_tokens_sum", 0.0) or 0.0) / calls
+                        if calls else 0.0
+                    ),
+                }
+        return {
+            "stats": stats,
+            "attention_mass_by_shot_layer": by_shot,
+        }
 
     def warn_once(self, key: str, message: str) -> None:
         if key in self._warnings:
@@ -1283,6 +1372,78 @@ class KVRAGMemory:
                 mass = weights[..., :rag_tokens].sum(dim=-1).mean()
                 self.stats["rag_attention_mass"] += float(mass.item())
                 self.stats["rag_mass_calls"] += 1
+        except Exception:
+            pass
+
+    def record_injected_attention_mass(
+        self,
+        query: torch.Tensor,
+        window_k: torch.Tensor,
+        selected_entries: list[KVRAGEntry],
+        *,
+        layer: int,
+    ) -> None:
+        """Record denoise attention mass on injected PERSISTENT entries.
+
+        ``window_k`` must be the actual attention key matrix after injected
+        entries were prepended. ``selected_entries`` is the retrieval order used
+        to build that prefix, so persistent token columns can be isolated even
+        when forced scene entries and content-matched transient entries are mixed.
+        """
+        if not self.config.attention_diagnostic:
+            return
+        phase = self._runtime_context.get("phase")
+        if phase is not None and "denoise" not in str(phase):
+            return
+        try:
+            persistent_spans: list[tuple[int, int]] = []
+            cursor = 0
+            for entry in selected_entries:
+                n = int(entry.num_tokens)
+                if n <= 0:
+                    continue
+                if entry.persistent:
+                    persistent_spans.append((cursor, cursor + n))
+                cursor += n
+            if not persistent_spans or cursor <= 0 or window_k.shape[1] <= cursor:
+                return
+            with torch.no_grad():
+                lq = query.shape[1]
+                max_rows = int(self.config.attention_diag_max_query_rows)
+                if lq > max_rows:
+                    rows = torch.linspace(
+                        0, lq - 1, steps=max_rows, device=query.device
+                    ).round().to(torch.long)
+                    q = query.index_select(1, rows).float()
+                else:
+                    q = query.float()
+                k = window_k.float()
+                scale = 1.0 / math.sqrt(max(1, q.shape[-1]))
+                logits = torch.einsum("blhd,bmhd->bhlm", q, k) * scale
+                weights = torch.softmax(logits, dim=-1)
+                mass = None
+                persistent_tokens = 0
+                for start, end in persistent_spans:
+                    persistent_tokens += end - start
+                    part = weights[..., start:end].sum(dim=-1)
+                    mass = part if mass is None else mass + part
+                if mass is None:
+                    return
+                mean_mass = float(mass.mean().item())
+            self.stats["persistent_rag_attention_mass"] += mean_mass
+            self.stats["persistent_rag_mass_calls"] += 1
+            shot_key = str(self._runtime_context.get("shot_index"))
+            layer_key = str(int(layer))
+            layers = self.attention_mass_by_shot_layer.setdefault(shot_key, {})
+            rec = layers.setdefault(
+                layer_key,
+                {"mass_sum": 0.0, "calls": 0, "persistent_tokens_sum": 0.0},
+            )
+            rec["mass_sum"] = float(rec.get("mass_sum", 0.0)) + mean_mass
+            rec["calls"] = int(rec.get("calls", 0)) + 1
+            rec["persistent_tokens_sum"] = (
+                float(rec.get("persistent_tokens_sum", 0.0)) + float(persistent_tokens)
+            )
         except Exception:
             pass
 

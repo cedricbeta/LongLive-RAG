@@ -360,6 +360,21 @@ def _centroid_cosine(features: np.ndarray) -> float:
     return float(np.mean(feats @ centroid))
 
 
+def _to_first_cosine(features: np.ndarray) -> float:
+    """Mean cosine of shots 1..N to shot 0 after per-shot normalization."""
+    feats = np.asarray(features, dtype=np.float64)
+    if feats.ndim != 2 or feats.shape[0] < 2:
+        return float("nan")
+    norms = np.linalg.norm(feats, axis=1, keepdims=True)
+    feats = feats / np.clip(norms, 1e-8, None)
+    first = feats[0]
+    n = np.linalg.norm(first)
+    if n <= 1e-12:
+        return float("nan")
+    first = first / n
+    return float(np.mean(feats[1:] @ first))
+
+
 def _shot_sample(frames: np.ndarray, start: int, end: int, count: int = 3) -> np.ndarray:
     """Evenly sample representative frames from one shot range."""
     if end <= start:
@@ -376,12 +391,21 @@ def shot_anchor_centroid_consistency(
     """Cross-shot centroid score from per-shot DINO subject + CLIP background anchors."""
     subject = _centroid_cosine(subject_embeddings)
     background = _centroid_cosine(background_embeddings)
+    subject_to_first = _to_first_cosine(subject_embeddings)
+    background_to_first = _to_first_cosine(background_embeddings)
     vals = [v for v in (subject, background) if not np.isnan(v)]
+    to_first_vals = [
+        v for v in (subject_to_first, background_to_first) if not np.isnan(v)
+    ]
     aggregate = float(np.mean(vals)) if len(vals) == 2 else float("nan")
+    to_first = float(np.mean(to_first_vals)) if len(to_first_vals) == 2 else float("nan")
     return {
         "subject_anchor_consistency": subject,
         "background_anchor_consistency": background,
         "anchor_centroid_consistency": aggregate,
+        "subject_anchor_to_shot0_consistency": subject_to_first,
+        "background_anchor_to_shot0_consistency": background_to_first,
+        "anchor_to_shot0_consistency": to_first,
     }
 
 
@@ -406,6 +430,9 @@ def shot_anchor_metrics(
             "subject_anchor_consistency": float("nan"),
             "background_anchor_consistency": float("nan"),
             "anchor_centroid_consistency": float("nan"),
+            "subject_anchor_to_shot0_consistency": float("nan"),
+            "background_anchor_to_shot0_consistency": float("nan"),
+            "anchor_to_shot0_consistency": float("nan"),
         }
 
     def encode_video_shot(encoder, sample):
@@ -430,6 +457,9 @@ def shot_anchor_metrics(
             "subject_anchor_consistency": float("nan"),
             "background_anchor_consistency": float("nan"),
             "anchor_centroid_consistency": float("nan"),
+            "subject_anchor_to_shot0_consistency": float("nan"),
+            "background_anchor_to_shot0_consistency": float("nan"),
+            "anchor_to_shot0_consistency": float("nan"),
         }
     return shot_anchor_centroid_consistency(np.stack(subject), np.stack(background))
 
@@ -1036,6 +1066,12 @@ def evaluate_cross_perspective_gate(
             "subject_anchor_modified": m.get("subject_anchor_consistency", float("nan")),
             "background_anchor_baseline": b.get("background_anchor_consistency", float("nan")),
             "background_anchor_modified": m.get("background_anchor_consistency", float("nan")),
+            "anchor_to_shot0_baseline": b.get("anchor_to_shot0_consistency", float("nan")),
+            "anchor_to_shot0_modified": m.get("anchor_to_shot0_consistency", float("nan")),
+            "subject_anchor_to_shot0_baseline": b.get("subject_anchor_to_shot0_consistency", float("nan")),
+            "subject_anchor_to_shot0_modified": m.get("subject_anchor_to_shot0_consistency", float("nan")),
+            "background_anchor_to_shot0_baseline": b.get("background_anchor_to_shot0_consistency", float("nan")),
+            "background_anchor_to_shot0_modified": m.get("background_anchor_to_shot0_consistency", float("nan")),
             "palette_agreement_baseline": b.get("palette_agreement", float("nan")),
             "palette_agreement_modified": m.get("palette_agreement", float("nan")),
             "motion_profile_agreement_baseline": b.get("motion_profile_agreement", float("nan")),

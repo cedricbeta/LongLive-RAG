@@ -150,6 +150,8 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
         kv_rag_raw = section_get(args, "inference", "kv_rag", getattr(args, "kv_rag", None))
         self.kv_rag_config = KVRAGConfig.from_config(kv_rag_raw)
         self.kv_rag_enabled = self.kv_rag_config.enabled
+        self.scene_memory_rolling = bool(self.kv_rag_config.scene_memory_rolling)
+        self.scene_memory_injection_schedule = self.kv_rag_config.scene_memory_injection_schedule
         self.kv_rag_pos = KVRAGMemory(self.kv_rag_config) if self.kv_rag_enabled else None
         self.kv_rag_neg = KVRAGMemory(self.kv_rag_config) if self.kv_rag_enabled else None
         if self.kv_rag_enabled:
@@ -264,7 +266,12 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
             self.kv_rag_neg.set_context_key(scene_embeds)
 
     @staticmethod
-    def _memory_boundary_active(is_shot_boundary, force_scene_memory_boundary, chunk_index) -> bool:
+    def _memory_boundary_active(
+        is_shot_boundary,
+        force_scene_memory_boundary,
+        chunk_index,
+        scene_memory_injection_schedule: str = "boundary",
+    ) -> bool:
         """Whether the scene anchors should be force-injected for this chunk.
 
         Fires on an intra-video shot cut (``is_shot_boundary``) OR on the first
@@ -274,10 +281,20 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
         ``inference()`` call whose chunk 0 is never a prompt shot-cut, so without
         this the perspective-0 anchors were never force-injected.
         """
+        schedule = str(scene_memory_injection_schedule or "boundary").lower().replace("-", "_")
+        if schedule == "every_chunk":
+            return True
         return bool(is_shot_boundary or (force_scene_memory_boundary and chunk_index == 0))
 
     @staticmethod
-    def _should_store_persistent(scene_memory_active, seed_scene_memory, scene_shot_index) -> bool:
+    def _should_store_persistent(
+        scene_memory_active,
+        seed_scene_memory,
+        scene_shot_index,
+        *,
+        scene_memory_rolling: bool = False,
+        is_shot_end: bool = False,
+    ) -> bool:
         """Whether this chunk's clean-recache slice seeds the PERSISTENT partition.
 
         Only the reference perspective (``seed_scene_memory``, i.e. perspective 0)
@@ -285,7 +302,11 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
         force-inject them but store only transient per-shot entries (so generated
         later views do not continuously reseed the partition).
         """
-        return bool(scene_memory_active and seed_scene_memory and scene_shot_index == 0)
+        if not (scene_memory_active and seed_scene_memory):
+            return False
+        if scene_memory_rolling:
+            return bool(is_shot_end)
+        return scene_shot_index == 0
 
     def _kv_rag_call_kwargs(
         self,
@@ -294,20 +315,41 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
         retrieve: bool,
         store: bool = False,
         chunk_index: int | None = None,
+        shot_index: int | None = None,
         phase: str | None = None,
         persistent: bool = False,
     ):
         if not self.kv_rag_enabled or bank is None:
             return {}
+        bank.set_runtime_context(chunk_index=chunk_index, shot_index=shot_index, phase=phase)
         return {
             "kv_rag": bank,
             "kv_rag_retrieve": bool(retrieve),
             "kv_rag_store": bool(store),
             "kv_rag_meta": {
                 "chunk_index": chunk_index,
+                "shot_index": shot_index,
                 "phase": phase,
                 "persistent": bool(persistent),
             },
+        }
+
+    def kv_rag_diagnostics(self) -> dict[str, object]:
+        """JSON-serializable KV-RAG diagnostics for the last inference call."""
+        if not self.kv_rag_enabled:
+            return {}
+        return {
+            "config": {
+                "scene_memory_enabled": bool(self.kv_rag_config.scene_memory_enabled),
+                "scene_memory_rolling": bool(self.kv_rag_config.scene_memory_rolling),
+                "scene_memory_injection_schedule": self.kv_rag_config.scene_memory_injection_schedule,
+                "boundary_inject_anchors": int(self.kv_rag_config.boundary_inject_anchors),
+                "retrieval_key_mode": self.kv_rag_config.retrieval_key_mode,
+                "retrieval_value_mode": self.kv_rag_config.retrieval_value_mode,
+                "attention_diagnostic": bool(self.kv_rag_config.attention_diagnostic),
+            },
+            "pos": self.kv_rag_pos.export_diagnostics() if self.kv_rag_pos is not None else {},
+            "neg": self.kv_rag_neg.export_diagnostics() if self.kv_rag_neg is not None else {},
         }
 
     def inference(
@@ -744,6 +786,7 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
             is_shot_boundary = self._is_shot_boundary(raw_prompts, chunk_index)
             if is_shot_boundary:
                 scene_shot_index += 1
+            is_shot_end = self._is_shot_end(raw_prompts, chunk_index, len(all_num_frames))
             if is_shot_boundary and phi != 0.0:
                 current_shot_index += 1
                 self._dit_model.rope_temporal_offset = current_shot_index * phi
@@ -754,7 +797,10 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
             # OR on the first chunk of a new perspective (per-perspective path),
             # so the perspective change keeps the established scene.
             is_memory_boundary = self._memory_boundary_active(
-                is_shot_boundary, force_scene_memory_boundary, chunk_index
+                is_shot_boundary,
+                force_scene_memory_boundary,
+                chunk_index,
+                self.scene_memory_injection_schedule,
             )
             self._set_kv_rag_boundary_inject(is_memory_boundary)
             # A new shot drops the per-shot framing memory while the persistent
@@ -767,7 +813,11 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
             # persistent anchors; later perspectives retrieve/force-inject but store
             # transient per-shot entries, so generated later views never reseed it.
             store_persistent = self._should_store_persistent(
-                self._scene_memory_active, seed_scene_memory, scene_shot_index
+                self._scene_memory_active,
+                seed_scene_memory,
+                scene_shot_index,
+                scene_memory_rolling=self.scene_memory_rolling,
+                is_shot_end=is_shot_end,
             )
 
             noisy_input = noise[
@@ -794,6 +844,7 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
                         self.kv_rag_pos,
                         retrieve=self.kv_rag_config.retrieve_during_denoise,
                         chunk_index=chunk_index,
+                        shot_index=scene_shot_index,
                         phase="denoise",
                     ),
                 )
@@ -810,6 +861,7 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
                             self.kv_rag_neg,
                             retrieve=self.kv_rag_config.retrieve_during_denoise,
                             chunk_index=chunk_index,
+                            shot_index=scene_shot_index,
                             phase="denoise_uncond",
                         ),
                     )
@@ -862,6 +914,7 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
                     retrieve=self.kv_rag_config.retrieve_during_recache,
                     store=self.kv_rag_config.store_after_recache,
                     chunk_index=chunk_index,
+                    shot_index=scene_shot_index,
                     phase="clean_recache",
                     persistent=store_persistent,
                 ),
@@ -880,6 +933,7 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
                         retrieve=self.kv_rag_config.retrieve_during_recache,
                         store=self.kv_rag_config.store_after_recache,
                         chunk_index=chunk_index,
+                        shot_index=scene_shot_index,
                         phase="clean_recache_uncond",
                         persistent=store_persistent,
                     ),
@@ -1236,6 +1290,12 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
             return False
         prompt = raw_prompts[chunk_index]
         return isinstance(prompt, str) and prompt.startswith(self.scene_cut_prefix)
+
+    def _is_shot_end(self, raw_prompts, chunk_index, num_chunks):
+        """Return True when *chunk_index* is the last chunk of its current shot."""
+        if chunk_index >= int(num_chunks) - 1:
+            return True
+        return self._is_shot_boundary(raw_prompts, chunk_index + 1)
 
     def _is_scene_cut(self, raw_prompts, chunk_index):
         """Return True when *chunk_index* is the first chunk of a new scene

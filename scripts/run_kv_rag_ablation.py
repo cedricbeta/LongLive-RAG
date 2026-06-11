@@ -34,6 +34,7 @@ from evaluation.video_consistency import (
     evaluate_cross_perspective_gate,
     prompt_text_similarity_lint,
     save_metrics_json,
+    summarize_records,
 )
 
 # The recommended long-video multi-shot settings for the modified variant
@@ -160,6 +161,18 @@ def parse_args() -> argparse.Namespace:
                         "drop (modified >= baseline*(1-tol)). Required for guarded runs.")
     parser.add_argument("--min_scene_wins", type=int, default=None,
                         help="multiview_vbench: scenes the modified aggregate must win (default ceil(N/2)).")
+    parser.add_argument("--mechanism_sweep", action="store_true",
+                        help="long_multishot: run the fixed scene-memory structure/dose sweep "
+                        "with baseline seed replicates and noise-floored wins.")
+    parser.add_argument("--baseline_seeds", default="0,1,2",
+                        help="long_multishot mechanism_sweep: comma-separated baseline seeds "
+                        "used to estimate per-scene centroid sigma.")
+    parser.add_argument("--admission_diversity_floor", type=float, default=0.03,
+                        help="long_multishot mechanism_sweep: rendered baseline "
+                        "inter-shot composition-diversity floor for scene admission.")
+    parser.add_argument("--noise_sigma_multiplier", type=float, default=2.0,
+                        help="long_multishot mechanism_sweep: consistency win threshold is "
+                        "delta > multiplier * baseline-seed sigma.")
     parser.add_argument("--finalists", default=None,
                         help="long_multishot/multiview_vbench: comma-separated key:value finalists (e.g. "
                         "'pooled:raw,semantic:raw,subject_identity:raw'). When set, the "
@@ -543,6 +556,8 @@ def _filter_resolver(base_resolver, allowed_scenes: set[str]):
 
 def _run_cross_perspective(args, output_root: Path) -> None:
     mode_label = "long_multishot" if args.mode == "long_multishot" else "cross_perspective"
+    if args.mechanism_sweep and args.mode == "long_multishot":
+        return _run_long_multishot_mechanism_sweep(args, output_root)
     if args.finalists and args.mode == "long_multishot":
         return _run_long_multishot_finalists(args, output_root)
     # AC-7 enforces prompt adherence; only an explicit dry run skips it (and that
@@ -710,6 +725,7 @@ def _run_cross_perspective(args, output_root: Path) -> None:
 
 
 def _write_one_variant(cfg, output_root: Path, name: str, *, kv_rag_settings: dict,
+                       seed: int | None = None,
                        multiview_per_perspective: bool = False) -> tuple[Path, Path]:
     """Write a single inference config (baseline OR one modified finalist) for the
     per-perspective render and return ``(config_path, output_dir)``."""
@@ -726,6 +742,8 @@ def _write_one_variant(cfg, output_root: Path, name: str, *, kv_rag_settings: di
     variant.inference.kv_rag = kv_rag_settings
     variant.inference.filename_from_sample_name = True
     variant.filename_from_sample_name = True
+    if seed is not None:
+        _set_nested(variant, "logging", "seed", int(seed))
     if multiview_per_perspective:
         variant.inference.multiview_per_perspective = True
         variant.multiview_per_perspective = True
@@ -835,6 +853,658 @@ def _base_kv_rag_block(cfg) -> dict:
     if isinstance(block, dict):
         return dict(block)
     return {}
+
+
+def _parse_seed_list(spec: str) -> list[int]:
+    seeds = []
+    for tok in str(spec or "").split(","):
+        tok = tok.strip()
+        if tok:
+            seeds.append(int(tok))
+    if len(seeds) < 2:
+        raise ValueError("--baseline_seeds needs at least two seeds to estimate sigma")
+    return seeds
+
+
+def _mechanism_sweep_arms(args) -> list[dict]:
+    """Fixed AC mechanism grid, all subject_identity+raw."""
+    base = {
+        "scene_memory_enabled": True,
+        "scene_score_bonus": float(args.modified_scene_score_bonus),
+        "retrieval_key_mode": "subject_identity",
+        "retrieval_value_mode": "raw",
+        "attention_diagnostic": True,
+    }
+    return [
+        {
+            "name": "A_incumbent_shot0_boundary",
+            "description": "shot0 seed + boundary pulse",
+            "settings": {
+                **base,
+                "scene_memory_rolling": False,
+                "scene_memory_injection_schedule": "boundary",
+                "boundary_inject_anchors": int(args.modified_boundary_inject_anchors),
+            },
+        },
+        {
+            "name": "B_rolling_boundary",
+            "description": "rolling completed-shot memory + boundary pulse",
+            "settings": {
+                **base,
+                "scene_memory_rolling": True,
+                "scene_memory_injection_schedule": "boundary",
+                "boundary_inject_anchors": int(args.modified_boundary_inject_anchors),
+            },
+        },
+        {
+            "name": "C_rolling_every_chunk",
+            "description": "rolling completed-shot memory + every-chunk pulse",
+            "settings": {
+                **base,
+                "scene_memory_rolling": True,
+                "scene_memory_injection_schedule": "every_chunk",
+                "boundary_inject_anchors": int(args.modified_boundary_inject_anchors),
+            },
+        },
+        {
+            "name": "D_rolling_every_chunk_anchors8",
+            "description": "rolling completed-shot memory + every-chunk pulse + 8 anchors",
+            "settings": {
+                **base,
+                "scene_memory_rolling": True,
+                "scene_memory_injection_schedule": "every_chunk",
+                "boundary_inject_anchors": 8,
+            },
+        },
+        {
+            "name": "E_shot0_every_chunk",
+            "description": "shot0 seed + every-chunk pulse",
+            "settings": {
+                **base,
+                "scene_memory_rolling": False,
+                "scene_memory_injection_schedule": "every_chunk",
+                "boundary_inject_anchors": int(args.modified_boundary_inject_anchors),
+            },
+        },
+    ]
+
+
+def _mechanism_prompt_roots(prompts_dir: str) -> list[Path]:
+    roots = []
+    for part in str(prompts_dir).split(":"):
+        part = part.strip()
+        if not part:
+            continue
+        root = Path(part)
+        roots.append(root / "caption" if (root / "caption").is_dir() else root)
+    if not roots:
+        raise ValueError("mechanism_sweep requires at least one prompt source directory")
+    return roots
+
+
+def build_mechanism_prompt_subset(
+    prompts_dir: str,
+    subset: list[str] | None,
+    dest: Path,
+    *,
+    blocks_per_shot: int = 2,
+    negative_control: str = "shimmering_puzzle_surface",
+) -> list[str]:
+    """Copy existing prompt folders from one or more roots into a sparse subset.
+
+    The only generated prompt metadata is ``shot_durations.txt`` with a fixed
+    two-block dose per shot, plus the negative-control marker for the existing
+    conflict scene. Numbered JSON captions are copied unchanged.
+    """
+    roots = _mechanism_prompt_roots(prompts_dir)
+    available: dict[str, Path] = {}
+    for root in roots:
+        for p in sorted(root.iterdir()):
+            if p.is_dir() and any(f.name != "global.json" for f in p.glob("*.json")):
+                available.setdefault(p.name, p)
+    chosen = subset or sorted(available)
+    missing = [t for t in chosen if t not in available]
+    if missing:
+        raise ValueError(f"--prompt_subset themes not found in {prompts_dir}: {missing}")
+    if dest.exists():
+        shutil.rmtree(dest)
+    dest.mkdir(parents=True, exist_ok=True)
+    for theme in chosen:
+        src = available[theme]
+        out = dest / theme
+        shutil.copytree(src, out)
+        json_files = sorted(
+            [f for f in out.glob("*.json") if f.name != "global.json"],
+            key=lambda p: (not p.stem.isdigit(), int(p.stem) if p.stem.isdigit() else 0, p.stem),
+        )
+        durations = [str(int(blocks_per_shot))] * len(json_files)
+        (out / "shot_durations.txt").write_text("\n".join(durations) + "\n", encoding="utf-8")
+        if theme == negative_control:
+            global_path = out / "global.json"
+            meta = {}
+            if global_path.exists():
+                try:
+                    meta = json.loads(global_path.read_text(encoding="utf-8"))
+                    if not isinstance(meta, dict):
+                        meta = {}
+                except Exception:
+                    meta = {}
+            meta["negative_control"] = True
+            global_path.write_text(json.dumps(meta, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return chosen
+
+
+def _copy_result_with_records(result: dict, records: list[dict]) -> dict:
+    import copy
+
+    out = copy.deepcopy(result)
+    out["records"] = records
+    out["num_pairs"] = len(records)
+    if records:
+        out["baseline_summary"] = summarize_records(records, "baseline_metrics")
+        out["modified_summary"] = summarize_records(records, "modified_metrics")
+        out["delta_summary"] = summarize_records(records, "delta")
+    else:
+        out["baseline_summary"] = {}
+        out["modified_summary"] = {}
+        out["delta_summary"] = {}
+    return out
+
+
+def _metric_sigma(values: list[float]) -> float:
+    import numpy as np
+
+    arr = np.asarray(values, dtype=np.float64)
+    arr = arr[~np.isnan(arr)]
+    if arr.size < 2:
+        return float("nan")
+    return float(np.std(arr, ddof=1))
+
+
+def _drift_reduction(baseline: float, modified: float) -> float:
+    import numpy as np
+
+    if np.isnan(baseline) or np.isnan(modified):
+        return float("nan")
+    denom = 1.0 - float(baseline)
+    if denom <= 1e-8:
+        return float("nan")
+    return float((float(modified) - float(baseline)) / denom)
+
+
+def _evaluate_single_long_dir(directory: Path, *, shots_for, scorers: dict, args) -> dict:
+    """Evaluate one rendered long_multishot directory by comparing it to itself."""
+    return compare_cross_perspective_dirs(
+        directory,
+        directory,
+        shots_for=shots_for,
+        adherence_scorer=scorers.get("adherence_scorer"),
+        invariant_scorer=scorers.get("invariant_scorer"),
+        subject_encoder=scorers.get("subject_encoder"),
+        background_encoder=scorers.get("background_encoder"),
+        dynamic_scorer=scorers.get("dynamic_scorer"),
+        max_frames=args.max_frames,
+        stride=max(1, args.stride),
+    )
+
+
+def _scene_metric_records_by_theme(result: dict, metric: str) -> dict[str, dict]:
+    out = {}
+    for rec in result.get("records", []):
+        theme = rec.get("theme")
+        if theme:
+            out[theme] = {
+                "metric": rec["baseline_metrics"].get(metric, float("nan")),
+                "metrics": rec["baseline_metrics"],
+                "path": rec.get("baseline"),
+                "negative_control": bool(rec.get("negative_control", False)),
+            }
+    return out
+
+
+def _attention_diag_mean(diag: dict) -> float:
+    import numpy as np
+
+    vals = []
+    for bank in ("pos", "neg"):
+        by_shot = (diag.get(bank) or {}).get("attention_mass_by_shot_layer", {})
+        for layers in by_shot.values():
+            for rec in layers.values():
+                vals.append(float(rec.get("mean_mass", 0.0)))
+    return float(np.mean(vals)) if vals else 0.0
+
+
+def _load_attention_diagnostics(render_dir: Path, shots_for) -> dict[str, dict]:
+    diagnostics: dict[str, dict] = {}
+    for path in sorted(render_dir.glob("*_kv_rag_diag.json")):
+        stem = path.stem
+        if stem.endswith("_kv_rag_diag"):
+            stem = stem[: -len("_kv_rag_diag")]
+        spec = shots_for(stem) if callable(shots_for) else None
+        theme = spec.get("theme") if isinstance(spec, dict) else None
+        if not theme:
+            continue
+        try:
+            diag = json.loads(path.read_text(encoding="utf-8"))
+        except Exception as exc:
+            diag = {"blocked_reason": f"could not read diagnostic sidecar: {exc}"}
+        diagnostics[theme] = {
+            "path": str(path),
+            "mean_persistent_attention_mass": _attention_diag_mean(diag),
+            "diagnostic": diag,
+        }
+    return diagnostics
+
+
+def _apply_noise_floor_gate(
+    gate: dict,
+    *,
+    metric: str,
+    noise_floor_by_scene: dict[str, dict],
+    sigma_multiplier: float,
+) -> dict:
+    """Replace raw m>b consistency wins/negative-control triggers with delta > k*sigma."""
+    consistency_wins = 0
+    negative_control_failures: list[str] = []
+    for entry in gate.get("per_prompt", []):
+        theme = entry.get("theme")
+        floor = noise_floor_by_scene.get(theme, {})
+        sigma = float(floor.get("sigma", float("nan")))
+        threshold = float(floor.get("threshold", float("nan")))
+        baseline = float(entry.get("consistency_baseline", float("nan")))
+        modified = float(entry.get("consistency_modified", float("nan")))
+        delta = modified - baseline
+        raw_win = bool(entry.get("consistency_win", False))
+        noise_win = (
+            not any(v != v for v in (delta, threshold))
+            and delta > threshold
+        )
+        entry["consistency_win_raw"] = raw_win
+        entry["consistency_win"] = bool(noise_win)
+        entry["consistency_delta"] = float(delta)
+        entry["noise_sigma"] = sigma
+        entry["noise_threshold"] = threshold
+        entry["noise_sigma_multiplier"] = float(sigma_multiplier)
+        entry["relative_drift_reduction"] = _drift_reduction(baseline, modified)
+        b0 = float(entry.get("anchor_to_shot0_baseline", entry.get("anchor_to_shot0_consistency_baseline", float("nan"))))
+        m0 = float(entry.get("anchor_to_shot0_modified", entry.get("anchor_to_shot0_consistency_modified", float("nan"))))
+        if b0 != b0:
+            b0 = float("nan")
+        if m0 != m0:
+            m0 = float("nan")
+        entry["to_shot0_delta"] = float(m0 - b0) if not (b0 != b0 or m0 != m0) else float("nan")
+        if entry.get("negative_control", False):
+            adherence_ok = bool(entry.get("adherence_ok", True))
+            if noise_win and adherence_ok:
+                negative_control_failures.append(entry.get("stem", theme or "?"))
+                entry["negative_control_ok"] = False
+                entry["negative_control_reason"] = (
+                    f"{metric} delta exceeded {sigma_multiplier}*baseline sigma "
+                    "without adherence loss; text-override evidence, not a pass"
+                )
+            else:
+                entry["negative_control_ok"] = True
+        elif noise_win:
+            consistency_wins += 1
+
+    gate["consistency_wins"] = int(consistency_wins)
+    gate["consistency_ok"] = consistency_wins >= int(gate.get("min_consistency_wins", 0))
+    gate["negative_control_failures"] = negative_control_failures
+    gate["negative_control_ok"] = not negative_control_failures
+    blocked_reasons = []
+    if gate.get("unscorable"):
+        blocked_reasons.append(f"unscorable input(s): {sorted(set(gate['unscorable']))}")
+    if negative_control_failures:
+        blocked_reasons.append(
+            f"negative control indicates text override above noise floor: {negative_control_failures}"
+        )
+    gate["blocked_reason"] = "; ".join(blocked_reasons) if blocked_reasons else None
+    gate["passed"] = bool(
+        gate.get("consistency_ok")
+        and gate.get("adherence_ok")
+        and gate.get("diversity_ok")
+        and gate.get("motion_ok")
+        and gate.get("invariant_ok")
+        and gate.get("scorable_ok")
+        and gate.get("negative_control_ok")
+    )
+    gate["is_null_result"] = not gate["passed"]
+    return gate
+
+
+def _frontier_rows(gate: dict, attention_by_scene: dict[str, dict]) -> list[dict]:
+    rows = []
+    for entry in gate.get("per_prompt", []):
+        theme = entry.get("theme")
+        rows.append({
+            "scene": theme,
+            "stem": entry.get("stem"),
+            "negative_control": bool(entry.get("negative_control", False)),
+            "consistency_baseline": entry.get("consistency_baseline"),
+            "consistency_modified": entry.get("consistency_modified"),
+            "consistency_delta": entry.get("consistency_delta"),
+            "noise_sigma": entry.get("noise_sigma"),
+            "noise_threshold": entry.get("noise_threshold"),
+            "noise_floor_win": entry.get("consistency_win"),
+            "relative_drift_reduction": entry.get("relative_drift_reduction"),
+            "to_shot0_delta": entry.get("to_shot0_delta"),
+            "dynamic_degree_delta": (
+                entry.get("dynamic_degree_modified", float("nan"))
+                - entry.get("dynamic_degree_baseline", float("nan"))
+            ),
+            "adherence_mean_delta": (
+                entry.get("adherence_modified_mean", float("nan"))
+                - entry.get("adherence_baseline_mean", float("nan"))
+            ),
+            "adherence_min_delta": (
+                entry.get("adherence_modified_min", float("nan"))
+                - entry.get("adherence_baseline_min", float("nan"))
+            ),
+            "invariant_margin_mean_delta": (
+                entry.get("invariant_margin_modified_mean", float("nan"))
+                - entry.get("invariant_margin_baseline_mean", float("nan"))
+            ),
+            "invariant_margin_min_delta": (
+                entry.get("invariant_margin_modified_min", float("nan"))
+                - entry.get("invariant_margin_baseline_min", float("nan"))
+            ),
+            "attention_mass_mean": (
+                attention_by_scene.get(theme, {}).get("mean_persistent_attention_mass", 0.0)
+                if theme else 0.0
+            ),
+        })
+    return rows
+
+
+def _run_long_multishot_mechanism_sweep(args, output_root: Path) -> None:
+    """Scene-memory structure/dose sweep with admission and noise-floor readout."""
+    import numpy as np
+
+    require_adherence = not args.dry_run_without_adherence
+    if not require_adherence:
+        raise ValueError("mechanism_sweep is a guarded gate and cannot use --dry_run_without_adherence")
+    if not args.prompts_dir:
+        raise ValueError("long_multishot mechanism_sweep requires --prompts_dir")
+    if args.motion_tolerance is None:
+        raise ValueError("long_multishot mechanism_sweep requires --motion_tolerance")
+
+    seeds = _parse_seed_list(args.baseline_seeds)
+    metric = "anchor_centroid_consistency"
+    cfg = _apply_overrides(OmegaConf.load(args.config_path), args)
+    subset = [s.strip() for s in args.prompt_subset.split(",")] if args.prompt_subset else None
+    prompt_subset_dir = output_root / "prompt_subset"
+    chosen = build_mechanism_prompt_subset(args.prompts_dir, subset, prompt_subset_dir)
+    _set_nested(cfg, "data", "data_path", str(prompt_subset_dir))
+    _set_nested(cfg, "inference", "sparse_long_multishot", True)
+    num_blocks = args.num_blocks if args.num_blocks is not None else _num_blocks_from_cfg(cfg)
+    base_kv_rag = _base_kv_rag_block(cfg)
+    print(f"[long-mechanism-sweep] subset: {chosen}")
+    print(f"[long-mechanism-sweep] baseline seeds: {seeds}")
+    print("[long-mechanism-sweep] sparse_long_multishot=true (global.json ignored by dataset)")
+    _preflight_config(cfg, args.config_path)
+
+    prompt_lint, _allowed = _long_prompt_lint(argparse.Namespace(**{**vars(args), "prompts_dir": str(prompt_subset_dir)}))
+    chosen_lint = {scene: prompt_lint.get(scene) for scene in chosen if scene in prompt_lint}
+    lint_failures = [
+        scene for scene, entry in chosen_lint.items()
+        if entry and not entry.get("negative_control", False) and not entry.get("passed", False)
+    ]
+    lint_passing_main = [
+        scene for scene, entry in chosen_lint.items()
+        if entry and not entry.get("negative_control", False) and entry.get("passed", False)
+    ]
+    negative_controls = [
+        scene for scene, entry in chosen_lint.items()
+        if entry and entry.get("negative_control", False)
+    ]
+
+    scorers, scorer_coverage = _build_long_scorers(args, require_adherence=True)
+    missing_scorers = sorted(
+        name for name, info in scorer_coverage.items()
+        if isinstance(info, dict) and info.get("requested") and not info.get("loaded")
+    )
+    prereq_blocks = []
+    if lint_failures:
+        prereq_blocks.append(f"ill-posed prompt scene(s) below text-similarity floor: {lint_failures}")
+    if not negative_controls:
+        prereq_blocks.append("negative control scene missing")
+    if missing_scorers:
+        prereq_blocks.append(f"requested scorer(s) unavailable: {missing_scorers}")
+    if prereq_blocks:
+        blocked_reason = "; ".join(prereq_blocks)
+        consolidated = {
+            "selector": "long_multishot scene-memory mechanism sweep",
+            "winner": None,
+            "is_null_result": True,
+            "blocked_reason": blocked_reason,
+            "render_attempted": False,
+            "sparse_long_multishot": True,
+            "prompt_lint": chosen_lint,
+            "lint_passing_main_scenes": lint_passing_main,
+            "negative_controls": negative_controls,
+            "scorer_coverage": scorer_coverage,
+            "arms": _mechanism_sweep_arms(args),
+        }
+        metrics_json = Path(args.metrics_json) if args.metrics_json else output_root / "long_multishot_mechanism_sweep.json"
+        save_metrics_json(consolidated, metrics_json)
+        print(f"Wrote metrics: {metrics_json.resolve()}")
+        print(f"[long-mechanism-sweep] BLOCKED before render: {blocked_reason}")
+        return
+
+    shots_for = build_spec_resolver(
+        prompt_subset_dir, with_captions=True, max_chunks=num_blocks
+    )
+
+    baseline_dirs: dict[int, Path] = {}
+    baseline_seed_results: dict[int, dict] = {}
+    for seed in seeds:
+        baseline_cfg, baseline_dir = _write_one_variant(
+            cfg,
+            output_root,
+            f"baseline_seed{seed}",
+            kv_rag_settings={"enabled": False},
+            seed=seed,
+            multiview_per_perspective=False,
+        )
+        print(f"[long-mechanism-sweep] rendering baseline seed {seed}")
+        run_inference(baseline_cfg)
+        baseline_dirs[seed] = baseline_dir
+        baseline_seed_results[seed] = _evaluate_single_long_dir(
+            baseline_dir, shots_for=shots_for, scorers=scorers, args=args
+        )
+
+    baseline_by_seed = {
+        seed: _scene_metric_records_by_theme(result, metric)
+        for seed, result in baseline_seed_results.items()
+    }
+    seed0 = seeds[0]
+    seed0_records = baseline_by_seed[seed0]
+    noise_floor_by_scene: dict[str, dict] = {}
+    admission: dict[str, dict] = {}
+    admitted_main: list[str] = []
+    for scene in chosen:
+        vals = [
+            baseline_by_seed.get(seed, {}).get(scene, {}).get("metric", float("nan"))
+            for seed in seeds
+        ]
+        sigma = _metric_sigma(vals)
+        threshold = float(args.noise_sigma_multiplier) * sigma if not np.isnan(sigma) else float("nan")
+        noise_floor_by_scene[scene] = {
+            "baseline_values": [float(v) for v in vals],
+            "sigma": sigma,
+            "threshold": threshold,
+            "sigma_multiplier": float(args.noise_sigma_multiplier),
+        }
+        seed0_metrics = seed0_records.get(scene, {}).get("metrics", {})
+        diversity = seed0_metrics.get("inter_shot_composition_diversity", float("nan"))
+        is_negative = scene in negative_controls
+        admitted = (
+            not is_negative
+            and scene in lint_passing_main
+            and diversity == diversity
+            and diversity >= float(args.admission_diversity_floor)
+        )
+        reason = None
+        if is_negative:
+            reason = "negative control is sanity-checked, not admitted as a main scene"
+        elif scene not in lint_passing_main:
+            reason = "prompt lint failed"
+        elif not (diversity == diversity):
+            reason = "baseline inter-shot composition diversity unscorable"
+        elif diversity < float(args.admission_diversity_floor):
+            reason = (
+                "baseline inter-shot composition diversity below admission floor "
+                f"({diversity:.6f} < {float(args.admission_diversity_floor):.6f})"
+            )
+        admission[scene] = {
+            "admitted": bool(admitted),
+            "negative_control": bool(is_negative),
+            "baseline_seed": seed0,
+            "baseline_inter_shot_composition_diversity": diversity,
+            "floor": float(args.admission_diversity_floor),
+            "blocked_reason": reason,
+        }
+        if admitted:
+            admitted_main.append(scene)
+
+    min_wins = args.min_scene_wins or -(-len(admitted_main) // 2)
+    if not admitted_main:
+        print("[long-mechanism-sweep][warn] no main scenes admitted; renders will still be scored fail-closed")
+
+    arm_records = []
+    frontier = []
+    baseline_dir0 = baseline_dirs[seed0]
+    allowed_eval_scenes = set(admitted_main) | set(negative_controls)
+    for arm in _mechanism_sweep_arms(args):
+        settings = arm["settings"]
+        merged = _finalist_kv_rag(base_kv_rag, settings)
+        name = arm["name"]
+        mod_cfg, mod_dir = _write_one_variant(
+            cfg,
+            output_root,
+            name,
+            kv_rag_settings=merged,
+            seed=seed0,
+            multiview_per_perspective=False,
+        )
+        print(f"[long-mechanism-sweep] rendering {name}: {settings}")
+        run_inference(mod_cfg)
+        result_all = compare_cross_perspective_dirs(
+            baseline_dir0,
+            mod_dir,
+            shots_for=shots_for,
+            adherence_scorer=scorers.get("adherence_scorer"),
+            invariant_scorer=scorers.get("invariant_scorer"),
+            subject_encoder=scorers.get("subject_encoder"),
+            background_encoder=scorers.get("background_encoder"),
+            dynamic_scorer=scorers.get("dynamic_scorer"),
+            max_frames=args.max_frames,
+            stride=max(1, args.stride),
+        )
+        filtered_records = [
+            r for r in result_all["records"]
+            if r.get("theme") in allowed_eval_scenes
+        ]
+        result = _copy_result_with_records(result_all, filtered_records)
+        gate = evaluate_cross_perspective_gate(
+            result,
+            metric=metric,
+            min_consistency_wins=min_wins,
+            adherence_tolerance=args.adherence_tolerance,
+            diversity_tolerance=args.diversity_tolerance,
+            motion_tolerance=args.motion_tolerance,
+            require_adherence=True,
+            require_invariant=True,
+        )
+        gate = _apply_noise_floor_gate(
+            gate,
+            metric=metric,
+            noise_floor_by_scene=noise_floor_by_scene,
+            sigma_multiplier=float(args.noise_sigma_multiplier),
+        )
+        attention_by_scene = _load_attention_diagnostics(mod_dir, shots_for)
+        rows = _frontier_rows(gate, attention_by_scene)
+        frontier.extend([{**row, "arm": name} for row in rows])
+        deltas = [
+            row["consistency_delta"]
+            for row in rows
+            if not row.get("negative_control") and row.get("consistency_delta") == row.get("consistency_delta")
+        ]
+        mean_delta = float(np.mean(deltas)) if deltas else float("nan")
+        arm_records.append({
+            "name": name,
+            "description": arm["description"],
+            "key": "subject_identity",
+            "value": "raw",
+            "settings": settings,
+            "passed": bool(gate["passed"] and len(admitted_main) > 0),
+            "mean_aggregate_delta": mean_delta,
+            "scene_wins": gate["consistency_wins"],
+            "num_scenes": len(admitted_main),
+            "gate": gate,
+            "comparison": result,
+            "attention_diagnostics": attention_by_scene,
+            "frontier": rows,
+        })
+
+    ranked = sorted(
+        arm_records,
+        key=lambda r: (r["passed"], r["scene_wins"], r["mean_aggregate_delta"]),
+        reverse=True,
+    )
+    winner = next((r for r in ranked if r["passed"]), None)
+    blocked_reason = None
+    if not admitted_main:
+        blocked_reason = "no main scenes admitted by baseline diversity floor"
+        for r in ranked:
+            r["passed"] = False
+    consolidated = {
+        "selector": "long_multishot scene-memory mechanism sweep",
+        "winner": ({"name": winner["name"], "key": winner["key"], "value": winner["value"]} if winner else None),
+        "is_null_result": winner is None,
+        "blocked_reason": blocked_reason,
+        "render_attempted": True,
+        "sparse_long_multishot": True,
+        "baseline_seeds": seeds,
+        "baseline_seed_dirs": {str(k): str(v) for k, v in baseline_dirs.items()},
+        "prompt_lint": chosen_lint,
+        "lint_passing_main_scenes": lint_passing_main,
+        "admitted_main_scenes": admitted_main,
+        "admission": admission,
+        "negative_controls": negative_controls,
+        "noise_floor": noise_floor_by_scene,
+        "scorer_coverage": scorer_coverage,
+        "guards": {
+            "adherence_tolerance": args.adherence_tolerance,
+            "diversity_tolerance_relative": args.diversity_tolerance,
+            "motion_tolerance_relative": args.motion_tolerance,
+            "invariant_tolerance": 0.0,
+            "require_adherence": True,
+            "admission_diversity_floor": float(args.admission_diversity_floor),
+            "noise_sigma_multiplier": float(args.noise_sigma_multiplier),
+        },
+        "ranking": [
+            {
+                "name": r["name"],
+                "passed": r["passed"],
+                "mean_aggregate_delta": r["mean_aggregate_delta"],
+                "scene_wins": f"{r['scene_wins']}/{r['num_scenes']}",
+            }
+            for r in ranked
+        ],
+        "frontier": frontier,
+        "arms": ranked,
+    }
+    metrics_json = Path(args.metrics_json) if args.metrics_json else output_root / "long_multishot_mechanism_sweep.json"
+    save_metrics_json(consolidated, metrics_json)
+    print(f"Wrote metrics: {metrics_json.resolve()}")
+    for r in ranked:
+        print(f"  {r['name']}: mean_delta={r['mean_aggregate_delta']:+.4f} "
+              f"wins={r['scene_wins']}/{r['num_scenes']} passed={r['passed']}")
+    if winner:
+        print(f"[long-mechanism-sweep] WINNER: {winner['name']}")
+    else:
+        print("[long-mechanism-sweep] RESULT: honest NULL/BLOCKED -- no arm passed all guards.")
 
 
 def _run_long_multishot_finalists(args, output_root: Path) -> None:

@@ -206,6 +206,7 @@ class TestPipelineSceneMemoryPredicates(unittest.TestCase):
         self.assertTrue(P._memory_boundary_active(False, True, 0))    # new perspective chunk 0
         self.assertFalse(P._memory_boundary_active(False, True, 1))   # later chunk, not boundary
         self.assertFalse(P._memory_boundary_active(False, False, 0))  # non-multiview chunk 0
+        self.assertTrue(P._memory_boundary_active(False, False, 3, "every_chunk"))
 
     def test_should_store_persistent(self):
         P = self.P
@@ -213,6 +214,15 @@ class TestPipelineSceneMemoryPredicates(unittest.TestCase):
         self.assertFalse(P._should_store_persistent(True, False, 0))  # later perspective
         self.assertFalse(P._should_store_persistent(True, True, 1))   # later shot
         self.assertFalse(P._should_store_persistent(False, True, 0))  # scene memory off
+
+    def test_rolling_store_only_on_shot_end(self):
+        P = self.P
+        self.assertFalse(P._should_store_persistent(
+            True, True, 1, scene_memory_rolling=True, is_shot_end=False))
+        self.assertTrue(P._should_store_persistent(
+            True, True, 1, scene_memory_rolling=True, is_shot_end=True))
+        self.assertFalse(P._should_store_persistent(
+            True, False, 1, scene_memory_rolling=True, is_shot_end=True))
 
 
 class TestSemanticContextKeyCFG(unittest.TestCase):
@@ -377,7 +387,10 @@ class TestKeyValueInterface(unittest.TestCase):
         for bad in (dict(retrieval_key_mode="nope"),
                     dict(retrieval_value_mode="nope"),
                     dict(retrieval_key_mode="multi_centroid", retrieval_key_centroids=1),
-                    dict(boundary_inject_anchors=1, scene_memory_enabled=False)):
+                    dict(boundary_inject_anchors=1, scene_memory_enabled=False),
+                    dict(scene_memory_injection_schedule="always"),
+                    dict(scene_memory_rolling=True, scene_memory_enabled=False),
+                    dict(scene_memory_injection_schedule="every_chunk", scene_memory_enabled=False)):
             with self.assertRaises(ValueError):
                 KVRAGMemory(KVRAGConfig(enabled=True, **bad))
 
@@ -415,6 +428,32 @@ class TestKeyValueInterface(unittest.TestCase):
         m = KVRAGMemory(KVRAGConfig(enabled=True))  # default pooled
         t = torch.randn(1, 8, 2, 3)
         self.assertTrue(torch.equal(m._compute_key(t), m._summarize(t)))
+
+    def test_attention_diagnostic_records_persistent_mass_by_shot_layer(self):
+        cfg = KVRAGConfig(
+            enabled=True,
+            scene_memory_enabled=True,
+            attention_diagnostic=True,
+            attention_diag_max_query_rows=2,
+        )
+        m = KVRAGMemory(cfg)
+        persistent_k, persistent_v = _store(m, persistent=True, start=0)
+        transient_k, transient_v = _store(m, persistent=False, start=100)
+        selected = [m.scene_entries_by_layer[0][0], m.entries_by_layer[0][0]]
+        local_k = torch.randn(1, 4, 2, 3)
+        window_k = torch.cat([persistent_k, transient_k, local_k], dim=1)
+        query = persistent_k[:, :4].clone()
+
+        m.set_runtime_context(chunk_index=3, shot_index=2, phase="denoise")
+        m.record_injected_attention_mass(query, window_k, selected, layer=0)
+        diag = m.export_diagnostics()
+
+        self.assertEqual(diag["stats"]["persistent_rag_mass_calls"], 1)
+        self.assertIn("2", diag["attention_mass_by_shot_layer"])
+        self.assertIn("0", diag["attention_mass_by_shot_layer"]["2"])
+        self.assertGreater(
+            diag["attention_mass_by_shot_layer"]["2"]["0"]["mean_mass"], 0.0
+        )
 
 
 # ---------------------------------------------------------------------------

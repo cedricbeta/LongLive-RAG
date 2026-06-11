@@ -734,6 +734,7 @@ class CausalWanSelfAttention(nn.Module):
             rag_result = None
             rag_k_pending = None
             rag_v_pending = None
+            rag_selected = None
             rag_prepended_tokens = 0
             kv_rag_cfg = getattr(kv_rag, "config", None) if kv_rag is not None else None
             kv_rag_summary_prerope = bool(getattr(kv_rag_cfg, "summary_prerope", True))
@@ -788,7 +789,7 @@ class CausalWanSelfAttention(nn.Module):
                     else:
                         raise
             if rag_result is not None:
-                rag_k, rag_v, _ = rag_result
+                rag_k, rag_v, rag_selected = rag_result
                 if kv_rag_reinject and not use_relative_rope:
                     # Defer: keys are pre-RoPE and are re-RoPE'd into a virtual
                     # frame block just before the local window (absolute path).
@@ -916,8 +917,13 @@ class CausalWanSelfAttention(nn.Module):
                     # else: not frame-aligned -> skip injection (fail open)
                 if (kv_rag is not None and rag_prepended_tokens > 0
                         and getattr(kv_rag, "diag_enabled", False)
-                        and kv_rag_layer == getattr(kv_rag, "diag_layer", -999)):
-                    kv_rag.record_attention_mass(roped_query, window_k, rag_prepended_tokens)
+                        and rag_selected is not None):
+                    kv_rag.record_injected_attention_mass(
+                        roped_query,
+                        window_k,
+                        rag_selected,
+                        layer=kv_rag_layer if kv_rag_layer is not None else -1,
+                    )
                 _attach_received_attention(roped_query, window_k)
                 x = attention(roped_query, window_k, window_v)
 

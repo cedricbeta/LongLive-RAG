@@ -63,6 +63,27 @@ class TestMultiTextConcatGlobalCaption(unittest.TestCase):
         self.assertEqual(item["prompts"], ["shot zero", "CUT shot one"])
         self.assertNotIn("global_caption", item)
 
+    def test_sparse_mode_ignores_global_json(self):
+        root = Path(tempfile.mkdtemp())
+        scene = root / "sparse_scene"
+        scene.mkdir(parents=True)
+        _write_json(scene / "global.json", "global invariant text")
+        _write_json(scene / "0.json", "shot zero only")
+        _write_json(scene / "1.json", "shot one only")
+        (scene / "shot_durations.txt").write_text("1 1", encoding="utf-8")
+
+        ds = MultiTextConcatDataset(
+            str(root),
+            num_blocks=2,
+            scene_cut_prefix="CUT ",
+            ignore_global_json=True,
+            deterministic=True,
+        )
+        item = ds[0]
+
+        self.assertEqual(item["prompts"], ["shot zero only", "CUT shot one only"])
+        self.assertNotIn("global_caption", item)
+
 
 if __name__ == "__main__":
     unittest.main()
