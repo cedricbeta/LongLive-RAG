@@ -22,9 +22,13 @@ sys.path.insert(0, str(ROOT))
 
 from evaluation.multiview_prompts import build_spec_resolver
 from evaluation.video_consistency import (
+    build_clip_text_encoder,
     build_clip_adherence_scorer,
+    build_raft_dynamic_scorer,
     compare_cross_perspective_dirs,
     compare_video_dirs,
+    evaluate_cross_perspective_gate,
+    prompt_text_similarity_lint,
     save_metrics_json,
 )
 
@@ -38,10 +42,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--stride", type=int, default=1, help="Frame stride for faster evaluation.")
     parser.add_argument(
         "--mode",
-        choices=("temporal", "cross_perspective", "multiview_vbench"),
+        choices=("temporal", "long_multishot", "cross_perspective", "multiview_vbench"),
         default="temporal",
         help="temporal: adjacent/optical-flow consistency. cross_perspective: "
-        "within-one-video multi-shot scene consistency. multiview_vbench: VBench-"
+        "legacy alias for long_multishot within-one-video multi-shot scene consistency. multiview_vbench: VBench-"
         "style cross-perspective consistency over one-video-per-perspective sets "
         "(DINO subject + CLIP background + dynamics/diversity/adherence).",
     )
@@ -91,6 +95,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--clip_device", default=None, help="Device for the CLIP adherence scorer (auto if unset)."
     )
+    parser.add_argument("--motion_backend", default="farneback", choices=("farneback", "raft"))
+    parser.add_argument("--motion_tolerance", type=float, default=None)
+    parser.add_argument("--diversity_tolerance", type=float, default=0.0)
+    parser.add_argument("--adherence_tolerance", type=float, default=0.0)
+    parser.add_argument("--prompt_similarity_floor", type=float, default=0.12)
     return parser.parse_args()
 
 
@@ -141,7 +150,7 @@ def main() -> None:
     if args.mode == "multiview_vbench":
         _run_multiview_vbench(args)
         return
-    if args.mode == "cross_perspective":
+    if args.mode in {"long_multishot", "cross_perspective"}:
         if args.prompts_dir:
             shots_for = build_spec_resolver(
                 args.prompts_dir,
@@ -153,6 +162,11 @@ def main() -> None:
         else:
             raise SystemExit("cross_perspective mode requires --num_shots or --prompts_dir")
         adherence_scorer = None
+        invariant_scorer = None
+        subject_encoder = None
+        background_encoder = None
+        dynamic_scorer = None
+        prompt_lint = {}
         if args.score_adherence:
             if not args.prompts_dir:
                 raise SystemExit("--score_adherence requires --prompts_dir for shot captions")
@@ -161,14 +175,47 @@ def main() -> None:
                 pretrained=args.clip_pretrained,
                 device=args.clip_device,
             )
+            invariant_scorer = adherence_scorer
+        if args.mode == "long_multishot":
+            from evaluation.vbench_consistency import build_clip_image_encoder, build_dino_encoder
+            subject_encoder = build_dino_encoder(device=args.clip_device)
+            background_encoder = build_clip_image_encoder(device=args.clip_device)
+            if args.motion_backend == "raft":
+                dynamic_scorer = build_raft_dynamic_scorer(device=args.clip_device)
+            if args.prompts_dir:
+                from evaluation.multiview_prompts import load_shot_specs
+                text_encoder = build_clip_text_encoder(
+                    model_name=args.clip_model, pretrained=args.clip_pretrained, device=args.clip_device
+                )
+                prompt_lint = {
+                    scene: prompt_text_similarity_lint(
+                        spec["captions"], text_encoder, floor=args.prompt_similarity_floor
+                    )
+                    for scene, spec in load_shot_specs(args.prompts_dir).items()
+                }
         result = compare_cross_perspective_dirs(
             args.baseline_dir,
             args.kv_rag_dir,
             shots_for=shots_for,
             adherence_scorer=adherence_scorer,
+            invariant_scorer=invariant_scorer,
+            subject_encoder=subject_encoder,
+            background_encoder=background_encoder,
+            dynamic_scorer=dynamic_scorer,
             max_frames=args.max_frames,
             stride=max(1, args.stride),
         )
+        if args.mode == "long_multishot":
+            gate = evaluate_cross_perspective_gate(
+                result,
+                min_consistency_wins=max(1, -(-result["num_pairs"] // 2)),
+                adherence_tolerance=args.adherence_tolerance,
+                diversity_tolerance=args.diversity_tolerance,
+                motion_tolerance=args.motion_tolerance,
+                require_adherence=args.score_adherence,
+                require_invariant=True,
+            )
+            result = {"gate": gate, "comparison": result, "prompt_lint": prompt_lint}
     else:
         result = compare_video_dirs(
             args.baseline_dir,
@@ -178,9 +225,10 @@ def main() -> None:
         )
     save_metrics_json(result, args.output_json)
     print(f"Wrote metrics: {os.path.abspath(args.output_json)}")
-    print(f"Compared pairs: {result['num_pairs']}")
+    comparison = result.get("comparison", result) if isinstance(result, dict) else result
+    print(f"Compared pairs: {comparison['num_pairs']}")
     print("Delta means (KV-RAG - baseline):")
-    for name, stats in result["delta_summary"].items():
+    for name, stats in comparison["delta_summary"].items():
         print(f"  {name}: {stats['mean']:.6f}")
 
 

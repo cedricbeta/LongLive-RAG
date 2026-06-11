@@ -14,7 +14,7 @@ from __future__ import annotations
 import json
 import re
 from pathlib import Path
-from typing import Iterable
+from typing import Callable, Iterable
 
 import cv2
 import numpy as np
@@ -345,6 +345,169 @@ def _mean_pairwise(features: np.ndarray) -> float:
     return float(np.mean(sims)) if sims else float("nan")
 
 
+def _centroid_cosine(features: np.ndarray) -> float:
+    """EntityBench-style mean cosine of each unit embedding to the scene centroid."""
+    feats = np.asarray(features, dtype=np.float64)
+    if feats.ndim != 2 or feats.shape[0] < 2:
+        return float("nan")
+    norms = np.linalg.norm(feats, axis=1, keepdims=True)
+    feats = feats / np.clip(norms, 1e-8, None)
+    centroid = feats.mean(axis=0)
+    n = np.linalg.norm(centroid)
+    if n <= 1e-12:
+        return float("nan")
+    centroid = centroid / n
+    return float(np.mean(feats @ centroid))
+
+
+def _shot_sample(frames: np.ndarray, start: int, end: int, count: int = 3) -> np.ndarray:
+    """Evenly sample representative frames from one shot range."""
+    if end <= start:
+        return frames[start:start]
+    k = max(1, min(int(count), end - start))
+    idx = np.linspace(start, end - 1, num=k).round().astype(int)
+    return frames[idx]
+
+
+def shot_anchor_centroid_consistency(
+    subject_embeddings: np.ndarray,
+    background_embeddings: np.ndarray,
+) -> dict[str, float]:
+    """Cross-shot centroid score from per-shot DINO subject + CLIP background anchors."""
+    subject = _centroid_cosine(subject_embeddings)
+    background = _centroid_cosine(background_embeddings)
+    vals = [v for v in (subject, background) if not np.isnan(v)]
+    aggregate = float(np.mean(vals)) if len(vals) == 2 else float("nan")
+    return {
+        "subject_anchor_consistency": subject,
+        "background_anchor_consistency": background,
+        "anchor_centroid_consistency": aggregate,
+    }
+
+
+def shot_anchor_metrics(
+    frames: np.ndarray,
+    ranges: list[tuple[int, int]],
+    *,
+    subject_encoder: Callable[[np.ndarray], np.ndarray] | None = None,
+    background_encoder: Callable[[np.ndarray], np.ndarray] | None = None,
+    frames_per_shot: int = 3,
+) -> dict[str, float]:
+    """Per-shot anchor embeddings and centroid agreement.
+
+    ``subject_encoder`` is the DINO image encoder and ``background_encoder`` is
+    the CLIP image encoder used by the VBench dimensions. Each shot is reduced
+    to one mean-normalized embedding per backbone, then scored against the
+    per-scene centroid. If either backbone is absent the gate treats the result
+    as unscorable and fails closed.
+    """
+    if subject_encoder is None or background_encoder is None:
+        return {
+            "subject_anchor_consistency": float("nan"),
+            "background_anchor_consistency": float("nan"),
+            "anchor_centroid_consistency": float("nan"),
+        }
+
+    def encode_video_shot(encoder, sample):
+        feats = np.asarray(encoder(sample), dtype=np.float64)
+        if feats.ndim != 2 or feats.shape[0] == 0:
+            return np.full((1,), np.nan, dtype=np.float64)
+        norms = np.linalg.norm(feats, axis=1, keepdims=True)
+        feats = feats / np.clip(norms, 1e-8, None)
+        emb = feats.mean(axis=0)
+        n = np.linalg.norm(emb)
+        return emb / n if n > 0 else emb
+
+    subject, background = [], []
+    for start, end in ranges:
+        sample = _shot_sample(frames, start, end, frames_per_shot)
+        if sample.shape[0] == 0:
+            continue
+        subject.append(encode_video_shot(subject_encoder, sample))
+        background.append(encode_video_shot(background_encoder, sample))
+    if len(subject) < 2 or len(background) < 2:
+        return {
+            "subject_anchor_consistency": float("nan"),
+            "background_anchor_consistency": float("nan"),
+            "anchor_centroid_consistency": float("nan"),
+        }
+    return shot_anchor_centroid_consistency(np.stack(subject), np.stack(background))
+
+
+def motion_profile_signature(frames: np.ndarray, *, bins: int = 8) -> np.ndarray:
+    """Per-shot motion-profile proxy: histogram of frame-to-frame luminance change."""
+    if frames.ndim != 4 or frames.shape[0] < 2:
+        return np.zeros(bins + 2, dtype=np.float64)
+    grays = np.stack([
+        cv2.resize(cv2.cvtColor(f, cv2.COLOR_RGB2GRAY), (32, 32),
+                   interpolation=cv2.INTER_AREA).astype(np.float32) / 255.0
+        for f in frames
+    ], axis=0)
+    mags = np.abs(np.diff(grays, axis=0)).reshape(-1)
+    hist, _ = np.histogram(mags, bins=bins, range=(0.0, 1.0))
+    hist = hist.astype(np.float64)
+    hist /= max(hist.sum(), 1e-8)
+    sig = np.concatenate([hist, [float(mags.mean()), float(mags.std())]])
+    norm = np.linalg.norm(sig)
+    return sig / norm if norm > 0 else sig
+
+
+def farneback_dynamic_degree(frames: np.ndarray, *, sample: int = 12) -> float:
+    """CPU optical-flow dynamic-degree proxy used by unit tests.
+
+    The rendered gate can pass a RAFT scorer via ``dynamic_scorer``; this
+    Farneback path is deterministic and dependency-light for GPU-free tests.
+    """
+    if frames.ndim != 4 or frames.shape[0] < 2:
+        return 0.0
+    idx = np.linspace(0, frames.shape[0] - 1, num=min(sample + 1, frames.shape[0]))
+    idx = np.unique(idx.round().astype(int))
+    mags = []
+    for a, b in zip(idx[:-1], idx[1:]):
+        g0 = cv2.cvtColor(frames[a], cv2.COLOR_RGB2GRAY)
+        g1 = cv2.cvtColor(frames[b], cv2.COLOR_RGB2GRAY)
+        flow = cv2.calcOpticalFlowFarneback(g0, g1, None, 0.5, 3, 15, 3, 5, 1.2, 0)
+        mags.append(float(np.mean(np.sqrt(flow[..., 0] ** 2 + flow[..., 1] ** 2))))
+    return float(np.mean(mags)) if mags else 0.0
+
+
+def build_raft_dynamic_scorer(*, device: str | None = None, sample: int = 12):
+    """Return ``scorer(frames_rgb) -> dynamic_degree`` using torchvision RAFT."""
+    import torch
+    import torch.nn.functional as torch_f
+    from torchvision.models.optical_flow import Raft_Large_Weights, raft_large
+
+    dev = device or ("cuda" if torch.cuda.is_available() else "cpu")
+    weights = Raft_Large_Weights.DEFAULT
+    model = raft_large(weights=weights, progress=False).to(dev).eval()
+    transforms = weights.transforms()
+
+    def _prep(frame: np.ndarray):
+        x = torch.from_numpy(frame.astype(np.float32)).permute(2, 0, 1).unsqueeze(0)
+        x = x.to(dev) / 255.0
+        h, w = x.shape[-2:]
+        nh = max(64, int(np.ceil(h / 8.0) * 8))
+        nw = max(64, int(np.ceil(w / 8.0) * 8))
+        if (nh, nw) != (h, w):
+            x = torch_f.interpolate(x, size=(nh, nw), mode="bilinear", align_corners=False)
+        return x
+
+    def _score(frames: np.ndarray) -> float:
+        if frames.ndim != 4 or frames.shape[0] < 2:
+            return 0.0
+        idx = np.linspace(0, frames.shape[0] - 1, num=min(sample + 1, frames.shape[0]))
+        idx = np.unique(idx.round().astype(int))
+        mags: list[float] = []
+        with torch.no_grad():
+            for a, b in zip(idx[:-1], idx[1:]):
+                img1, img2 = transforms(_prep(frames[a]), _prep(frames[b]))
+                flow = model(img1, img2)[-1]
+                mags.append(float(flow.norm(dim=1).mean().item()))
+        return float(np.mean(mags)) if mags else 0.0
+
+    return _score
+
+
 def cross_perspective_consistency(scene_feats: np.ndarray, comp_feats: np.ndarray) -> dict[str, float]:
     """Pure scoring over per-shot feature means (no video decode).
 
@@ -359,7 +522,7 @@ def cross_perspective_consistency(scene_feats: np.ndarray, comp_feats: np.ndarra
     # diversity is high when shots are framed differently; ~0 means copy-collapse
     diversity = float("nan") if np.isnan(comp_similarity) else 1.0 - comp_similarity
     return {
-        "cross_shot_scene_consistency": scene_consistency,
+        "palette_agreement": scene_consistency,
         "inter_shot_composition_diversity": diversity,
         "num_shots": float(scene_feats.shape[0]),
     }
@@ -386,16 +549,19 @@ def cross_perspective_metrics(
     scene_per_frame = np.stack([scene_color_signature(f) for f in frames], axis=0)
     comp_per_frame = np.stack([composition_signature(f) for f in frames], axis=0)
 
-    scene_feats, comp_feats, within_motion = [], [], []
+    scene_feats, comp_feats, motion_feats, within_motion = [], [], [], []
     for start, end in ranges:
         scene_feats.append(scene_per_frame[start:end].mean(axis=0))
         comp_feats.append(comp_per_frame[start:end].mean(axis=0))
+        motion_feats.append(motion_profile_signature(frames[start:end]))
         if end - start >= 2:
             seg = comp_per_frame[start:end]
             within_motion.append(float(np.mean(np.abs(np.diff(seg, axis=0)))))
 
     result = cross_perspective_consistency(np.stack(scene_feats), np.stack(comp_feats))
+    result["motion_profile_agreement"] = _mean_pairwise(np.stack(motion_feats))
     result["within_shot_motion"] = float(np.mean(within_motion)) if within_motion else 0.0
+    result["dynamic_degree"] = farneback_dynamic_degree(frames)
     return result
 
 
@@ -499,6 +665,96 @@ def build_clip_adherence_scorer(
     return _score_transformers
 
 
+def build_clip_text_encoder(
+    *, model_name: str = "ViT-B-32", pretrained: str = "openai", device: str | None = None
+):
+    """Return ``encoder(texts) -> [N, D]`` CLIP text embeddings for prompt lint."""
+    try:
+        import torch  # noqa: F401
+    except Exception as exc:  # pragma: no cover
+        raise RuntimeError("CLIP text lint requires PyTorch.") from exc
+
+    import torch
+
+    resolved_device = device or ("cuda" if torch.cuda.is_available() else "cpu")
+    try:
+        import open_clip
+        model, _, _ = open_clip.create_model_and_transforms(model_name, pretrained=pretrained)
+        tokenizer = open_clip.get_tokenizer(model_name)
+        model = model.to(resolved_device).eval()
+
+        def _encode_open_clip(texts):
+            text = tokenizer(list(texts)).to(resolved_device)
+            with torch.no_grad():
+                feat = model.encode_text(text)
+                feat = feat / feat.norm(dim=-1, keepdim=True)
+            return feat.float().cpu().numpy()
+
+        return _encode_open_clip
+    except Exception:
+        pass
+
+    try:
+        from transformers import CLIPModel, CLIPProcessor
+    except ImportError as exc:
+        raise RuntimeError(
+            "CLIP text lint needs `open_clip_torch` or `transformers`."
+        ) from exc
+
+    hf_name = "openai/clip-vit-base-patch32"
+    try:
+        model = CLIPModel.from_pretrained(hf_name).to(resolved_device).eval()
+        processor = CLIPProcessor.from_pretrained(hf_name)
+    except Exception as exc:
+        raise RuntimeError(
+            f"Could not load {hf_name!r} for CLIP text lint; ensure it is cached."
+        ) from exc
+
+    def _encode_transformers(texts):
+        inputs = processor(text=list(texts), return_tensors="pt", padding=True, truncation=True)
+        inputs = inputs.to(resolved_device)
+        with torch.no_grad():
+            feat = model.get_text_features(**inputs)
+            feat = feat / feat.norm(dim=-1, keepdim=True)
+        return feat.float().cpu().numpy()
+
+    return _encode_transformers
+
+
+def prompt_text_similarity_lint(
+    captions: list[str],
+    text_encoder: Callable[[list[str]], np.ndarray] | None,
+    *,
+    floor: float,
+) -> dict[str, object]:
+    """Pairwise CLIP text-similarity matrix for shot captions."""
+    if text_encoder is None or len(captions) < 2:
+        return {
+            "matrix": [],
+            "min_pairwise": float("nan"),
+            "floor": float(floor),
+            "passed": False,
+            "blocked_reason": "CLIP text encoder unavailable" if text_encoder is None else "fewer than two captions",
+        }
+    emb = np.asarray(text_encoder(captions), dtype=np.float64)
+    norms = np.linalg.norm(emb, axis=1, keepdims=True)
+    emb = emb / np.clip(norms, 1e-8, None)
+    matrix = emb @ emb.T
+    off_diag = [float(matrix[i, j]) for i in range(matrix.shape[0])
+                for j in range(matrix.shape[1]) if i < j]
+    min_pairwise = float(np.min(off_diag)) if off_diag else float("nan")
+    passed = not np.isnan(min_pairwise) and min_pairwise >= floor
+    out = {
+        "matrix": [[float(v) for v in row] for row in matrix],
+        "min_pairwise": min_pairwise,
+        "floor": float(floor),
+        "passed": bool(passed),
+    }
+    if not passed:
+        out["blocked_reason"] = "shot captions below CLIP text-similarity floor"
+    return out
+
+
 def prompt_adherence_for_video(
     frames: np.ndarray,
     ranges: list[tuple[int, int]],
@@ -528,6 +784,34 @@ def prompt_adherence_for_video(
     }
 
 
+def invariant_probe_for_video(
+    frames: np.ndarray,
+    ranges: list[tuple[int, int]],
+    invariant_caption: str | None,
+    contrast_caption: str | None,
+    scorer,
+    *,
+    frames_per_shot: int = 3,
+) -> dict[str, float]:
+    """Per-shot CLIP margin: score(invariant) - score(contrast)."""
+    if scorer is None or not invariant_caption or not contrast_caption:
+        return {"invariant_margin_mean": float("nan"), "invariant_margin_min": float("nan")}
+    margins: list[float] = []
+    for start, end in ranges:
+        sample = _shot_sample(frames, start, end, frames_per_shot)
+        if sample.shape[0] == 0:
+            continue
+        inv = float(scorer(sample, invariant_caption))
+        con = float(scorer(sample, contrast_caption))
+        margins.append(inv - con)
+    if not margins:
+        return {"invariant_margin_mean": float("nan"), "invariant_margin_min": float("nan")}
+    return {
+        "invariant_margin_mean": float(np.mean(margins)),
+        "invariant_margin_min": float(np.min(margins)),
+    }
+
+
 def cross_perspective_evaluate_video(
     path: str | Path,
     *,
@@ -536,6 +820,12 @@ def cross_perspective_evaluate_video(
     chunk_durations: list[int] | None = None,
     captions: list[str] | None = None,
     adherence_scorer=None,
+    invariant_caption: str | None = None,
+    contrast_caption: str | None = None,
+    invariant_scorer=None,
+    subject_encoder=None,
+    background_encoder=None,
+    dynamic_scorer=None,
     max_frames: int | None = None,
     stride: int = 1,
 ) -> dict[str, float]:
@@ -554,10 +844,25 @@ def cross_perspective_evaluate_video(
             boundaries = derived
             num_shots = None
     metrics = cross_perspective_metrics(frames, num_shots=num_shots, boundaries=boundaries)
+    ranges = shot_ranges(frames.shape[0], num_shots=num_shots, boundaries=boundaries)
+    metrics.update(
+        shot_anchor_metrics(
+            frames, ranges,
+            subject_encoder=subject_encoder,
+            background_encoder=background_encoder,
+        )
+    )
+    if dynamic_scorer is not None:
+        metrics["dynamic_degree"] = float(dynamic_scorer(frames))
     if adherence_scorer is not None and captions:
-        ranges = shot_ranges(frames.shape[0], num_shots=num_shots, boundaries=boundaries)
         metrics.update(
             prompt_adherence_for_video(frames, ranges, captions, adherence_scorer)
+        )
+    if invariant_scorer is not None:
+        metrics.update(
+            invariant_probe_for_video(
+                frames, ranges, invariant_caption, contrast_caption, invariant_scorer
+            )
         )
     return metrics
 
@@ -568,6 +873,10 @@ def compare_cross_perspective_dirs(
     *,
     shots_for: "callable | int | None" = None,
     adherence_scorer=None,
+    invariant_scorer=None,
+    subject_encoder=None,
+    background_encoder=None,
+    dynamic_scorer=None,
     max_frames: int | None = None,
     stride: int = 1,
 ) -> dict[str, object]:
@@ -577,10 +886,10 @@ def compare_cross_perspective_dirs(
     (same shot count for all), or a callable ``stem -> spec`` where ``spec`` is
     one of: an int (shot count); a mapping with ``chunk_durations`` (exact,
     possibly uneven shot lengths) and optional ``captions``; or ``None`` (no
-    match -> the pair is skipped). The delta on ``cross_shot_scene_consistency``
-    is the consistency win; the companion deltas expose any viewpoint-variation
-    / motion collapse, and (when ``adherence_scorer`` is given) prompt-adherence
-    deltas drive the milestone non-regression guard.
+    match -> the pair is skipped). The delta on ``anchor_centroid_consistency``
+    is the gated consistency win; proxy/companion deltas expose palette,
+    viewpoint-variation, and motion collapse, and (when ``adherence_scorer`` is
+    given) prompt-adherence deltas drive the milestone non-regression guard.
     """
     pairs = pair_cross_perspective_dirs(baseline_dir, modified_dir)
 
@@ -607,6 +916,12 @@ def compare_cross_perspective_dirs(
             chunk_durations=spec.get("chunk_durations"),
             captions=spec.get("captions"),
             adherence_scorer=adherence_scorer,
+            invariant_caption=spec.get("invariant_caption"),
+            contrast_caption=spec.get("contrast_caption"),
+            invariant_scorer=invariant_scorer,
+            subject_encoder=subject_encoder,
+            background_encoder=background_encoder,
+            dynamic_scorer=dynamic_scorer,
             max_frames=max_frames,
             stride=stride,
         )
@@ -622,6 +937,8 @@ def compare_cross_perspective_dirs(
                 "stem": stem,
                 "baseline": str(baseline_path),
                 "modified": str(modified_path),
+                "theme": spec.get("theme"),
+                "negative_control": bool(spec.get("negative_control", False)),
                 "baseline_metrics": baseline_metrics,
                 "modified_metrics": modified_metrics,
                 "delta": deltas,
@@ -647,34 +964,115 @@ def compare_cross_perspective_dirs(
 def evaluate_cross_perspective_gate(
     result: dict[str, object],
     *,
+    metric: str = "anchor_centroid_consistency",
     min_consistency_wins: int = 2,
     adherence_tolerance: float = 0.0,
+    diversity_tolerance: float = 0.0,
+    motion_tolerance: float | None = None,
+    invariant_tolerance: float = 0.0,
     require_adherence: bool = False,
+    require_invariant: bool = True,
 ) -> dict[str, object]:
-    """Decide the milestone quality gate from a comparison ``result``.
-
-    Passes only when the modified pipeline beats the baseline on
-    ``cross_shot_scene_consistency`` for at least ``min_consistency_wins``
-    prompts AND (when ``require_adherence``) the modified per-shot prompt
-    adherence does not drop below baseline minus ``adherence_tolerance`` on any
-    evaluated prompt -- the anti-cheating guard that blocks a consistency win
-    bought by ignoring the prompts.
-    """
+    """Decide the guarded long-multishot gate from a comparison ``result``."""
+    records = result.get("records", [])
+    if not records:
+        return {
+            "passed": False,
+            "is_null_result": True,
+            "blocked_reason": "no comparable long_multishot records",
+            "metric": metric,
+            "num_pairs": 0,
+            "consistency_wins": 0,
+            "min_consistency_wins": min_consistency_wins,
+            "consistency_ok": False,
+            "require_adherence": bool(require_adherence),
+            "adherence_tolerance": adherence_tolerance,
+            "adherence_ok": False if require_adherence else True,
+            "adherence_failures": [],
+            "diversity_tolerance_relative": diversity_tolerance,
+            "diversity_ok": False,
+            "diversity_failures": [],
+            "motion_tolerance_relative": motion_tolerance,
+            "motion_ok": False,
+            "motion_failures": [],
+            "require_invariant": bool(require_invariant),
+            "invariant_tolerance": invariant_tolerance,
+            "invariant_ok": False if require_invariant else True,
+            "invariant_failures": [],
+            "scorable_ok": False,
+            "unscorable": ["records"],
+            "negative_control_ok": True,
+            "negative_control_failures": [],
+            "per_prompt": [],
+        }
     per_prompt = []
     consistency_wins = 0
     adherence_failures = []
-    for rec in result.get("records", []):
+    diversity_failures = []
+    motion_failures = []
+    invariant_failures = []
+    unscorable = []
+    negative_control_failures = []
+    for rec in records:
         b = rec["baseline_metrics"]
         m = rec["modified_metrics"]
         stem = rec.get("stem", rec.get("modified", "?"))
-        win = m["cross_shot_scene_consistency"] > b["cross_shot_scene_consistency"]
-        consistency_wins += int(win)
+        negative_control = bool(rec.get("negative_control", False))
+        b_metric, m_metric = b.get(metric, float("nan")), m.get(metric, float("nan"))
+        metric_scored = not (np.isnan(b_metric) or np.isnan(m_metric))
+        win = metric_scored and m_metric > b_metric
+        if win and not negative_control:
+            consistency_wins += 1
+        if not metric_scored:
+            unscorable.append(f"{stem}:{metric}")
         entry = {
             "stem": stem,
-            "consistency_baseline": b["cross_shot_scene_consistency"],
-            "consistency_modified": m["cross_shot_scene_consistency"],
+            "theme": rec.get("theme"),
+            "negative_control": negative_control,
+            "metric": metric,
+            "consistency_baseline": b_metric,
+            "consistency_modified": m_metric,
+            "subject_anchor_baseline": b.get("subject_anchor_consistency", float("nan")),
+            "subject_anchor_modified": m.get("subject_anchor_consistency", float("nan")),
+            "background_anchor_baseline": b.get("background_anchor_consistency", float("nan")),
+            "background_anchor_modified": m.get("background_anchor_consistency", float("nan")),
+            "palette_agreement_baseline": b.get("palette_agreement", float("nan")),
+            "palette_agreement_modified": m.get("palette_agreement", float("nan")),
+            "motion_profile_agreement_baseline": b.get("motion_profile_agreement", float("nan")),
+            "motion_profile_agreement_modified": m.get("motion_profile_agreement", float("nan")),
             "consistency_win": bool(win),
         }
+
+        b_div, m_div = b.get("inter_shot_composition_diversity"), m.get("inter_shot_composition_diversity")
+        div_ok = False
+        if b_div is None or m_div is None or np.isnan(b_div) or np.isnan(m_div):
+            unscorable.append(f"{stem}:inter_shot_composition_diversity")
+        else:
+            div_ok = m_div >= b_div * (1.0 - diversity_tolerance)
+            if not div_ok:
+                diversity_failures.append(stem)
+        entry.update(
+            diversity_baseline=b_div if b_div is not None else float("nan"),
+            diversity_modified=m_div if m_div is not None else float("nan"),
+            diversity_ok=bool(div_ok),
+        )
+
+        b_dyn, m_dyn = b.get("dynamic_degree"), m.get("dynamic_degree")
+        motion_ok = False
+        if b_dyn is None or m_dyn is None or np.isnan(b_dyn) or np.isnan(m_dyn) or motion_tolerance is None:
+            reason = "dynamic_degree" if motion_tolerance is not None else "motion_tolerance"
+            unscorable.append(f"{stem}:{reason}")
+        else:
+            motion_ok = m_dyn >= b_dyn * (1.0 - motion_tolerance)
+            if not motion_ok:
+                motion_failures.append(stem)
+        entry.update(
+            dynamic_degree_baseline=b_dyn if b_dyn is not None else float("nan"),
+            dynamic_degree_modified=m_dyn if m_dyn is not None else float("nan"),
+            motion_tolerance_relative=motion_tolerance,
+            motion_ok=bool(motion_ok),
+        )
+
         if require_adherence:
             b_mean = b.get("prompt_adherence_mean", float("nan"))
             m_mean = m.get("prompt_adherence_mean", float("nan"))
@@ -695,13 +1093,64 @@ def evaluate_cross_perspective_gate(
             )
             if not ok:
                 adherence_failures.append(stem)
+        else:
+            ok = True
+
+        inv_ok = True
+        if require_invariant:
+            b_inv_mean = b.get("invariant_margin_mean", float("nan"))
+            m_inv_mean = m.get("invariant_margin_mean", float("nan"))
+            b_inv_min = b.get("invariant_margin_min", float("nan"))
+            m_inv_min = m.get("invariant_margin_min", float("nan"))
+            inv_ok = (
+                not (np.isnan(b_inv_mean) or np.isnan(m_inv_mean) or np.isnan(b_inv_min) or np.isnan(m_inv_min))
+                and m_inv_mean >= b_inv_mean - invariant_tolerance
+                and m_inv_min >= b_inv_min - invariant_tolerance
+            )
+            entry.update(
+                invariant_margin_baseline_mean=b_inv_mean,
+                invariant_margin_modified_mean=m_inv_mean,
+                invariant_margin_baseline_min=b_inv_min,
+                invariant_margin_modified_min=m_inv_min,
+                invariant_ok=bool(inv_ok),
+            )
+            if not inv_ok:
+                invariant_failures.append(stem)
+
+        if negative_control and win and (not require_adherence or ok):
+            negative_control_failures.append(stem)
+            entry["negative_control_ok"] = False
+            entry["negative_control_reason"] = (
+                "consistency win without adherence loss is text-override evidence, not a pass"
+            )
+        elif negative_control:
+            entry["negative_control_ok"] = True
         per_prompt.append(entry)
 
     consistency_ok = consistency_wins >= min_consistency_wins
     adherence_ok = (not require_adherence) or not adherence_failures
-    passed = bool(consistency_ok and adherence_ok)
+    diversity_ok = not diversity_failures
+    motion_ok = not motion_failures and not any(":motion_tolerance" in x for x in unscorable)
+    invariant_ok = (not require_invariant) or not invariant_failures
+    scorable_ok = not unscorable
+    negative_control_ok = not negative_control_failures
+    passed = bool(
+        consistency_ok and adherence_ok and diversity_ok and motion_ok
+        and invariant_ok and scorable_ok and negative_control_ok
+    )
+    blocked_reasons = []
+    if unscorable:
+        blocked_reasons.append(f"unscorable input(s): {sorted(set(unscorable))}")
+    if negative_control_failures:
+        blocked_reasons.append(
+            f"negative control indicates text override: {negative_control_failures}"
+        )
+    blocked_reason = "; ".join(blocked_reasons) if blocked_reasons else None
     return {
         "passed": passed,
+        "is_null_result": bool(not passed),
+        "blocked_reason": blocked_reason,
+        "metric": metric,
         "num_pairs": len(per_prompt),
         "consistency_wins": consistency_wins,
         "min_consistency_wins": min_consistency_wins,
@@ -710,6 +1159,20 @@ def evaluate_cross_perspective_gate(
         "adherence_tolerance": adherence_tolerance,
         "adherence_ok": bool(adherence_ok),
         "adherence_failures": adherence_failures,
+        "diversity_tolerance_relative": diversity_tolerance,
+        "diversity_ok": bool(diversity_ok),
+        "diversity_failures": diversity_failures,
+        "motion_tolerance_relative": motion_tolerance,
+        "motion_ok": bool(motion_ok),
+        "motion_failures": motion_failures,
+        "require_invariant": bool(require_invariant),
+        "invariant_tolerance": invariant_tolerance,
+        "invariant_ok": bool(invariant_ok),
+        "invariant_failures": invariant_failures,
+        "scorable_ok": bool(scorable_ok),
+        "unscorable": sorted(set(unscorable)),
+        "negative_control_ok": bool(negative_control_ok),
+        "negative_control_failures": negative_control_failures,
         "per_prompt": per_prompt,
     }
 

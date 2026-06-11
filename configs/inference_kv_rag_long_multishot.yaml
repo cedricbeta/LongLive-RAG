@@ -1,0 +1,71 @@
+# Long-video multi-shot KV-RAG inference example for Wan2.2-TI2V-5B.
+# Renders one concatenated video per scene folder. Baseline disables kv_rag;
+# the modified variant keeps shot-0 scene anchors and injects them at later
+# shot boundaries.
+
+model_kwargs:
+  model_name: Wan2.2-TI2V-5B
+  timestep_shift: 5.0
+  num_frame_per_block: 8
+  local_attn_size: 32
+
+use_ema: false
+output_folder: videos/long_multishot_kv_rag
+num_samples: 1
+save_latents_only: false
+num_output_frames: 128
+
+data:
+  data_path: example/long_multishot_prompts
+  image_or_video_shape:
+  - 1
+  - 128
+  - 48
+  - 44
+  - 80
+
+inference:
+  sampling_steps: 4
+  sink_size: 8
+  multiview_per_perspective: false
+  guidance_scale: 1.0
+  multi_shot_sink: true
+  multi_shot_rope_offset: 8
+  scene_cut_prefix: "The camera cuts to another shot of the same continuous cooking event. "
+  streaming_vae: false
+  async_vae: false
+  vae_type: wan
+  vae_device: "cuda:0"
+
+  kv_rag:
+    enabled: true
+    layers: [0, 7, 14, 21, 29]
+    top_k: 2
+    max_entries: 32
+    max_tokens_per_entry: 1024
+    min_frame_gap: 0
+    retrieve_during_denoise: true
+    retrieve_during_recache: false
+    store_after_recache: true
+    token_policy: uniform
+    similarity: cosine
+    store_on_cpu: false
+    verbose: true
+    summary_prerope: true
+    summary_per_head: true
+    reinject_rope: true
+    frame_aligned_store: true
+    scene_memory_enabled: true
+    scene_memory_max_entries: 8
+    scene_score_bonus: 0.15
+    boundary_inject_anchors: 2
+    retrieval_key_mode: subject_identity
+    retrieval_key_centroids: 4
+    retrieval_key_top_m: 8
+    retrieval_value_mode: raw
+
+checkpoints:
+  generator_ckpt: checkpoints/longlive2_5b/longlive2_merged_generator.pt
+
+logging:
+  seed: 0

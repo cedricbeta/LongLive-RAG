@@ -1,0 +1,147 @@
+{
+  "blocked_reason": "ill-posed prompt scene(s) below text-similarity floor: ['frying_egg_same_event', 'sunlit_balcony_tour', 'skateboarder_high_motion']; need >=3 lint-passing non-control scenes, got 0; requested scorer(s) unavailable: ['adherence_clip', 'background_clip', 'dynamic_degree', 'prompt_lint_clip_text', 'subject_dino']",
+  "finalists": [
+    {
+      "blocked_reason": "ill-posed prompt scene(s) below text-similarity floor: ['frying_egg_same_event', 'sunlit_balcony_tour', 'skateboarder_high_motion']; need >=3 lint-passing non-control scenes, got 0; requested scorer(s) unavailable: ['adherence_clip', 'background_clip', 'dynamic_degree', 'prompt_lint_clip_text', 'subject_dino']",
+      "key": "subject_identity",
+      "mean_aggregate_delta": null,
+      "num_scenes": 0,
+      "passed": false,
+      "scene_wins": 0,
+      "settings": {
+        "boundary_inject_anchors": 2,
+        "retrieval_key_mode": "subject_identity",
+        "retrieval_value_mode": "raw",
+        "scene_memory_enabled": true,
+        "scene_score_bonus": 0.15
+      },
+      "value": "raw"
+    },
+    {
+      "blocked_reason": "ill-posed prompt scene(s) below text-similarity floor: ['frying_egg_same_event', 'sunlit_balcony_tour', 'skateboarder_high_motion']; need >=3 lint-passing non-control scenes, got 0; requested scorer(s) unavailable: ['adherence_clip', 'background_clip', 'dynamic_degree', 'prompt_lint_clip_text', 'subject_dino']",
+      "key": "attention_native",
+      "mean_aggregate_delta": null,
+      "num_scenes": 0,
+      "passed": false,
+      "scene_wins": 0,
+      "settings": {
+        "boundary_inject_anchors": 2,
+        "retrieval_key_mode": "attention_native",
+        "retrieval_value_mode": "raw",
+        "scene_memory_enabled": true,
+        "scene_score_bonus": 0.15
+      },
+      "value": "raw"
+    },
+    {
+      "blocked_reason": "ill-posed prompt scene(s) below text-similarity floor: ['frying_egg_same_event', 'sunlit_balcony_tour', 'skateboarder_high_motion']; need >=3 lint-passing non-control scenes, got 0; requested scorer(s) unavailable: ['adherence_clip', 'background_clip', 'dynamic_degree', 'prompt_lint_clip_text', 'subject_dino']",
+      "key": "subject_identity",
+      "mean_aggregate_delta": null,
+      "num_scenes": 0,
+      "passed": false,
+      "scene_wins": 0,
+      "settings": {
+        "boundary_inject_anchors": 2,
+        "retrieval_key_mode": "subject_identity",
+        "retrieval_value_mode": "attention_mass",
+        "scene_memory_enabled": true,
+        "scene_score_bonus": 0.15
+      },
+      "value": "attention_mass"
+    }
+  ],
+  "guards": {
+    "adherence_tolerance": 0.02,
+    "diversity_tolerance_relative": 0.1,
+    "invariant_tolerance": 0.0,
+    "motion_tolerance_relative": 0.2,
+    "require_adherence": true
+  },
+  "is_null_result": true,
+  "is_prefilter": false,
+  "lint_passing_main_scenes": [],
+  "negative_controls": [
+    "frying_egg_closeup"
+  ],
+  "prompt_lint": {
+    "frying_egg_closeup": {
+      "blocked_reason": "CLIP text encoder unavailable: CLIP text lint needs `open_clip_torch` or `transformers`.",
+      "floor": 0.12,
+      "matrix": [],
+      "negative_control": true,
+      "passed": false
+    },
+    "frying_egg_same_event": {
+      "blocked_reason": "CLIP text encoder unavailable: CLIP text lint needs `open_clip_torch` or `transformers`.",
+      "floor": 0.12,
+      "matrix": [],
+      "negative_control": false,
+      "passed": false
+    },
+    "skateboarder_high_motion": {
+      "blocked_reason": "CLIP text encoder unavailable: CLIP text lint needs `open_clip_torch` or `transformers`.",
+      "floor": 0.12,
+      "matrix": [],
+      "negative_control": false,
+      "passed": false
+    },
+    "sunlit_balcony_tour": {
+      "blocked_reason": "CLIP text encoder unavailable: CLIP text lint needs `open_clip_torch` or `transformers`.",
+      "floor": 0.12,
+      "matrix": [],
+      "negative_control": false,
+      "passed": false
+    }
+  },
+  "ranking": [
+    {
+      "blocked_reason": "ill-posed prompt scene(s) below text-similarity floor: ['frying_egg_same_event', 'sunlit_balcony_tour', 'skateboarder_high_motion']; need >=3 lint-passing non-control scenes, got 0; requested scorer(s) unavailable: ['adherence_clip', 'background_clip', 'dynamic_degree', 'prompt_lint_clip_text', 'subject_dino']",
+      "key": "subject_identity",
+      "mean_aggregate_delta": null,
+      "passed": false,
+      "scene_wins": "0/0",
+      "value": "raw"
+    },
+    {
+      "blocked_reason": "ill-posed prompt scene(s) below text-similarity floor: ['frying_egg_same_event', 'sunlit_balcony_tour', 'skateboarder_high_motion']; need >=3 lint-passing non-control scenes, got 0; requested scorer(s) unavailable: ['adherence_clip', 'background_clip', 'dynamic_degree', 'prompt_lint_clip_text', 'subject_dino']",
+      "key": "attention_native",
+      "mean_aggregate_delta": null,
+      "passed": false,
+      "scene_wins": "0/0",
+      "value": "raw"
+    },
+    {
+      "blocked_reason": "ill-posed prompt scene(s) below text-similarity floor: ['frying_egg_same_event', 'sunlit_balcony_tour', 'skateboarder_high_motion']; need >=3 lint-passing non-control scenes, got 0; requested scorer(s) unavailable: ['adherence_clip', 'background_clip', 'dynamic_degree', 'prompt_lint_clip_text', 'subject_dino']",
+      "key": "subject_identity",
+      "mean_aggregate_delta": null,
+      "passed": false,
+      "scene_wins": "0/0",
+      "value": "attention_mass"
+    }
+  ],
+  "render_attempted": false,
+  "scorer_coverage": {
+    "adherence_clip": {
+      "loaded": false,
+      "requested": true
+    },
+    "background_clip": {
+      "loaded": false,
+      "requested": true
+    },
+    "dynamic_degree": {
+      "loaded": false,
+      "requested": "raft"
+    },
+    "prompt_lint_clip_text": {
+      "loaded": false,
+      "requested": true
+    },
+    "subject_dino": {
+      "loaded": false,
+      "requested": true
+    }
+  },
+  "selector": "long_multishot shot-anchor centroid gate",
+  "winner": null
+}

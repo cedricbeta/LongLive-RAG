@@ -569,6 +569,12 @@ class TestCollapseVisible(unittest.TestCase):
 
 
 class TestMultiviewVbenchGate(unittest.TestCase):
+    def test_empty_records_fail_closed(self):
+        gate = evaluate_multiview_vbench_gate({"records": []})
+        self.assertFalse(gate["passed"])
+        self.assertTrue(gate["is_null_result"])
+        self.assertIn("blocked_reason", gate)
+
     def test_pass_on_majority_aggregate_wins(self):
         result = {"records": [_vbench_record("a", 0.5, 0.6), _vbench_record("b", 0.5, 0.7)]}
         gate = evaluate_multiview_vbench_gate(result)

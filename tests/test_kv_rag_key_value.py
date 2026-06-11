@@ -52,7 +52,9 @@ class TestModesRegistered(unittest.TestCase):
     def test_new_keys_and_value_present(self):
         self.assertIn("subject_identity", KEY_MODES)
         self.assertIn("semantic", KEY_MODES)
+        self.assertIn("attention_native", KEY_MODES)
         self.assertIn("top_frame", VALUE_MODES)
+        self.assertIn("attention_mass", VALUE_MODES)
 
     def test_unknown_key_fails_fast(self):
         with self.assertRaises(ValueError):
@@ -244,6 +246,18 @@ class TestTopFrameValue(unittest.TestCase):
         # the kept frame should be the high-norm one (mean close to +10 offset).
         self.assertGreater(float(entry.k.mean()), 1.0)
 
+    def test_top_frame_records_real_kept_token_range(self):
+        mem = _mem(retrieval_value_mode="top_frame")
+        frames, fseq, heads, dim = 3, 4, 2, 4
+        k = torch.zeros(1, frames * fseq, heads, dim)
+        k[:, 2 * fseq:3 * fseq] = 9.0  # frame index 2 is retained
+        v = torch.randn(1, frames * fseq, heads, dim)
+        mem.add(layer=0, k_pre=k, k_post=k, v=v, start_token=100, end_token=112,
+                frame_seqlen=fseq, h=2, w=2, frames=frames)
+        entry = mem.entries_by_layer[0][0]
+        self.assertEqual(entry.start_token, 108)
+        self.assertEqual(entry.end_token, 112)
+
     def test_decoupling_semantic_key_with_top_frame_value(self):
         # AC-3.1: a semantic key can index a compressed top_frame value.
         mem = _mem(retrieval_key_mode="semantic", retrieval_value_mode="top_frame")
@@ -251,6 +265,73 @@ class TestTopFrameValue(unittest.TestCase):
         k, v, frames, fseq = _frame_aligned_kv(frames=3, frame_seqlen=4)
         _store(mem, k, v, frames, fseq)
         self.assertEqual(mem.entries_by_layer[0][0].frames, 1)
+
+
+class TestAttentionNativeKey(unittest.TestCase):
+    def test_bounds_score_live_query_against_qk(self):
+        mem = _mem(retrieval_key_mode="attention_native")
+        q = torch.zeros(1, 2, 1, 4)
+        q[:, :, :, 0] = 4.0
+        matching = torch.zeros(1, 2, 1, 4)
+        matching[:, :, :, 0] = 3.0
+        opposing = torch.zeros(1, 2, 1, 4)
+        opposing[:, :, :, 0] = -3.0
+
+        q_live = mem._compute_key(q, for_query=True)
+        s_match = mem._score_attention_native(q_live, mem._compute_key(matching))
+        s_oppose = mem._score_attention_native(q_live, mem._compute_key(opposing))
+        self.assertGreater(s_match, s_oppose)
+
+    def test_retrieve_uses_attention_native_key(self):
+        mem = KVRAGMemory(KVRAGConfig(
+            enabled=True, layers=(0,), top_k=1, frame_aligned_store=True,
+            retrieval_key_mode="attention_native",
+        ))
+        good_k = torch.zeros(1, 8, 1, 4); good_k[:, :, :, 0] = 2.0
+        bad_k = torch.zeros(1, 8, 1, 4); bad_k[:, :, :, 0] = -2.0
+        v = torch.randn(1, 8, 1, 4)
+        _store(mem, bad_k, v, frames=2, frame_seqlen=4, chunk_index=0)
+        _store(mem, good_k, v, frames=2, frame_seqlen=4, chunk_index=1)
+        q = torch.zeros(1, 4, 1, 4); q[:, :, :, 0] = 1.0
+        out = mem.retrieve(layer=0, query=q, current_start=100, frame_seqlen=4,
+                           dtype=torch.float32, device=torch.device("cpu"))
+        self.assertIsNotNone(out)
+        _, _, selected = out
+        self.assertEqual(selected[0].chunk_index, 1)
+
+
+class TestAttentionMassValue(unittest.TestCase):
+    def test_attention_mass_requires_mass_vector(self):
+        mem = _mem(retrieval_value_mode="attention_mass")
+        k, v, frames, fseq = _frame_aligned_kv(frames=2, frame_seqlen=4)
+        with self.assertRaises(RuntimeError):
+            _store(mem, k, v, frames, fseq)
+
+    def test_attention_mass_keeps_highest_received_attention_frame(self):
+        mem = _mem(retrieval_value_mode="attention_mass")
+        frames, fseq, heads, dim = 3, 4, 1, 2
+        k = torch.randn(1, frames * fseq, heads, dim)
+        v = torch.randn(1, frames * fseq, heads, dim)
+        mass = torch.zeros(frames * fseq)
+        mass[fseq:2 * fseq] = 10.0  # frame index 1, independent of key norm
+        mem.add(layer=0, k_pre=k, k_post=k, v=v, start_token=20, end_token=32,
+                frame_seqlen=fseq, h=2, w=2, frames=frames,
+                received_attention=mass)
+        entry = mem.entries_by_layer[0][0]
+        self.assertEqual(entry.frames, 1)
+        self.assertEqual(entry.num_tokens, fseq)
+        self.assertEqual(entry.start_token, 24)
+        self.assertEqual(entry.end_token, 28)
+
+    def test_estimate_received_attention_returns_source_token_mass(self):
+        mem = _mem(retrieval_value_mode="attention_mass")
+        q = torch.zeros(1, 2, 1, 4)
+        q[:, :, :, 0] = 10.0
+        k = torch.zeros(1, 5, 1, 4)
+        k[:, -2, :, 0] = 5.0  # first source token should receive more mass
+        mass = mem.estimate_received_attention(q, k, source_tokens=2)
+        self.assertEqual(tuple(mass.shape), (2,))
+        self.assertGreater(float(mass[0]), float(mass[1]))
 
 
 class TestBackwardCompat(unittest.TestCase):

@@ -20,6 +20,89 @@ same scene across camera angles) while the **value** stays faithful enough to
 condition generation. The two are decoupled (`AC-3.1`) so a viewpoint-robust key
 can index a faithful raw-K/V payload.
 
+## Round 13 pivot: long_multishot principled gate
+
+Date: 2026-06-11.
+
+Pivot rationale: the prior cross-video study ended in a render-confirmed honest
+null (Round 5: `subject_identity+raw` led consistency but failed the motion
+guard). The active question is now one long multi-shot video per scene folder:
+does persistent KV-RAG scene memory improve cross-shot consistency inside one
+rollout? The substrate from the pivot (`global.json` anchoring,
+`long_multishot` mode, and Wan VAE chunked decode) is landed as flag-gated
+plumbing; multiview is frozen except for fail-closed fixes.
+
+Dry-run note: earlier unguarded dry runs that showed 2/3 wins are non-gate
+evidence only. They did not enforce the DINO/CLIP/RAFT/adherence/invariant
+guard stack and are not used as selector evidence.
+
+Metric taxonomy for this pivot:
+
+| category | status |
+|---|---|
+| VBench-faithful backbones | DINO subject anchors, CLIP background anchors, torchvision RAFT `dynamic_degree` |
+| Renamed proxies | `palette_agreement`, `motion_profile_agreement` |
+| Absent by design | ViCLIP, AMT, VLM judges, entity crops |
+
+Primary long gate metric = `anchor_centroid_consistency`, the mean of
+`subject_anchor_consistency` and `background_anchor_consistency`, each computed
+as mean cosine from per-shot embeddings to the per-scene centroid.
+
+Candidate ranking policy:
+
+| finalist | class | rationale | current status |
+|---|---|---|---|
+| `subject_identity+raw` | heuristic baseline | Round 5 leading consistency key, still not principled | included for continuity |
+| `attention_native+raw` | principled key | Quest-style live-query `q.k` scoring against stored key min/max bounds; no external embedding | implemented and CPU-tested |
+| `subject_identity+attention_mass` | principled value | H2O/SnapKV-style retention by received attention mass, not key-norm saliency | implemented and CPU-tested |
+
+Literature anchors: Quest (https://arxiv.org/abs/2406.10774), H2O
+(https://arxiv.org/abs/2306.14048), and SnapKV
+(https://arxiv.org/abs/2404.14469). Pose-keyed memory is not a candidate:
+WorldMem (https://arxiv.org/abs/2504.12369) and VMem
+(https://openaccess.thecvf.com/content/ICCV2025/papers/Li_VMem_Consistent_Interactive_Video_Scene_Generation_with_Surfel-Indexed_View_Memory_ICCV_2025_paper.pdf)
+depend on world/camera pose or surfel-indexed view memory, and this pipeline has
+no camera-pose stream.
+
+Guarded result:
+
+- JSON: `docs/multiview_gate_results/round13_long_multishot_principled_blocked.json`.
+- Winner: `null`.
+- `render_attempted=false`.
+- Reason: fail-closed before rendering because the mandatory metric stack is
+  unavailable in the current Python environment: `subject_dino`,
+  `background_clip`, `adherence_clip`, `prompt_lint_clip_text`, and RAFT
+  `dynamic_degree` did not load. Prompt text lint therefore could not certify
+  the three non-control scenes.
+- Conclusion: this is not a method win and not a rendered method null; it is a
+  scorer-prerequisite blocked null with committed JSON. No selector claim is
+  made.
+
+Reproduce the blocked gate:
+
+```bash
+python scripts/run_kv_rag_ablation.py \
+  --config_path configs/inference_kv_rag_long_multishot.yaml \
+  --mode long_multishot \
+  --prompts_dir example/long_multishot_prompts \
+  --prompt_subset frying_egg_same_event,sunlit_balcony_tour,skateboarder_high_motion,frying_egg_closeup \
+  --finalists subject_identity:raw,attention_native:raw,subject_identity:attention_mass \
+  --motion_tolerance 0.2 \
+  --diversity_tolerance 0.1 \
+  --adherence_tolerance 0.02 \
+  --generator_ckpt checkpoints/longlive2_5b/longlive2_merged_generator.pt \
+  --no_lora_adapter \
+  --metrics_json docs/multiview_gate_results/round13_long_multishot_principled_blocked.json \
+  --output_root videos/round13_long_multishot_principled
+```
+
+Named next hypothesis: after repairing the metric environment with a real
+`torchvision` package exposing `torchvision.transforms` and
+`torchvision.models.optical_flow`, plus a loadable CLIP backend, run the same
+command unchanged. The first scientific hypothesis to test is whether
+`attention_native+raw` preserves the Round 5 consistency gain while reducing the
+motion-regression failure caused by heuristic subject anchoring.
+
 ## Implemented representations
 
 KEY (`retrieval_key_mode`):
@@ -30,6 +113,9 @@ KEY (`retrieval_key_mode`):
 | `multi_centroid` | rank tokens by activation, split into N region centroids, best-pair match | yes, **and region-aware** (subject vs background) | tiny (argsort + N means) | yes |
 | `salient_set` | bounded set of top-M salient tokens, symmetric mutual-best (Chamfer) cosine | yes, **fine-grained** (per-element, not blended) | tiny (top-M + Chamfer) | yes |
 | `positional` | position-weighted pooling | **no** (order-sensitive) — reference "bad key" | none | yes |
+| `attention_native` | Quest-style live query `q.k` relevance against stored per-head key min/max bounds | yes, query-aware and attention-native | bounded q.k bound scoring | yes |
+| `subject_identity` | highest-norm subject-token prototype minus background mean | yes, but heuristic | tiny (top-M + mean) | yes |
+| `semantic` | external caption-text embedding | yes, but external to attention | text embedding provider | yes |
 
 `salient_set` was added on the strength of the loop's Codex review, which noted
 that `multi_centroid`'s magnitude buckets are not semantic regions and average
@@ -41,6 +127,8 @@ VALUE (`retrieval_value_mode`):
 |------|-------------|-----------------|--------------|
 | `raw` *(baseline)* | stored frame-aligned K/V slice | grows with top_k×frames | full |
 | `mean_frame` | slice collapsed to one representative frame (stays re-RoPE'able) | bounded (1 frame) | lossy/compressed |
+| `top_frame` | highest key-norm frame | bounded (1 frame) | heuristic subject-saliency |
+| `attention_mass` | frame with highest received attention during clean recache | bounded (1 frame) | principled attention-mass payload |
 
 ## Viewpoint-invariance probe (GPU-free)
 

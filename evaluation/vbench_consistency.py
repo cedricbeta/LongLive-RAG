@@ -859,6 +859,28 @@ def evaluate_multiview_vbench_gate(
     """
     records = result.get("records", [])
     n = len(records)
+    if n == 0:
+        return {
+            "passed": False,
+            "metric": metric,
+            "num_scenes": 0,
+            "scene_wins": 0,
+            "min_scene_wins": 0 if min_scene_wins is None else min_scene_wins,
+            "consistency_ok": False,
+            "require_adherence": bool(require_adherence),
+            "adherence_tolerance": adherence_tolerance,
+            "adherence_ok": False if require_adherence else True,
+            "adherence_failures": [],
+            "diversity_tolerance": diversity_tolerance,
+            "diversity_ok": False,
+            "diversity_failures": [],
+            "motion_tolerance": motion_tolerance,
+            "motion_ok": False if motion_tolerance is not None else True,
+            "motion_failures": [],
+            "is_null_result": True,
+            "blocked_reason": "no multiview records to score",
+            "per_scene": [],
+        }
     if min_scene_wins is None:
         min_scene_wins = -(-n // 2)  # ceil(n/2)
 

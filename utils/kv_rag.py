@@ -83,12 +83,15 @@ def _dtype_from_name(name: str | None) -> torch.dtype | None:
 #:     stored K/V attention tensors (see _compute_key);
 #:   subject_identity -> identity-aware prototype on the K/V tensors (subject
 #:     tokens minus background), decoupled from appearance;
+#:   attention_native -> Quest-style query-aware key: stored entries keep
+#:     per-layer/head min/max key bounds, and live queries score those bounds
+#:     by the same q.k quantity attention consumes;
 #:   semantic -> a DECOUPLED external embedding (the perspective's caption-text
 #:     vector) set per-perspective via set_context_key(); indexes the same scene
 #:     across views by what the prompt DESCRIBES rather than by token statistics.
 KEY_MODES = (
     "pooled", "moment", "multi_centroid", "salient_set", "positional",
-    "subject_identity", "semantic",
+    "subject_identity", "attention_native", "semantic",
 )
 #: KEY modes that ignore the K/V tensors and require an external context vector
 #: (set via set_context_key); using one without its companion fails fast.
@@ -98,7 +101,10 @@ CONTEXT_KEY_MODES = ("semantic",)
 #:   mean_frame -> collapsed to one mean frame (bounded, re-RoPE'able);
 #:   top_frame -> the single most subject-salient (highest-norm) frame kept
 #:     (bounded, re-RoPE'able) -- a compressed, subject-masked payload.
-VALUE_MODES = ("raw", "mean_frame", "top_frame")
+#:   attention_mass -> the single frame whose tokens received the most attention
+#:     during the clean recache store path (H2O/SnapKV-style received-attention
+#:     importance, not key-norm saliency).
+VALUE_MODES = ("raw", "mean_frame", "top_frame", "attention_mass")
 
 
 def virtual_frame_start(
@@ -197,6 +203,10 @@ class KVRAGConfig:
     #                      (subject) tokens minus the per-head background mean,
     #                      L2-normalized; matches the SAME subject across views
     #                      independent of background, decoupled from appearance
+    #   "attention_native" -> Quest-style query-aware key: stored entries keep
+    #                      per-head min/max key bounds and live queries score
+    #                      relevance by q.k against those bounds, with no
+    #                      external embedding or ad-hoc summary
     #   "semantic"      -> a decoupled EXTERNAL embedding (caption-text vector)
     #                      supplied per-perspective via set_context_key(); indexes
     #                      the same scene by what the prompt describes. Requires a
@@ -214,6 +224,9 @@ class KVRAGConfig:
     #   "top_frame"  -> the single most subject-salient (highest mean token-norm)
     #                   frame kept (bounded, re-RoPE'able); requires
     #                   frame_aligned_store (fails fast otherwise)
+    #   "attention_mass" -> the single frame whose tokens received the most
+    #                   attention during the clean recache store path; requires
+    #                   frame_aligned_store and a received-attention vector
     retrieval_value_mode: str = "raw"
 
     @classmethod
@@ -378,12 +391,12 @@ class KVRAGMemory:
                 "KV-RAG retrieval_key_mode='multi_centroid' requires "
                 "retrieval_key_centroids >= 2"
             )
-        if config.retrieval_value_mode == "top_frame" and not config.frame_aligned_store:
-            # top_frame selects one whole frame from a frame-aligned slice; without
-            # frame_aligned_store there are no frames to choose from. Fail fast
-            # rather than silently fall back to raw (AC-5 companion check).
+        if config.retrieval_value_mode in {"top_frame", "attention_mass"} and not config.frame_aligned_store:
+            # These modes select one whole frame from a frame-aligned slice;
+            # without frame_aligned_store there are no frames to choose from.
+            # Fail fast rather than silently fall back to raw.
             raise ValueError(
-                "KV-RAG retrieval_value_mode='top_frame' requires "
+                f"KV-RAG retrieval_value_mode={config.retrieval_value_mode!r} requires "
                 "frame_aligned_store=true (there is no frame to select otherwise)"
             )
         if config.boundary_inject_anchors > 0 and not config.scene_memory_enabled:
@@ -431,6 +444,11 @@ class KVRAGMemory:
     def requires_context_key(self) -> bool:
         """True when the active key mode indexes by an external context vector."""
         return self.config.retrieval_key_mode in CONTEXT_KEY_MODES
+
+    @property
+    def wants_received_attention(self) -> bool:
+        """True when the value mode needs per-token received-attention mass."""
+        return self.config.retrieval_value_mode == "attention_mass"
 
     def set_context_key(self, vector: torch.Tensor | None) -> None:
         """Set the external semantic key for the current perspective.
@@ -513,6 +531,7 @@ class KVRAGMemory:
         chunk_index: int | None = None,
         phase: str | None = None,
         persistent: bool = False,
+        received_attention: torch.Tensor | None = None,
     ) -> None:
         """Store one chunk's K/V slice.
 
@@ -545,16 +564,26 @@ class KVRAGMemory:
             if summary_src is None:
                 summary_src = inject_src
 
-            idx, kept_frames = self._select_index(
+            idx, kept_frames, frame_offsets = self._select_index(
                 num_tokens=int(inject_src.shape[1]),
                 frame_seqlen=int(frame_seqlen),
                 frames=int(frames),
                 device=inject_src.device,
             )
+            attention_src = None
+            if received_attention is not None:
+                attention_src = received_attention.detach().to(device=inject_src.device).float().reshape(-1)
+                if attention_src.numel() != int(inject_src.shape[1]):
+                    raise ValueError(
+                        "KV-RAG received_attention length must match the source token count "
+                        f"({attention_src.numel()} != {int(inject_src.shape[1])})"
+                    )
             if idx is not None:
                 inject_src = inject_src.index_select(1, idx)
                 v = v.index_select(1, idx)
                 summary_src = summary_src.index_select(1, idx)
+                if attention_src is not None:
+                    attention_src = attention_src.index_select(0, idx)
 
             # The retrieval KEY (index) is computed from the full content slice,
             # independent of the VALUE (payload) representation -- so a
@@ -563,8 +592,10 @@ class KVRAGMemory:
             if summary is None:
                 return
 
-            k_store, v_store, stored_frames = self._apply_value_mode(
-                inject_src, v, int(kept_frames), int(frame_seqlen)
+            k_store, v_store, stored_frames, source_offset = self._apply_value_mode(
+                inject_src, v, int(kept_frames), int(frame_seqlen),
+                frame_offsets=frame_offsets,
+                received_attention=attention_src,
             )
             if self._store_dtype is not None:
                 k_store = k_store.to(dtype=self._store_dtype)
@@ -574,13 +605,24 @@ class KVRAGMemory:
                 v_store = v_store.cpu()
                 summary = summary.cpu()
 
+            entry_start = int(start_token)
+            entry_end = int(end_token)
+            if (
+                int(stored_frames) == 1
+                and int(frame_seqlen) > 0
+                and source_offset is not None
+                and self.config.retrieval_value_mode in {"top_frame", "attention_mass"}
+            ):
+                entry_start = int(start_token) + int(source_offset)
+                entry_end = entry_start + int(frame_seqlen)
+
             entry = KVRAGEntry(
                 layer=layer,
                 k=k_store.contiguous(),
                 v=v_store.contiguous(),
                 summary=summary.contiguous(),
-                start_token=int(start_token),
-                end_token=int(end_token),
+                start_token=entry_start,
+                end_token=entry_end,
                 chunk_index=chunk_index,
                 phase=phase,
                 frames=int(stored_frames),
@@ -712,7 +754,7 @@ class KVRAGMemory:
         if self.config.top_k > 0:
             remaining = [e for e in candidates if id(e) not in chosen_ids]
             if remaining:
-                query_summary = self._compute_key(query.detach())
+                query_summary = self._compute_key(query.detach(), for_query=True)
                 if query_summary is not None:
                     scores = self._score_candidates(query_summary, remaining)
                     if self.config.scene_score_bonus:
@@ -761,13 +803,15 @@ class KVRAGMemory:
         frame_seqlen: int,
         frames: int,
         device: torch.device,
-    ) -> tuple[torch.Tensor | None, int]:
+    ) -> tuple[torch.Tensor | None, int, torch.Tensor | None]:
         """Pick which tokens of a chunk to store.
 
-        Returns ``(idx, kept_frames)``. ``idx is None`` means keep every token.
+        Returns ``(idx, kept_frames, frame_offsets)``. ``idx is None`` means keep every token.
         ``kept_frames > 0`` means the kept tokens form whole frames and can be
-        re-RoPE'd at retrieval time; ``0`` marks a legacy (non-frame-aligned)
-        token subset that must fall back to the legacy injection path.
+        re-RoPE'd at retrieval time, and ``frame_offsets`` gives each kept
+        frame's starting token offset in the original source chunk. ``0`` marks
+        a legacy (non-frame-aligned) token subset that must fall back to the
+        legacy injection path.
         """
         limit = self.config.max_tokens_per_entry
         aligned = (
@@ -778,19 +822,21 @@ class KVRAGMemory:
         )
         if aligned:
             if limit <= 0 or num_tokens <= limit:
-                return None, frames
+                offsets = torch.arange(frames, device=device, dtype=torch.long) * int(frame_seqlen)
+                return None, frames, offsets
             max_frames = max(1, limit // frame_seqlen)
             if frames <= max_frames:
-                return None, frames
+                offsets = torch.arange(frames, device=device, dtype=torch.long) * int(frame_seqlen)
+                return None, frames, offsets
             fsel = torch.linspace(0, frames - 1, steps=max_frames, device=device)
             fsel = fsel.round().to(torch.long).unique(sorted=True)
             offsets = torch.arange(frame_seqlen, device=device)
             idx = (fsel.view(-1, 1) * frame_seqlen + offsets.view(1, -1)).reshape(-1)
-            return idx, int(fsel.numel())
+            return idx, int(fsel.numel()), fsel * int(frame_seqlen)
 
         # Legacy token-level selection (slice is not re-RoPE'able).
         if limit <= 0 or num_tokens <= limit:
-            return None, 0
+            return None, 0, None
         policy = self.config.token_policy
         if policy == "tail":
             idx = torch.arange(num_tokens - limit, num_tokens, device=device)
@@ -801,9 +847,9 @@ class KVRAGMemory:
             idx = idx.round().to(torch.long).unique(sorted=True)
         else:
             raise ValueError(f"Unsupported KV-RAG token_policy={policy!r}")
-        return idx, 0
+        return idx, 0, None
 
-    def _compute_key(self, tensor: torch.Tensor) -> torch.Tensor | None:
+    def _compute_key(self, tensor: torch.Tensor, *, for_query: bool = False) -> torch.Tensor | None:
         """Build the retrieval KEY (index summary) for the active key mode.
 
         Decoupled from the VALUE payload: the same content slice can be indexed
@@ -831,9 +877,33 @@ class KVRAGMemory:
             return self._summarize_salient_set(tensor, self.config.retrieval_key_top_m)
         if mode == "subject_identity":
             return self._summarize_subject_identity(tensor, self.config.retrieval_key_top_m)
+        if mode == "attention_native":
+            return tensor.detach().float() if for_query else self._summarize_attention_bounds(tensor)
         if mode == "positional":
             return self._summarize_positional(tensor)
         raise ValueError(f"Unsupported KV-RAG retrieval_key_mode={mode!r}")
+
+    def _summarize_attention_bounds(self, tensor: torch.Tensor) -> torch.Tensor | None:
+        """Quest-style per-head key bounds used by the attention-native key.
+
+        Stored entries keep min/max key values over their token dimension, per
+        batch/head/channel. Live queries are not externally embedded or pooled;
+        retrieval scores those query vectors directly against these bounds using
+        an upper bound on q.k.
+        """
+        if tensor.numel() == 0:
+            return None
+        f = tensor.float()
+        if f.dim() == 4:  # [B, T, H, D]
+            lo = f.min(dim=1).values
+            hi = f.max(dim=1).values
+            return torch.stack([lo, hi], dim=1)  # [B, 2, H, D]
+        if f.dim() == 3:  # [B, T, D]
+            lo = f.min(dim=1).values.unsqueeze(1)
+            hi = f.max(dim=1).values.unsqueeze(1)
+            return torch.stack([lo, hi], dim=1)  # [B, 2, 1, D]
+        flat = f.reshape(f.shape[0], -1).unsqueeze(1)
+        return torch.stack([flat, flat], dim=1)
 
     def _summarize(self, tensor: torch.Tensor) -> torch.Tensor | None:
         """Mean-pool over tokens into a normalized content summary.
@@ -986,7 +1056,10 @@ class KVRAGMemory:
         v: torch.Tensor,
         kept_frames: int,
         frame_seqlen: int,
-    ) -> tuple[torch.Tensor, torch.Tensor, int]:
+        *,
+        frame_offsets: torch.Tensor | None = None,
+        received_attention: torch.Tensor | None = None,
+    ) -> tuple[torch.Tensor, torch.Tensor, int, int | None]:
         """Transform the stored payload per ``retrieval_value_mode``.
 
         ``raw`` keeps the frame-aligned slice; ``mean_frame`` collapses it to a
@@ -995,7 +1068,7 @@ class KVRAGMemory:
         """
         mode = self.config.retrieval_value_mode
         if mode == "raw":
-            return k, v, kept_frames
+            return k, v, kept_frames, None
         aligned = (
             kept_frames > 0
             and frame_seqlen > 0
@@ -1004,19 +1077,23 @@ class KVRAGMemory:
         )
         if mode == "mean_frame":
             if not aligned:
-                return k, v, kept_frames  # cannot collapse safely -> keep raw
+                return k, v, kept_frames, None  # cannot collapse safely -> keep raw
 
             def collapse(t: torch.Tensor) -> torch.Tensor:
                 bsz, _, heads, dim = t.shape
                 return t.view(bsz, kept_frames, frame_seqlen, heads, dim).mean(dim=1)
 
-            return collapse(k), collapse(v), 1
-        if mode == "top_frame":
+            return collapse(k), collapse(v), 1, None
+        if mode in {"top_frame", "attention_mass"}:
             # Keep only the single most subject-salient frame (highest mean token
-            # norm) -- a compressed, subject-masked payload that stays a whole
-            # frame (re-RoPE'able). Falls back to raw if not frame-aligned.
+            # norm) OR the highest received-attention frame. Both stay whole
+            # frames (re-RoPE'able). Falls back to raw if not frame-aligned.
             if not aligned:
-                return k, v, kept_frames
+                return k, v, kept_frames, None
+            if frame_offsets is None or int(frame_offsets.numel()) != kept_frames:
+                frame_offsets = torch.arange(
+                    kept_frames, device=k.device, dtype=torch.long
+                ) * int(frame_seqlen)
 
             def frame_view(t: torch.Tensor) -> torch.Tensor:
                 bsz, _, heads, dim = t.shape
@@ -1024,12 +1101,28 @@ class KVRAGMemory:
 
             kf = frame_view(k)
             vf = frame_view(v)
-            # rank frames by mean token L2-norm of the key (subject saliency),
-            # averaged over batch so a single frame is chosen for the whole slice.
-            frame_norm = kf.float().norm(dim=-1).mean(dim=(0, 2, 3))  # [kept_frames]
-            top = int(torch.argmax(frame_norm).item())
+            if mode == "attention_mass":
+                if received_attention is None:
+                    raise RuntimeError(
+                        "KV-RAG retrieval_value_mode='attention_mass' requires "
+                        "a per-token received_attention vector from the attention store path."
+                    )
+                mass = received_attention.to(device=k.device).float().reshape(-1)
+                if mass.numel() != kept_frames * frame_seqlen:
+                    raise ValueError(
+                        "KV-RAG received_attention length must match the kept token count "
+                        f"({mass.numel()} != {kept_frames * frame_seqlen})"
+                    )
+                frame_score = mass.view(kept_frames, frame_seqlen).mean(dim=1)
+            else:
+                # rank frames by mean token L2-norm of the key (subject saliency),
+                # averaged over batch so a single frame is chosen for the whole slice.
+                frame_score = kf.float().norm(dim=-1).mean(dim=(0, 2, 3))  # [kept_frames]
+            top = int(torch.argmax(frame_score).item())
+            source_offset = int(frame_offsets[top].item())
             return (kf[:, top].reshape(k.shape[0], frame_seqlen, k.shape[2], k.shape[3]),
-                    vf[:, top].reshape(v.shape[0], frame_seqlen, v.shape[2], v.shape[3]), 1)
+                    vf[:, top].reshape(v.shape[0], frame_seqlen, v.shape[2], v.shape[3]),
+                    1, source_offset)
         raise ValueError(f"Unsupported KV-RAG retrieval_value_mode={mode!r}")
 
     def _score_candidates(
@@ -1040,6 +1133,8 @@ class KVRAGMemory:
             return [self._score_centroid(query_summary, c.summary) for c in candidates]
         if self.config.retrieval_key_mode == "salient_set":
             return [self._score_salient_set(query_summary, c.summary) for c in candidates]
+        if self.config.retrieval_key_mode == "attention_native":
+            return [self._score_attention_native(query_summary, c.summary) for c in candidates]
         if self.config.retrieval_key_mode in ("subject_identity", "semantic"):
             # These keys are L2-normalized vectors whose contract is plain COSINE,
             # independent of config.similarity. Falling through to _score_batch under
@@ -1048,6 +1143,30 @@ class KVRAGMemory:
             # content matching. Force cosine for both.
             return [self._score_cosine(query_summary, c.summary) for c in candidates]
         return self._score_batch(query_summary, candidates)
+
+    def _score_attention_native(
+        self, query: torch.Tensor, entry_bounds: torch.Tensor
+    ) -> float:
+        """Quest-style relevance: live q.k against stored min/max key bounds.
+
+        For each live query component, the upper-bound key value is ``max`` when
+        q>=0 and ``min`` when q<0. Scores are q dot bound, max-pooled over live
+        query tokens, then averaged over heads/batch. No external embedding is
+        used.
+        """
+        q = query.to(dtype=torch.float32)
+        if q.dim() == 3:  # [B, T, D] -> [B, T, 1, D]
+            q = q.unsqueeze(2)
+        elif q.dim() != 4:
+            q = q.reshape(q.shape[0], 1, 1, -1)
+        bounds = entry_bounds.to(device=q.device, dtype=torch.float32)
+        if bounds.dim() == 3:  # [B, 2, D]
+            bounds = bounds.unsqueeze(2)
+        lo = bounds[:, 0].unsqueeze(1)  # [B, 1, H, D]
+        hi = bounds[:, 1].unsqueeze(1)
+        chosen = torch.where(q >= 0, hi, lo)
+        dot = (q * chosen).sum(dim=-1) / math.sqrt(max(1, q.shape[-1]))  # [B, T, H]
+        return float(dot.max(dim=1).values.mean().item())
 
     def _score_cosine(self, query_summary: torch.Tensor, entry_summary: torch.Tensor) -> float:
         """Plain cosine (dot of L2-normalized summaries), independent of
@@ -1166,6 +1285,40 @@ class KVRAGMemory:
                 self.stats["rag_mass_calls"] += 1
         except Exception:
             pass
+
+    def estimate_received_attention(
+        self,
+        query: torch.Tensor,
+        window_k: torch.Tensor,
+        source_tokens: int,
+        max_query_rows: int = 32,
+    ) -> torch.Tensor | None:
+        """Estimate received attention for the newest source tokens.
+
+        The newest clean-recache tokens are the last ``source_tokens`` columns of
+        ``window_k``. We sample a bounded number of live query rows, compute the
+        normal attention softmax over the attended window, and return the mean
+        post-softmax mass received by each newest token. This is flag-gated by
+        ``retrieval_value_mode='attention_mass'`` in the caller, so the disabled
+        path performs no extra work.
+        """
+        if source_tokens <= 0 or window_k.shape[1] < source_tokens or query.numel() == 0:
+            return None
+        with torch.no_grad():
+            lq = query.shape[1]
+            if lq > max_query_rows:
+                rows = torch.linspace(
+                    0, lq - 1, steps=max_query_rows, device=query.device
+                ).round().to(torch.long)
+                q = query.index_select(1, rows).float()
+            else:
+                q = query.float()
+            k = window_k.float()
+            scale = 1.0 / math.sqrt(max(1, q.shape[-1]))
+            logits = torch.einsum("blhd,bmhd->bhlm", q, k) * scale
+            weights = torch.softmax(logits, dim=-1)
+            mass = weights[..., -source_tokens:].mean(dim=(0, 1, 2))
+            return mass.detach().cpu()
 
     @staticmethod
     def _match_batch(tensor: torch.Tensor, batch_size: int) -> torch.Tensor:

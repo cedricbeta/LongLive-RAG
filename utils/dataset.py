@@ -109,6 +109,11 @@ class MultiTextConcatDataset(Dataset):
     Scene cut prefix is prepended at shot boundaries (first block of each
     shot except shot 0). Output is always exactly ``num_blocks`` prompts:
     truncated if too many, padded with the last caption if too few.
+
+    If a caption subfolder contains ``global.json``, its ``caption_field`` value
+    is prepended to every shot caption. This is intended for long-video
+    multi-shot consistency: the global caption states the scene/subject
+    invariants, while each numbered JSON only describes the current shot.
     """
 
     def __init__(
@@ -118,12 +123,14 @@ class MultiTextConcatDataset(Dataset):
         chunks_per_shot: int = 0,
         scene_cut_prefix: str = DEFAULT_SCENE_CUT_PREFIX,
         caption_field: str = "caption",
+        global_caption_separator: str = "\n\nShot-specific description:\n",
         deterministic: bool = False,
     ):
         self.num_blocks = num_blocks
         self.chunks_per_shot = chunks_per_shot
         self.scene_cut_prefix = scene_cut_prefix
         self.caption_field = caption_field
+        self.global_caption_separator = global_caption_separator
         self.deterministic = deterministic
 
         path = Path(data_path)
@@ -171,6 +178,8 @@ class MultiTextConcatDataset(Dataset):
     def _get_dir_item(self, idx):
         folder = self._folders[idx % len(self._folders)]
         raw_captions = self._load_captions_from_folder(folder)
+        global_caption = self._load_global_caption_from_folder(folder)
+        raw_captions = self._apply_global_caption(raw_captions, global_caption)
         if not raw_captions:
             raw_captions = [""]
 
@@ -184,17 +193,20 @@ class MultiTextConcatDataset(Dataset):
             last = prompts[-1] if prompts else ""
             prompts.extend([last] * (self.num_blocks - len(prompts)))
 
-        return {
+        result = {
             "prompts": prompts,
             "idx": idx,
             "sample_name": folder.name,
             "shot_durations": shot_durations,
         }
+        if global_caption:
+            result["global_caption"] = global_caption
+        return result
 
     def _load_captions_from_folder(self, folder: Path):
         json_files = sorted(
             [f for f in folder.glob("*.json") if f.name != "global.json"],
-            key=lambda p: (p.stem.isdigit(), int(p.stem) if p.stem.isdigit() else 0, p.stem),
+            key=lambda p: (not p.stem.isdigit(), int(p.stem) if p.stem.isdigit() else 0, p.stem),
         )
         captions = []
         for jf in json_files:
@@ -205,6 +217,29 @@ class MultiTextConcatDataset(Dataset):
             except Exception:
                 captions.append("")
         return captions
+
+    def _load_global_caption_from_folder(self, folder: Path) -> str:
+        global_path = folder / "global.json"
+        if not global_path.exists():
+            return ""
+        try:
+            with open(global_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            return str(data.get(self.caption_field, "") or "").strip()
+        except Exception:
+            return ""
+
+    def _apply_global_caption(self, captions: list[str], global_caption: str) -> list[str]:
+        if not global_caption:
+            return captions
+        anchored: list[str] = []
+        for caption in captions:
+            shot_caption = str(caption or "").strip()
+            if shot_caption:
+                anchored.append(f"{global_caption}{self.global_caption_separator}{shot_caption}")
+            else:
+                anchored.append(global_caption)
+        return anchored
 
     # ------------------------------------------------------------------
     # shot duration helpers

@@ -149,8 +149,24 @@ class TestAdherenceReduction(unittest.TestCase):
 
 
 def _record(stem, b_cons, m_cons, b_adh=None, m_adh=None):
-    bm = {"cross_shot_scene_consistency": b_cons}
-    mm = {"cross_shot_scene_consistency": m_cons}
+    bm = {
+        "anchor_centroid_consistency": b_cons,
+        "subject_anchor_consistency": b_cons,
+        "background_anchor_consistency": b_cons,
+        "inter_shot_composition_diversity": 0.3,
+        "dynamic_degree": 2.0,
+        "invariant_margin_mean": 0.2,
+        "invariant_margin_min": 0.2,
+    }
+    mm = {
+        "anchor_centroid_consistency": m_cons,
+        "subject_anchor_consistency": m_cons,
+        "background_anchor_consistency": m_cons,
+        "inter_shot_composition_diversity": 0.3,
+        "dynamic_degree": 2.0,
+        "invariant_margin_mean": 0.2,
+        "invariant_margin_min": 0.2,
+    }
     if b_adh is not None:
         bm["prompt_adherence_mean"] = b_adh
         bm["prompt_adherence_min"] = b_adh
@@ -160,15 +176,19 @@ def _record(stem, b_cons, m_cons, b_adh=None, m_adh=None):
 
 
 class TestGateDecision(unittest.TestCase):
+    def _gate(self, result, **kwargs):
+        kwargs.setdefault("motion_tolerance", 0.2)
+        return evaluate_cross_perspective_gate(result, **kwargs)
+
     def test_pass_on_two_consistency_wins(self):
         result = {"records": [_record("a", 0.5, 0.6), _record("b", 0.5, 0.7)]}
-        gate = evaluate_cross_perspective_gate(result)
+        gate = self._gate(result)
         self.assertTrue(gate["passed"])
         self.assertEqual(gate["consistency_wins"], 2)
 
     def test_fail_with_only_one_win(self):
         result = {"records": [_record("a", 0.5, 0.6), _record("b", 0.7, 0.6)]}
-        gate = evaluate_cross_perspective_gate(result)
+        gate = self._gate(result)
         self.assertFalse(gate["passed"])
         self.assertEqual(gate["consistency_wins"], 1)
 
@@ -178,7 +198,7 @@ class TestGateDecision(unittest.TestCase):
             _record("a", 0.5, 0.6, b_adh=0.30, m_adh=0.29),
             _record("b", 0.5, 0.7, b_adh=0.30, m_adh=0.10),
         ]}
-        gate = evaluate_cross_perspective_gate(
+        gate = self._gate(
             result, adherence_tolerance=0.05, require_adherence=True
         )
         self.assertFalse(gate["passed"])
@@ -190,14 +210,14 @@ class TestGateDecision(unittest.TestCase):
             _record("a", 0.5, 0.6, b_adh=0.30, m_adh=0.28),
             _record("b", 0.5, 0.7, b_adh=0.30, m_adh=0.31),
         ]}
-        gate = evaluate_cross_perspective_gate(
+        gate = self._gate(
             result, adherence_tolerance=0.05, require_adherence=True
         )
         self.assertTrue(gate["passed"])
 
     def test_nan_adherence_fails_when_required(self):
         result = {"records": [_record("a", 0.5, 0.6), _record("b", 0.5, 0.7)]}
-        gate = evaluate_cross_perspective_gate(result, require_adherence=True)
+        gate = self._gate(result, require_adherence=True)
         self.assertFalse(gate["passed"])  # unscored adherence cannot certify
 
 

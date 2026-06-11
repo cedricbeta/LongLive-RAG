@@ -24,19 +24,22 @@ from omegaconf import OmegaConf
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from evaluation.multiview_prompts import build_spec_resolver
+from evaluation.multiview_prompts import build_spec_resolver, load_shot_specs
 from evaluation.video_consistency import (
+    build_clip_text_encoder,
     build_clip_adherence_scorer,
+    build_raft_dynamic_scorer,
     compare_cross_perspective_dirs,
     compare_video_dirs,
     evaluate_cross_perspective_gate,
+    prompt_text_similarity_lint,
     save_metrics_json,
 )
 
-# The recommended single-scene multi-perspective settings for the modified
-# variant (viewpoint-robust key + persistent scene anchors) are the argparse
-# defaults of the --modified_* flags; build_kv_rag_from_args reads them so the
-# AC-3.2 ranking can vary the key/value per run.
+# The recommended long-video multi-shot settings for the modified variant
+# (content-robust key + persistent scene anchors) are the argparse defaults of
+# the --modified_* flags. The older cross_perspective name is kept as a
+# backward-compatible alias for the same concatenated multi-shot path.
 
 
 DEFAULT_KV_RAG = {
@@ -71,56 +74,59 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--stride", type=int, default=1, help="Evaluation frame stride.")
     parser.add_argument(
         "--mode",
-        choices=("temporal", "cross_perspective", "multiview_vbench"),
+        choices=("temporal", "long_multishot", "cross_perspective", "multiview_vbench"),
         default="temporal",
-        help="temporal: adjacent/optical-flow consistency. cross_perspective: "
-        "within-one-video multi-shot scene consistency. multiview_vbench: render "
-        "ONE video per perspective (multiview_per_perspective) for baseline + "
-        "modified and score the AC-2 cross-video VBench suite (identity + dims) "
-        "with the AC-4 gate.",
+        help="temporal: adjacent/optical-flow consistency. long_multishot: "
+        "one concatenated long video per scene, scored for within-video "
+        "multi-shot scene consistency. cross_perspective is a legacy alias for "
+        "long_multishot. multiview_vbench: render ONE video per perspective "
+        "(multiview_per_perspective) for baseline + modified and score the "
+        "AC-2 cross-video VBench suite (identity + dims) with the AC-4 gate.",
     )
     parser.add_argument(
         "--prompts_dir",
         default=None,
-        help="cross_perspective: vendored <theme>/{0..N}.json prompt set "
-        "(e.g. example/multiview_prompts). Used to build the render subset and to "
-        "resolve per-shot boundaries/captions during evaluation.",
+        help="long_multishot/cross_perspective: vendored <theme>/{0..N}.json "
+        "prompt set (e.g. example/long_multishot_prompts). Used to build the "
+        "render subset and to resolve per-shot boundaries/captions during evaluation.",
     )
     parser.add_argument(
         "--prompt_subset",
         default=None,
-        help="cross_perspective: comma-separated theme folder names to render "
-        "(default: the first two sorted themes).",
+        help="long_multishot/cross_perspective: comma-separated theme folder "
+        "names to render (default: the first two sorted themes).",
     )
     parser.add_argument(
         "--num_shots",
         type=int,
         default=None,
-        help="cross_perspective: equal-split shot count fallback when --prompts_dir is absent.",
+        help="long_multishot/cross_perspective: equal-split shot count fallback when --prompts_dir is absent.",
     )
     parser.add_argument(
         "--num_blocks",
         type=int,
         default=None,
-        help="cross_perspective: rendered chunk budget for clamping boundaries "
+        help="long_multishot/cross_perspective: rendered chunk budget for clamping boundaries "
         "(auto-derived from the config when generating).",
     )
     parser.add_argument(
         "--min_consistency_wins",
         type=int,
-        default=2,
-        help="cross_perspective: prompts where modified must beat baseline consistency.",
+        default=None,
+        help="long_multishot/cross_perspective: prompts where modified must beat "
+        "baseline consistency. Default is 1 for long_multishot, 2 for the "
+        "legacy cross_perspective alias.",
     )
     parser.add_argument(
         "--adherence_tolerance",
         type=float,
         default=0.0,
-        help="cross_perspective: allowed per-prompt adherence drop (modified >= baseline - tol).",
+        help="long_multishot/cross_perspective: allowed per-prompt adherence drop (modified >= baseline - tol).",
     )
     parser.add_argument(
         "--dry_run_without_adherence",
         action="store_true",
-        help="cross_perspective: consistency-only NON-GATE run that skips the CLIP "
+        help="long_multishot/cross_perspective: consistency-only NON-GATE run that skips the CLIP "
         "prompt-adherence guard. This does NOT evaluate AC-7 and never reports a "
         "pass; for offline metric exploration only. The real gate enforces "
         "adherence by default.",
@@ -128,6 +134,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--clip_model", default="ViT-B-32", help="open_clip model for adherence.")
     parser.add_argument("--clip_pretrained", default="openai", help="open_clip pretrained tag.")
     parser.add_argument("--clip_device", default=None, help="Device for the CLIP adherence scorer.")
+    parser.add_argument("--prompt_similarity_floor", type=float, default=0.12,
+                        help="long_multishot: minimum pairwise CLIP text similarity among shot captions; "
+                        "below-floor scenes are rejected as ill-posed prompt data.")
+    parser.add_argument("--motion_backend", default="raft", choices=("raft", "farneback"),
+                        help="long_multishot: dynamic_degree backend. Use raft for gate runs; "
+                        "farneback is intended for CPU tests/dry checks.")
     # multiview_vbench: which milestone backbones to load (off => GPU-free dims
     # only: temporal_style/appearance_style/overall_consistency + companions).
     parser.add_argument("--vbench_subject", action="store_true",
@@ -144,20 +156,20 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--diversity_tolerance", type=float, default=0.0,
                         help="multiview_vbench: allowed inter_video_diversity drop (anti-collapse).")
     parser.add_argument("--motion_tolerance", type=float, default=None,
-                        help="multiview_vbench: allowed dynamic_degree drop (motion-collapse "
-                        "guard). Omit to report motion changes without failing on them.")
+                        help="long_multishot/multiview_vbench: relative allowed dynamic_degree "
+                        "drop (modified >= baseline*(1-tol)). Required for guarded runs.")
     parser.add_argument("--min_scene_wins", type=int, default=None,
                         help="multiview_vbench: scenes the modified aggregate must win (default ceil(N/2)).")
     parser.add_argument("--finalists", default=None,
-                        help="multiview_vbench: comma-separated key:value finalists (e.g. "
+                        help="long_multishot/multiview_vbench: comma-separated key:value finalists (e.g. "
                         "'pooled:raw,semantic:raw,subject_identity:raw'). When set, the "
                         "baseline is rendered ONCE and each finalist scored against it, then "
-                        "ranked on the rendered AC-2 aggregate into one consolidated JSON.")
+                        "ranked on the rendered aggregate into one consolidated JSON.")
     # Modified-variant knobs so the AC-3.2 rendered ranking can vary the
     # key/value representation per run (defaults = recommended multi-view).
-    parser.add_argument("--modified_retrieval_key_mode", default="salient_set")
+    parser.add_argument("--modified_retrieval_key_mode", default="subject_identity")
     parser.add_argument("--modified_retrieval_value_mode", default="raw")
-    parser.add_argument("--modified_scene_score_bonus", type=float, default=0.1)
+    parser.add_argument("--modified_scene_score_bonus", type=float, default=0.15)
     parser.add_argument("--modified_boundary_inject_anchors", type=int, default=2)
     parser.add_argument(
         "--modified_scene_memory_enabled",
@@ -207,8 +219,8 @@ def build_prompt_subset(prompts_dir: str, subset: list[str] | None, dest: Path) 
     missing = [t for t in chosen if t not in available]
     if missing:
         raise ValueError(f"--prompt_subset themes not found in {prompts_dir}: {missing}")
-    if len(chosen) < 2:
-        raise ValueError("cross_perspective gate needs at least two themes to render")
+    if not chosen:
+        raise ValueError("long_multishot mode needs at least one theme to render")
     if dest.exists():
         shutil.rmtree(dest)
     dest.mkdir(parents=True, exist_ok=True)
@@ -441,17 +453,116 @@ def _run_temporal(args, output_root: Path) -> None:
         print(f"  {name}: {stats['mean']:.6f}")
 
 
+def _build_long_scorers(args, *, require_adherence: bool) -> tuple[dict, dict]:
+    """Build long_multishot metric/guard scorers, recording reduced coverage."""
+    from evaluation.vbench_consistency import build_clip_image_encoder, build_dino_encoder
+
+    subject = _try_build_backbone("long subject(DINO)", lambda: build_dino_encoder(device=args.clip_device))
+    background = _try_build_backbone(
+        "long background(CLIP)", lambda: build_clip_image_encoder(device=args.clip_device)
+    )
+    adherence = _try_build_backbone(
+        "long adherence(CLIP)", lambda: build_clip_adherence_scorer(
+            model_name=args.clip_model, pretrained=args.clip_pretrained, device=args.clip_device
+        )
+    ) if require_adherence else None
+    text = _try_build_backbone(
+        "long prompt-lint text(CLIP)", lambda: build_clip_text_encoder(
+            model_name=args.clip_model, pretrained=args.clip_pretrained, device=args.clip_device
+        )
+    )
+    if args.motion_backend == "raft":
+        dynamic = _try_build_backbone(
+            "long motion(RAFT)", lambda: build_raft_dynamic_scorer(device=args.clip_device)
+        )
+    else:
+        from evaluation.video_consistency import farneback_dynamic_degree
+        dynamic = farneback_dynamic_degree
+    scorers = {
+        "subject_encoder": subject,
+        "background_encoder": background,
+        "adherence_scorer": adherence,
+        "invariant_scorer": adherence,
+        "text_encoder": text,
+        "dynamic_scorer": dynamic,
+    }
+    coverage = {
+        "subject_dino": {"requested": True, "loaded": bool(subject)},
+        "background_clip": {"requested": True, "loaded": bool(background)},
+        "adherence_clip": {"requested": bool(require_adherence), "loaded": bool(adherence) if require_adherence else False},
+        "prompt_lint_clip_text": {"requested": True, "loaded": bool(text)},
+        "dynamic_degree": {"requested": args.motion_backend, "loaded": bool(dynamic)},
+    }
+    return scorers, coverage
+
+
+def _long_prompt_lint(args) -> tuple[dict, list[str]]:
+    """Return prompt-lint JSON and scenes allowed for method evaluation."""
+    specs = load_shot_specs(args.prompts_dir)
+    text_encoder = None
+    try:
+        text_encoder = build_clip_text_encoder(
+            model_name=args.clip_model, pretrained=args.clip_pretrained, device=args.clip_device
+        )
+    except Exception as exc:
+        lint = {
+            scene: {
+                "passed": False,
+                "blocked_reason": f"CLIP text encoder unavailable: {exc}",
+                "floor": float(args.prompt_similarity_floor),
+                "matrix": [],
+                "negative_control": bool(spec.get("negative_control", False)),
+            }
+            for scene, spec in specs.items()
+        }
+        return lint, []
+    lint: dict[str, dict] = {}
+    allowed: list[str] = []
+    for scene, spec in specs.items():
+        entry = prompt_text_similarity_lint(
+            list(spec.get("captions", [])), text_encoder,
+            floor=float(args.prompt_similarity_floor),
+        )
+        entry["negative_control"] = bool(spec.get("negative_control", False))
+        lint[scene] = entry
+        if entry.get("passed") or entry["negative_control"]:
+            allowed.append(scene)
+    return lint, allowed
+
+
+def _filter_resolver(base_resolver, allowed_scenes: set[str]):
+    def resolve(stem: str):
+        spec = base_resolver(stem)
+        if spec is None:
+            return None
+        if allowed_scenes and spec.get("theme") not in allowed_scenes:
+            return None
+        return spec
+    return resolve
+
+
 def _run_cross_perspective(args, output_root: Path) -> None:
+    mode_label = "long_multishot" if args.mode == "long_multishot" else "cross_perspective"
+    if args.finalists and args.mode == "long_multishot":
+        return _run_long_multishot_finalists(args, output_root)
     # AC-7 enforces prompt adherence; only an explicit dry run skips it (and that
     # run is NOT a gate -- it can never report a pass).
     require_adherence = not args.dry_run_without_adherence
     modified_settings = _modified_kv_rag_from_args(args)
+    min_consistency_wins = args.min_consistency_wins
+    if min_consistency_wins is None:
+        min_consistency_wins = 1 if args.mode == "long_multishot" else 2
 
     if require_adherence and not args.prompts_dir:
         raise ValueError(
-            "The AC-7 gate requires --prompts_dir (for shot captions + the CLIP "
+            f"The {mode_label} gate requires --prompts_dir (for shot captions + the CLIP "
             "adherence guard). For a consistency-only non-gate run use "
             "--dry_run_without_adherence."
+        )
+    if args.mode == "long_multishot" and require_adherence and args.motion_tolerance is None:
+        raise ValueError(
+            "The long_multishot gate requires --motion_tolerance as a RELATIVE "
+            "dynamic_degree non-regression guard, e.g. --motion_tolerance 0.2."
         )
 
     num_blocks = args.num_blocks
@@ -466,10 +577,10 @@ def _run_cross_perspective(args, output_root: Path) -> None:
             subset = [s.strip() for s in args.prompt_subset.split(",")] if args.prompt_subset else None
             chosen = build_prompt_subset(args.prompts_dir, subset, output_root / "prompt_subset")
             _set_nested(cfg, "data", "data_path", str(output_root / "prompt_subset"))
-            print(f"[gate] rendering subset: {chosen}")
+            print(f"[{mode_label}] rendering subset: {chosen}")
         if num_blocks is None:
             num_blocks = _num_blocks_from_cfg(cfg)
-        print(f"[gate] modified variant: {modified_settings}")
+        print(f"[{mode_label}] modified variant: {modified_settings}")
         _preflight_config(cfg, args.config_path)
         baseline_cfg, rag_cfg, baseline_dir, rag_dir = write_variant_configs(
             cfg,
@@ -480,18 +591,31 @@ def _run_cross_perspective(args, output_root: Path) -> None:
         run_inference(baseline_cfg)
         run_inference(rag_cfg)
 
+    prompt_lint = {}
+    scorer_coverage = {}
+    scorers = {
+        "subject_encoder": None,
+        "background_encoder": None,
+        "adherence_scorer": None,
+        "invariant_scorer": None,
+        "dynamic_scorer": None,
+    }
+    if args.prompts_dir and args.mode == "long_multishot":
+        prompt_lint, _allowed = _long_prompt_lint(args)
+        scorers, scorer_coverage = _build_long_scorers(args, require_adherence=require_adherence)
+
     if args.prompts_dir:
-        print(f"[gate] resolving boundaries with num_blocks={num_blocks}")
+        print(f"[{mode_label}] resolving boundaries with num_blocks={num_blocks}")
         shots_for = build_spec_resolver(
             args.prompts_dir, with_captions=require_adherence, max_chunks=num_blocks
         )
     elif args.num_shots is not None:
         shots_for = args.num_shots
     else:
-        raise ValueError("cross_perspective mode requires --prompts_dir or --num_shots")
+        raise ValueError(f"{mode_label} mode requires --prompts_dir or --num_shots")
 
-    adherence_scorer = None
-    if require_adherence:
+    adherence_scorer = scorers.get("adherence_scorer")
+    if require_adherence and args.mode != "long_multishot":
         adherence_scorer = build_clip_adherence_scorer(
             model_name=args.clip_model, pretrained=args.clip_pretrained, device=args.clip_device
         )
@@ -501,38 +625,74 @@ def _run_cross_perspective(args, output_root: Path) -> None:
         rag_dir,
         shots_for=shots_for,
         adherence_scorer=adherence_scorer,
+        invariant_scorer=scorers.get("invariant_scorer"),
+        subject_encoder=scorers.get("subject_encoder"),
+        background_encoder=scorers.get("background_encoder"),
+        dynamic_scorer=scorers.get("dynamic_scorer"),
         max_frames=args.max_frames,
         stride=max(1, args.stride),
     )
     gate = evaluate_cross_perspective_gate(
         result,
-        min_consistency_wins=args.min_consistency_wins,
+        min_consistency_wins=min_consistency_wins,
         adherence_tolerance=args.adherence_tolerance,
+        diversity_tolerance=args.diversity_tolerance,
+        motion_tolerance=args.motion_tolerance,
         require_adherence=require_adherence,
+        require_invariant=(args.mode == "long_multishot"),
     )
     gate["ac7_evaluated"] = require_adherence
     gate["modified_settings"] = modified_settings
+    gate["scorer_coverage"] = scorer_coverage
+    gate["prompt_lint"] = prompt_lint
+    if args.mode == "long_multishot":
+        selected = [s.strip() for s in args.prompt_subset.split(",")] if args.prompt_subset else list(prompt_lint)
+        lint_failures = [
+            s for s in selected
+            if s in prompt_lint
+            and not prompt_lint[s].get("negative_control", False)
+            and not prompt_lint[s].get("passed", False)
+        ]
+        missing_scorers = sorted(
+            name for name, info in scorer_coverage.items()
+            if isinstance(info, dict) and info.get("requested") and not info.get("loaded")
+        )
+        blocked = []
+        if lint_failures:
+            blocked.append(f"ill-posed prompt scene(s) below text-similarity floor: {lint_failures}")
+        if missing_scorers:
+            blocked.append(f"requested scorer(s) unavailable: {missing_scorers}")
+        if blocked:
+            prev = gate.get("blocked_reason")
+            gate["blocked_reason"] = "; ".join(([prev] if prev else []) + blocked)
+            gate["passed"] = False
+            gate["is_null_result"] = True
     if not require_adherence:
         # Consistency-only dry run is not an AC-7 result; never claim a pass.
         gate["note"] = "AC-7 NOT evaluated: --dry_run_without_adherence skips the adherence guard."
         gate["passed"] = False
 
-    metrics_json = Path(args.metrics_json) if args.metrics_json else output_root / "kv_rag_cross_perspective.json"
+    default_metrics_name = (
+        "kv_rag_long_multishot.json"
+        if args.mode == "long_multishot"
+        else "kv_rag_cross_perspective.json"
+    )
+    metrics_json = Path(args.metrics_json) if args.metrics_json else output_root / default_metrics_name
     save_metrics_json({"gate": gate, "comparison": result}, metrics_json)
     print(f"Wrote metrics: {metrics_json.resolve()}")
     print(f"Compared pairs: {result['num_pairs']} (skipped: {result.get('skipped_stems', [])})")
     print(
-        f"[gate] consistency wins: {gate['consistency_wins']}/{gate['num_pairs']} "
+        f"[{mode_label}] consistency wins: {gate['consistency_wins']}/{gate['num_pairs']} "
         f"(need >= {gate['min_consistency_wins']})"
     )
     if require_adherence:
         print(
-            f"[gate] adherence guard: {'OK' if gate['adherence_ok'] else 'FAIL'} "
+            f"[{mode_label}] adherence guard: {'OK' if gate['adherence_ok'] else 'FAIL'} "
             f"(tol={gate['adherence_tolerance']}, failures={gate['adherence_failures']})"
         )
     for p in gate["per_prompt"]:
         line = (
-            f"  {p['stem']}: consistency {p['consistency_baseline']:.4f} -> "
+            f"  {p['stem']}: {p['metric']} {p['consistency_baseline']:.4f} -> "
             f"{p['consistency_modified']:.4f} ({'win' if p['consistency_win'] else 'no win'})"
         )
         if "adherence_modified_mean" in p:
@@ -542,9 +702,9 @@ def _run_cross_perspective(args, output_root: Path) -> None:
             )
         print(line)
     if not require_adherence:
-        print("[gate] RESULT: DRY RUN -- AC-7 NOT evaluated (no adherence guard); not a pass.")
+        print(f"[{mode_label}] RESULT: DRY RUN -- AC-7 NOT evaluated (no adherence guard); not a pass.")
         return
-    print(f"[gate] RESULT: {'PASS' if gate['passed'] else 'FAIL'}")
+    print(f"[{mode_label}] RESULT: {'PASS' if gate['passed'] else 'FAIL'}")
     if not gate["passed"]:
         raise SystemExit(1)
 
@@ -624,7 +784,7 @@ def _finalize_finalist_ranking(finalist_records: list, missing_requested_backbon
     """
     reasons = []
     if missing_requested_backbones:
-        reasons.append(f"requested AC-2 backbone(s) unavailable: {list(missing_requested_backbones)}")
+        reasons.append(f"blocking prerequisite(s) unavailable or rejected: {list(missing_requested_backbones)}")
     if not gate_evaluated:
         reasons.append("adherence guard skipped (--dry_run_without_adherence)")
     blocked_reason = None
@@ -675,6 +835,246 @@ def _base_kv_rag_block(cfg) -> dict:
     if isinstance(block, dict):
         return dict(block)
     return {}
+
+
+def _run_long_multishot_finalists(args, output_root: Path) -> None:
+    """Consolidated long_multishot gate: baseline vs multiple KV finalists."""
+    import numpy as np
+
+    require_adherence = not args.dry_run_without_adherence
+    if require_adherence and not args.prompts_dir:
+        raise ValueError("long_multishot finalist gate requires --prompts_dir.")
+    if require_adherence and args.motion_tolerance is None:
+        raise ValueError(
+            "long_multishot finalist gate requires --motion_tolerance as a relative "
+            "dynamic_degree non-regression guard."
+        )
+    finalists = _parse_finalists(args.finalists)
+
+    cfg = _apply_overrides(OmegaConf.load(args.config_path), args)
+    subset = [s.strip() for s in args.prompt_subset.split(",")] if args.prompt_subset else None
+    chosen = build_prompt_subset(args.prompts_dir, subset, output_root / "prompt_subset")
+    _set_nested(cfg, "data", "data_path", str(output_root / "prompt_subset"))
+    num_blocks = args.num_blocks if args.num_blocks is not None else _num_blocks_from_cfg(cfg)
+    base_kv_rag = _base_kv_rag_block(cfg)
+    print(f"[long-finalist-gate] subset: {chosen}")
+    print(f"[long-finalist-gate] finalists: {finalists}")
+    _preflight_config(cfg, args.config_path)
+
+    prompt_lint, _allowed = _long_prompt_lint(args)
+    chosen_lint = {scene: prompt_lint.get(scene) for scene in chosen if scene in prompt_lint}
+    lint_failures = [
+        scene for scene, entry in chosen_lint.items()
+        if entry and not entry.get("negative_control", False) and not entry.get("passed", False)
+    ]
+    lint_passing_main = [
+        scene for scene, entry in chosen_lint.items()
+        if entry and not entry.get("negative_control", False) and entry.get("passed", False)
+    ]
+    negative_controls = [
+        scene for scene, entry in chosen_lint.items()
+        if entry and entry.get("negative_control", False)
+    ]
+
+    scorers, scorer_coverage = _build_long_scorers(args, require_adherence=require_adherence)
+    missing_scorers = sorted(
+        name for name, info in scorer_coverage.items()
+        if isinstance(info, dict) and info.get("requested") and not info.get("loaded")
+    )
+    prereq_blocks = []
+    if lint_failures:
+        prereq_blocks.append(f"ill-posed prompt scene(s) below text-similarity floor: {lint_failures}")
+    if len(lint_passing_main) < 3:
+        prereq_blocks.append(f"need >=3 lint-passing non-control scenes, got {len(lint_passing_main)}")
+    if not negative_controls:
+        prereq_blocks.append("negative control scene missing")
+    if missing_scorers:
+        prereq_blocks.append(f"requested scorer(s) unavailable: {missing_scorers}")
+    if prereq_blocks:
+        blocked_reason = "; ".join(prereq_blocks)
+        finalist_records = [
+            {
+                "key": key,
+                "value": value,
+                "settings": {
+                    "scene_memory_enabled": bool(args.modified_scene_memory_enabled),
+                    "boundary_inject_anchors": int(args.modified_boundary_inject_anchors),
+                    "scene_score_bonus": float(args.modified_scene_score_bonus),
+                    "retrieval_key_mode": key,
+                    "retrieval_value_mode": value,
+                },
+                "passed": False,
+                "blocked_reason": blocked_reason,
+                "mean_aggregate_delta": None,
+                "scene_wins": 0,
+                "num_scenes": len(lint_passing_main),
+            }
+            for key, value in finalists
+        ]
+        consolidated = {
+            "is_prefilter": False,
+            "selector": "long_multishot shot-anchor centroid gate",
+            "winner": None,
+            "is_null_result": True,
+            "blocked_reason": blocked_reason,
+            "render_attempted": False,
+            "prompt_lint": chosen_lint,
+            "lint_passing_main_scenes": lint_passing_main,
+            "negative_controls": negative_controls,
+            "scorer_coverage": scorer_coverage,
+            "guards": {
+                "adherence_tolerance": args.adherence_tolerance,
+                "diversity_tolerance_relative": args.diversity_tolerance,
+                "motion_tolerance_relative": args.motion_tolerance,
+                "invariant_tolerance": 0.0,
+                "require_adherence": require_adherence,
+            },
+            "ranking": [
+                {
+                    "key": r["key"],
+                    "value": r["value"],
+                    "passed": False,
+                    "mean_aggregate_delta": r["mean_aggregate_delta"],
+                    "scene_wins": f"0/{len(lint_passing_main)}",
+                    "blocked_reason": blocked_reason,
+                }
+                for r in finalist_records
+            ],
+            "finalists": finalist_records,
+        }
+        metrics_json = Path(args.metrics_json) if args.metrics_json else output_root / "long_multishot_finalist_gate.json"
+        save_metrics_json(consolidated, metrics_json)
+        print(f"Wrote metrics: {metrics_json.resolve()}")
+        print(f"[long-finalist-gate] BLOCKED before render (fail-closed): {blocked_reason}")
+        return
+
+    baseline_cfg, baseline_dir = _write_one_variant(
+        cfg, output_root, "baseline", kv_rag_settings={"enabled": False},
+        multiview_per_perspective=False,
+    )
+    run_inference(baseline_cfg)
+
+    shots_for = build_spec_resolver(
+        args.prompts_dir, with_captions=require_adherence, max_chunks=num_blocks
+    )
+
+    finalist_records = []
+    for key, value in finalists:
+        settings = {
+            "scene_memory_enabled": bool(args.modified_scene_memory_enabled),
+            "boundary_inject_anchors": int(args.modified_boundary_inject_anchors),
+            "scene_score_bonus": float(args.modified_scene_score_bonus),
+            "retrieval_key_mode": key,
+            "retrieval_value_mode": value,
+        }
+        merged = _finalist_kv_rag(base_kv_rag, settings)
+        name = f"mod_{key}_{value}"
+        mod_cfg, mod_dir = _write_one_variant(
+            cfg, output_root, name, kv_rag_settings=merged,
+            multiview_per_perspective=False,
+        )
+        print(f"[long-finalist-gate] rendering {name}: {settings}")
+        run_inference(mod_cfg)
+        result = compare_cross_perspective_dirs(
+            baseline_dir, mod_dir, shots_for=shots_for,
+            adherence_scorer=scorers.get("adherence_scorer"),
+            invariant_scorer=scorers.get("invariant_scorer"),
+            subject_encoder=scorers.get("subject_encoder"),
+            background_encoder=scorers.get("background_encoder"),
+            dynamic_scorer=scorers.get("dynamic_scorer"),
+            max_frames=args.max_frames, stride=max(1, args.stride),
+        )
+        gate = evaluate_cross_perspective_gate(
+            result, min_consistency_wins=args.min_consistency_wins or -(-len(lint_passing_main) // 2),
+            adherence_tolerance=args.adherence_tolerance,
+            diversity_tolerance=args.diversity_tolerance,
+            motion_tolerance=args.motion_tolerance,
+            require_adherence=require_adherence,
+            require_invariant=True,
+        )
+        gate["prompt_lint"] = chosen_lint
+        gate["scorer_coverage"] = scorer_coverage
+        gate["modified_settings"] = settings
+        blocked = []
+        if lint_failures:
+            blocked.append(f"ill-posed prompt scene(s) below text-similarity floor: {lint_failures}")
+        if len(lint_passing_main) < 3:
+            blocked.append(f"need >=3 lint-passing non-control scenes, got {len(lint_passing_main)}")
+        if not negative_controls:
+            blocked.append("negative control scene missing")
+        if missing_scorers:
+            blocked.append(f"requested scorer(s) unavailable: {missing_scorers}")
+        if blocked:
+            prev = gate.get("blocked_reason")
+            gate["blocked_reason"] = "; ".join(([prev] if prev else []) + blocked)
+            gate["passed"] = False
+            gate["is_null_result"] = True
+        deltas = [
+            r["modified_metrics"].get("anchor_centroid_consistency", float("nan"))
+            - r["baseline_metrics"].get("anchor_centroid_consistency", float("nan"))
+            for r in result["records"]
+            if not r.get("negative_control", False)
+        ]
+        mean_delta = float(np.nanmean(deltas)) if deltas else float("nan")
+        finalist_records.append({
+            "key": key,
+            "value": value,
+            "settings": settings,
+            "passed": bool(gate["passed"]),
+            "mean_aggregate_delta": mean_delta,
+            "scene_wins": gate["consistency_wins"],
+            "num_scenes": len(lint_passing_main),
+            "gate": gate,
+            "comparison": result,
+        })
+
+    ranked, winner, blocked_reason = _finalize_finalist_ranking(
+        finalist_records,
+        missing_scorers + lint_failures + ([] if len(lint_passing_main) >= 3 else ["insufficient_lint_passing_scenes"])
+        + ([] if negative_controls else ["missing_negative_control"]),
+        gate_evaluated=require_adherence,
+    )
+    consolidated = {
+        "is_prefilter": False,
+        "selector": "long_multishot shot-anchor centroid gate",
+        "winner": ({"key": winner["key"], "value": winner["value"]} if winner else None),
+        "is_null_result": winner is None,
+        "blocked_reason": blocked_reason,
+        "prompt_lint": chosen_lint,
+        "lint_passing_main_scenes": lint_passing_main,
+        "negative_controls": negative_controls,
+        "scorer_coverage": scorer_coverage,
+        "guards": {
+            "adherence_tolerance": args.adherence_tolerance,
+            "diversity_tolerance_relative": args.diversity_tolerance,
+            "motion_tolerance_relative": args.motion_tolerance,
+            "invariant_tolerance": 0.0,
+            "require_adherence": require_adherence,
+        },
+        "ranking": [
+            {
+                "key": r["key"],
+                "value": r["value"],
+                "passed": r["passed"],
+                "mean_aggregate_delta": r["mean_aggregate_delta"],
+                "scene_wins": f"{r['scene_wins']}/{r['num_scenes']}",
+            }
+            for r in ranked
+        ],
+        "finalists": finalist_records,
+    }
+    metrics_json = Path(args.metrics_json) if args.metrics_json else output_root / "long_multishot_finalist_gate.json"
+    save_metrics_json(consolidated, metrics_json)
+    print(f"Wrote metrics: {metrics_json.resolve()}")
+    if blocked_reason:
+        print(f"[long-finalist-gate] BLOCKED (fail-closed): {blocked_reason}")
+    for r in ranked:
+        print(f"  {r['key']}+{r['value']}: mean_delta={r['mean_aggregate_delta']:+.4f} "
+              f"wins={r['scene_wins']}/{r['num_scenes']} passed={r['passed']}")
+    if winner:
+        print(f"[long-finalist-gate] WINNER: {winner['key']}+{winner['value']}")
+    else:
+        print("[long-finalist-gate] RESULT: honest NULL/BLOCKED -- no finalist passed all guards.")
 
 
 def _run_multiview_finalists(args, output_root: Path) -> None:
@@ -980,7 +1380,7 @@ def _run_multiview_vbench(args, output_root: Path) -> None:
 def main() -> None:
     args = parse_args()
     output_root = Path(args.output_root)
-    if args.mode == "cross_perspective":
+    if args.mode in {"long_multishot", "cross_perspective"}:
         _run_cross_perspective(args, output_root)
     elif args.mode == "multiview_vbench":
         _run_multiview_vbench(args, output_root)

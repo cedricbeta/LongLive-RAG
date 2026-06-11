@@ -798,6 +798,31 @@ class CausalWanSelfAttention(nn.Module):
                     window_v = torch.cat([rag_v, window_v], dim=1)
                     rag_prepended_tokens = int(rag_k.shape[1])
 
+            def _attach_received_attention(q_for_attn, k_for_attn):
+                if (
+                    kv_rag is None
+                    or not getattr(kv_rag, "wants_received_attention", False)
+                    or cache_update_info is None
+                ):
+                    return
+                try:
+                    source_tokens = int(cache_update_info.get("new_k").shape[1])
+                    mass = kv_rag.estimate_received_attention(
+                        q_for_attn, k_for_attn, source_tokens
+                    )
+                    if mass is not None:
+                        cache_update_info["rag_received_attention"] = mass
+                except Exception as exc:
+                    if getattr(kv_rag, "fail_open", True):
+                        warn_once = getattr(kv_rag, "warn_once", None)
+                        if warn_once is not None:
+                            warn_once(
+                                "attention_mass_failed",
+                                f"[KV-RAG][warn] received-attention estimate failed once: {exc}",
+                            )
+                    else:
+                        raise
+
             if use_relative_rope:
                 if prepend_sink:
                     # Sink and local window tokens get separate RoPE in a
@@ -851,6 +876,7 @@ class CausalWanSelfAttention(nn.Module):
                         method=method, original_seq_len=original_seq_len,
                     ).type_as(v)
 
+                _attach_received_attention(roped_query, roped_window_k)
                 x = attention(roped_query, roped_window_k, window_v)
             else:
                 if rag_k_pending is not None:
@@ -892,6 +918,7 @@ class CausalWanSelfAttention(nn.Module):
                         and getattr(kv_rag, "diag_enabled", False)
                         and kv_rag_layer == getattr(kv_rag, "diag_layer", -999)):
                     kv_rag.record_attention_mass(roped_query, window_k, rag_prepended_tokens)
+                _attach_received_attention(roped_query, window_k)
                 x = attention(roped_query, window_k, window_v)
 
         # output
@@ -1627,6 +1654,7 @@ class CausalWanModel(ModelMixin, ConfigMixin):
                                 chunk_index=meta.get("chunk_index", None),
                                 phase=meta.get("phase", None),
                                 persistent=bool(meta.get("persistent", False)),
+                                received_attention=update_info.get("rag_received_attention", None),
                             )
                     except Exception as exc:
                         if getattr(kv_rag, "fail_open", True):

@@ -218,6 +218,24 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
         if self.kv_rag_neg is not None:
             self.kv_rag_neg.set_boundary_inject(active)
 
+    def _decode_vae_chunk_bcthw(self, chunk_bcthw, vae_scale):
+        """Decode one latent chunk to pixel space as [B, C, T, H, W].
+
+        LightVAE exposes ``cached_decode`` for streaming. The default Wan VAE
+        does not, so fall back to the wrapper's chunked decode API without the
+        cache. This keeps long Wan-VAE videos off the final full-video decode
+        path that OOMs on 384-frame runs.
+        """
+        if hasattr(self.vae.model, "cached_decode"):
+            return self.vae.model.cached_decode(chunk_bcthw, vae_scale).float().clamp_(-1, 1)
+        chunk_btchw = chunk_bcthw.permute(0, 2, 1, 3, 4).contiguous()
+        decoded_btchw = self.vae.decode_to_pixel_chunk(
+            chunk_btchw,
+            use_cache=False,
+            chunk_size=max(1, int(chunk_btchw.shape[1])),
+        )
+        return decoded_btchw.permute(0, 2, 1, 3, 4).contiguous()
+
     def _set_kv_rag_context_key(self, conditional_dict):
         """Supply the per-perspective caption-text key for the semantic key mode.
 
@@ -651,20 +669,20 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
                                 if item is None:
                                     vae_all_done.set()
                                     return
-                                decoded = self.vae.model.cached_decode(
-                                    item,
-                                    vae_scale,
-                                ).float().clamp_(-1, 1)
+                                decoded = self._decode_vae_chunk_bcthw(item, vae_scale)
                                 # Pinned-memory DtoH: pageable copy hits ~0.2 GB/s
                                 # (1.5s per 313MB chunk → ~80s/prompt at end); pinned
                                 # path runs at PCIe limit (~25 GB/s = ~12ms / chunk).
-                                pinned = torch.empty(
-                                    decoded.shape, dtype=decoded.dtype,
-                                    device="cpu", pin_memory=True,
-                                )
-                                pinned.copy_(decoded, non_blocking=True)
-                                torch.cuda.synchronize(decoded.device)
-                                vae_thread_chunks.append(pinned)
+                                if decoded.device.type == "cpu":
+                                    vae_thread_chunks.append(decoded)
+                                else:
+                                    pinned = torch.empty(
+                                        decoded.shape, dtype=decoded.dtype,
+                                        device="cpu", pin_memory=True,
+                                    )
+                                    pinned.copy_(decoded, non_blocking=True)
+                                    torch.cuda.synchronize(decoded.device)
+                                    vae_thread_chunks.append(pinned)
                     except Exception as exc:
                         vae_thread_error.append(exc)
                         vae_all_done.set()
@@ -884,10 +902,7 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
                     with torch.cuda.stream(vae_stream):
                         vae_stream.wait_event(diffusion_done)
                         chunk_bcthw = latents.permute(0, 2, 1, 3, 4).contiguous()
-                        decoded_chunk = self.vae.model.cached_decode(
-                            chunk_bcthw,
-                            vae_scale,
-                        ).float().clamp_(-1, 1)
+                        decoded_chunk = self._decode_vae_chunk_bcthw(chunk_bcthw, vae_scale)
                         video_chunks.append(decoded_chunk)
                     prev_vae_done = torch.cuda.Event()
                     prev_vae_done.record(vae_stream)
@@ -898,10 +913,7 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
                     vae_work_ready.set()
                 else:
                     chunk_bcthw = latents.permute(0, 2, 1, 3, 4).contiguous()
-                    decoded_chunk = self.vae.model.cached_decode(
-                        chunk_bcthw,
-                        vae_scale,
-                    ).float().clamp_(-1, 1)
+                    decoded_chunk = self._decode_vae_chunk_bcthw(chunk_bcthw, vae_scale)
                     video_chunks.append(decoded_chunk.cpu())
                     del decoded_chunk, chunk_bcthw
                     torch.cuda.empty_cache()

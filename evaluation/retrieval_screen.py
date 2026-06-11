@@ -105,9 +105,14 @@ def screen_key(mode: str, *, seed: int = 0) -> dict:
     kw = _KEY_KW.get(mode, {})
     mem = KVRAGMemory(KVRAGConfig(enabled=True, retrieval_key_mode=mode, **kw))
 
-    qs = _key_summary(mem, mode, view_a, emb_a)
-    cand_same = _key_summary(mem, mode, view_b, emb_b)
-    cand_diff = _key_summary(mem, mode, diff, emb_d)
+    if mode == "attention_native":
+        qs = mem._compute_key(view_a, for_query=True)
+        cand_same = mem._compute_key(view_b)
+        cand_diff = mem._compute_key(diff)
+    else:
+        qs = _key_summary(mem, mode, view_a, emb_a)
+        cand_same = _key_summary(mem, mode, view_b, emb_b)
+        cand_diff = _key_summary(mem, mode, diff, emb_d)
 
     def _fake(summary):
         return type("E", (), {"summary": summary, "persistent": False})()
@@ -136,8 +141,12 @@ def screen_value(mode: str) -> dict:
     g = torch.Generator().manual_seed(0)
     k = torch.randn(1, frames * fsl, heads, dim, generator=g)
     v = torch.randn(1, frames * fsl, heads, dim, generator=g)
+    received_attention = None
+    if mode == "attention_mass":
+        received_attention = torch.linspace(0.0, 1.0, steps=frames * fsl)
     mem.add(layer=0, k_pre=k, k_post=k, v=v, start_token=0, end_token=frames * fsl,
-            frame_seqlen=fsl, h=2, w=2, frames=frames)
+            frame_seqlen=fsl, h=2, w=2, frames=frames,
+            received_attention=received_attention)
     entry = mem.entries_by_layer[0][0]
     return {
         "value": mode,

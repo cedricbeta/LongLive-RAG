@@ -1,0 +1,6 @@
+{
+  "caption": "Negative control: this folder preserves the legacy contradiction. The global invariant claims one intact sunny-side-up egg in a dark non-stick pan, but the shot captions describe a different wok/scrambled-egg event. A consistency win without adherence loss here is evidence of text override, never a method pass.",
+  "invariant_caption": "One intact sunny-side-up egg remains whole in a dark non-stick frying pan.",
+  "contrast_caption": "Broken scrambled eggs are stir-fried in a wok by a cook.",
+  "negative_control": true
+}

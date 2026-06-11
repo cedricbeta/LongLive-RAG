@@ -58,6 +58,21 @@ def _load_durations_txt(folder: Path) -> list[int] | None:
     return durations or None
 
 
+def _load_global_meta(folder: Path, *, caption_field: str = "caption") -> dict:
+    path = folder / "global.json"
+    if not path.exists():
+        return {}
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    if not isinstance(data, dict):
+        return {}
+    out = dict(data)
+    out["global_caption"] = str(data.get(caption_field, "") or "")
+    return out
+
+
 def _durations_from_json(captions_meta: list[dict]) -> list[int]:
     """Per-shot chunk counts from each JSON: num_blocks, else block_indices, else 1."""
     durations: list[int] = []
@@ -85,6 +100,7 @@ def load_shot_specs(prompts_dir: str | Path, *, caption_field: str = "caption") 
         json_files = _shot_json_files(sub)
         if len(json_files) < 2:
             continue
+        global_meta = _load_global_meta(sub, caption_field=caption_field)
         captions: list[str] = []
         metas: list[dict] = []
         for jf in json_files:
@@ -105,7 +121,25 @@ def load_shot_specs(prompts_dir: str | Path, *, caption_field: str = "caption") 
         else:
             durations = _durations_from_json(metas)
 
-        specs[sub.name] = {"captions": captions, "chunk_durations": durations}
+        invariant_caption = (
+            global_meta.get("invariant_caption")
+            or global_meta.get("invariant")
+            or global_meta.get("global_caption")
+            or ""
+        )
+        contrast_caption = (
+            global_meta.get("contrast_caption")
+            or global_meta.get("contrast")
+            or ""
+        )
+        specs[sub.name] = {
+            "captions": captions,
+            "chunk_durations": durations,
+            "global_caption": global_meta.get("global_caption", ""),
+            "invariant_caption": str(invariant_caption or ""),
+            "contrast_caption": str(contrast_caption or ""),
+            "negative_control": bool(global_meta.get("negative_control", False)),
+        }
     return specs
 
 
@@ -193,6 +227,10 @@ def build_spec_resolver(
         out = {"chunk_durations": durations, "theme": theme}
         if with_captions:
             out["captions"] = list(spec["captions"])[: len(durations)]
+        out["global_caption"] = spec.get("global_caption", "")
+        out["invariant_caption"] = spec.get("invariant_caption", "")
+        out["contrast_caption"] = spec.get("contrast_caption", "")
+        out["negative_control"] = bool(spec.get("negative_control", False))
         return out
 
     return resolve
