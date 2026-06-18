@@ -1,0 +1,404 @@
+{
+  "api_usage": {
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "total_tokens": 0
+  },
+  "attempts": [
+    {
+      "api_usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      },
+      "auth": {
+        "anthropic-beta": "oauth-2025-04-20",
+        "anthropic-version": "2023-06-01",
+        "auth_header_format": "Authorization: Bearer <redacted>",
+        "credentials_path": "/home/chendong/.claude/.credentials.json",
+        "endpoint": "https://api.anthropic.com/v1/messages",
+        "last_auth": null,
+        "provider": "claude_oauth_messages"
+      },
+      "blocked_reason": "closed judge failed validation: viewpoint_only: API/schema failure: Claude OAuth HTTP 429: {\"type\":\"error\",\"error\":{\"type\":\"rate_limit_error\",\"message\":\"Error\"},\"request_id\":\"req_011CcAKWx7J4Tgr5ubSC91jz\"}; viewpoint_only: API/schema failure: Claude OAuth HTTP 429: {\"type\":\"error\",\"error\":{\"type\":\"rate_limit_error\",\"message\":\"Error\"},\"request_id\":\"req_011CcAKWy7KkAKPCj8J276RG\"}; subject_swap: API/schema failure: Claude OAuth HTTP 429: {\"type\":\"error\",\"error\":{\"type\":\"rate_limit_error\",\"message\":\"Error\"},\"request_id\":\"req_011CcAKWz38cbYCZv6ki9UQY\"}; copy_cheat: API/schema failure: Claude OAuth HTTP 429: {\"type\":\"error\",\"error\":{\"type\":\"rate_limit_error\",\"message\":\"Error\"},\"request_id\":\"req_011CcAKWzwDCDA8QdpFJ1W6S\"}; viewpoint_only_shuffled: API/schema failure: Claude OAuth HTTP 429: {\"type\":\"error\",\"error\":{\"type\":\"rate_limit_error\",\"message\":\"Error\"},\"request_id\":\"req_011CcAKX2HKgYMB9n3255gWm\"}; repeat-run stability: repeat fixture did not produce two verdicts",
+      "cache_dir": "docs/closed_judge_loop_oauth_rerun/claude_oauth/judge_cache",
+      "client": {
+        "anthropic-beta": "oauth-2025-04-20",
+        "anthropic-version": "2023-06-01",
+        "auth_header_format": "Authorization: Bearer <redacted>",
+        "credentials_path": "/home/chendong/.claude/.credentials.json",
+        "endpoint": "https://api.anthropic.com/v1/messages",
+        "last_auth": {
+          "anthropic_beta": "oauth-2025-04-20",
+          "auth_header_format": "Authorization: Bearer <redacted>",
+          "credentials_path": "/home/chendong/.claude/.credentials.json",
+          "expiresAt": 1781769826918,
+          "now_ms": 1781767213307,
+          "provider": "claude_oauth",
+          "refresh_attempted": false,
+          "token_present": true,
+          "top_level_keys": [
+            "claudeAiOauth",
+            "organizationUuid"
+          ],
+          "unexpired": true
+        },
+        "provider": "claude_oauth_messages"
+      },
+      "fixtures": [],
+      "model": "claude-opus-4-8",
+      "passed": false,
+      "provider_choice": "claude",
+      "repeat_run_stability": {
+        "message": "repeat fixture did not produce two verdicts",
+        "passed": false
+      },
+      "stage": "judge_validation",
+      "timestamp_utc": "2026-06-18T07:20:12+00:00",
+      "transcript_dir": "docs/closed_judge_loop_oauth_rerun/claude_oauth/judge_validation_transcripts"
+    },
+    {
+      "api_usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      },
+      "auth": {
+        "auth": "reused Codex login through codex CLI; no token file extraction",
+        "codex_bin": "/home/chendong/.nvm/versions/node/v22.17.0/bin/codex",
+        "command": "codex exec --output-schema ... --image ...",
+        "last_command": null,
+        "model": "gpt-5.5",
+        "provider": "codex_exec_oauth"
+      },
+      "blocked_reason": null,
+      "cache_dir": "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_cache",
+      "client": {
+        "auth": "reused Codex login through codex CLI; no token file extraction",
+        "codex_bin": "/home/chendong/.nvm/versions/node/v22.17.0/bin/codex",
+        "command": "codex exec --output-schema ... --image ...",
+        "last_command": null,
+        "model": "gpt-5.5",
+        "provider": "codex_exec_oauth"
+      },
+      "fixtures": [
+        {
+          "cache": "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_cache/db328d7d204992696056d5371ad7e04e162731204345e226852e6612803b1e75_610b0310d3bd6b4dca83506d4d5eb8f049ffcd1b2194a6b1b383a04e0046b6f1_0.json",
+          "frames_shown": [
+            [
+              "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_frames/viewpoint_only/shot0_frame0.png"
+            ],
+            [
+              "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_frames/viewpoint_only/shot1_frame0.png"
+            ],
+            [
+              "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_frames/viewpoint_only/shot2_frame0.png"
+            ]
+          ],
+          "message": "viewpoint-only expected preserved identity/background without copy flag, got subject=0.960, background=0.930, flags={'copy_cheat': False, 'freeze_cheat': False, 'prompt_collapse': False, 'position_bias_suspected': False, 'rationale': 'Frames are not copied or frozen; the robot and background shift appropriately across the requested viewpoints/actions.'}",
+          "name": "viewpoint_only",
+          "passed": true,
+          "run": 0,
+          "transcript": "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_transcripts/viewpoint_only_run0.json"
+        },
+        {
+          "cache": "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_cache/db328d7d204992696056d5371ad7e04e162731204345e226852e6612803b1e75_610b0310d3bd6b4dca83506d4d5eb8f049ffcd1b2194a6b1b383a04e0046b6f1_1.json",
+          "frames_shown": [
+            [
+              "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_frames/viewpoint_only/shot0_frame0.png"
+            ],
+            [
+              "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_frames/viewpoint_only/shot1_frame0.png"
+            ],
+            [
+              "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_frames/viewpoint_only/shot2_frame0.png"
+            ]
+          ],
+          "message": "viewpoint-only expected preserved identity/background without copy flag, got subject=0.960, background=0.920, flags={'copy_cheat': False, 'freeze_cheat': False, 'prompt_collapse': False, 'position_bias_suspected': False, 'rationale': 'Frames are not copied or frozen; subject placement and action cues vary while preserving the same subject and studio.'}",
+          "name": "viewpoint_only",
+          "passed": true,
+          "run": 1,
+          "transcript": "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_transcripts/viewpoint_only_run1.json"
+        },
+        {
+          "cache": "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_cache/d897befaa07e18234dfb6d1856781bf43b3e319f0ea00d7ff535f4683358a661_efb10f41e9311b06ed24cdec79f942fe606b3a433652fdb9ba3fe958fa9039c9_0.json",
+          "frames_shown": [
+            [
+              "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_frames/subject_swap/shot0_frame0.png"
+            ],
+            [
+              "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_frames/subject_swap/shot1_frame0.png"
+            ],
+            [
+              "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_frames/subject_swap/shot2_frame0.png"
+            ]
+          ],
+          "message": "subject swap expected low identity, got score=0.150",
+          "name": "subject_swap",
+          "passed": true,
+          "run": 0,
+          "transcript": "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_transcripts/subject_swap_run0.json"
+        },
+        {
+          "cache": "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_cache/60743eef9d5862beffc784b5cbf091ca15f68a90ae4f8b76d6c44095e9d34220_2229a42871097d49df5f75d32ed604e6835000a4219ecd27bb446f431e4ffa41_0.json",
+          "frames_shown": [
+            [
+              "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_frames/copy_cheat/shot0_frame0.png"
+            ],
+            [
+              "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_frames/copy_cheat/shot1_frame0.png"
+            ],
+            [
+              "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_frames/copy_cheat/shot2_frame0.png"
+            ]
+          ],
+          "message": "copy/freeze cheat expected, got flags={'copy_cheat': True, 'freeze_cheat': True, 'prompt_collapse': True, 'position_bias_suspected': False, 'rationale': 'All shots appear pixel-identical despite captions requiring different views and actions.'}",
+          "name": "copy_cheat",
+          "passed": true,
+          "run": 0,
+          "transcript": "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_transcripts/copy_cheat_run0.json"
+        },
+        {
+          "cache": "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_cache/5e6c9e67b51a9adbdac4ac90a9cdaca91cc6004af10d0af3a6c79119d8da2f95_cc2f5d936534917be129377d8c6d96692ad5db175de842f249c77b8ea1e9cc42_0.json",
+          "frames_shown": [
+            [
+              "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_frames/viewpoint_only/shot2_frame0.png"
+            ],
+            [
+              "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_frames/viewpoint_only/shot0_frame0.png"
+            ],
+            [
+              "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_frames/viewpoint_only/shot1_frame0.png"
+            ]
+          ],
+          "message": "shuffled-order probe expected no strong position bias, got subject=0.960, flags={'copy_cheat': False, 'freeze_cheat': False, 'prompt_collapse': False, 'position_bias_suspected': False, 'rationale': 'Frames are not copied or frozen; robot position and framing vary while preserving the subject and scene.'}",
+          "name": "viewpoint_only_shuffled",
+          "passed": true,
+          "run": 0,
+          "transcript": "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_transcripts/viewpoint_only_shuffled_run0.json"
+        }
+      ],
+      "model": "gpt-5.5",
+      "passed": true,
+      "provider_choice": "codex",
+      "repeat_run_stability": {
+        "message": "repeat stability diffs={'subject_identity_preserved': 0.0, 'background_coherent': 0.010000000000000009}, cuts=(None, None), tolerance=0.1",
+        "passed": true
+      },
+      "stage": "judge_validation",
+      "timestamp_utc": "2026-06-18T07:20:13+00:00",
+      "transcript_dir": "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_transcripts"
+    }
+  ],
+  "auth": {
+    "auth": "reused Codex login through codex CLI; no token file extraction",
+    "codex_bin": "/home/chendong/.nvm/versions/node/v22.17.0/bin/codex",
+    "command": "codex exec --output-schema ... --image ...",
+    "last_command": null,
+    "model": "gpt-5.5",
+    "provider": "codex_exec_oauth"
+  },
+  "blocked_reason": "Qwen3 optimizer failed validation: no free GPU for Qwen3 optimizer: gpu0: mem=3363MiB util=97% users=['janamset']; gpu1: mem=3359MiB util=96% users=['janamset']; gpu2: mem=1049MiB util=0% users=['janamset']; gpu3: mem=2775MiB util=96% users=['janamset']",
+  "cache_dir": "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_cache",
+  "client": {
+    "auth": "reused Codex login through codex CLI; no token file extraction",
+    "codex_bin": "/home/chendong/.nvm/versions/node/v22.17.0/bin/codex",
+    "command": "codex exec --output-schema ... --image ...",
+    "last_command": null,
+    "model": "gpt-5.5",
+    "provider": "codex_exec_oauth"
+  },
+  "closed_judge_validated": true,
+  "fixtures": [
+    {
+      "cache": "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_cache/db328d7d204992696056d5371ad7e04e162731204345e226852e6612803b1e75_610b0310d3bd6b4dca83506d4d5eb8f049ffcd1b2194a6b1b383a04e0046b6f1_0.json",
+      "frames_shown": [
+        [
+          "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_frames/viewpoint_only/shot0_frame0.png"
+        ],
+        [
+          "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_frames/viewpoint_only/shot1_frame0.png"
+        ],
+        [
+          "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_frames/viewpoint_only/shot2_frame0.png"
+        ]
+      ],
+      "message": "viewpoint-only expected preserved identity/background without copy flag, got subject=0.960, background=0.930, flags={'copy_cheat': False, 'freeze_cheat': False, 'prompt_collapse': False, 'position_bias_suspected': False, 'rationale': 'Frames are not copied or frozen; the robot and background shift appropriately across the requested viewpoints/actions.'}",
+      "name": "viewpoint_only",
+      "passed": true,
+      "run": 0,
+      "transcript": "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_transcripts/viewpoint_only_run0.json"
+    },
+    {
+      "cache": "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_cache/db328d7d204992696056d5371ad7e04e162731204345e226852e6612803b1e75_610b0310d3bd6b4dca83506d4d5eb8f049ffcd1b2194a6b1b383a04e0046b6f1_1.json",
+      "frames_shown": [
+        [
+          "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_frames/viewpoint_only/shot0_frame0.png"
+        ],
+        [
+          "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_frames/viewpoint_only/shot1_frame0.png"
+        ],
+        [
+          "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_frames/viewpoint_only/shot2_frame0.png"
+        ]
+      ],
+      "message": "viewpoint-only expected preserved identity/background without copy flag, got subject=0.960, background=0.920, flags={'copy_cheat': False, 'freeze_cheat': False, 'prompt_collapse': False, 'position_bias_suspected': False, 'rationale': 'Frames are not copied or frozen; subject placement and action cues vary while preserving the same subject and studio.'}",
+      "name": "viewpoint_only",
+      "passed": true,
+      "run": 1,
+      "transcript": "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_transcripts/viewpoint_only_run1.json"
+    },
+    {
+      "cache": "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_cache/d897befaa07e18234dfb6d1856781bf43b3e319f0ea00d7ff535f4683358a661_efb10f41e9311b06ed24cdec79f942fe606b3a433652fdb9ba3fe958fa9039c9_0.json",
+      "frames_shown": [
+        [
+          "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_frames/subject_swap/shot0_frame0.png"
+        ],
+        [
+          "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_frames/subject_swap/shot1_frame0.png"
+        ],
+        [
+          "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_frames/subject_swap/shot2_frame0.png"
+        ]
+      ],
+      "message": "subject swap expected low identity, got score=0.150",
+      "name": "subject_swap",
+      "passed": true,
+      "run": 0,
+      "transcript": "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_transcripts/subject_swap_run0.json"
+    },
+    {
+      "cache": "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_cache/60743eef9d5862beffc784b5cbf091ca15f68a90ae4f8b76d6c44095e9d34220_2229a42871097d49df5f75d32ed604e6835000a4219ecd27bb446f431e4ffa41_0.json",
+      "frames_shown": [
+        [
+          "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_frames/copy_cheat/shot0_frame0.png"
+        ],
+        [
+          "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_frames/copy_cheat/shot1_frame0.png"
+        ],
+        [
+          "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_frames/copy_cheat/shot2_frame0.png"
+        ]
+      ],
+      "message": "copy/freeze cheat expected, got flags={'copy_cheat': True, 'freeze_cheat': True, 'prompt_collapse': True, 'position_bias_suspected': False, 'rationale': 'All shots appear pixel-identical despite captions requiring different views and actions.'}",
+      "name": "copy_cheat",
+      "passed": true,
+      "run": 0,
+      "transcript": "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_transcripts/copy_cheat_run0.json"
+    },
+    {
+      "cache": "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_cache/5e6c9e67b51a9adbdac4ac90a9cdaca91cc6004af10d0af3a6c79119d8da2f95_cc2f5d936534917be129377d8c6d96692ad5db175de842f249c77b8ea1e9cc42_0.json",
+      "frames_shown": [
+        [
+          "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_frames/viewpoint_only/shot2_frame0.png"
+        ],
+        [
+          "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_frames/viewpoint_only/shot0_frame0.png"
+        ],
+        [
+          "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_frames/viewpoint_only/shot1_frame0.png"
+        ]
+      ],
+      "message": "shuffled-order probe expected no strong position bias, got subject=0.960, flags={'copy_cheat': False, 'freeze_cheat': False, 'prompt_collapse': False, 'position_bias_suspected': False, 'rationale': 'Frames are not copied or frozen; robot position and framing vary while preserving the subject and scene.'}",
+      "name": "viewpoint_only_shuffled",
+      "passed": true,
+      "run": 0,
+      "transcript": "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_transcripts/viewpoint_only_shuffled_run0.json"
+    }
+  ],
+  "model": "gpt-5.5",
+  "optimizer_validation": {
+    "blocked_reason": "no free GPU for Qwen3 optimizer: gpu0: mem=3363MiB util=97% users=['janamset']; gpu1: mem=3359MiB util=96% users=['janamset']; gpu2: mem=1049MiB util=0% users=['janamset']; gpu3: mem=2775MiB util=96% users=['janamset']",
+    "details": {
+      "architectures": [
+        "Qwen3VLForConditionalGeneration"
+      ],
+      "env_probe_returncode": 0,
+      "env_probe_stderr_prefix": "",
+      "model_type": "qwen3_vl",
+      "packages": {
+        "openai": "2.41.0",
+        "qwen-vl-utils": "0.0.14",
+        "sglang": "0.5.3.post3",
+        "torch": "2.8.0",
+        "transformers": "4.57.1"
+      }
+    },
+    "env_ok": false,
+    "gpu_selection": {
+      "blocked_reason": "no free GPU for Qwen3 optimizer: gpu0: mem=3363MiB util=97% users=['janamset']; gpu1: mem=3359MiB util=96% users=['janamset']; gpu2: mem=1049MiB util=0% users=['janamset']; gpu3: mem=2775MiB util=96% users=['janamset']",
+      "candidates": [],
+      "gpu_inventory": {
+        "available": true,
+        "error": null,
+        "gpus": [
+          {
+            "index": 0,
+            "memory_total_mib": 81920,
+            "memory_used_mib": 3363,
+            "name": "NVIDIA A100 80GB PCIe",
+            "utilization_gpu_percent": 97
+          },
+          {
+            "index": 1,
+            "memory_total_mib": 81920,
+            "memory_used_mib": 3359,
+            "name": "NVIDIA A100 80GB PCIe",
+            "utilization_gpu_percent": 96
+          },
+          {
+            "index": 2,
+            "memory_total_mib": 81920,
+            "memory_used_mib": 1049,
+            "name": "NVIDIA A100 80GB PCIe",
+            "utilization_gpu_percent": 0
+          },
+          {
+            "index": 3,
+            "memory_total_mib": 81920,
+            "memory_used_mib": 2775,
+            "name": "NVIDIA A100 80GB PCIe",
+            "utilization_gpu_percent": 96
+          }
+        ],
+        "process_users": [
+          "janamset 3886107 venv/bin/python -m netwm.orchestration.ablate --smoke",
+          "janamset 3888299 /home/janamset/projects/generative-abr/venv/bin/python -m netwm.orchestration.run /home/janamset/projects/generative-abr/datasets/puffer/netwm_runs/ablation_20260616-181420/runs/itransformer/_ablation_recipe.json",
+          "janamset 3888300 /home/janamset/projects/generative-abr/venv/bin/python -m netwm.orchestration.run /home/janamset/projects/generative-abr/datasets/puffer/netwm_runs/ablation_20260616-181420/runs/patchtst_ci/_ablation_recipe.json",
+          "janamset 3888301 /home/janamset/projects/generative-abr/venv/bin/python -m netwm.orchestration.run /home/janamset/projects/generative-abr/datasets/puffer/netwm_runs/ablation_20260616-181420/runs/crossformer/_ablation_recipe.json"
+        ],
+        "processes": [
+          "# gpu         pid   type     sm    mem    enc    dec    jpg    ofa    command ",
+          "# Idx           #    C/G      %      %      %      %      %      %    name ",
+          "    0    3886107     C      -      -      -      -      -      -    python         ",
+          "    0    3888300     C     96     19      -      -      -      -    python         ",
+          "    1    3886107     C      -      -      -      -      -      -    python         ",
+          "    1    3888301     C     96     19      -      -      -      -    python         ",
+          "    2    3886107     C      -      -      -      -      -      -    python         ",
+          "    3    3886107     C      -      -      -      -      -      -    python         ",
+          "    3    3888299     C     96     19      -      -      -      -    python         "
+        ]
+      },
+      "selected_gpu": null
+    },
+    "gpu_time_seconds": 0.0,
+    "optimizer_model": "Qwen/Qwen3-VL-8B-Instruct",
+    "qwen2_5_substitution_allowed": false,
+    "required": "Qwen3-VL-8B via SGLang OpenAI-compatible server",
+    "selected_gpu": null,
+    "server_started": false,
+    "sglang_python": "/home/chendong/miniconda3/envs/sglang/bin/python",
+    "stage": "qwen3_sglang_server_validation"
+  },
+  "passed": false,
+  "provider_choice": "codex",
+  "repeat_run_stability": {
+    "message": "repeat stability diffs={'subject_identity_preserved': 0.0, 'background_coherent': 0.010000000000000009}, cuts=(None, None), tolerance=0.1",
+    "passed": true
+  },
+  "selected_provider": "codex",
+  "stage": "judge_validation",
+  "timestamp_utc": "2026-06-18T07:20:13+00:00",
+  "transcript_dir": "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_transcripts",
+  "wall_clock_seconds": 4.584918022155762
+}

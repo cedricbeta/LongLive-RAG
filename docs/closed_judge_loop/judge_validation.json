@@ -1,0 +1,27 @@
+{
+  "api_usage": {
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "total_tokens": 0
+  },
+  "auth": {
+    "auth_keys": [
+      "OPENAI_API_KEY",
+      "auth_mode",
+      "last_refresh",
+      "tokens"
+    ],
+    "present": false,
+    "reason": "OPENAI_API_KEY missing or null",
+    "source": "/home/chendong/.codex/auth.json"
+  },
+  "blocked_reason": "OpenAI API key unavailable: OPENAI_API_KEY missing or null",
+  "cache_dir": "docs/closed_judge_loop/judge_cache",
+  "fixtures": [],
+  "model": "gpt-5.5",
+  "passed": false,
+  "stage": "judge_validation",
+  "timestamp_utc": "2026-06-18T06:52:29+00:00",
+  "transcript_dir": "docs/closed_judge_loop/judge_validation_transcripts",
+  "wall_clock_seconds": 0.0003814697265625
+}

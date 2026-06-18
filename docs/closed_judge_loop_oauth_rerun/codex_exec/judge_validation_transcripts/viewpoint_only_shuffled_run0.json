@@ -1,0 +1,345 @@
+{
+  "fixture": "viewpoint_only_shuffled",
+  "run": 0,
+  "model": "gpt-5.5",
+  "from_cache": true,
+  "elapsed_seconds": 0.00012421607971191406,
+  "video_hash": "5e6c9e67b51a9adbdac4ac90a9cdaca91cc6004af10d0af3a6c79119d8da2f95",
+  "prompt_hash": "cc2f5d936534917be129377d8c6d96692ad5db175de842f249c77b8ea1e9cc42",
+  "frames_shown": [
+    [
+      "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_frames/viewpoint_only/shot2_frame0.png"
+    ],
+    [
+      "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_frames/viewpoint_only/shot0_frame0.png"
+    ],
+    [
+      "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_frames/viewpoint_only/shot1_frame0.png"
+    ]
+  ],
+  "request": {
+    "model": "gpt-5.5",
+    "store": false,
+    "temperature": 0,
+    "instructions": "You are a held-out video consistency judge.\n\nYou will see 1-3 decoded frames per shot, in temporal shot order unless the\nfixture explicitly says it is a shuffled-order probe. Judge only perceptual\ncross-shot consistency:\n- subject_identity_preserved: whether the same central subject/object continues\n  across shot cuts.\n- background_coherent: whether the same scene/place/event persists.\n- per_shot_adherence: whether each shot still follows its own caption.\n- which_cut_broke: the cut index i for transition shot i -> i+1 that most\n  clearly broke consistency, or null if no cut broke.\n- cheat_flags: flag copy/freeze/prompt-collapse cheats. Do not reward a copied\n  frame sequence when captions ask for distinct actions or camera views.\n\nDo not penalize a legitimate camera/viewpoint/framing change by itself. Return\nonly the strict JSON object required by the response schema.",
+    "input": [
+      {
+        "role": "user",
+        "content": [
+          {
+            "type": "input_text",
+            "text": "Fixture: viewpoint_only_shuffled\nDescription: The same viewpoint-only frames, deliberately shown in a shuffled shot order.\nShots and captions are listed below. Judge the frames in the order shown."
+          },
+          {
+            "type": "input_text",
+            "text": "SHOT 0 CAPTION: Closer angled view of the same red robot returning to the studio mark."
+          },
+          {
+            "type": "input_image",
+            "image_url": "<base64 image omitted>",
+            "detail": "high"
+          },
+          {
+            "type": "input_text",
+            "text": "Frame marker: shot=0, frame=0, file=shot2_frame0.png"
+          },
+          {
+            "type": "input_text",
+            "text": "SHOT 1 CAPTION: Wide shot of the red robot standing in the gray studio."
+          },
+          {
+            "type": "input_image",
+            "image_url": "<base64 image omitted>",
+            "detail": "high"
+          },
+          {
+            "type": "input_text",
+            "text": "Frame marker: shot=1, frame=0, file=shot0_frame0.png"
+          },
+          {
+            "type": "input_text",
+            "text": "SHOT 2 CAPTION: Side view of the same red robot moving across the same gray studio."
+          },
+          {
+            "type": "input_image",
+            "image_url": "<base64 image omitted>",
+            "detail": "high"
+          },
+          {
+            "type": "input_text",
+            "text": "Frame marker: shot=2, frame=0, file=shot1_frame0.png"
+          }
+        ]
+      }
+    ],
+    "text": {
+      "format": {
+        "type": "json_schema",
+        "name": "cross_shot_consistency_judge",
+        "strict": true,
+        "schema": {
+          "type": "object",
+          "properties": {
+            "subject_identity_preserved": {
+              "type": "object",
+              "properties": {
+                "score": {
+                  "type": "number",
+                  "minimum": 0.0,
+                  "maximum": 1.0
+                },
+                "verdict": {
+                  "type": "string",
+                  "enum": [
+                    "low",
+                    "medium",
+                    "high"
+                  ]
+                },
+                "rationale": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "score",
+                "verdict",
+                "rationale"
+              ],
+              "additionalProperties": false
+            },
+            "background_coherent": {
+              "type": "object",
+              "properties": {
+                "score": {
+                  "type": "number",
+                  "minimum": 0.0,
+                  "maximum": 1.0
+                },
+                "verdict": {
+                  "type": "string",
+                  "enum": [
+                    "low",
+                    "medium",
+                    "high"
+                  ]
+                },
+                "rationale": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "score",
+                "verdict",
+                "rationale"
+              ],
+              "additionalProperties": false
+            },
+            "per_shot_adherence": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "shot_index": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "score": {
+                    "type": "number",
+                    "minimum": 0.0,
+                    "maximum": 1.0
+                  },
+                  "issue": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "shot_index",
+                  "score",
+                  "issue"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "which_cut_broke": {
+              "type": "object",
+              "properties": {
+                "cut_index": {
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "confidence": {
+                  "type": "number",
+                  "minimum": 0.0,
+                  "maximum": 1.0
+                },
+                "how": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "cut_index",
+                "confidence",
+                "how"
+              ],
+              "additionalProperties": false
+            },
+            "cheat_flags": {
+              "type": "object",
+              "properties": {
+                "copy_cheat": {
+                  "type": "boolean"
+                },
+                "freeze_cheat": {
+                  "type": "boolean"
+                },
+                "prompt_collapse": {
+                  "type": "boolean"
+                },
+                "position_bias_suspected": {
+                  "type": "boolean"
+                },
+                "rationale": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "copy_cheat",
+                "freeze_cheat",
+                "prompt_collapse",
+                "position_bias_suspected",
+                "rationale"
+              ],
+              "additionalProperties": false
+            },
+            "overall_consistency_score": {
+              "type": "number",
+              "minimum": 0.0,
+              "maximum": 1.0
+            }
+          },
+          "required": [
+            "subject_identity_preserved",
+            "background_coherent",
+            "per_shot_adherence",
+            "which_cut_broke",
+            "cheat_flags",
+            "overall_consistency_score"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "codex_prompt": "You are a held-out video consistency judge.\n\nYou will see 1-3 decoded frames per shot, in temporal shot order unless the\nfixture explicitly says it is a shuffled-order probe. Judge only perceptual\ncross-shot consistency:\n- subject_identity_preserved: whether the same central subject/object continues\n  across shot cuts.\n- background_coherent: whether the same scene/place/event persists.\n- per_shot_adherence: whether each shot still follows its own caption.\n- which_cut_broke: the cut index i for transition shot i -> i+1 that most\n  clearly broke consistency, or null if no cut broke.\n- cheat_flags: flag copy/freeze/prompt-collapse cheats. Do not reward a copied\n  frame sequence when captions ask for distinct actions or camera views.\n\nDo not penalize a legitimate camera/viewpoint/framing change by itself. Return\nonly the strict JSON object required by the response schema.\n\nFixture: viewpoint_only_shuffled\nDescription: The same viewpoint-only frames, deliberately shown in a shuffled shot order.\nImages are attached in exact shot order. Return only JSON matching the output schema.\nSHOT 0 CAPTION: Closer angled view of the same red robot returning to the studio mark.\nFrame marker: shot=0, frame=0, file=shot2_frame0.png\nSHOT 1 CAPTION: Wide shot of the red robot standing in the gray studio.\nFrame marker: shot=1, frame=0, file=shot0_frame0.png\nSHOT 2 CAPTION: Side view of the same red robot moving across the same gray studio.\nFrame marker: shot=2, frame=0, file=shot1_frame0.png",
+    "codex_images": [
+      "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_frames/viewpoint_only/shot2_frame0.png",
+      "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_frames/viewpoint_only/shot0_frame0.png",
+      "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_frames/viewpoint_only/shot1_frame0.png"
+    ]
+  },
+  "client": {
+    "provider": "codex_exec_oauth",
+    "command": "codex exec --output-schema ... --image ...",
+    "auth": "reused Codex login through codex CLI; no token file extraction",
+    "codex_bin": "/home/chendong/.nvm/versions/node/v22.17.0/bin/codex",
+    "model": "gpt-5.5",
+    "last_command": null
+  },
+  "response": {
+    "output_text": "{\"subject_identity_preserved\": {\"score\": 0.96, \"verdict\": \"high\", \"rationale\": \"The same simple red robot with rounded top, rectangular body, and white eyes persists across all shots.\"}, \"background_coherent\": {\"score\": 0.9, \"verdict\": \"high\", \"rationale\": \"All shots remain in the same gray studio with the slanted floor line and recurring dark rectangle/yellow circle elements, with only viewpoint/framing changes.\"}, \"per_shot_adherence\": [{\"shot_index\": 0, \"score\": 0.82, \"issue\": \"Closer angled view is plausible and the same robot is present; the studio mark/returning action is only weakly visible.\"}, {\"shot_index\": 1, \"score\": 0.95, \"issue\": \"Matches a wide shot of the red robot standing in the gray studio.\"}, {\"shot_index\": 2, \"score\": 0.84, \"issue\": \"Shows the same robot in the same studio with motion/mark cues, though the side-view aspect is not very strong.\"}], \"which_cut_broke\": {\"cut_index\": null, \"confidence\": 0.08, \"how\": \"No transition clearly breaks identity or scene consistency; differences are consistent with viewpoint/framing changes.\"}, \"cheat_flags\": {\"copy_cheat\": false, \"freeze_cheat\": false, \"prompt_collapse\": false, \"position_bias_suspected\": false, \"rationale\": \"Frames are not copied or frozen; robot position and framing vary while preserving the subject and scene.\"}, \"overall_consistency_score\": 0.91}",
+    "usage": {
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "total_tokens": 0
+    },
+    "raw_response": {
+      "stdout_prefix": "{\"subject_identity_preserved\":{\"score\":0.96,\"verdict\":\"high\",\"rationale\":\"The same simple red robot with rounded top, rectangular body, and white eyes persists across all shots.\"},\"background_coherent\":{\"score\":0.9,\"verdict\":\"high\",\"rationale\":\"All shots remain in the same gray studio with the slanted floor line and recurring dark rectangle/yellow circle elements, with only viewpoint/framing changes.\"},\"per_shot_adherence\":[{\"shot_index\":0,\"score\":0.82,\"issue\":\"Closer angled view is plausible and the same robot is present; the studio mark/returning action is only weakly visible.\"},{\"shot_index\":1,\"score\":0.95,\"issue\":\"Matches a wide shot of the red robot standing in the gray studio.\"},{\"shot_index\":2,\"score\":0.84,\"issue\":\"Shows the same robot in the same studio with motion/mark cues, though the side-view aspect is not very strong.\"}],\"which_cut_broke\":{\"cut_index\":null,\"confidence\":0.08,\"how\":\"No transition clearly breaks identity or scene consistency; differences are consistent with v",
+      "stderr_prefix": "Reading prompt from stdin...\nOpenAI Codex v0.140.0\n--------\nworkdir: /home/chendong/video-gen/LongLive-RAG\nmodel: gpt-5.5\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: xhigh\nreasoning summaries: none\nsession id: 019ed996-ce09-7101-98af-1ccfee4f3542\n--------\nuser\nYou are a held-out video consistency judge.\n\nYou will see 1-3 decoded frames per shot, in temporal shot order unless the\nfixture explicitly says it is a shuffled-order probe. Judge only perceptual\ncross-shot consistency:\n- subject_identity_preserved: whether the same central subject/object continues\n  across shot cuts.\n- background_coherent: whether the same scene/place/event persists.\n- per_shot_adherence: whether each shot still follows its own caption.\n- which_cut_broke: the cut index i for transition shot i -> i+1 that most\n  clearly broke consistency, or null if no cut broke.\n- cheat_flags: flag copy/freeze/prompt-collapse cheats. Do not reward a copied\n  frame sequence when captions ask for distinc"
+    },
+    "client": {
+      "provider": "codex_exec_oauth",
+      "command": "codex exec --output-schema ... --image ...",
+      "auth": "reused Codex login through codex CLI; no token file extraction",
+      "codex_bin": "/home/chendong/.nvm/versions/node/v22.17.0/bin/codex",
+      "model": "gpt-5.5",
+      "last_command": {
+        "argv_redacted": [
+          "/home/chendong/.nvm/versions/node/v22.17.0/bin/codex",
+          "exec",
+          "-C",
+          "/home/chendong/video-gen/LongLive-RAG",
+          "--sandbox",
+          "read-only",
+          "--ephemeral",
+          "--output-schema",
+          "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_transcripts/codex_judge_schema.json",
+          "--output-last-message",
+          "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_transcripts/codex_viewpoint_only_shuffled_last_message.json",
+          "--model",
+          "gpt-5.5",
+          "--image",
+          "<image-path>",
+          "--image",
+          "<image-path>",
+          "--image",
+          "<image-path>",
+          "-"
+        ],
+        "schema_path": "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_transcripts/codex_judge_schema.json",
+        "output_path": "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_transcripts/codex_viewpoint_only_shuffled_last_message.json",
+        "returncode": 0,
+        "stderr_prefix": "Reading prompt from stdin...\nOpenAI Codex v0.140.0\n--------\nworkdir: /home/chendong/video-gen/LongLive-RAG\nmodel: gpt-5.5\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: xhigh\nreasoning summaries: none\nsession id: 019ed996-ce09-7101-98af-1ccfee4f3542\n--------\nuser\nYou are a held-out video consistency judge.\n\nYou will see 1-3 decoded frames per shot, in temporal shot order unless the\nfixture explicitly says it is a shuffled-order probe. Judge only perceptual\ncross-shot consistency:\n- subject_identity_preserved: whether the same central subject/object continues\n  across shot cuts.\n- background_coherent: whether the same scene/place/event persists.\n- per_shot_adherence: whether each shot still follows its own caption.\n- which_cut_broke: the cut index i for transition shot i -> i+1 that most\n  clearly broke consistency, or null if no cut broke.\n- cheat_flags: flag copy/freeze/prompt-collapse cheats. Do not reward a copied\n  frame sequence when captions ask for distinc"
+      }
+    }
+  },
+  "verdict": {
+    "subject_identity_preserved": {
+      "score": 0.96,
+      "verdict": "high",
+      "rationale": "The same simple red robot with rounded top, rectangular body, and white eyes persists across all shots."
+    },
+    "background_coherent": {
+      "score": 0.9,
+      "verdict": "high",
+      "rationale": "All shots remain in the same gray studio with the slanted floor line and recurring dark rectangle/yellow circle elements, with only viewpoint/framing changes."
+    },
+    "per_shot_adherence": [
+      {
+        "shot_index": 0,
+        "score": 0.82,
+        "issue": "Closer angled view is plausible and the same robot is present; the studio mark/returning action is only weakly visible."
+      },
+      {
+        "shot_index": 1,
+        "score": 0.95,
+        "issue": "Matches a wide shot of the red robot standing in the gray studio."
+      },
+      {
+        "shot_index": 2,
+        "score": 0.84,
+        "issue": "Shows the same robot in the same studio with motion/mark cues, though the side-view aspect is not very strong."
+      }
+    ],
+    "which_cut_broke": {
+      "cut_index": null,
+      "confidence": 0.08,
+      "how": "No transition clearly breaks identity or scene consistency; differences are consistent with viewpoint/framing changes."
+    },
+    "cheat_flags": {
+      "copy_cheat": false,
+      "freeze_cheat": false,
+      "prompt_collapse": false,
+      "position_bias_suspected": false,
+      "rationale": "Frames are not copied or frozen; robot position and framing vary while preserving the subject and scene."
+    },
+    "overall_consistency_score": 0.91
+  },
+  "expectation_ok": true,
+  "expectation_message": "shuffled-order probe expected no strong position bias, got subject=0.960, flags={'copy_cheat': False, 'freeze_cheat': False, 'prompt_collapse': False, 'position_bias_suspected': False, 'rationale': 'Frames are not copied or frozen; robot position and framing vary while preserving the subject and scene.'}"
+}

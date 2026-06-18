@@ -1,0 +1,136 @@
+{
+  "ablation": {
+    "arms": [
+      "baseline",
+      "prompt_refine_only",
+      "kv_select_only",
+      "both"
+    ],
+    "evaluated": false,
+    "reason": "blocked before optimizer/generator work"
+  },
+  "blocked_reason": "OpenAI API key unavailable: OPENAI_API_KEY missing or null",
+  "date_utc": "2026-06-18",
+  "is_null_result": true,
+  "judge_validation": {
+    "api_usage": {
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "total_tokens": 0
+    },
+    "auth": {
+      "auth_keys": [
+        "OPENAI_API_KEY",
+        "auth_mode",
+        "last_refresh",
+        "tokens"
+      ],
+      "present": false,
+      "reason": "OPENAI_API_KEY missing or null",
+      "source": "/home/chendong/.codex/auth.json"
+    },
+    "blocked_reason": "OpenAI API key unavailable: OPENAI_API_KEY missing or null",
+    "cache_dir": "docs/closed_judge_loop/judge_cache",
+    "fixtures": [],
+    "model": "gpt-5.5",
+    "passed": false,
+    "stage": "judge_validation",
+    "timestamp_utc": "2026-06-18T06:52:29+00:00",
+    "transcript_dir": "docs/closed_judge_loop/judge_validation_transcripts",
+    "wall_clock_seconds": 0.0003814697265625
+  },
+  "next_hypothesis": "Provide a real OPENAI_API_KEY and rerun judge validation; only after it passes, admit long-regime scenes and run the four-arm local-VLM optimizer ablation.",
+  "numeric_guards": {
+    "evaluated": false,
+    "prior_numeric_metrics_path": "docs/multiview_gate_results/round14_scene_memory_mechanism_sweep.json",
+    "reason": "closed judge validation did not pass; no ablation gating run"
+  },
+  "pass": false,
+  "repro": {
+    "output_dir": "docs/closed_judge_loop",
+    "rerun": "python scripts/run_closed_judge_loop.py --output_root docs/closed_judge_loop --model gpt-5.5"
+  },
+  "resources": {
+    "api_cost_note": "not estimated here; no validated judge calls completed",
+    "api_cost_usd": null,
+    "api_tokens": {
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "total_tokens": 0
+    },
+    "gpu_inventory": {
+      "available": true,
+      "error": null,
+      "gpus": [
+        {
+          "index": 0,
+          "memory_total_mib": 81920,
+          "memory_used_mib": 3363,
+          "name": "NVIDIA A100 80GB PCIe",
+          "utilization_gpu_percent": 99
+        },
+        {
+          "index": 1,
+          "memory_total_mib": 81920,
+          "memory_used_mib": 3359,
+          "name": "NVIDIA A100 80GB PCIe",
+          "utilization_gpu_percent": 98
+        },
+        {
+          "index": 2,
+          "memory_total_mib": 81920,
+          "memory_used_mib": 1049,
+          "name": "NVIDIA A100 80GB PCIe",
+          "utilization_gpu_percent": 0
+        },
+        {
+          "index": 3,
+          "memory_total_mib": 81920,
+          "memory_used_mib": 2775,
+          "name": "NVIDIA A100 80GB PCIe",
+          "utilization_gpu_percent": 96
+        }
+      ],
+      "process_users": [
+        "janamset 3886107 venv/bin/python -m netwm.orchestration.ablate --smoke",
+        "janamset 3888299 /home/janamset/projects/generative-abr/venv/bin/python -m netwm.orchestration.run /home/janamset/projects/generative-abr/datasets/puffer/netwm_runs/ablation_20260616-181420/runs/itransformer/_ablation_recipe.json",
+        "janamset 3888300 /home/janamset/projects/generative-abr/venv/bin/python -m netwm.orchestration.run /home/janamset/projects/generative-abr/datasets/puffer/netwm_runs/ablation_20260616-181420/runs/patchtst_ci/_ablation_recipe.json",
+        "janamset 3888301 /home/janamset/projects/generative-abr/venv/bin/python -m netwm.orchestration.run /home/janamset/projects/generative-abr/datasets/puffer/netwm_runs/ablation_20260616-181420/runs/crossformer/_ablation_recipe.json"
+      ],
+      "processes": [
+        "# gpu         pid   type     sm    mem    enc    dec    jpg    ofa    command ",
+        "# Idx           #    C/G      %      %      %      %      %      %    name ",
+        "    0    3886107     C      -      -      -      -      -      -    python         ",
+        "    0    3888300     C     96     19      -      -      -      -    python         ",
+        "    1    3886107     C      -      -      -      -      -      -    python         ",
+        "    1    3888301     C     96     19      -      -      -      -    python         ",
+        "    2    3886107     C      -      -      -      -      -      -    python         ",
+        "    3    3886107     C      -      -      -      -      -      -    python         ",
+        "    3    3888299     C     96     19      -      -      -      -    python         "
+      ]
+    },
+    "gpu_time_seconds": 0,
+    "wall_clock_seconds": 0.0003814697265625
+  },
+  "separation": {
+    "judge_model": "gpt-5.5",
+    "optimizer_probe": {
+      "fallback_optimizer": "Qwen/Qwen2.5-VL-7B-Instruct",
+      "notes": [
+        "Qwen3-VL config load failed under transformers: The checkpoint you are trying to load has model type `qwen3_vl` but Transformers does not recognize this architecture. This could be because of an issue with the checkpoint, or because your version of Transformers is out of date.\n\nYou can update Transformers with the command `pip install --upgrade transformers`. If this does not work, and the checkpoint is very new, then there may not be a release version that supports this model yet. In this case, you can get the most up-to-date code by installing Transformers from source with the command `pip install git+https://github.com/huggingface/transformers.git`",
+        "vLLM import/load path unavailable in current env: No module named 'vllm'",
+        "Falling back to cached Qwen2.5-VL-7B per objective."
+      ],
+      "preferred_optimizer": "Qwen/Qwen3-VL-8B-Instruct",
+      "qwen2_5_vl_loadable": true,
+      "qwen3_vl_loadable": false,
+      "selected_optimizer": "Qwen/Qwen2.5-VL-7B-Instruct",
+      "transformers_version": "4.49.0",
+      "vllm_loadable": false
+    },
+    "optimizer_used": false,
+    "reason": "optimizer is not invoked before closed judge validation passes",
+    "shared_transcript": false
+  },
+  "stage": "closed_judge_pre_gate_validation"
+}

@@ -1,0 +1,49 @@
+{
+  "response": {
+    "output_text": "{\"subject_identity_preserved\": {\"score\": 0.96, \"verdict\": \"high\", \"rationale\": \"The central red robot with the same body shape, eyes, and color persists across all shots despite framing and position changes.\"}, \"background_coherent\": {\"score\": 0.93, \"verdict\": \"high\", \"rationale\": \"The gray studio, slanted floor line, dark wall block, and yellow circular light remain consistent with plausible viewpoint/framing shifts.\"}, \"per_shot_adherence\": [{\"shot_index\": 0, \"score\": 0.95, \"issue\": \"Wide shot clearly shows the red robot standing in the gray studio.\"}, {\"shot_index\": 1, \"score\": 0.9, \"issue\": \"The same robot appears shifted with a motion arrow, supporting movement in the same studio; side-view distinction is modest but acceptable.\"}, {\"shot_index\": 2, \"score\": 0.92, \"issue\": \"Closer angled framing shows the same robot back near the studio mark and background elements.\"}], \"which_cut_broke\": {\"cut_index\": null, \"confidence\": 0.08, \"how\": \"No transition clearly breaks identity or scene continuity; changes are consistent with allowed camera/framing/action variation.\"}, \"cheat_flags\": {\"copy_cheat\": false, \"freeze_cheat\": false, \"prompt_collapse\": false, \"position_bias_suspected\": false, \"rationale\": \"Frames are not copied or frozen; the robot and background shift appropriately across the requested viewpoints/actions.\"}, \"overall_consistency_score\": 0.94}",
+    "usage": {
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "total_tokens": 0
+    },
+    "raw_response": {
+      "stdout_prefix": "{\"subject_identity_preserved\":{\"score\":0.96,\"verdict\":\"high\",\"rationale\":\"The central red robot with the same body shape, eyes, and color persists across all shots despite framing and position changes.\"},\"background_coherent\":{\"score\":0.93,\"verdict\":\"high\",\"rationale\":\"The gray studio, slanted floor line, dark wall block, and yellow circular light remain consistent with plausible viewpoint/framing shifts.\"},\"per_shot_adherence\":[{\"shot_index\":0,\"score\":0.95,\"issue\":\"Wide shot clearly shows the red robot standing in the gray studio.\"},{\"shot_index\":1,\"score\":0.9,\"issue\":\"The same robot appears shifted with a motion arrow, supporting movement in the same studio; side-view distinction is modest but acceptable.\"},{\"shot_index\":2,\"score\":0.92,\"issue\":\"Closer angled framing shows the same robot back near the studio mark and background elements.\"}],\"which_cut_broke\":{\"cut_index\":null,\"confidence\":0.08,\"how\":\"No transition clearly breaks identity or scene continuity; changes are consistent wit",
+      "stderr_prefix": "Reading prompt from stdin...\nOpenAI Codex v0.140.0\n--------\nworkdir: /home/chendong/video-gen/LongLive-RAG\nmodel: gpt-5.5\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: xhigh\nreasoning summaries: none\nsession id: 019ed995-ed54-7731-93e8-6682e8d3c1df\n--------\nuser\nYou are a held-out video consistency judge.\n\nYou will see 1-3 decoded frames per shot, in temporal shot order unless the\nfixture explicitly says it is a shuffled-order probe. Judge only perceptual\ncross-shot consistency:\n- subject_identity_preserved: whether the same central subject/object continues\n  across shot cuts.\n- background_coherent: whether the same scene/place/event persists.\n- per_shot_adherence: whether each shot still follows its own caption.\n- which_cut_broke: the cut index i for transition shot i -> i+1 that most\n  clearly broke consistency, or null if no cut broke.\n- cheat_flags: flag copy/freeze/prompt-collapse cheats. Do not reward a copied\n  frame sequence when captions ask for distinc"
+    },
+    "client": {
+      "provider": "codex_exec_oauth",
+      "command": "codex exec --output-schema ... --image ...",
+      "auth": "reused Codex login through codex CLI; no token file extraction",
+      "codex_bin": "/home/chendong/.nvm/versions/node/v22.17.0/bin/codex",
+      "model": "gpt-5.5",
+      "last_command": {
+        "argv_redacted": [
+          "/home/chendong/.nvm/versions/node/v22.17.0/bin/codex",
+          "exec",
+          "-C",
+          "/home/chendong/video-gen/LongLive-RAG",
+          "--sandbox",
+          "read-only",
+          "--ephemeral",
+          "--output-schema",
+          "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_transcripts/codex_judge_schema.json",
+          "--output-last-message",
+          "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_transcripts/codex_viewpoint_only_last_message.json",
+          "--model",
+          "gpt-5.5",
+          "--image",
+          "<image-path>",
+          "--image",
+          "<image-path>",
+          "--image",
+          "<image-path>",
+          "-"
+        ],
+        "schema_path": "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_transcripts/codex_judge_schema.json",
+        "output_path": "docs/closed_judge_loop_oauth_rerun/codex_exec/judge_validation_transcripts/codex_viewpoint_only_last_message.json",
+        "returncode": 0,
+        "stderr_prefix": "Reading prompt from stdin...\nOpenAI Codex v0.140.0\n--------\nworkdir: /home/chendong/video-gen/LongLive-RAG\nmodel: gpt-5.5\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: xhigh\nreasoning summaries: none\nsession id: 019ed995-ed54-7731-93e8-6682e8d3c1df\n--------\nuser\nYou are a held-out video consistency judge.\n\nYou will see 1-3 decoded frames per shot, in temporal shot order unless the\nfixture explicitly says it is a shuffled-order probe. Judge only perceptual\ncross-shot consistency:\n- subject_identity_preserved: whether the same central subject/object continues\n  across shot cuts.\n- background_coherent: whether the same scene/place/event persists.\n- per_shot_adherence: whether each shot still follows its own caption.\n- which_cut_broke: the cut index i for transition shot i -> i+1 that most\n  clearly broke consistency, or null if no cut broke.\n- cheat_flags: flag copy/freeze/prompt-collapse cheats. Do not reward a copied\n  frame sequence when captions ask for distinc"
+      }
+    }
+  }
+}
