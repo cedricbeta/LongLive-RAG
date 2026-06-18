@@ -1,0 +1,36 @@
+{
+  "resumed_optimizer_artifacts": true,
+  "runs": {
+    "both": {
+      "config": "videos/vlm_closed_judge_ablation_20260618/configs/both.yaml",
+      "gpu": null,
+      "log_path": "docs/vlm_closed_judge_ablation_20260618/generation_logs/both.log",
+      "observed_gpu_source": "operator run observation after GPU0 became busy; Wan log records elapsed time but not CUDA id",
+      "observed_physical_gpu": 2,
+      "returncode": 0,
+      "reused": true,
+      "wall_clock_seconds": 0.0
+    },
+    "kv_only": {
+      "config": "videos/vlm_closed_judge_ablation_20260618/configs/kv_only.yaml",
+      "gpu": null,
+      "log_path": "docs/vlm_closed_judge_ablation_20260618/generation_logs/kv_only.log",
+      "observed_gpu_source": "operator run observation during resumed render; Wan log records elapsed time but not CUDA id",
+      "observed_physical_gpu": 0,
+      "returncode": 0,
+      "reused": true,
+      "wall_clock_seconds": 0.0
+    },
+    "prompt_only": {
+      "config": "videos/vlm_closed_judge_ablation_20260618/configs/prompt_only.yaml",
+      "gpu": null,
+      "log_path": "docs/vlm_closed_judge_ablation_20260618/generation_logs/prompt_only.log",
+      "observed_gpu_source": "operator run observation during first full render; Wan log records elapsed time but not CUDA id",
+      "observed_physical_gpu": 0,
+      "returncode": 0,
+      "reused": true,
+      "wall_clock_seconds": 0.0
+    }
+  },
+  "skipped_generation": false
+}

@@ -1,0 +1,129 @@
+{
+  "arms": {
+    "both": {
+      "african_savanna": {
+        "boundary_injections": null,
+        "diagnostic_path": "videos/vlm_closed_judge_ablation_20260618/both/both-rank0-african_savanna-seed0_regular_kv_rag_diag.json",
+        "event_count": 0,
+        "first_events": [],
+        "manual_anchor_injections": null,
+        "manual_anchor_matched_frames": null,
+        "manual_anchor_plan_path": null,
+        "manual_anchor_requested_frames": null,
+        "retrieval_calls": null,
+        "retrieval_hits": null
+      },
+      "brown_bear_river": {
+        "boundary_injections": null,
+        "diagnostic_path": "videos/vlm_closed_judge_ablation_20260618/both/both-rank0-brown_bear_river-seed0_regular_kv_rag_diag.json",
+        "event_count": 0,
+        "first_events": [],
+        "manual_anchor_injections": null,
+        "manual_anchor_matched_frames": null,
+        "manual_anchor_plan_path": null,
+        "manual_anchor_requested_frames": null,
+        "retrieval_calls": null,
+        "retrieval_hits": null
+      },
+      "shimmering_puzzle_surface": {
+        "boundary_injections": null,
+        "diagnostic_path": "videos/vlm_closed_judge_ablation_20260618/both/both-rank0-shimmering_puzzle_surface-seed0_regular_kv_rag_diag.json",
+        "event_count": 0,
+        "first_events": [],
+        "manual_anchor_injections": null,
+        "manual_anchor_matched_frames": null,
+        "manual_anchor_plan_path": null,
+        "manual_anchor_requested_frames": null,
+        "retrieval_calls": null,
+        "retrieval_hits": null
+      },
+      "skateboarder_high_motion": {
+        "boundary_injections": null,
+        "diagnostic_path": "videos/vlm_closed_judge_ablation_20260618/both/both-rank0-skateboarder_high_motion-seed0_regular_kv_rag_diag.json",
+        "event_count": 0,
+        "first_events": [],
+        "manual_anchor_injections": null,
+        "manual_anchor_matched_frames": null,
+        "manual_anchor_plan_path": null,
+        "manual_anchor_requested_frames": null,
+        "retrieval_calls": null,
+        "retrieval_hits": null
+      },
+      "sunlit_balcony_tour": {
+        "boundary_injections": null,
+        "diagnostic_path": "videos/vlm_closed_judge_ablation_20260618/both/both-rank0-sunlit_balcony_tour-seed0_regular_kv_rag_diag.json",
+        "event_count": 0,
+        "first_events": [],
+        "manual_anchor_injections": null,
+        "manual_anchor_matched_frames": null,
+        "manual_anchor_plan_path": null,
+        "manual_anchor_requested_frames": null,
+        "retrieval_calls": null,
+        "retrieval_hits": null
+      }
+    },
+    "kv_only": {
+      "african_savanna": {
+        "boundary_injections": null,
+        "diagnostic_path": "videos/vlm_closed_judge_ablation_20260618/kv_only/kv_only-rank0-african_savanna-seed0_regular_kv_rag_diag.json",
+        "event_count": 0,
+        "first_events": [],
+        "manual_anchor_injections": null,
+        "manual_anchor_matched_frames": null,
+        "manual_anchor_plan_path": null,
+        "manual_anchor_requested_frames": null,
+        "retrieval_calls": null,
+        "retrieval_hits": null
+      },
+      "brown_bear_river": {
+        "boundary_injections": null,
+        "diagnostic_path": "videos/vlm_closed_judge_ablation_20260618/kv_only/kv_only-rank0-brown_bear_river-seed0_regular_kv_rag_diag.json",
+        "event_count": 0,
+        "first_events": [],
+        "manual_anchor_injections": null,
+        "manual_anchor_matched_frames": null,
+        "manual_anchor_plan_path": null,
+        "manual_anchor_requested_frames": null,
+        "retrieval_calls": null,
+        "retrieval_hits": null
+      },
+      "shimmering_puzzle_surface": {
+        "boundary_injections": null,
+        "diagnostic_path": "videos/vlm_closed_judge_ablation_20260618/kv_only/kv_only-rank0-shimmering_puzzle_surface-seed0_regular_kv_rag_diag.json",
+        "event_count": 0,
+        "first_events": [],
+        "manual_anchor_injections": null,
+        "manual_anchor_matched_frames": null,
+        "manual_anchor_plan_path": null,
+        "manual_anchor_requested_frames": null,
+        "retrieval_calls": null,
+        "retrieval_hits": null
+      },
+      "skateboarder_high_motion": {
+        "boundary_injections": null,
+        "diagnostic_path": "videos/vlm_closed_judge_ablation_20260618/kv_only/kv_only-rank0-skateboarder_high_motion-seed0_regular_kv_rag_diag.json",
+        "event_count": 0,
+        "first_events": [],
+        "manual_anchor_injections": null,
+        "manual_anchor_matched_frames": null,
+        "manual_anchor_plan_path": null,
+        "manual_anchor_requested_frames": null,
+        "retrieval_calls": null,
+        "retrieval_hits": null
+      },
+      "sunlit_balcony_tour": {
+        "boundary_injections": null,
+        "diagnostic_path": "videos/vlm_closed_judge_ablation_20260618/kv_only/kv_only-rank0-sunlit_balcony_tour-seed0_regular_kv_rag_diag.json",
+        "event_count": 0,
+        "first_events": [],
+        "manual_anchor_injections": null,
+        "manual_anchor_matched_frames": null,
+        "manual_anchor_plan_path": null,
+        "manual_anchor_requested_frames": null,
+        "retrieval_calls": null,
+        "retrieval_hits": null
+      }
+    }
+  },
+  "source": "videos/vlm_closed_judge_ablation_20260618"
+}

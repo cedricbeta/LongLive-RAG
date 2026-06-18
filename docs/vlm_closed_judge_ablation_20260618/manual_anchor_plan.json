@@ -1,0 +1,60 @@
+{
+  "aggregation": "per-boundary union/quantile from scene-level Qwen3 choices; KVRAG snaps to available whole-frame entries",
+  "anchor_cap": 2,
+  "boundaries": {
+    "1": [
+      {
+        "frame_index": 0
+      }
+    ],
+    "2": [
+      {
+        "frame_index": 0
+      },
+      {
+        "frame_index": 95
+      }
+    ],
+    "3": [
+      {
+        "frame_index": 0
+      },
+      {
+        "frame_index": 191
+      }
+    ],
+    "4": [
+      {
+        "frame_index": 0
+      },
+      {
+        "frame_index": 287
+      }
+    ],
+    "5": [
+      {
+        "frame_index": 0
+      },
+      {
+        "frame_index": 383
+      }
+    ],
+    "6": [
+      {
+        "frame_index": 0
+      },
+      {
+        "frame_index": 95
+      }
+    ],
+    "7": [
+      {
+        "frame_index": 0
+      },
+      {
+        "frame_index": 95
+      }
+    ]
+  },
+  "source": "qwen3_vl_decoded_frame_plan"
+}

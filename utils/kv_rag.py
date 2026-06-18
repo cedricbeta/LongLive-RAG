@@ -17,8 +17,10 @@ baseline cache flow.
 
 from __future__ import annotations
 
+import json
 import math
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any
 
 import torch
@@ -196,6 +198,11 @@ class KVRAGConfig:
     # of the content match, re-RoPE'd through the normal retrieval-injection
     # path. 0 = off. Requires scene_memory_enabled.
     boundary_inject_anchors: int = 0
+    # Optional JSON plan written by the VLM optimizer. When present, boundary
+    # force-injection uses the requested decoded source frame indices instead of
+    # the default recency heuristic. This stays on the same whole-frame payload
+    # path; it only changes which persistent entries are selected.
+    manual_anchor_plan_path: str | None = None
     # When true, every completed shot contributes clean-recache anchors to the
     # persistent scene partition. When false, only the initial shot seeds it.
     scene_memory_rolling: bool = False
@@ -298,6 +305,7 @@ class KVRAGConfig:
             scene_memory_max_entries=max(1, _as_int(cfg.get("scene_memory_max_entries", 8), 8)),
             scene_score_bonus=float(cfg.get("scene_score_bonus", 0.0) or 0.0),
             boundary_inject_anchors=max(0, _as_int(cfg.get("boundary_inject_anchors", 0), 0)),
+            manual_anchor_plan_path=cfg.get("manual_anchor_plan_path", None),
             scene_memory_rolling=_as_bool(cfg.get("scene_memory_rolling", False), False),
             scene_memory_injection_schedule=str(
                 cfg.get("scene_memory_injection_schedule", "boundary")
@@ -337,6 +345,7 @@ class KVRAGConfig:
             f"scene_memory_max_entries={self.scene_memory_max_entries}, "
             f"scene_score_bonus={self.scene_score_bonus}, "
             f"boundary_inject_anchors={self.boundary_inject_anchors}, "
+            f"manual_anchor_plan_path={self.manual_anchor_plan_path}, "
             f"scene_memory_rolling={self.scene_memory_rolling}, "
             f"scene_memory_injection_schedule={self.scene_memory_injection_schedule}, "
             f"attention_diagnostic={self.attention_diagnostic}, "
@@ -365,6 +374,8 @@ class KVRAGEntry:
     h: int = 0
     w: int = 0
     frame_seqlen: int = 0
+    source_frame_start: int | None = None
+    source_frame_indices: tuple[int, ...] = ()
     # True when the entry lives in the persistent scene partition (survives shot
     # boundaries); False for ordinary per-shot entries.
     persistent: bool = False
@@ -404,6 +415,8 @@ class KVRAGMemory:
         # new perspective's window only by numeric coincidence across DIFFERENT
         # videos, not a real double-count. Set by _reset_kv_rag_keep_scene.
         self._scene_cross_clock = False
+        self._manual_anchor_plan = self._load_manual_anchor_plan(config.manual_anchor_plan_path)
+        self.manual_anchor_events: list[dict[str, object]] = []
         self._runtime_context = {
             "chunk_index": None,
             "shot_index": None,
@@ -438,6 +451,9 @@ class KVRAGMemory:
             "persistent_logit_bias_lambda_sum": 0.0,
             "persistent_logit_bias_skipped_unaligned": 0,
             "boundary_injections": 0,
+            "manual_anchor_injections": 0,
+            "manual_anchor_requested_frames": 0,
+            "manual_anchor_matched_frames": 0,
             "frame_alignment_store_drops": 0,
             "frame_alignment_inject_drops": 0,
             # Phase 0 diagnostics: post-softmax attention mass on retrieved
@@ -449,6 +465,37 @@ class KVRAGMemory:
         }
         self._warnings: set[str] = set()
         self._store_dtype = _dtype_from_name(config.store_dtype)
+
+    @staticmethod
+    def _load_manual_anchor_plan(path_value: str | None) -> dict[int, list[int]]:
+        if not path_value:
+            return {}
+        path = Path(str(path_value)).expanduser()
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except Exception:
+            return {}
+        raw = data.get("boundaries", data) if isinstance(data, dict) else {}
+        out: dict[int, list[int]] = {}
+        if not isinstance(raw, dict):
+            return out
+        for boundary, values in raw.items():
+            try:
+                boundary_idx = int(boundary)
+            except Exception:
+                continue
+            frames: list[int] = []
+            if isinstance(values, list):
+                for item in values:
+                    if isinstance(item, dict):
+                        item = item.get("frame_index", item.get("decoded_frame_index"))
+                    try:
+                        frames.append(int(item))
+                    except Exception:
+                        continue
+            if frames:
+                out[boundary_idx] = sorted(set(f for f in frames if f >= 0))
+        return out
 
     @staticmethod
     def _validate_config(config: KVRAGConfig) -> None:
@@ -606,6 +653,7 @@ class KVRAGMemory:
         self.attention_mass_by_shot_layer.clear()
         self.attention_mass_by_shot_layer_frame.clear()
         self.frame_alignment_drop_events.clear()
+        self.manual_anchor_events.clear()
         for key in self.stats:
             self.stats[key] = 0 if isinstance(self.stats[key], int) else 0.0
         self._warnings.clear()
@@ -669,6 +717,8 @@ class KVRAGMemory:
             "attention_mass_by_shot_layer": by_shot,
             "attention_mass_by_shot_layer_frame": by_frame,
             "frame_alignment_drop_events": list(self.frame_alignment_drop_events),
+            "manual_anchor_plan_path": self.config.manual_anchor_plan_path,
+            "manual_anchor_events": list(self.manual_anchor_events),
         }
 
     def warn_once(self, key: str, message: str) -> None:
@@ -801,6 +851,15 @@ class KVRAGMemory:
                 h=int(h),
                 w=int(w),
                 frame_seqlen=int(frame_seqlen),
+                source_frame_start=(
+                    int(entry_start) // int(frame_seqlen)
+                    if int(frame_seqlen) > 0 else None
+                ),
+                source_frame_indices=self._source_frame_indices(
+                    entry_start,
+                    int(frame_seqlen),
+                    int(stored_frames),
+                ),
                 persistent=persistent,
             )
             if persistent:
@@ -911,7 +970,9 @@ class KVRAGMemory:
         # Anchors overlapping the live window were already filtered out of
         # ``scene_pool``, so a frame still in the sink/window is not re-injected.
         if force_n > 0 and scene_pool:
-            for entry in list(reversed(scene_pool))[:force_n]:
+            manual_entries = self._manual_anchor_entries(scene_pool, force_n)
+            force_entries = manual_entries if manual_entries is not None else list(reversed(scene_pool))[:force_n]
+            for entry in force_entries:
                 if id(entry) not in chosen_ids:
                     selected.append(entry)
                     chosen_ids.add(id(entry))
@@ -949,6 +1010,73 @@ class KVRAGMemory:
         self.stats["retrieval_hits"] += 1
         self.stats["retrieved_tokens"] += int(rag_k.shape[1])
         return rag_k, rag_v, selected
+
+    @staticmethod
+    def _source_frame_indices(
+        start_token: int,
+        frame_seqlen: int,
+        frames: int,
+    ) -> tuple[int, ...]:
+        if frame_seqlen <= 0 or frames <= 0:
+            return ()
+        start_frame = int(start_token) // int(frame_seqlen)
+        return tuple(range(start_frame, start_frame + int(frames)))
+
+    def _entry_frame_distance(self, entry: KVRAGEntry, frame_index: int) -> int:
+        frames = entry.source_frame_indices
+        if frames:
+            return min(abs(int(frame_index) - int(f)) for f in frames)
+        if entry.source_frame_start is not None:
+            return abs(int(frame_index) - int(entry.source_frame_start))
+        if entry.frame_seqlen > 0:
+            return abs(int(frame_index) - int(entry.start_token) // int(entry.frame_seqlen))
+        return 10**9
+
+    def _manual_anchor_entries(
+        self,
+        scene_pool: list[KVRAGEntry],
+        force_n: int,
+    ) -> list[KVRAGEntry] | None:
+        shot_index = self._runtime_context.get("shot_index")
+        try:
+            shot = int(shot_index)
+        except Exception:
+            return None
+        requested = list(self._manual_anchor_plan.get(shot, []))
+        if not requested:
+            return None
+        self.stats["manual_anchor_requested_frames"] += len(requested)
+        selected: list[KVRAGEntry] = []
+        selected_ids: set[int] = set()
+        for frame in requested:
+            candidates = [entry for entry in scene_pool if id(entry) not in selected_ids]
+            if not candidates:
+                break
+            best = min(
+                candidates,
+                key=lambda entry: (
+                    self._entry_frame_distance(entry, int(frame)),
+                    -int(entry.end_token),
+                ),
+            )
+            selected.append(best)
+            selected_ids.add(id(best))
+            if len(selected) >= int(force_n):
+                break
+        if selected:
+            self.stats["manual_anchor_injections"] += 1
+            self.stats["manual_anchor_matched_frames"] += len(selected)
+            if len(self.manual_anchor_events) < 128:
+                self.manual_anchor_events.append({
+                    "shot_index": shot,
+                    "requested_frames": requested,
+                    "selected_source_frames": [
+                        list(entry.source_frame_indices) for entry in selected
+                    ],
+                    "selected_start_tokens": [int(entry.start_token) for entry in selected],
+                    "selected_chunk_indices": [entry.chunk_index for entry in selected],
+                })
+        return selected
 
     def format_stats(self, prefix: str = "KV-RAG") -> str:
         layers = sum(1 for entries in self.entries_by_layer.values() if entries)

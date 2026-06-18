@@ -1141,8 +1141,17 @@ def _process_users_by_gpu() -> dict[int, list[str]]:
     return users
 
 
-def select_free_gpu(*, max_memory_used_mib: int = 2048, max_utilization: int = 5) -> dict[str, Any]:
-    """Select a GPU with low use and no other-user process."""
+def select_free_gpu(
+    *,
+    max_memory_used_mib: int | None = None,
+    max_utilization: int = 15,
+    min_free_memory_mib: int = 45000,
+) -> dict[str, Any]:
+    """Select an idle-headroom GPU.
+
+    This intentionally allows small idle allocations from other users. The
+    guard is compute utilization plus free memory, not complete process absence.
+    """
     inv = gpu_inventory()
     current_user = getpass.getuser()
     users_by_gpu = _process_users_by_gpu()
@@ -1151,25 +1160,41 @@ def select_free_gpu(*, max_memory_used_mib: int = 2048, max_utilization: int = 5
     for gpu in inv.get("gpus", []):
         idx = int(gpu["index"])
         users = sorted(set(users_by_gpu.get(idx, [])))
-        other_users = [u for u in users if u not in {current_user, "unknown"}]
+        free_mib = int(gpu["memory_total_mib"]) - int(gpu["memory_used_mib"])
         ok = (
-            int(gpu["memory_used_mib"]) <= max_memory_used_mib
+            (max_memory_used_mib is None or int(gpu["memory_used_mib"]) <= max_memory_used_mib)
             and int(gpu["utilization_gpu_percent"]) <= max_utilization
-            and not other_users
-            and not users
+            and free_mib >= int(min_free_memory_mib)
         )
-        row = {**gpu, "process_users": users, "free_for_optimizer": ok}
+        row = {
+            **gpu,
+            "memory_free_mib": free_mib,
+            "process_users": users,
+            "free_for_optimizer": ok,
+            "selection_rule": (
+                f"utilization <= {max_utilization}% and free memory >= "
+                f"{int(min_free_memory_mib)} MiB; idle shared allocations allowed"
+            ),
+        }
         if ok:
             candidates.append(row)
         else:
             blockers.append(
-                f"gpu{idx}: mem={gpu['memory_used_mib']}MiB util={gpu['utilization_gpu_percent']}% users={users}"
+                f"gpu{idx}: used={gpu['memory_used_mib']}MiB free={free_mib}MiB "
+                f"util={gpu['utilization_gpu_percent']}% users={users}"
             )
+    candidates.sort(
+        key=lambda row: (
+            int(row["utilization_gpu_percent"]),
+            -int(row["memory_free_mib"]),
+            int(row["index"]),
+        )
+    )
     return {
         "selected_gpu": candidates[0]["index"] if candidates else None,
         "candidates": candidates,
         "gpu_inventory": inv,
-        "blocked_reason": None if candidates else "no free GPU for Qwen3 optimizer: " + "; ".join(blockers),
+        "blocked_reason": None if candidates else "no idle-headroom GPU for Qwen3 optimizer: " + "; ".join(blockers),
     }
 
 
