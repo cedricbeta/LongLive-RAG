@@ -281,7 +281,28 @@ def attention(
     deterministic=False,
     dtype=torch.bfloat16,
     fa_version=None,
+    logit_bias=None,
 ):
+    if logit_bias is not None:
+        if q_lens is not None or k_lens is not None:
+            warnings.warn(
+                'Padding mask is disabled when using logit_bias with scaled_dot_product_attention.'
+            )
+        q = q.transpose(1, 2).to(dtype)
+        k = k.transpose(1, 2).to(dtype)
+        v = v.transpose(1, 2).to(dtype)
+        if q_scale is not None:
+            q = q * q_scale
+        attn_mask = logit_bias.to(device=q.device, dtype=q.dtype)
+        out = torch.nn.functional.scaled_dot_product_attention(
+            q, k, v,
+            attn_mask=attn_mask,
+            is_causal=causal,
+            dropout_p=dropout_p,
+            scale=softmax_scale,
+        )
+        return out.transpose(1, 2).contiguous()
+
     if FLASH_ATTN_2_AVAILABLE or FLASH_ATTN_3_AVAILABLE:
         return flash_attention(
             q=q,

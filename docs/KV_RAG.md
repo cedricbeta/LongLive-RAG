@@ -265,6 +265,8 @@ inference:
     layers: [0, 7, 14, 21, 29]
     top_k: 2
     max_entries: 32
+    max_frames_per_entry: 1
+    # Legacy compatibility alias. Used only when max_frames_per_entry is absent.
     max_tokens_per_entry: 1024
     min_frame_gap: 0
     retrieve_during_denoise: true
@@ -278,18 +280,23 @@ inference:
     summary_per_head: true      # keep per-head structure when scoring
     reinject_rope: true         # re-RoPE retrieved keys before the local window
     frame_aligned_store: true   # store whole frames so re-RoPE is well-defined
+    require_frame_aligned: true # gate mode: count/drop non-frame-aligned payloads
+    persistent_logit_bias_lambda: 0.0 # verdict lever; default keeps normal attention
 ```
 
 Key knobs:
 
 - `layers`: layer indices to store/retrieve. Use `"all"` or omit for every layer, but memory use increases quickly.
 - `top_k`: number of historical entries retrieved per layer call.
-- `max_tokens_per_entry`: token cap per stored chunk/layer. With `frame_aligned_store`, this is rounded down to whole frames. `0` stores full chunks.
+- `max_frames_per_entry`: frame cap per stored chunk/layer. `0` stores full chunks. This is the frame-level contract used by long-regime gates.
+- `max_tokens_per_entry`: legacy token cap, kept for old configs. With `frame_aligned_store`, it is rounded down to whole frames. It is ignored when `max_frames_per_entry` is set.
 - `max_entries`: per-layer FIFO entry limit.
 - `min_frame_gap`: excludes entries whose end frame is too close to the current chunk.
 - `store_on_cpu`: saves GPU memory at the cost of host-to-device copies during retrieval.
 - `summary_prerope` / `summary_per_head`: retrieval-signal quality. Defaults on.
 - `reinject_rope` / `frame_aligned_store`: in-distribution injection. Defaults on; set both `false` for the legacy stale-RoPE path (useful for an A/B ablation).
+- `require_frame_aligned`: gate mode. Non-frame-aligned store/inject payloads are counted in diagnostics and dropped so the rendered gate can fail closed instead of silently using a token-subset fallback.
+- `persistent_logit_bias_lambda`: disabled by default. The post-verdict lever sets this to `1` or `2` to add that value to attention logits for injected persistent whole-frame columns only; diagnostics count manipulated frames and re-RoPE frame injections.
 
 ## Running An Ablation
 

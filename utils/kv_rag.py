@@ -142,7 +142,12 @@ class KVRAGConfig:
     enabled: bool = False
     top_k: int = 2
     max_entries: int = 32
+    # Legacy token cap. Kept for byte-identical behavior when new configs do
+    # not opt into the frame-level contract.
     max_tokens_per_entry: int = 1024
+    # New frame-level cap. None means use the legacy token cap above; 0 means
+    # keep all whole frames from the stored chunk.
+    max_frames_per_entry: int | None = None
     layers: tuple[int, ...] | None = None
     layer_stride: int = 1
     min_frame_gap: int = 0
@@ -170,6 +175,10 @@ class KVRAGConfig:
     # Store/downsample whole frames (a prerequisite for clean re-RoPE) instead
     # of arbitrary uniform token subsets.
     frame_aligned_store: bool = True
+    # Gate-only contract: refuse to store/inject token subsets that cannot be
+    # represented as whole latent frames. Violations are counted in diagnostics
+    # so the rendered gate can fail closed with a blocked_reason.
+    require_frame_aligned: bool = False
     # --- single-scene multi-perspective consistency ---
     # A persistent "scene" partition that survives shot boundaries, holding the
     # establishing anchors of the environment so a new camera angle reads as the
@@ -198,6 +207,9 @@ class KVRAGConfig:
     # by injected persistent entries during denoise. Disabled by default.
     attention_diagnostic: bool = False
     attention_diag_max_query_rows: int = 16
+    # One-shot verdict lever: additive attention-logit bias on injected
+    # persistent frame columns. Default 0.0 keeps the normal attention path.
+    persistent_logit_bias_lambda: float = 0.0
     # --- decoupled retrieval key/value representations ---
     # How an entry is INDEXED: the lookup signal matched against the query.
     #   "pooled"        -> mean-pooled (orderless) summary [baseline]
@@ -260,6 +272,11 @@ class KVRAGConfig:
             top_k=max(0, _as_int(cfg.get("top_k", 2), 2)),
             max_entries=max(1, _as_int(cfg.get("max_entries", 32), 32)),
             max_tokens_per_entry=max(0, _as_int(cfg.get("max_tokens_per_entry", 1024), 1024)),
+            max_frames_per_entry=(
+                None
+                if cfg.get("max_frames_per_entry", None) is None
+                else max(0, _as_int(cfg.get("max_frames_per_entry", 0), 0))
+            ),
             layers=layers,
             layer_stride=max(1, _as_int(cfg.get("layer_stride", 1), 1)),
             min_frame_gap=max(0, _as_int(cfg.get("min_frame_gap", 0), 0)),
@@ -276,6 +293,7 @@ class KVRAGConfig:
             summary_per_head=_as_bool(cfg.get("summary_per_head", True), True),
             reinject_rope=_as_bool(cfg.get("reinject_rope", True), True),
             frame_aligned_store=_as_bool(cfg.get("frame_aligned_store", True), True),
+            require_frame_aligned=_as_bool(cfg.get("require_frame_aligned", False), False),
             scene_memory_enabled=_as_bool(cfg.get("scene_memory_enabled", False), False),
             scene_memory_max_entries=max(1, _as_int(cfg.get("scene_memory_max_entries", 8), 8)),
             scene_score_bonus=float(cfg.get("scene_score_bonus", 0.0) or 0.0),
@@ -287,6 +305,9 @@ class KVRAGConfig:
             attention_diagnostic=_as_bool(cfg.get("attention_diagnostic", False), False),
             attention_diag_max_query_rows=max(
                 1, _as_int(cfg.get("attention_diag_max_query_rows", 16), 16)
+            ),
+            persistent_logit_bias_lambda=max(
+                0.0, float(cfg.get("persistent_logit_bias_lambda", 0.0) or 0.0)
             ),
             retrieval_key_mode=str(cfg.get("retrieval_key_mode", "pooled")).lower(),
             retrieval_key_centroids=max(1, _as_int(cfg.get("retrieval_key_centroids", 4), 4)),
@@ -304,12 +325,14 @@ class KVRAGConfig:
         return (
             f"enabled={self.enabled}, top_k={self.top_k}, max_entries={self.max_entries}, "
             f"max_tokens_per_entry={self.max_tokens_per_entry}, layers={layers}, "
+            f"max_frames_per_entry={self.max_frames_per_entry}, "
             f"layer_stride={self.layer_stride}, min_frame_gap={self.min_frame_gap}, "
             f"retrieve_during_denoise={self.retrieve_during_denoise}, "
             f"retrieve_during_recache={self.retrieve_during_recache}, "
             f"store_after_recache={self.store_after_recache}, "
             f"summary_prerope={self.summary_prerope}, summary_per_head={self.summary_per_head}, "
             f"reinject_rope={self.reinject_rope}, frame_aligned_store={self.frame_aligned_store}, "
+            f"require_frame_aligned={self.require_frame_aligned}, "
             f"scene_memory_enabled={self.scene_memory_enabled}, "
             f"scene_memory_max_entries={self.scene_memory_max_entries}, "
             f"scene_score_bonus={self.scene_score_bonus}, "
@@ -317,6 +340,7 @@ class KVRAGConfig:
             f"scene_memory_rolling={self.scene_memory_rolling}, "
             f"scene_memory_injection_schedule={self.scene_memory_injection_schedule}, "
             f"attention_diagnostic={self.attention_diagnostic}, "
+            f"persistent_logit_bias_lambda={self.persistent_logit_bias_lambda}, "
             f"retrieval_key_mode={self.retrieval_key_mode}, "
             f"retrieval_key_centroids={self.retrieval_key_centroids}, "
             f"retrieval_key_top_m={self.retrieval_key_top_m}, "
@@ -386,13 +410,36 @@ class KVRAGMemory:
             "phase": None,
         }
         self.attention_mass_by_shot_layer: dict[str, dict[str, dict[str, float | int]]] = {}
+        self.attention_mass_by_shot_layer_frame: dict[
+            str, dict[str, dict[str, dict[str, float | int]]]
+        ] = {}
+        self.frame_alignment_drop_events: list[dict[str, int | str | bool | None]] = []
         self.stats = {
             "stored_entries": 0,
             "stored_scene_entries": 0,
             "retrieval_calls": 0,
             "retrieval_hits": 0,
             "retrieved_tokens": 0,
+            "injection_calls": 0,
+            "injected_tokens": 0,
+            "injected_frames": 0,
+            "persistent_injected_tokens": 0,
+            "persistent_injected_frames": 0,
+            "outside_window_injection_calls": 0,
+            "outside_window_injected_tokens": 0,
+            "outside_window_injected_frames": 0,
+            "direct_injection_calls": 0,
+            "direct_injected_frames": 0,
+            "reinject_rope_injection_calls": 0,
+            "reinject_rope_injected_frames": 0,
+            "persistent_logit_bias_calls": 0,
+            "persistent_logit_bias_tokens": 0,
+            "persistent_logit_bias_frames": 0,
+            "persistent_logit_bias_lambda_sum": 0.0,
+            "persistent_logit_bias_skipped_unaligned": 0,
             "boundary_injections": 0,
+            "frame_alignment_store_drops": 0,
+            "frame_alignment_inject_drops": 0,
             # Phase 0 diagnostics: post-softmax attention mass on retrieved
             # tokens (sum over the rag columns, averaged over heads/query/batch).
             "rag_attention_mass": 0.0,
@@ -428,6 +475,10 @@ class KVRAGMemory:
             raise ValueError(
                 f"KV-RAG retrieval_value_mode={config.retrieval_value_mode!r} requires "
                 "frame_aligned_store=true (there is no frame to select otherwise)"
+            )
+        if config.require_frame_aligned and not config.frame_aligned_store:
+            raise ValueError(
+                "KV-RAG require_frame_aligned=true requires frame_aligned_store=true."
             )
         if config.boundary_inject_anchors > 0 and not config.scene_memory_enabled:
             raise ValueError(
@@ -553,6 +604,8 @@ class KVRAGMemory:
         self._scene_cross_clock = False
         self._runtime_context = {"chunk_index": None, "shot_index": None, "phase": None}
         self.attention_mass_by_shot_layer.clear()
+        self.attention_mass_by_shot_layer_frame.clear()
+        self.frame_alignment_drop_events.clear()
         for key in self.stats:
             self.stats[key] = 0 if isinstance(self.stats[key], int) else 0.0
         self._warnings.clear()
@@ -593,9 +646,29 @@ class KVRAGMemory:
                         if calls else 0.0
                     ),
                 }
+        by_frame: dict[str, dict[str, dict[str, dict[str, float | int]]]] = {}
+        for shot, layers in sorted(self.attention_mass_by_shot_layer_frame.items()):
+            by_frame[shot] = {}
+            for layer, frames in sorted(layers.items(), key=lambda kv: int(kv[0])):
+                by_frame[shot][layer] = {}
+                for frame_key, rec in sorted(frames.items()):
+                    calls = int(rec.get("calls", 0) or 0)
+                    mass_sum = float(rec.get("mass_sum", 0.0) or 0.0)
+                    by_frame[shot][layer][frame_key] = {
+                        "mean_mass": mass_sum / calls if calls else 0.0,
+                        "calls": calls,
+                        "mass_sum": mass_sum,
+                        "tokens_mean": (
+                            float(rec.get("tokens_sum", 0.0) or 0.0) / calls
+                            if calls else 0.0
+                        ),
+                        "source_start_token": int(rec.get("source_start_token", -1)),
+                    }
         return {
             "stats": stats,
             "attention_mass_by_shot_layer": by_shot,
+            "attention_mass_by_shot_layer_frame": by_frame,
+            "frame_alignment_drop_events": list(self.frame_alignment_drop_events),
         }
 
     def warn_once(self, key: str, message: str) -> None:
@@ -659,6 +732,16 @@ class KVRAGMemory:
                 frames=int(frames),
                 device=inject_src.device,
             )
+            if self.config.require_frame_aligned and int(kept_frames) <= 0:
+                self.record_frame_alignment_drop(
+                    kind="store",
+                    tokens=int(inject_src.shape[1]),
+                    frame_seqlen=int(frame_seqlen),
+                    frames=int(frames),
+                    persistent=persistent,
+                    reason="stored payload is not whole-frame aligned",
+                )
+                return
             attention_src = None
             if received_attention is not None:
                 attention_src = received_attention.detach().to(device=inject_src.device).float().reshape(-1)
@@ -902,7 +985,6 @@ class KVRAGMemory:
         a legacy (non-frame-aligned) token subset that must fall back to the
         legacy injection path.
         """
-        limit = self.config.max_tokens_per_entry
         aligned = (
             self.config.frame_aligned_store
             and frame_seqlen > 0
@@ -910,6 +992,18 @@ class KVRAGMemory:
             and frames * frame_seqlen == num_tokens
         )
         if aligned:
+            if self.config.max_frames_per_entry is not None:
+                max_frames = int(self.config.max_frames_per_entry)
+                if max_frames <= 0 or frames <= max_frames:
+                    offsets = torch.arange(frames, device=device, dtype=torch.long) * int(frame_seqlen)
+                    return None, frames, offsets
+                fsel = torch.linspace(0, frames - 1, steps=max_frames, device=device)
+                fsel = fsel.round().to(torch.long).unique(sorted=True)
+                offsets = torch.arange(frame_seqlen, device=device)
+                idx = (fsel.view(-1, 1) * frame_seqlen + offsets.view(1, -1)).reshape(-1)
+                return idx, int(fsel.numel()), fsel * int(frame_seqlen)
+
+            limit = self.config.max_tokens_per_entry
             if limit <= 0 or num_tokens <= limit:
                 offsets = torch.arange(frames, device=device, dtype=torch.long) * int(frame_seqlen)
                 return None, frames, offsets
@@ -924,6 +1018,7 @@ class KVRAGMemory:
             return idx, int(fsel.numel()), fsel * int(frame_seqlen)
 
         # Legacy token-level selection (slice is not re-RoPE'able).
+        limit = self.config.max_tokens_per_entry
         if limit <= 0 or num_tokens <= limit:
             return None, 0, None
         policy = self.config.token_policy
@@ -937,6 +1032,126 @@ class KVRAGMemory:
         else:
             raise ValueError(f"Unsupported KV-RAG token_policy={policy!r}")
         return idx, 0, None
+
+    def record_frame_alignment_drop(
+        self,
+        *,
+        kind: str,
+        tokens: int,
+        frame_seqlen: int,
+        frames: int = 0,
+        persistent: bool | None = None,
+        reason: str,
+    ) -> None:
+        """Count a frame-level contract violation without crashing inference."""
+        stat_key = "frame_alignment_inject_drops" if kind == "inject" else "frame_alignment_store_drops"
+        if stat_key in self.stats:
+            self.stats[stat_key] += 1
+        if len(self.frame_alignment_drop_events) < 64:
+            self.frame_alignment_drop_events.append({
+                "kind": str(kind),
+                "tokens": int(tokens),
+                "frame_seqlen": int(frame_seqlen),
+                "frames": int(frames),
+                "persistent": None if persistent is None else bool(persistent),
+                "chunk_index": self._runtime_context.get("chunk_index"),
+                "shot_index": self._runtime_context.get("shot_index"),
+                "phase": self._runtime_context.get("phase"),
+                "reason": str(reason),
+            })
+
+    def record_injection(
+        self,
+        *,
+        tokens: int,
+        frame_seqlen: int,
+        selected_entries: list[KVRAGEntry] | None,
+        outside_live_window: bool = True,
+        path: str | None = None,
+    ) -> None:
+        """Count successful injected payload length in whole-frame units."""
+        tokens = int(tokens)
+        frame_seqlen = int(frame_seqlen)
+        frames = tokens // frame_seqlen if frame_seqlen > 0 and tokens % frame_seqlen == 0 else 0
+        self.stats["injection_calls"] += 1
+        self.stats["injected_tokens"] += tokens
+        self.stats["injected_frames"] += frames
+        persistent_tokens = 0
+        persistent_frames = 0
+        for entry in selected_entries or []:
+            if not entry.persistent:
+                continue
+            n = int(entry.num_tokens)
+            persistent_tokens += n
+            fsl = int(entry.frame_seqlen or frame_seqlen)
+            if fsl > 0 and n % fsl == 0:
+                persistent_frames += n // fsl
+        self.stats["persistent_injected_tokens"] += persistent_tokens
+        self.stats["persistent_injected_frames"] += persistent_frames
+        if outside_live_window:
+            self.stats["outside_window_injection_calls"] += 1
+            self.stats["outside_window_injected_tokens"] += tokens
+            self.stats["outside_window_injected_frames"] += frames
+        if path == "reinject_rope":
+            self.stats["reinject_rope_injection_calls"] += 1
+            self.stats["reinject_rope_injected_frames"] += frames
+        elif path == "direct":
+            self.stats["direct_injection_calls"] += 1
+            self.stats["direct_injected_frames"] += frames
+
+    def build_persistent_logit_bias(
+        self,
+        *,
+        total_tokens: int,
+        selected_entries: list[KVRAGEntry] | None,
+        device: torch.device,
+        dtype: torch.dtype,
+    ) -> torch.Tensor | None:
+        """Return additive bias for injected persistent frame columns.
+
+        The vector is shaped for SDPA broadcasting as ``[1, 1, 1, total_tokens]``.
+        Only persistent entries represented as whole frames are biased; unaligned
+        persistent entries are counted and skipped so the lever cannot manipulate
+        arbitrary token subsets.
+        """
+        lam = float(self.config.persistent_logit_bias_lambda or 0.0)
+        if lam <= 0.0 or not selected_entries:
+            return None
+        total_tokens = int(total_tokens)
+        if total_tokens <= 0:
+            return None
+
+        bias = torch.zeros(total_tokens, device=device, dtype=torch.float32)
+        cursor = 0
+        biased_tokens = 0
+        biased_frames = 0
+        skipped_unaligned = 0
+        for entry in selected_entries:
+            n = int(entry.num_tokens)
+            if n <= 0:
+                continue
+            end = min(cursor + n, total_tokens)
+            if entry.persistent and end > cursor:
+                fsl = int(entry.frame_seqlen or 0)
+                if fsl > 0 and (end - cursor) % fsl == 0:
+                    bias[cursor:end] += lam
+                    biased_tokens += end - cursor
+                    biased_frames += (end - cursor) // fsl
+                else:
+                    skipped_unaligned += 1
+            cursor += n
+            if cursor >= total_tokens:
+                break
+
+        if skipped_unaligned:
+            self.stats["persistent_logit_bias_skipped_unaligned"] += skipped_unaligned
+        if biased_tokens <= 0:
+            return None
+        self.stats["persistent_logit_bias_calls"] += 1
+        self.stats["persistent_logit_bias_tokens"] += biased_tokens
+        self.stats["persistent_logit_bias_frames"] += biased_frames
+        self.stats["persistent_logit_bias_lambda_sum"] += lam
+        return bias.to(dtype=dtype).view(1, 1, 1, total_tokens)
 
     def _compute_key(self, tensor: torch.Tensor, *, for_query: bool = False) -> torch.Tensor | None:
         """Build the retrieval KEY (index summary) for the active key mode.
@@ -1382,6 +1597,7 @@ class KVRAGMemory:
         selected_entries: list[KVRAGEntry],
         *,
         layer: int,
+        logit_bias: torch.Tensor | None = None,
     ) -> None:
         """Record denoise attention mass on injected PERSISTENT entries.
 
@@ -1420,15 +1636,48 @@ class KVRAGMemory:
                 k = window_k.float()
                 scale = 1.0 / math.sqrt(max(1, q.shape[-1]))
                 logits = torch.einsum("blhd,bmhd->bhlm", q, k) * scale
+                if logit_bias is not None:
+                    logits = logits + logit_bias.to(
+                        device=logits.device,
+                        dtype=logits.dtype,
+                    )
                 weights = torch.softmax(logits, dim=-1)
                 mass = None
                 persistent_tokens = 0
+                persistent_frame_mass: list[tuple[str, float, int, int]] = []
                 for start, end in persistent_spans:
                     persistent_tokens += end - start
                     part = weights[..., start:end].sum(dim=-1)
                     mass = part if mass is None else mass + part
                 if mass is None:
                     return
+                cursor = 0
+                entry_index = 0
+                for entry in selected_entries:
+                    n = int(entry.num_tokens)
+                    if n <= 0:
+                        continue
+                    if entry.persistent:
+                        fsl = int(entry.frame_seqlen)
+                        if fsl > 0 and n % fsl == 0:
+                            for local_frame in range(n // fsl):
+                                fs = cursor + local_frame * fsl
+                                fe = fs + fsl
+                                frame_part = weights[..., fs:fe].sum(dim=-1)
+                                source_start = int(entry.start_token) + local_frame * fsl
+                                frame_key = f"src_frame_{source_start // fsl}"
+                                persistent_frame_mass.append(
+                                    (frame_key, float(frame_part.mean().item()), fsl, source_start)
+                                )
+                        else:
+                            source_start = int(entry.start_token)
+                            frame_key = f"entry_{entry_index}_unaligned"
+                            frame_part = weights[..., cursor:cursor + n].sum(dim=-1)
+                            persistent_frame_mass.append(
+                                (frame_key, float(frame_part.mean().item()), n, source_start)
+                            )
+                    cursor += n
+                    entry_index += 1
                 mean_mass = float(mass.mean().item())
             self.stats["persistent_rag_attention_mass"] += mean_mass
             self.stats["persistent_rag_mass_calls"] += 1
@@ -1444,6 +1693,21 @@ class KVRAGMemory:
             rec["persistent_tokens_sum"] = (
                 float(rec.get("persistent_tokens_sum", 0.0)) + float(persistent_tokens)
             )
+            frame_layers = self.attention_mass_by_shot_layer_frame.setdefault(shot_key, {})
+            frame_recs = frame_layers.setdefault(layer_key, {})
+            for frame_key, frame_mass, token_count, source_start in persistent_frame_mass:
+                frec = frame_recs.setdefault(
+                    frame_key,
+                    {
+                        "mass_sum": 0.0,
+                        "calls": 0,
+                        "tokens_sum": 0.0,
+                        "source_start_token": int(source_start),
+                    },
+                )
+                frec["mass_sum"] = float(frec.get("mass_sum", 0.0)) + float(frame_mass)
+                frec["calls"] = int(frec.get("calls", 0)) + 1
+                frec["tokens_sum"] = float(frec.get("tokens_sum", 0.0)) + float(token_count)
         except Exception:
             pass
 

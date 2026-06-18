@@ -1,0 +1,3299 @@
+{
+  "admission": {
+    "african_savanna": {
+      "admitted": true,
+      "baseline_drift": 0.4100498020960594,
+      "baseline_drift_floor": 0.02,
+      "baseline_inter_shot_composition_diversity": 0.17462273101289882,
+      "baseline_seed": 0,
+      "blocked_reason": null,
+      "diversity_floor": 0.03,
+      "negative_control": false
+    },
+    "brown_bear_river": {
+      "admitted": true,
+      "baseline_drift": 0.4780194923565321,
+      "baseline_drift_floor": 0.02,
+      "baseline_inter_shot_composition_diversity": 0.12407153715951558,
+      "baseline_seed": 0,
+      "blocked_reason": null,
+      "diversity_floor": 0.03,
+      "negative_control": false
+    },
+    "shimmering_puzzle_surface": {
+      "admitted": false,
+      "baseline_drift": 0.2867030347988879,
+      "baseline_drift_floor": 0.02,
+      "baseline_inter_shot_composition_diversity": 0.12220321710916504,
+      "baseline_seed": 0,
+      "blocked_reason": "negative control is sanity-checked, not admitted as a main scene",
+      "diversity_floor": 0.03,
+      "negative_control": true
+    },
+    "skateboarder_high_motion": {
+      "admitted": true,
+      "baseline_drift": 0.24241330294570188,
+      "baseline_drift_floor": 0.02,
+      "baseline_inter_shot_composition_diversity": 0.06339344961765248,
+      "baseline_seed": 0,
+      "blocked_reason": null,
+      "diversity_floor": 0.03,
+      "negative_control": false
+    },
+    "sunlit_balcony_tour": {
+      "admitted": true,
+      "baseline_drift": 0.22778352658240367,
+      "baseline_drift_floor": 0.02,
+      "baseline_inter_shot_composition_diversity": 0.1058198130121265,
+      "baseline_seed": 0,
+      "blocked_reason": null,
+      "diversity_floor": 0.03,
+      "negative_control": false
+    }
+  },
+  "admitted_main_scenes": [
+    "african_savanna",
+    "brown_bear_river",
+    "sunlit_balcony_tour",
+    "skateboarder_high_motion"
+  ],
+  "baseline_render_status": {
+    "0": {
+      "complete": true,
+      "missing_stems": [],
+      "per_stem": {
+        "african_savanna": {
+          "complete": true,
+          "paths": [
+            "videos/frame_strategy_A/baseline_seed0/baseline_seed0-rank0-african_savanna-seed0_regular.mp4"
+          ]
+        },
+        "brown_bear_river": {
+          "complete": true,
+          "paths": [
+            "videos/frame_strategy_A/baseline_seed0/baseline_seed0-rank0-brown_bear_river-seed0_regular.mp4"
+          ]
+        },
+        "shimmering_puzzle_surface": {
+          "complete": true,
+          "paths": [
+            "videos/frame_strategy_A/baseline_seed0/baseline_seed0-rank0-shimmering_puzzle_surface-seed0_regular.mp4"
+          ]
+        },
+        "skateboarder_high_motion": {
+          "complete": true,
+          "paths": [
+            "videos/frame_strategy_A/baseline_seed0/baseline_seed0-rank0-skateboarder_high_motion-seed0_regular.mp4"
+          ]
+        },
+        "sunlit_balcony_tour": {
+          "complete": true,
+          "paths": [
+            "videos/frame_strategy_A/baseline_seed0/baseline_seed0-rank0-sunlit_balcony_tour-seed0_regular.mp4"
+          ]
+        }
+      },
+      "rendered": false,
+      "reused": true
+    },
+    "1": {
+      "complete": true,
+      "missing_stems": [],
+      "per_stem": {
+        "african_savanna": {
+          "complete": true,
+          "paths": [
+            "videos/frame_strategy_A/baseline_seed1/baseline_seed1-rank0-african_savanna-seed0_regular.mp4"
+          ]
+        },
+        "brown_bear_river": {
+          "complete": true,
+          "paths": [
+            "videos/frame_strategy_A/baseline_seed1/baseline_seed1-rank0-brown_bear_river-seed0_regular.mp4"
+          ]
+        },
+        "shimmering_puzzle_surface": {
+          "complete": true,
+          "paths": [
+            "videos/frame_strategy_A/baseline_seed1/baseline_seed1-rank0-shimmering_puzzle_surface-seed0_regular.mp4"
+          ]
+        },
+        "skateboarder_high_motion": {
+          "complete": true,
+          "paths": [
+            "videos/frame_strategy_A/baseline_seed1/baseline_seed1-rank0-skateboarder_high_motion-seed0_regular.mp4"
+          ]
+        },
+        "sunlit_balcony_tour": {
+          "complete": true,
+          "paths": [
+            "videos/frame_strategy_A/baseline_seed1/baseline_seed1-rank0-sunlit_balcony_tour-seed0_regular.mp4"
+          ]
+        }
+      },
+      "rendered": false,
+      "reused": true
+    },
+    "2": {
+      "complete": true,
+      "missing_stems": [],
+      "per_stem": {
+        "african_savanna": {
+          "complete": true,
+          "paths": [
+            "videos/frame_strategy_A/baseline_seed2/baseline_seed2-rank0-african_savanna-seed0_regular.mp4"
+          ]
+        },
+        "brown_bear_river": {
+          "complete": true,
+          "paths": [
+            "videos/frame_strategy_A/baseline_seed2/baseline_seed2-rank0-brown_bear_river-seed0_regular.mp4"
+          ]
+        },
+        "shimmering_puzzle_surface": {
+          "complete": true,
+          "paths": [
+            "videos/frame_strategy_A/baseline_seed2/baseline_seed2-rank0-shimmering_puzzle_surface-seed0_regular.mp4"
+          ]
+        },
+        "skateboarder_high_motion": {
+          "complete": true,
+          "paths": [
+            "videos/frame_strategy_A/baseline_seed2/baseline_seed2-rank0-skateboarder_high_motion-seed0_regular.mp4"
+          ]
+        },
+        "sunlit_balcony_tour": {
+          "complete": true,
+          "paths": [
+            "videos/frame_strategy_A/baseline_seed2/baseline_seed2-rank0-sunlit_balcony_tour-seed0_regular.mp4"
+          ]
+        }
+      },
+      "rendered": true,
+      "resume_mode": "per_stem",
+      "reused": false,
+      "seed_config": "videos/frame_strategy_A/configs/baseline_seed2.yaml"
+    }
+  },
+  "baseline_seed_dirs": {
+    "0": "videos/frame_strategy_A/baseline_seed0",
+    "1": "videos/frame_strategy_A/baseline_seed1",
+    "2": "videos/frame_strategy_A/baseline_seed2"
+  },
+  "baseline_seed_results": {
+    "0": {
+      "baseline_summary": {
+        "anchor_centroid_consistency": {
+          "count": 5,
+          "mean": 0.9191243202264786,
+          "std": 0.023594674275057768
+        },
+        "anchor_drift_aggregate_consistency": {
+          "count": 5,
+          "mean": 0.6868894181251629,
+          "std": 0.09772335903910867
+        },
+        "anchor_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.818667714991604,
+          "std": 0.04552579409724533
+        },
+        "background_anchor_consistency": {
+          "count": 5,
+          "mean": 0.9556504152946184,
+          "std": 0.013135064778571572
+        },
+        "background_anchor_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.8975067944461557,
+          "std": 0.03128283232683703
+        },
+        "background_worst_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.8285288314824168,
+          "std": 0.06755255437261991
+        },
+        "dynamic_degree": {
+          "count": 5,
+          "mean": 95.28690701325735,
+          "std": 35.893464235150574
+        },
+        "inter_shot_composition_diversity": {
+          "count": 5,
+          "mean": 0.11802214958227168,
+          "std": 0.03575162684859166
+        },
+        "invariant_margin_mean": {
+          "count": 5,
+          "mean": 0.011859168608983357,
+          "std": 0.010067485430061827
+        },
+        "invariant_margin_min": {
+          "count": 5,
+          "mean": -0.009282329678535461,
+          "std": 0.01003314946998328
+        },
+        "motion_profile_agreement": {
+          "count": 5,
+          "mean": 0.9983479758940396,
+          "std": 0.0005810957190016377
+        },
+        "num_frames": {
+          "count": 5,
+          "mean": 480.0,
+          "std": 0.0
+        },
+        "num_shots": {
+          "count": 5,
+          "mean": 6.8,
+          "std": 0.9797958971132712
+        },
+        "palette_agreement": {
+          "count": 5,
+          "mean": 0.5998990617629708,
+          "std": 0.11559440748022752
+        },
+        "prompt_adherence_mean": {
+          "count": 5,
+          "mean": 0.2783136968811353,
+          "std": 0.02363954172945293
+        },
+        "prompt_adherence_min": {
+          "count": 5,
+          "mean": 0.23887337744235992,
+          "std": 0.02396632067556477
+        },
+        "shot_frame_duration_max": {
+          "count": 5,
+          "mean": 96.0,
+          "std": 0.0
+        },
+        "shot_frame_duration_min": {
+          "count": 5,
+          "mean": 48.0,
+          "std": 0.0
+        },
+        "subject_anchor_consistency": {
+          "count": 5,
+          "mean": 0.8825982251583386,
+          "std": 0.03660529138831901
+        },
+        "subject_anchor_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.7398286355370521,
+          "std": 0.07071368595705485
+        },
+        "subject_worst_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.5551111212587219,
+          "std": 0.1536512945087459
+        },
+        "within_shot_motion": {
+          "count": 5,
+          "mean": 0.0021475759169940524,
+          "std": 0.0005476076800477445
+        },
+        "worst_anchor_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.5551111212587219,
+          "std": 0.1536512945087459
+        }
+      },
+      "delta_summary": {
+        "anchor_centroid_consistency": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "anchor_drift_aggregate_consistency": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "anchor_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "background_anchor_consistency": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "background_anchor_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "background_worst_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "dynamic_degree": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "inter_shot_composition_diversity": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "invariant_margin_mean": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "invariant_margin_min": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "motion_profile_agreement": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "num_frames": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "palette_agreement": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "prompt_adherence_mean": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "prompt_adherence_min": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "shot_frame_duration_max": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "shot_frame_duration_min": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "subject_anchor_consistency": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "subject_anchor_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "subject_worst_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "within_shot_motion": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "worst_anchor_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        }
+      },
+      "modified_summary": {
+        "anchor_centroid_consistency": {
+          "count": 5,
+          "mean": 0.9191243202264786,
+          "std": 0.023594674275057768
+        },
+        "anchor_drift_aggregate_consistency": {
+          "count": 5,
+          "mean": 0.6868894181251629,
+          "std": 0.09772335903910867
+        },
+        "anchor_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.818667714991604,
+          "std": 0.04552579409724533
+        },
+        "background_anchor_consistency": {
+          "count": 5,
+          "mean": 0.9556504152946184,
+          "std": 0.013135064778571572
+        },
+        "background_anchor_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.8975067944461557,
+          "std": 0.03128283232683703
+        },
+        "background_worst_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.8285288314824168,
+          "std": 0.06755255437261991
+        },
+        "dynamic_degree": {
+          "count": 5,
+          "mean": 95.28690701325735,
+          "std": 35.893464235150574
+        },
+        "inter_shot_composition_diversity": {
+          "count": 5,
+          "mean": 0.11802214958227168,
+          "std": 0.03575162684859166
+        },
+        "invariant_margin_mean": {
+          "count": 5,
+          "mean": 0.011859168608983357,
+          "std": 0.010067485430061827
+        },
+        "invariant_margin_min": {
+          "count": 5,
+          "mean": -0.009282329678535461,
+          "std": 0.01003314946998328
+        },
+        "motion_profile_agreement": {
+          "count": 5,
+          "mean": 0.9983479758940396,
+          "std": 0.0005810957190016377
+        },
+        "num_frames": {
+          "count": 5,
+          "mean": 480.0,
+          "std": 0.0
+        },
+        "num_shots": {
+          "count": 5,
+          "mean": 6.8,
+          "std": 0.9797958971132712
+        },
+        "palette_agreement": {
+          "count": 5,
+          "mean": 0.5998990617629708,
+          "std": 0.11559440748022752
+        },
+        "prompt_adherence_mean": {
+          "count": 5,
+          "mean": 0.2783136968811353,
+          "std": 0.02363954172945293
+        },
+        "prompt_adherence_min": {
+          "count": 5,
+          "mean": 0.23887337744235992,
+          "std": 0.02396632067556477
+        },
+        "shot_frame_duration_max": {
+          "count": 5,
+          "mean": 96.0,
+          "std": 0.0
+        },
+        "shot_frame_duration_min": {
+          "count": 5,
+          "mean": 48.0,
+          "std": 0.0
+        },
+        "subject_anchor_consistency": {
+          "count": 5,
+          "mean": 0.8825982251583386,
+          "std": 0.03660529138831901
+        },
+        "subject_anchor_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.7398286355370521,
+          "std": 0.07071368595705485
+        },
+        "subject_worst_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.5551111212587219,
+          "std": 0.1536512945087459
+        },
+        "within_shot_motion": {
+          "count": 5,
+          "mean": 0.0021475759169940524,
+          "std": 0.0005476076800477445
+        },
+        "worst_anchor_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.5551111212587219,
+          "std": 0.1536512945087459
+        }
+      },
+      "num_pairs": 5,
+      "records": [
+        {
+          "baseline": "videos/frame_strategy_A/baseline_seed0/baseline_seed0-rank0-african_savanna-seed0_regular.mp4",
+          "baseline_metrics": {
+            "anchor_centroid_consistency": 0.8987818520529938,
+            "anchor_drift_aggregate_consistency": 0.5996250772944902,
+            "anchor_to_shot0_consistency": 0.7741320382414378,
+            "background_anchor_consistency": 0.95199753210255,
+            "background_anchor_to_shot0_consistency": 0.881367311130627,
+            "background_worst_to_shot0_consistency": 0.7827735973313916,
+            "dynamic_degree": 92.65818866093953,
+            "inter_shot_composition_diversity": 0.17462273101289882,
+            "invariant_margin_mean": 0.017501629889011383,
+            "invariant_margin_min": -0.02676105499267578,
+            "motion_profile_agreement": 0.9993418055205595,
+            "num_frames": 480.0,
+            "num_shots": 8.0,
+            "palette_agreement": 0.5150976334235908,
+            "prompt_adherence_mean": 0.30685489624738693,
+            "prompt_adherence_min": 0.2697921693325043,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.8455661720034375,
+            "subject_anchor_to_shot0_consistency": 0.6668967653522487,
+            "subject_worst_to_shot0_consistency": 0.42511811634754265,
+            "within_shot_motion": 0.0013930880086263642,
+            "worst_anchor_to_shot0_consistency": 0.42511811634754265
+          },
+          "delta": {
+            "anchor_centroid_consistency": 0.0,
+            "anchor_drift_aggregate_consistency": 0.0,
+            "anchor_to_shot0_consistency": 0.0,
+            "background_anchor_consistency": 0.0,
+            "background_anchor_to_shot0_consistency": 0.0,
+            "background_worst_to_shot0_consistency": 0.0,
+            "dynamic_degree": 0.0,
+            "inter_shot_composition_diversity": 0.0,
+            "invariant_margin_mean": 0.0,
+            "invariant_margin_min": 0.0,
+            "motion_profile_agreement": 0.0,
+            "num_frames": 0.0,
+            "palette_agreement": 0.0,
+            "prompt_adherence_mean": 0.0,
+            "prompt_adherence_min": 0.0,
+            "shot_frame_duration_max": 0.0,
+            "shot_frame_duration_min": 0.0,
+            "subject_anchor_consistency": 0.0,
+            "subject_anchor_to_shot0_consistency": 0.0,
+            "subject_worst_to_shot0_consistency": 0.0,
+            "within_shot_motion": 0.0,
+            "worst_anchor_to_shot0_consistency": 0.0
+          },
+          "frame_metadata": {
+            "baseline_num_frames": 480.0,
+            "baseline_shot_frame_duration_max": 96.0,
+            "baseline_shot_frame_duration_min": 48.0,
+            "modified_num_frames": 480.0,
+            "modified_shot_frame_duration_max": 96.0,
+            "modified_shot_frame_duration_min": 48.0,
+            "shot_chunk_durations": [
+              12,
+              12,
+              6,
+              6,
+              6,
+              6,
+              6,
+              6
+            ]
+          },
+          "modified": "videos/frame_strategy_A/baseline_seed0/baseline_seed0-rank0-african_savanna-seed0_regular.mp4",
+          "modified_metrics": {
+            "anchor_centroid_consistency": 0.8987818520529938,
+            "anchor_drift_aggregate_consistency": 0.5996250772944902,
+            "anchor_to_shot0_consistency": 0.7741320382414378,
+            "background_anchor_consistency": 0.95199753210255,
+            "background_anchor_to_shot0_consistency": 0.881367311130627,
+            "background_worst_to_shot0_consistency": 0.7827735973313916,
+            "dynamic_degree": 92.65818866093953,
+            "inter_shot_composition_diversity": 0.17462273101289882,
+            "invariant_margin_mean": 0.017501629889011383,
+            "invariant_margin_min": -0.02676105499267578,
+            "motion_profile_agreement": 0.9993418055205595,
+            "num_frames": 480.0,
+            "num_shots": 8.0,
+            "palette_agreement": 0.5150976334235908,
+            "prompt_adherence_mean": 0.30685489624738693,
+            "prompt_adherence_min": 0.2697921693325043,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.8455661720034375,
+            "subject_anchor_to_shot0_consistency": 0.6668967653522487,
+            "subject_worst_to_shot0_consistency": 0.42511811634754265,
+            "within_shot_motion": 0.0013930880086263642,
+            "worst_anchor_to_shot0_consistency": 0.42511811634754265
+          },
+          "negative_control": false,
+          "stem": "baseline_seed0-rank0-african_savanna-seed0_regular",
+          "theme": "african_savanna"
+        },
+        {
+          "baseline": "videos/frame_strategy_A/baseline_seed0/baseline_seed0-rank0-brown_bear_river-seed0_regular.mp4",
+          "baseline_metrics": {
+            "anchor_centroid_consistency": 0.8846782565403462,
+            "anchor_drift_aggregate_consistency": 0.545728027106829,
+            "anchor_to_shot0_consistency": 0.7694488609603936,
+            "background_anchor_consistency": 0.9366490852693097,
+            "background_anchor_to_shot0_consistency": 0.8662974221434168,
+            "background_worst_to_shot0_consistency": 0.7375412607006151,
+            "dynamic_degree": 88.01671759287517,
+            "inter_shot_composition_diversity": 0.12407153715951558,
+            "invariant_margin_mean": 0.017703287303447723,
+            "invariant_margin_min": -0.0004431307315826416,
+            "motion_profile_agreement": 0.9982265655776709,
+            "num_frames": 480.0,
+            "num_shots": 8.0,
+            "palette_agreement": 0.4705384533574587,
+            "prompt_adherence_mean": 0.2885937914252281,
+            "prompt_adherence_min": 0.24251070618629456,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.8327074278113825,
+            "subject_anchor_to_shot0_consistency": 0.6726002997773705,
+            "subject_worst_to_shot0_consistency": 0.3220071932532645,
+            "within_shot_motion": 0.00276145784300752,
+            "worst_anchor_to_shot0_consistency": 0.3220071932532645
+          },
+          "delta": {
+            "anchor_centroid_consistency": 0.0,
+            "anchor_drift_aggregate_consistency": 0.0,
+            "anchor_to_shot0_consistency": 0.0,
+            "background_anchor_consistency": 0.0,
+            "background_anchor_to_shot0_consistency": 0.0,
+            "background_worst_to_shot0_consistency": 0.0,
+            "dynamic_degree": 0.0,
+            "inter_shot_composition_diversity": 0.0,
+            "invariant_margin_mean": 0.0,
+            "invariant_margin_min": 0.0,
+            "motion_profile_agreement": 0.0,
+            "num_frames": 0.0,
+            "palette_agreement": 0.0,
+            "prompt_adherence_mean": 0.0,
+            "prompt_adherence_min": 0.0,
+            "shot_frame_duration_max": 0.0,
+            "shot_frame_duration_min": 0.0,
+            "subject_anchor_consistency": 0.0,
+            "subject_anchor_to_shot0_consistency": 0.0,
+            "subject_worst_to_shot0_consistency": 0.0,
+            "within_shot_motion": 0.0,
+            "worst_anchor_to_shot0_consistency": 0.0
+          },
+          "frame_metadata": {
+            "baseline_num_frames": 480.0,
+            "baseline_shot_frame_duration_max": 96.0,
+            "baseline_shot_frame_duration_min": 48.0,
+            "modified_num_frames": 480.0,
+            "modified_shot_frame_duration_max": 96.0,
+            "modified_shot_frame_duration_min": 48.0,
+            "shot_chunk_durations": [
+              12,
+              12,
+              6,
+              6,
+              6,
+              6,
+              6,
+              6
+            ]
+          },
+          "modified": "videos/frame_strategy_A/baseline_seed0/baseline_seed0-rank0-brown_bear_river-seed0_regular.mp4",
+          "modified_metrics": {
+            "anchor_centroid_consistency": 0.8846782565403462,
+            "anchor_drift_aggregate_consistency": 0.545728027106829,
+            "anchor_to_shot0_consistency": 0.7694488609603936,
+            "background_anchor_consistency": 0.9366490852693097,
+            "background_anchor_to_shot0_consistency": 0.8662974221434168,
+            "background_worst_to_shot0_consistency": 0.7375412607006151,
+            "dynamic_degree": 88.01671759287517,
+            "inter_shot_composition_diversity": 0.12407153715951558,
+            "invariant_margin_mean": 0.017703287303447723,
+            "invariant_margin_min": -0.0004431307315826416,
+            "motion_profile_agreement": 0.9982265655776709,
+            "num_frames": 480.0,
+            "num_shots": 8.0,
+            "palette_agreement": 0.4705384533574587,
+            "prompt_adherence_mean": 0.2885937914252281,
+            "prompt_adherence_min": 0.24251070618629456,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.8327074278113825,
+            "subject_anchor_to_shot0_consistency": 0.6726002997773705,
+            "subject_worst_to_shot0_consistency": 0.3220071932532645,
+            "within_shot_motion": 0.00276145784300752,
+            "worst_anchor_to_shot0_consistency": 0.3220071932532645
+          },
+          "negative_control": false,
+          "stem": "baseline_seed0-rank0-brown_bear_river-seed0_regular",
+          "theme": "brown_bear_river"
+        },
+        {
+          "baseline": "videos/frame_strategy_A/baseline_seed0/baseline_seed0-rank0-shimmering_puzzle_surface-seed0_regular.mp4",
+          "baseline_metrics": {
+            "anchor_centroid_consistency": 0.926354402104794,
+            "anchor_drift_aggregate_consistency": 0.7327855457037262,
+            "anchor_to_shot0_consistency": 0.812594804600089,
+            "background_anchor_consistency": 0.9523195549140673,
+            "background_anchor_to_shot0_consistency": 0.8729031218608897,
+            "background_worst_to_shot0_consistency": 0.820207854490305,
+            "dynamic_degree": 37.18874975045522,
+            "inter_shot_composition_diversity": 0.12220321710916504,
+            "invariant_margin_mean": -0.00621718168258667,
+            "invariant_margin_min": -0.013800173997879028,
+            "motion_profile_agreement": 0.9985893024361711,
+            "num_frames": 480.0,
+            "num_shots": 6.0,
+            "palette_agreement": 0.7051764265716158,
+            "prompt_adherence_mean": 0.2818872630596161,
+            "prompt_adherence_min": 0.22396382689476013,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.9003892492955208,
+            "subject_anchor_to_shot0_consistency": 0.7522864873392884,
+            "subject_worst_to_shot0_consistency": 0.6529762868073635,
+            "within_shot_motion": 0.0016253269180500258,
+            "worst_anchor_to_shot0_consistency": 0.6529762868073635
+          },
+          "delta": {
+            "anchor_centroid_consistency": 0.0,
+            "anchor_drift_aggregate_consistency": 0.0,
+            "anchor_to_shot0_consistency": 0.0,
+            "background_anchor_consistency": 0.0,
+            "background_anchor_to_shot0_consistency": 0.0,
+            "background_worst_to_shot0_consistency": 0.0,
+            "dynamic_degree": 0.0,
+            "inter_shot_composition_diversity": 0.0,
+            "invariant_margin_mean": 0.0,
+            "invariant_margin_min": 0.0,
+            "motion_profile_agreement": 0.0,
+            "num_frames": 0.0,
+            "palette_agreement": 0.0,
+            "prompt_adherence_mean": 0.0,
+            "prompt_adherence_min": 0.0,
+            "shot_frame_duration_max": 0.0,
+            "shot_frame_duration_min": 0.0,
+            "subject_anchor_consistency": 0.0,
+            "subject_anchor_to_shot0_consistency": 0.0,
+            "subject_worst_to_shot0_consistency": 0.0,
+            "within_shot_motion": 0.0,
+            "worst_anchor_to_shot0_consistency": 0.0
+          },
+          "frame_metadata": {
+            "baseline_num_frames": 480.0,
+            "baseline_shot_frame_duration_max": 96.0,
+            "baseline_shot_frame_duration_min": 48.0,
+            "modified_num_frames": 480.0,
+            "modified_shot_frame_duration_max": 96.0,
+            "modified_shot_frame_duration_min": 48.0,
+            "shot_chunk_durations": [
+              12,
+              12,
+              12,
+              12,
+              6,
+              6
+            ]
+          },
+          "modified": "videos/frame_strategy_A/baseline_seed0/baseline_seed0-rank0-shimmering_puzzle_surface-seed0_regular.mp4",
+          "modified_metrics": {
+            "anchor_centroid_consistency": 0.926354402104794,
+            "anchor_drift_aggregate_consistency": 0.7327855457037262,
+            "anchor_to_shot0_consistency": 0.812594804600089,
+            "background_anchor_consistency": 0.9523195549140673,
+            "background_anchor_to_shot0_consistency": 0.8729031218608897,
+            "background_worst_to_shot0_consistency": 0.820207854490305,
+            "dynamic_degree": 37.18874975045522,
+            "inter_shot_composition_diversity": 0.12220321710916504,
+            "invariant_margin_mean": -0.00621718168258667,
+            "invariant_margin_min": -0.013800173997879028,
+            "motion_profile_agreement": 0.9985893024361711,
+            "num_frames": 480.0,
+            "num_shots": 6.0,
+            "palette_agreement": 0.7051764265716158,
+            "prompt_adherence_mean": 0.2818872630596161,
+            "prompt_adherence_min": 0.22396382689476013,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.9003892492955208,
+            "subject_anchor_to_shot0_consistency": 0.7522864873392884,
+            "subject_worst_to_shot0_consistency": 0.6529762868073635,
+            "within_shot_motion": 0.0016253269180500258,
+            "worst_anchor_to_shot0_consistency": 0.6529762868073635
+          },
+          "negative_control": true,
+          "stem": "baseline_seed0-rank0-shimmering_puzzle_surface-seed0_regular",
+          "theme": "shimmering_puzzle_surface"
+        },
+        {
+          "baseline": "videos/frame_strategy_A/baseline_seed0/baseline_seed0-rank0-skateboarder_high_motion-seed0_regular.mp4",
+          "baseline_metrics": {
+            "anchor_centroid_consistency": 0.943000471975321,
+            "anchor_drift_aggregate_consistency": 0.7512963697291164,
+            "anchor_to_shot0_consistency": 0.8469316284311474,
+            "background_anchor_consistency": 0.9769960616798733,
+            "background_anchor_to_shot0_consistency": 0.9487252087997516,
+            "background_worst_to_shot0_consistency": 0.9315030404500417,
+            "dynamic_degree": 147.92332776387533,
+            "inter_shot_composition_diversity": 0.06339344961765248,
+            "invariant_margin_mean": 0.008360187212626139,
+            "invariant_margin_min": -0.00018233060836791992,
+            "motion_profile_agreement": 0.9977299884439894,
+            "num_frames": 480.0,
+            "num_shots": 6.0,
+            "palette_agreement": 0.5406012849394839,
+            "prompt_adherence_mean": 0.27905284365018207,
+            "prompt_adherence_min": 0.2563212513923645,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.9090048822707687,
+            "subject_anchor_to_shot0_consistency": 0.7451380480625431,
+            "subject_worst_to_shot0_consistency": 0.6556611110270854,
+            "within_shot_motion": 0.002653410192579031,
+            "worst_anchor_to_shot0_consistency": 0.6556611110270854
+          },
+          "delta": {
+            "anchor_centroid_consistency": 0.0,
+            "anchor_drift_aggregate_consistency": 0.0,
+            "anchor_to_shot0_consistency": 0.0,
+            "background_anchor_consistency": 0.0,
+            "background_anchor_to_shot0_consistency": 0.0,
+            "background_worst_to_shot0_consistency": 0.0,
+            "dynamic_degree": 0.0,
+            "inter_shot_composition_diversity": 0.0,
+            "invariant_margin_mean": 0.0,
+            "invariant_margin_min": 0.0,
+            "motion_profile_agreement": 0.0,
+            "num_frames": 0.0,
+            "palette_agreement": 0.0,
+            "prompt_adherence_mean": 0.0,
+            "prompt_adherence_min": 0.0,
+            "shot_frame_duration_max": 0.0,
+            "shot_frame_duration_min": 0.0,
+            "subject_anchor_consistency": 0.0,
+            "subject_anchor_to_shot0_consistency": 0.0,
+            "subject_worst_to_shot0_consistency": 0.0,
+            "within_shot_motion": 0.0,
+            "worst_anchor_to_shot0_consistency": 0.0
+          },
+          "frame_metadata": {
+            "baseline_num_frames": 480.0,
+            "baseline_shot_frame_duration_max": 96.0,
+            "baseline_shot_frame_duration_min": 48.0,
+            "modified_num_frames": 480.0,
+            "modified_shot_frame_duration_max": 96.0,
+            "modified_shot_frame_duration_min": 48.0,
+            "shot_chunk_durations": [
+              12,
+              12,
+              12,
+              12,
+              6,
+              6
+            ]
+          },
+          "modified": "videos/frame_strategy_A/baseline_seed0/baseline_seed0-rank0-skateboarder_high_motion-seed0_regular.mp4",
+          "modified_metrics": {
+            "anchor_centroid_consistency": 0.943000471975321,
+            "anchor_drift_aggregate_consistency": 0.7512963697291164,
+            "anchor_to_shot0_consistency": 0.8469316284311474,
+            "background_anchor_consistency": 0.9769960616798733,
+            "background_anchor_to_shot0_consistency": 0.9487252087997516,
+            "background_worst_to_shot0_consistency": 0.9315030404500417,
+            "dynamic_degree": 147.92332776387533,
+            "inter_shot_composition_diversity": 0.06339344961765248,
+            "invariant_margin_mean": 0.008360187212626139,
+            "invariant_margin_min": -0.00018233060836791992,
+            "motion_profile_agreement": 0.9977299884439894,
+            "num_frames": 480.0,
+            "num_shots": 6.0,
+            "palette_agreement": 0.5406012849394839,
+            "prompt_adherence_mean": 0.27905284365018207,
+            "prompt_adherence_min": 0.2563212513923645,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.9090048822707687,
+            "subject_anchor_to_shot0_consistency": 0.7451380480625431,
+            "subject_worst_to_shot0_consistency": 0.6556611110270854,
+            "within_shot_motion": 0.002653410192579031,
+            "worst_anchor_to_shot0_consistency": 0.6556611110270854
+          },
+          "negative_control": false,
+          "stem": "baseline_seed0-rank0-skateboarder_high_motion-seed0_regular",
+          "theme": "skateboarder_high_motion"
+        },
+        {
+          "baseline": "videos/frame_strategy_A/baseline_seed0/baseline_seed0-rank0-sunlit_balcony_tour-seed0_regular.mp4",
+          "baseline_metrics": {
+            "anchor_centroid_consistency": 0.9428066184589377,
+            "anchor_drift_aggregate_consistency": 0.8050120707916526,
+            "anchor_to_shot0_consistency": 0.8902312427249517,
+            "background_anchor_consistency": 0.9602898425072915,
+            "background_anchor_to_shot0_consistency": 0.9182409082960937,
+            "background_worst_to_shot0_consistency": 0.87061840443973,
+            "dynamic_degree": 110.64755129814148,
+            "inter_shot_composition_diversity": 0.1058198130121265,
+            "invariant_margin_mean": 0.021947920322418213,
+            "invariant_margin_min": -0.005224958062171936,
+            "motion_profile_agreement": 0.9978522174918072,
+            "num_frames": 480.0,
+            "num_shots": 6.0,
+            "palette_agreement": 0.7680815105227048,
+            "prompt_adherence_mean": 0.2351796900232633,
+            "prompt_adherence_min": 0.20177893340587616,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.9253233944105838,
+            "subject_anchor_to_shot0_consistency": 0.8622215771538098,
+            "subject_worst_to_shot0_consistency": 0.7197928988583534,
+            "within_shot_motion": 0.0023045966227073222,
+            "worst_anchor_to_shot0_consistency": 0.7197928988583534
+          },
+          "delta": {
+            "anchor_centroid_consistency": 0.0,
+            "anchor_drift_aggregate_consistency": 0.0,
+            "anchor_to_shot0_consistency": 0.0,
+            "background_anchor_consistency": 0.0,
+            "background_anchor_to_shot0_consistency": 0.0,
+            "background_worst_to_shot0_consistency": 0.0,
+            "dynamic_degree": 0.0,
+            "inter_shot_composition_diversity": 0.0,
+            "invariant_margin_mean": 0.0,
+            "invariant_margin_min": 0.0,
+            "motion_profile_agreement": 0.0,
+            "num_frames": 0.0,
+            "palette_agreement": 0.0,
+            "prompt_adherence_mean": 0.0,
+            "prompt_adherence_min": 0.0,
+            "shot_frame_duration_max": 0.0,
+            "shot_frame_duration_min": 0.0,
+            "subject_anchor_consistency": 0.0,
+            "subject_anchor_to_shot0_consistency": 0.0,
+            "subject_worst_to_shot0_consistency": 0.0,
+            "within_shot_motion": 0.0,
+            "worst_anchor_to_shot0_consistency": 0.0
+          },
+          "frame_metadata": {
+            "baseline_num_frames": 480.0,
+            "baseline_shot_frame_duration_max": 96.0,
+            "baseline_shot_frame_duration_min": 48.0,
+            "modified_num_frames": 480.0,
+            "modified_shot_frame_duration_max": 96.0,
+            "modified_shot_frame_duration_min": 48.0,
+            "shot_chunk_durations": [
+              12,
+              12,
+              12,
+              12,
+              6,
+              6
+            ]
+          },
+          "modified": "videos/frame_strategy_A/baseline_seed0/baseline_seed0-rank0-sunlit_balcony_tour-seed0_regular.mp4",
+          "modified_metrics": {
+            "anchor_centroid_consistency": 0.9428066184589377,
+            "anchor_drift_aggregate_consistency": 0.8050120707916526,
+            "anchor_to_shot0_consistency": 0.8902312427249517,
+            "background_anchor_consistency": 0.9602898425072915,
+            "background_anchor_to_shot0_consistency": 0.9182409082960937,
+            "background_worst_to_shot0_consistency": 0.87061840443973,
+            "dynamic_degree": 110.64755129814148,
+            "inter_shot_composition_diversity": 0.1058198130121265,
+            "invariant_margin_mean": 0.021947920322418213,
+            "invariant_margin_min": -0.005224958062171936,
+            "motion_profile_agreement": 0.9978522174918072,
+            "num_frames": 480.0,
+            "num_shots": 6.0,
+            "palette_agreement": 0.7680815105227048,
+            "prompt_adherence_mean": 0.2351796900232633,
+            "prompt_adherence_min": 0.20177893340587616,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.9253233944105838,
+            "subject_anchor_to_shot0_consistency": 0.8622215771538098,
+            "subject_worst_to_shot0_consistency": 0.7197928988583534,
+            "within_shot_motion": 0.0023045966227073222,
+            "worst_anchor_to_shot0_consistency": 0.7197928988583534
+          },
+          "negative_control": false,
+          "stem": "baseline_seed0-rank0-sunlit_balcony_tour-seed0_regular",
+          "theme": "sunlit_balcony_tour"
+        }
+      ],
+      "skipped_stems": []
+    },
+    "1": {
+      "baseline_summary": {
+        "anchor_centroid_consistency": {
+          "count": 5,
+          "mean": 0.913388590478235,
+          "std": 0.03364989438170043
+        },
+        "anchor_drift_aggregate_consistency": {
+          "count": 5,
+          "mean": 0.672602509073544,
+          "std": 0.13877112450306792
+        },
+        "anchor_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.8031639594773612,
+          "std": 0.0742059822589802
+        },
+        "background_anchor_consistency": {
+          "count": 5,
+          "mean": 0.9580969798854749,
+          "std": 0.014883839181604505
+        },
+        "background_anchor_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.9053254452058832,
+          "std": 0.035841607119387234
+        },
+        "background_worst_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.8348657246545816,
+          "std": 0.08334980849883211
+        },
+        "dynamic_degree": {
+          "count": 5,
+          "mean": 73.57635836998622,
+          "std": 31.30478206401964
+        },
+        "inter_shot_composition_diversity": {
+          "count": 5,
+          "mean": 0.11179688631423026,
+          "std": 0.019787276053034947
+        },
+        "invariant_margin_mean": {
+          "count": 5,
+          "mean": 0.013481134797135991,
+          "std": 0.014657257627244688
+        },
+        "invariant_margin_min": {
+          "count": 5,
+          "mean": -0.001414075493812561,
+          "std": 0.01835189664490538
+        },
+        "motion_profile_agreement": {
+          "count": 5,
+          "mean": 0.998616113293966,
+          "std": 0.0006556707797060427
+        },
+        "num_frames": {
+          "count": 5,
+          "mean": 480.0,
+          "std": 0.0
+        },
+        "num_shots": {
+          "count": 5,
+          "mean": 6.8,
+          "std": 0.9797958971132712
+        },
+        "palette_agreement": {
+          "count": 5,
+          "mean": 0.570874206344086,
+          "std": 0.1213295286392044
+        },
+        "prompt_adherence_mean": {
+          "count": 5,
+          "mean": 0.2801150965193907,
+          "std": 0.025955164333022303
+        },
+        "prompt_adherence_min": {
+          "count": 5,
+          "mean": 0.24554553925991057,
+          "std": 0.02023557520590925
+        },
+        "shot_frame_duration_max": {
+          "count": 5,
+          "mean": 96.0,
+          "std": 0.0
+        },
+        "shot_frame_duration_min": {
+          "count": 5,
+          "mean": 48.0,
+          "std": 0.0
+        },
+        "subject_anchor_consistency": {
+          "count": 5,
+          "mean": 0.8686802010709951,
+          "std": 0.05311628739972859
+        },
+        "subject_anchor_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.7010024737488394,
+          "std": 0.11676266468652888
+        },
+        "subject_worst_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.5420410586697267,
+          "std": 0.20676532592439179
+        },
+        "within_shot_motion": {
+          "count": 5,
+          "mean": 0.001941973049057803,
+          "std": 0.0006408723776391396
+        },
+        "worst_anchor_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.5420410586697267,
+          "std": 0.20676532592439179
+        }
+      },
+      "delta_summary": {
+        "anchor_centroid_consistency": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "anchor_drift_aggregate_consistency": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "anchor_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "background_anchor_consistency": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "background_anchor_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "background_worst_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "dynamic_degree": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "inter_shot_composition_diversity": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "invariant_margin_mean": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "invariant_margin_min": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "motion_profile_agreement": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "num_frames": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "palette_agreement": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "prompt_adherence_mean": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "prompt_adherence_min": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "shot_frame_duration_max": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "shot_frame_duration_min": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "subject_anchor_consistency": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "subject_anchor_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "subject_worst_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "within_shot_motion": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "worst_anchor_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        }
+      },
+      "modified_summary": {
+        "anchor_centroid_consistency": {
+          "count": 5,
+          "mean": 0.913388590478235,
+          "std": 0.03364989438170043
+        },
+        "anchor_drift_aggregate_consistency": {
+          "count": 5,
+          "mean": 0.672602509073544,
+          "std": 0.13877112450306792
+        },
+        "anchor_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.8031639594773612,
+          "std": 0.0742059822589802
+        },
+        "background_anchor_consistency": {
+          "count": 5,
+          "mean": 0.9580969798854749,
+          "std": 0.014883839181604505
+        },
+        "background_anchor_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.9053254452058832,
+          "std": 0.035841607119387234
+        },
+        "background_worst_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.8348657246545816,
+          "std": 0.08334980849883211
+        },
+        "dynamic_degree": {
+          "count": 5,
+          "mean": 73.57635836998622,
+          "std": 31.30478206401964
+        },
+        "inter_shot_composition_diversity": {
+          "count": 5,
+          "mean": 0.11179688631423026,
+          "std": 0.019787276053034947
+        },
+        "invariant_margin_mean": {
+          "count": 5,
+          "mean": 0.013481134797135991,
+          "std": 0.014657257627244688
+        },
+        "invariant_margin_min": {
+          "count": 5,
+          "mean": -0.001414075493812561,
+          "std": 0.01835189664490538
+        },
+        "motion_profile_agreement": {
+          "count": 5,
+          "mean": 0.998616113293966,
+          "std": 0.0006556707797060427
+        },
+        "num_frames": {
+          "count": 5,
+          "mean": 480.0,
+          "std": 0.0
+        },
+        "num_shots": {
+          "count": 5,
+          "mean": 6.8,
+          "std": 0.9797958971132712
+        },
+        "palette_agreement": {
+          "count": 5,
+          "mean": 0.570874206344086,
+          "std": 0.1213295286392044
+        },
+        "prompt_adherence_mean": {
+          "count": 5,
+          "mean": 0.2801150965193907,
+          "std": 0.025955164333022303
+        },
+        "prompt_adherence_min": {
+          "count": 5,
+          "mean": 0.24554553925991057,
+          "std": 0.02023557520590925
+        },
+        "shot_frame_duration_max": {
+          "count": 5,
+          "mean": 96.0,
+          "std": 0.0
+        },
+        "shot_frame_duration_min": {
+          "count": 5,
+          "mean": 48.0,
+          "std": 0.0
+        },
+        "subject_anchor_consistency": {
+          "count": 5,
+          "mean": 0.8686802010709951,
+          "std": 0.05311628739972859
+        },
+        "subject_anchor_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.7010024737488394,
+          "std": 0.11676266468652888
+        },
+        "subject_worst_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.5420410586697267,
+          "std": 0.20676532592439179
+        },
+        "within_shot_motion": {
+          "count": 5,
+          "mean": 0.001941973049057803,
+          "std": 0.0006408723776391396
+        },
+        "worst_anchor_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.5420410586697267,
+          "std": 0.20676532592439179
+        }
+      },
+      "num_pairs": 5,
+      "records": [
+        {
+          "baseline": "videos/frame_strategy_A/baseline_seed1/baseline_seed1-rank0-african_savanna-seed0_regular.mp4",
+          "baseline_metrics": {
+            "anchor_centroid_consistency": 0.8840654999928378,
+            "anchor_drift_aggregate_consistency": 0.5888316040337807,
+            "anchor_to_shot0_consistency": 0.7553010558930014,
+            "background_anchor_consistency": 0.9485903998109397,
+            "background_anchor_to_shot0_consistency": 0.9023092094726782,
+            "background_worst_to_shot0_consistency": 0.8253368059333617,
+            "dynamic_degree": 75.98137060801189,
+            "inter_shot_composition_diversity": 0.13561016733499442,
+            "invariant_margin_mean": 0.01517413929104805,
+            "invariant_margin_min": -0.007670775055885315,
+            "motion_profile_agreement": 0.9989601026254055,
+            "num_frames": 480.0,
+            "num_shots": 8.0,
+            "palette_agreement": 0.5408345065811291,
+            "prompt_adherence_mean": 0.3078257627785206,
+            "prompt_adherence_min": 0.27372750639915466,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.8195406001747358,
+            "subject_anchor_to_shot0_consistency": 0.6082929023133247,
+            "subject_worst_to_shot0_consistency": 0.4223621521745599,
+            "within_shot_motion": 0.0015671650398871861,
+            "worst_anchor_to_shot0_consistency": 0.4223621521745599
+          },
+          "delta": {
+            "anchor_centroid_consistency": 0.0,
+            "anchor_drift_aggregate_consistency": 0.0,
+            "anchor_to_shot0_consistency": 0.0,
+            "background_anchor_consistency": 0.0,
+            "background_anchor_to_shot0_consistency": 0.0,
+            "background_worst_to_shot0_consistency": 0.0,
+            "dynamic_degree": 0.0,
+            "inter_shot_composition_diversity": 0.0,
+            "invariant_margin_mean": 0.0,
+            "invariant_margin_min": 0.0,
+            "motion_profile_agreement": 0.0,
+            "num_frames": 0.0,
+            "palette_agreement": 0.0,
+            "prompt_adherence_mean": 0.0,
+            "prompt_adherence_min": 0.0,
+            "shot_frame_duration_max": 0.0,
+            "shot_frame_duration_min": 0.0,
+            "subject_anchor_consistency": 0.0,
+            "subject_anchor_to_shot0_consistency": 0.0,
+            "subject_worst_to_shot0_consistency": 0.0,
+            "within_shot_motion": 0.0,
+            "worst_anchor_to_shot0_consistency": 0.0
+          },
+          "frame_metadata": {
+            "baseline_num_frames": 480.0,
+            "baseline_shot_frame_duration_max": 96.0,
+            "baseline_shot_frame_duration_min": 48.0,
+            "modified_num_frames": 480.0,
+            "modified_shot_frame_duration_max": 96.0,
+            "modified_shot_frame_duration_min": 48.0,
+            "shot_chunk_durations": [
+              12,
+              12,
+              6,
+              6,
+              6,
+              6,
+              6,
+              6
+            ]
+          },
+          "modified": "videos/frame_strategy_A/baseline_seed1/baseline_seed1-rank0-african_savanna-seed0_regular.mp4",
+          "modified_metrics": {
+            "anchor_centroid_consistency": 0.8840654999928378,
+            "anchor_drift_aggregate_consistency": 0.5888316040337807,
+            "anchor_to_shot0_consistency": 0.7553010558930014,
+            "background_anchor_consistency": 0.9485903998109397,
+            "background_anchor_to_shot0_consistency": 0.9023092094726782,
+            "background_worst_to_shot0_consistency": 0.8253368059333617,
+            "dynamic_degree": 75.98137060801189,
+            "inter_shot_composition_diversity": 0.13561016733499442,
+            "invariant_margin_mean": 0.01517413929104805,
+            "invariant_margin_min": -0.007670775055885315,
+            "motion_profile_agreement": 0.9989601026254055,
+            "num_frames": 480.0,
+            "num_shots": 8.0,
+            "palette_agreement": 0.5408345065811291,
+            "prompt_adherence_mean": 0.3078257627785206,
+            "prompt_adherence_min": 0.27372750639915466,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.8195406001747358,
+            "subject_anchor_to_shot0_consistency": 0.6082929023133247,
+            "subject_worst_to_shot0_consistency": 0.4223621521745599,
+            "within_shot_motion": 0.0015671650398871861,
+            "worst_anchor_to_shot0_consistency": 0.4223621521745599
+          },
+          "negative_control": false,
+          "stem": "baseline_seed1-rank0-african_savanna-seed0_regular",
+          "theme": "african_savanna"
+        },
+        {
+          "baseline": "videos/frame_strategy_A/baseline_seed1/baseline_seed1-rank0-brown_bear_river-seed0_regular.mp4",
+          "baseline_metrics": {
+            "anchor_centroid_consistency": 0.8701119651745322,
+            "anchor_drift_aggregate_consistency": 0.4797405173911933,
+            "anchor_to_shot0_consistency": 0.7262151128208199,
+            "background_anchor_consistency": 0.9359360987338772,
+            "background_anchor_to_shot0_consistency": 0.852843379698996,
+            "background_worst_to_shot0_consistency": 0.6964539045518117,
+            "dynamic_degree": 96.55546704928081,
+            "inter_shot_composition_diversity": 0.10791451120559092,
+            "invariant_margin_mean": 0.004069412127137184,
+            "invariant_margin_min": -0.016840875148773193,
+            "motion_profile_agreement": 0.998158109530003,
+            "num_frames": 480.0,
+            "num_shots": 8.0,
+            "palette_agreement": 0.5065560408390042,
+            "prompt_adherence_mean": 0.29044605046510696,
+            "prompt_adherence_min": 0.25909268856048584,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.8042878316151871,
+            "subject_anchor_to_shot0_consistency": 0.5995868459426437,
+            "subject_worst_to_shot0_consistency": 0.23326592196156676,
+            "within_shot_motion": 0.002329219860257581,
+            "worst_anchor_to_shot0_consistency": 0.23326592196156676
+          },
+          "delta": {
+            "anchor_centroid_consistency": 0.0,
+            "anchor_drift_aggregate_consistency": 0.0,
+            "anchor_to_shot0_consistency": 0.0,
+            "background_anchor_consistency": 0.0,
+            "background_anchor_to_shot0_consistency": 0.0,
+            "background_worst_to_shot0_consistency": 0.0,
+            "dynamic_degree": 0.0,
+            "inter_shot_composition_diversity": 0.0,
+            "invariant_margin_mean": 0.0,
+            "invariant_margin_min": 0.0,
+            "motion_profile_agreement": 0.0,
+            "num_frames": 0.0,
+            "palette_agreement": 0.0,
+            "prompt_adherence_mean": 0.0,
+            "prompt_adherence_min": 0.0,
+            "shot_frame_duration_max": 0.0,
+            "shot_frame_duration_min": 0.0,
+            "subject_anchor_consistency": 0.0,
+            "subject_anchor_to_shot0_consistency": 0.0,
+            "subject_worst_to_shot0_consistency": 0.0,
+            "within_shot_motion": 0.0,
+            "worst_anchor_to_shot0_consistency": 0.0
+          },
+          "frame_metadata": {
+            "baseline_num_frames": 480.0,
+            "baseline_shot_frame_duration_max": 96.0,
+            "baseline_shot_frame_duration_min": 48.0,
+            "modified_num_frames": 480.0,
+            "modified_shot_frame_duration_max": 96.0,
+            "modified_shot_frame_duration_min": 48.0,
+            "shot_chunk_durations": [
+              12,
+              12,
+              6,
+              6,
+              6,
+              6,
+              6,
+              6
+            ]
+          },
+          "modified": "videos/frame_strategy_A/baseline_seed1/baseline_seed1-rank0-brown_bear_river-seed0_regular.mp4",
+          "modified_metrics": {
+            "anchor_centroid_consistency": 0.8701119651745322,
+            "anchor_drift_aggregate_consistency": 0.4797405173911933,
+            "anchor_to_shot0_consistency": 0.7262151128208199,
+            "background_anchor_consistency": 0.9359360987338772,
+            "background_anchor_to_shot0_consistency": 0.852843379698996,
+            "background_worst_to_shot0_consistency": 0.6964539045518117,
+            "dynamic_degree": 96.55546704928081,
+            "inter_shot_composition_diversity": 0.10791451120559092,
+            "invariant_margin_mean": 0.004069412127137184,
+            "invariant_margin_min": -0.016840875148773193,
+            "motion_profile_agreement": 0.998158109530003,
+            "num_frames": 480.0,
+            "num_shots": 8.0,
+            "palette_agreement": 0.5065560408390042,
+            "prompt_adherence_mean": 0.29044605046510696,
+            "prompt_adherence_min": 0.25909268856048584,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.8042878316151871,
+            "subject_anchor_to_shot0_consistency": 0.5995868459426437,
+            "subject_worst_to_shot0_consistency": 0.23326592196156676,
+            "within_shot_motion": 0.002329219860257581,
+            "worst_anchor_to_shot0_consistency": 0.23326592196156676
+          },
+          "negative_control": false,
+          "stem": "baseline_seed1-rank0-brown_bear_river-seed0_regular",
+          "theme": "brown_bear_river"
+        },
+        {
+          "baseline": "videos/frame_strategy_A/baseline_seed1/baseline_seed1-rank0-shimmering_puzzle_surface-seed0_regular.mp4",
+          "baseline_metrics": {
+            "anchor_centroid_consistency": 0.9146716348111549,
+            "anchor_drift_aggregate_consistency": 0.6468075544488372,
+            "anchor_to_shot0_consistency": 0.7593013188975956,
+            "background_anchor_consistency": 0.9573728244204279,
+            "background_anchor_to_shot0_consistency": 0.8820914416906639,
+            "background_worst_to_shot0_consistency": 0.8109009744295723,
+            "dynamic_degree": 39.03848737478256,
+            "inter_shot_composition_diversity": 0.13131125071926542,
+            "invariant_margin_mean": -0.0027950679262479148,
+            "invariant_margin_min": -0.011583209037780762,
+            "motion_profile_agreement": 0.9986755750146499,
+            "num_frames": 480.0,
+            "num_shots": 6.0,
+            "palette_agreement": 0.7115176202944338,
+            "prompt_adherence_mean": 0.2943523700038592,
+            "prompt_adherence_min": 0.2388782948255539,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.8719704452018818,
+            "subject_anchor_to_shot0_consistency": 0.6365111961045272,
+            "subject_worst_to_shot0_consistency": 0.5343137900000788,
+            "within_shot_motion": 0.0017982267503005762,
+            "worst_anchor_to_shot0_consistency": 0.5343137900000788
+          },
+          "delta": {
+            "anchor_centroid_consistency": 0.0,
+            "anchor_drift_aggregate_consistency": 0.0,
+            "anchor_to_shot0_consistency": 0.0,
+            "background_anchor_consistency": 0.0,
+            "background_anchor_to_shot0_consistency": 0.0,
+            "background_worst_to_shot0_consistency": 0.0,
+            "dynamic_degree": 0.0,
+            "inter_shot_composition_diversity": 0.0,
+            "invariant_margin_mean": 0.0,
+            "invariant_margin_min": 0.0,
+            "motion_profile_agreement": 0.0,
+            "num_frames": 0.0,
+            "palette_agreement": 0.0,
+            "prompt_adherence_mean": 0.0,
+            "prompt_adherence_min": 0.0,
+            "shot_frame_duration_max": 0.0,
+            "shot_frame_duration_min": 0.0,
+            "subject_anchor_consistency": 0.0,
+            "subject_anchor_to_shot0_consistency": 0.0,
+            "subject_worst_to_shot0_consistency": 0.0,
+            "within_shot_motion": 0.0,
+            "worst_anchor_to_shot0_consistency": 0.0
+          },
+          "frame_metadata": {
+            "baseline_num_frames": 480.0,
+            "baseline_shot_frame_duration_max": 96.0,
+            "baseline_shot_frame_duration_min": 48.0,
+            "modified_num_frames": 480.0,
+            "modified_shot_frame_duration_max": 96.0,
+            "modified_shot_frame_duration_min": 48.0,
+            "shot_chunk_durations": [
+              12,
+              12,
+              12,
+              12,
+              6,
+              6
+            ]
+          },
+          "modified": "videos/frame_strategy_A/baseline_seed1/baseline_seed1-rank0-shimmering_puzzle_surface-seed0_regular.mp4",
+          "modified_metrics": {
+            "anchor_centroid_consistency": 0.9146716348111549,
+            "anchor_drift_aggregate_consistency": 0.6468075544488372,
+            "anchor_to_shot0_consistency": 0.7593013188975956,
+            "background_anchor_consistency": 0.9573728244204279,
+            "background_anchor_to_shot0_consistency": 0.8820914416906639,
+            "background_worst_to_shot0_consistency": 0.8109009744295723,
+            "dynamic_degree": 39.03848737478256,
+            "inter_shot_composition_diversity": 0.13131125071926542,
+            "invariant_margin_mean": -0.0027950679262479148,
+            "invariant_margin_min": -0.011583209037780762,
+            "motion_profile_agreement": 0.9986755750146499,
+            "num_frames": 480.0,
+            "num_shots": 6.0,
+            "palette_agreement": 0.7115176202944338,
+            "prompt_adherence_mean": 0.2943523700038592,
+            "prompt_adherence_min": 0.2388782948255539,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.8719704452018818,
+            "subject_anchor_to_shot0_consistency": 0.6365111961045272,
+            "subject_worst_to_shot0_consistency": 0.5343137900000788,
+            "within_shot_motion": 0.0017982267503005762,
+            "worst_anchor_to_shot0_consistency": 0.5343137900000788
+          },
+          "negative_control": true,
+          "stem": "baseline_seed1-rank0-shimmering_puzzle_surface-seed0_regular",
+          "theme": "shimmering_puzzle_surface"
+        },
+        {
+          "baseline": "videos/frame_strategy_A/baseline_seed1/baseline_seed1-rank0-skateboarder_high_motion-seed0_regular.mp4",
+          "baseline_metrics": {
+            "anchor_centroid_consistency": 0.9351871460917003,
+            "anchor_drift_aggregate_consistency": 0.7705382483422558,
+            "anchor_to_shot0_consistency": 0.8476815606167107,
+            "background_anchor_consistency": 0.9735748715510725,
+            "background_anchor_to_shot0_consistency": 0.9414953262208208,
+            "background_worst_to_shot0_consistency": 0.9125340617812052,
+            "dynamic_degree": 117.72192859649658,
+            "inter_shot_composition_diversity": 0.10248485116735873,
+            "invariant_margin_mean": 0.010816802581151327,
+            "invariant_margin_min": -0.0054392218589782715,
+            "motion_profile_agreement": 0.9976903940954785,
+            "num_frames": 480.0,
+            "num_shots": 6.0,
+            "palette_agreement": 0.3932754241443025,
+            "prompt_adherence_mean": 0.275475670893987,
+            "prompt_adherence_min": 0.24234157800674438,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.8967994206323281,
+            "subject_anchor_to_shot0_consistency": 0.7538677950126006,
+            "subject_worst_to_shot0_consistency": 0.6933949360678008,
+            "within_shot_motion": 0.002938718108149866,
+            "worst_anchor_to_shot0_consistency": 0.6933949360678008
+          },
+          "delta": {
+            "anchor_centroid_consistency": 0.0,
+            "anchor_drift_aggregate_consistency": 0.0,
+            "anchor_to_shot0_consistency": 0.0,
+            "background_anchor_consistency": 0.0,
+            "background_anchor_to_shot0_consistency": 0.0,
+            "background_worst_to_shot0_consistency": 0.0,
+            "dynamic_degree": 0.0,
+            "inter_shot_composition_diversity": 0.0,
+            "invariant_margin_mean": 0.0,
+            "invariant_margin_min": 0.0,
+            "motion_profile_agreement": 0.0,
+            "num_frames": 0.0,
+            "palette_agreement": 0.0,
+            "prompt_adherence_mean": 0.0,
+            "prompt_adherence_min": 0.0,
+            "shot_frame_duration_max": 0.0,
+            "shot_frame_duration_min": 0.0,
+            "subject_anchor_consistency": 0.0,
+            "subject_anchor_to_shot0_consistency": 0.0,
+            "subject_worst_to_shot0_consistency": 0.0,
+            "within_shot_motion": 0.0,
+            "worst_anchor_to_shot0_consistency": 0.0
+          },
+          "frame_metadata": {
+            "baseline_num_frames": 480.0,
+            "baseline_shot_frame_duration_max": 96.0,
+            "baseline_shot_frame_duration_min": 48.0,
+            "modified_num_frames": 480.0,
+            "modified_shot_frame_duration_max": 96.0,
+            "modified_shot_frame_duration_min": 48.0,
+            "shot_chunk_durations": [
+              12,
+              12,
+              12,
+              12,
+              6,
+              6
+            ]
+          },
+          "modified": "videos/frame_strategy_A/baseline_seed1/baseline_seed1-rank0-skateboarder_high_motion-seed0_regular.mp4",
+          "modified_metrics": {
+            "anchor_centroid_consistency": 0.9351871460917003,
+            "anchor_drift_aggregate_consistency": 0.7705382483422558,
+            "anchor_to_shot0_consistency": 0.8476815606167107,
+            "background_anchor_consistency": 0.9735748715510725,
+            "background_anchor_to_shot0_consistency": 0.9414953262208208,
+            "background_worst_to_shot0_consistency": 0.9125340617812052,
+            "dynamic_degree": 117.72192859649658,
+            "inter_shot_composition_diversity": 0.10248485116735873,
+            "invariant_margin_mean": 0.010816802581151327,
+            "invariant_margin_min": -0.0054392218589782715,
+            "motion_profile_agreement": 0.9976903940954785,
+            "num_frames": 480.0,
+            "num_shots": 6.0,
+            "palette_agreement": 0.3932754241443025,
+            "prompt_adherence_mean": 0.275475670893987,
+            "prompt_adherence_min": 0.24234157800674438,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.8967994206323281,
+            "subject_anchor_to_shot0_consistency": 0.7538677950126006,
+            "subject_worst_to_shot0_consistency": 0.6933949360678008,
+            "within_shot_motion": 0.002938718108149866,
+            "worst_anchor_to_shot0_consistency": 0.6933949360678008
+          },
+          "negative_control": false,
+          "stem": "baseline_seed1-rank0-skateboarder_high_motion-seed0_regular",
+          "theme": "skateboarder_high_motion"
+        },
+        {
+          "baseline": "videos/frame_strategy_A/baseline_seed1/baseline_seed1-rank0-sunlit_balcony_tour-seed0_regular.mp4",
+          "baseline_metrics": {
+            "anchor_centroid_consistency": 0.9629067063209497,
+            "anchor_drift_aggregate_consistency": 0.877094621151653,
+            "anchor_to_shot0_consistency": 0.9273207491586786,
+            "background_anchor_consistency": 0.9750107049110571,
+            "background_anchor_to_shot0_consistency": 0.9478878689462569,
+            "background_worst_to_shot0_consistency": 0.9291028765769568,
+            "dynamic_degree": 38.58453822135925,
+            "inter_shot_composition_diversity": 0.0816636511439418,
+            "invariant_margin_mean": 0.0401403879125913,
+            "invariant_margin_min": 0.034463703632354736,
+            "motion_profile_agreement": 0.9995963852042941,
+            "num_frames": 480.0,
+            "num_shots": 6.0,
+            "palette_agreement": 0.702187439861561,
+            "prompt_adherence_mean": 0.23247562845547995,
+            "prompt_adherence_min": 0.21368762850761414,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.9508027077308422,
+            "subject_anchor_to_shot0_consistency": 0.9067536293711003,
+            "subject_worst_to_shot0_consistency": 0.8268684931446275,
+            "within_shot_motion": 0.0010765354866938044,
+            "worst_anchor_to_shot0_consistency": 0.8268684931446275
+          },
+          "delta": {
+            "anchor_centroid_consistency": 0.0,
+            "anchor_drift_aggregate_consistency": 0.0,
+            "anchor_to_shot0_consistency": 0.0,
+            "background_anchor_consistency": 0.0,
+            "background_anchor_to_shot0_consistency": 0.0,
+            "background_worst_to_shot0_consistency": 0.0,
+            "dynamic_degree": 0.0,
+            "inter_shot_composition_diversity": 0.0,
+            "invariant_margin_mean": 0.0,
+            "invariant_margin_min": 0.0,
+            "motion_profile_agreement": 0.0,
+            "num_frames": 0.0,
+            "palette_agreement": 0.0,
+            "prompt_adherence_mean": 0.0,
+            "prompt_adherence_min": 0.0,
+            "shot_frame_duration_max": 0.0,
+            "shot_frame_duration_min": 0.0,
+            "subject_anchor_consistency": 0.0,
+            "subject_anchor_to_shot0_consistency": 0.0,
+            "subject_worst_to_shot0_consistency": 0.0,
+            "within_shot_motion": 0.0,
+            "worst_anchor_to_shot0_consistency": 0.0
+          },
+          "frame_metadata": {
+            "baseline_num_frames": 480.0,
+            "baseline_shot_frame_duration_max": 96.0,
+            "baseline_shot_frame_duration_min": 48.0,
+            "modified_num_frames": 480.0,
+            "modified_shot_frame_duration_max": 96.0,
+            "modified_shot_frame_duration_min": 48.0,
+            "shot_chunk_durations": [
+              12,
+              12,
+              12,
+              12,
+              6,
+              6
+            ]
+          },
+          "modified": "videos/frame_strategy_A/baseline_seed1/baseline_seed1-rank0-sunlit_balcony_tour-seed0_regular.mp4",
+          "modified_metrics": {
+            "anchor_centroid_consistency": 0.9629067063209497,
+            "anchor_drift_aggregate_consistency": 0.877094621151653,
+            "anchor_to_shot0_consistency": 0.9273207491586786,
+            "background_anchor_consistency": 0.9750107049110571,
+            "background_anchor_to_shot0_consistency": 0.9478878689462569,
+            "background_worst_to_shot0_consistency": 0.9291028765769568,
+            "dynamic_degree": 38.58453822135925,
+            "inter_shot_composition_diversity": 0.0816636511439418,
+            "invariant_margin_mean": 0.0401403879125913,
+            "invariant_margin_min": 0.034463703632354736,
+            "motion_profile_agreement": 0.9995963852042941,
+            "num_frames": 480.0,
+            "num_shots": 6.0,
+            "palette_agreement": 0.702187439861561,
+            "prompt_adherence_mean": 0.23247562845547995,
+            "prompt_adherence_min": 0.21368762850761414,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.9508027077308422,
+            "subject_anchor_to_shot0_consistency": 0.9067536293711003,
+            "subject_worst_to_shot0_consistency": 0.8268684931446275,
+            "within_shot_motion": 0.0010765354866938044,
+            "worst_anchor_to_shot0_consistency": 0.8268684931446275
+          },
+          "negative_control": false,
+          "stem": "baseline_seed1-rank0-sunlit_balcony_tour-seed0_regular",
+          "theme": "sunlit_balcony_tour"
+        }
+      ],
+      "skipped_stems": []
+    },
+    "2": {
+      "baseline_summary": {
+        "anchor_centroid_consistency": {
+          "count": 5,
+          "mean": 0.9077696797756278,
+          "std": 0.023076286671130035
+        },
+        "anchor_drift_aggregate_consistency": {
+          "count": 5,
+          "mean": 0.6535265775335422,
+          "std": 0.08857907429429546
+        },
+        "anchor_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.7879167624782489,
+          "std": 0.05652619650310193
+        },
+        "background_anchor_consistency": {
+          "count": 5,
+          "mean": 0.9548784884825252,
+          "std": 0.011215698904102398
+        },
+        "background_anchor_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.8931898286841993,
+          "std": 0.033215421239821345
+        },
+        "background_worst_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.8212205213304429,
+          "std": 0.06590580084407592
+        },
+        "dynamic_degree": {
+          "count": 5,
+          "mean": 86.56761599381765,
+          "std": 19.224430333523507
+        },
+        "inter_shot_composition_diversity": {
+          "count": 5,
+          "mean": 0.1142955084662957,
+          "std": 0.028721666390727263
+        },
+        "invariant_margin_mean": {
+          "count": 5,
+          "mean": 0.008526985595623652,
+          "std": 0.00720121444012798
+        },
+        "invariant_margin_min": {
+          "count": 5,
+          "mean": -0.003204399347305298,
+          "std": 0.00567525212235494
+        },
+        "motion_profile_agreement": {
+          "count": 5,
+          "mean": 0.9981671845899381,
+          "std": 0.0011776145814707077
+        },
+        "num_frames": {
+          "count": 5,
+          "mean": 480.0,
+          "std": 0.0
+        },
+        "num_shots": {
+          "count": 5,
+          "mean": 6.8,
+          "std": 0.9797958971132712
+        },
+        "palette_agreement": {
+          "count": 5,
+          "mean": 0.5849442854922885,
+          "std": 0.15337168020262687
+        },
+        "prompt_adherence_mean": {
+          "count": 5,
+          "mean": 0.28070060412089026,
+          "std": 0.018130364478776584
+        },
+        "prompt_adherence_min": {
+          "count": 5,
+          "mean": 0.23703041076660156,
+          "std": 0.020192168420136894
+        },
+        "shot_frame_duration_max": {
+          "count": 5,
+          "mean": 96.0,
+          "std": 0.0
+        },
+        "shot_frame_duration_min": {
+          "count": 5,
+          "mean": 48.0,
+          "std": 0.0
+        },
+        "subject_anchor_consistency": {
+          "count": 5,
+          "mean": 0.86066087106873,
+          "std": 0.03554425813624489
+        },
+        "subject_anchor_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.6826436962722987,
+          "std": 0.08757980264882557
+        },
+        "subject_worst_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.5191363925888353,
+          "std": 0.12176518244909962
+        },
+        "within_shot_motion": {
+          "count": 5,
+          "mean": 0.002345630509565429,
+          "std": 0.0005776150114780038
+        },
+        "worst_anchor_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.5191363925888353,
+          "std": 0.12176518244909962
+        }
+      },
+      "delta_summary": {
+        "anchor_centroid_consistency": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "anchor_drift_aggregate_consistency": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "anchor_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "background_anchor_consistency": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "background_anchor_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "background_worst_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "dynamic_degree": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "inter_shot_composition_diversity": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "invariant_margin_mean": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "invariant_margin_min": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "motion_profile_agreement": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "num_frames": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "palette_agreement": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "prompt_adherence_mean": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "prompt_adherence_min": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "shot_frame_duration_max": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "shot_frame_duration_min": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "subject_anchor_consistency": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "subject_anchor_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "subject_worst_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "within_shot_motion": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "worst_anchor_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.0,
+          "std": 0.0
+        }
+      },
+      "modified_summary": {
+        "anchor_centroid_consistency": {
+          "count": 5,
+          "mean": 0.9077696797756278,
+          "std": 0.023076286671130035
+        },
+        "anchor_drift_aggregate_consistency": {
+          "count": 5,
+          "mean": 0.6535265775335422,
+          "std": 0.08857907429429546
+        },
+        "anchor_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.7879167624782489,
+          "std": 0.05652619650310193
+        },
+        "background_anchor_consistency": {
+          "count": 5,
+          "mean": 0.9548784884825252,
+          "std": 0.011215698904102398
+        },
+        "background_anchor_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.8931898286841993,
+          "std": 0.033215421239821345
+        },
+        "background_worst_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.8212205213304429,
+          "std": 0.06590580084407592
+        },
+        "dynamic_degree": {
+          "count": 5,
+          "mean": 86.56761599381765,
+          "std": 19.224430333523507
+        },
+        "inter_shot_composition_diversity": {
+          "count": 5,
+          "mean": 0.1142955084662957,
+          "std": 0.028721666390727263
+        },
+        "invariant_margin_mean": {
+          "count": 5,
+          "mean": 0.008526985595623652,
+          "std": 0.00720121444012798
+        },
+        "invariant_margin_min": {
+          "count": 5,
+          "mean": -0.003204399347305298,
+          "std": 0.00567525212235494
+        },
+        "motion_profile_agreement": {
+          "count": 5,
+          "mean": 0.9981671845899381,
+          "std": 0.0011776145814707077
+        },
+        "num_frames": {
+          "count": 5,
+          "mean": 480.0,
+          "std": 0.0
+        },
+        "num_shots": {
+          "count": 5,
+          "mean": 6.8,
+          "std": 0.9797958971132712
+        },
+        "palette_agreement": {
+          "count": 5,
+          "mean": 0.5849442854922885,
+          "std": 0.15337168020262687
+        },
+        "prompt_adherence_mean": {
+          "count": 5,
+          "mean": 0.28070060412089026,
+          "std": 0.018130364478776584
+        },
+        "prompt_adherence_min": {
+          "count": 5,
+          "mean": 0.23703041076660156,
+          "std": 0.020192168420136894
+        },
+        "shot_frame_duration_max": {
+          "count": 5,
+          "mean": 96.0,
+          "std": 0.0
+        },
+        "shot_frame_duration_min": {
+          "count": 5,
+          "mean": 48.0,
+          "std": 0.0
+        },
+        "subject_anchor_consistency": {
+          "count": 5,
+          "mean": 0.86066087106873,
+          "std": 0.03554425813624489
+        },
+        "subject_anchor_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.6826436962722987,
+          "std": 0.08757980264882557
+        },
+        "subject_worst_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.5191363925888353,
+          "std": 0.12176518244909962
+        },
+        "within_shot_motion": {
+          "count": 5,
+          "mean": 0.002345630509565429,
+          "std": 0.0005776150114780038
+        },
+        "worst_anchor_to_shot0_consistency": {
+          "count": 5,
+          "mean": 0.5191363925888353,
+          "std": 0.12176518244909962
+        }
+      },
+      "num_pairs": 5,
+      "records": [
+        {
+          "baseline": "videos/frame_strategy_A/baseline_seed2/baseline_seed2-rank0-african_savanna-seed0_regular.mp4",
+          "baseline_metrics": {
+            "anchor_centroid_consistency": 0.8922279386690244,
+            "anchor_drift_aggregate_consistency": 0.581393912383551,
+            "anchor_to_shot0_consistency": 0.7400369831397572,
+            "background_anchor_consistency": 0.9488267351305613,
+            "background_anchor_to_shot0_consistency": 0.8992120521434412,
+            "background_worst_to_shot0_consistency": 0.8213812103350387,
+            "dynamic_degree": 88.08714866638184,
+            "inter_shot_composition_diversity": 0.159435746890918,
+            "invariant_margin_mean": 0.010651689022779465,
+            "invariant_margin_min": -0.006162285804748535,
+            "motion_profile_agreement": 0.9988618369910292,
+            "num_frames": 480.0,
+            "num_shots": 8.0,
+            "palette_agreement": 0.5087295125304175,
+            "prompt_adherence_mean": 0.3031279034912586,
+            "prompt_adherence_min": 0.2608635127544403,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.8356291422074875,
+            "subject_anchor_to_shot0_consistency": 0.5808619141360731,
+            "subject_worst_to_shot0_consistency": 0.4227508416273449,
+            "within_shot_motion": 0.0015080227385624312,
+            "worst_anchor_to_shot0_consistency": 0.4227508416273449
+          },
+          "delta": {
+            "anchor_centroid_consistency": 0.0,
+            "anchor_drift_aggregate_consistency": 0.0,
+            "anchor_to_shot0_consistency": 0.0,
+            "background_anchor_consistency": 0.0,
+            "background_anchor_to_shot0_consistency": 0.0,
+            "background_worst_to_shot0_consistency": 0.0,
+            "dynamic_degree": 0.0,
+            "inter_shot_composition_diversity": 0.0,
+            "invariant_margin_mean": 0.0,
+            "invariant_margin_min": 0.0,
+            "motion_profile_agreement": 0.0,
+            "num_frames": 0.0,
+            "palette_agreement": 0.0,
+            "prompt_adherence_mean": 0.0,
+            "prompt_adherence_min": 0.0,
+            "shot_frame_duration_max": 0.0,
+            "shot_frame_duration_min": 0.0,
+            "subject_anchor_consistency": 0.0,
+            "subject_anchor_to_shot0_consistency": 0.0,
+            "subject_worst_to_shot0_consistency": 0.0,
+            "within_shot_motion": 0.0,
+            "worst_anchor_to_shot0_consistency": 0.0
+          },
+          "frame_metadata": {
+            "baseline_num_frames": 480.0,
+            "baseline_shot_frame_duration_max": 96.0,
+            "baseline_shot_frame_duration_min": 48.0,
+            "modified_num_frames": 480.0,
+            "modified_shot_frame_duration_max": 96.0,
+            "modified_shot_frame_duration_min": 48.0,
+            "shot_chunk_durations": [
+              12,
+              12,
+              6,
+              6,
+              6,
+              6,
+              6,
+              6
+            ]
+          },
+          "modified": "videos/frame_strategy_A/baseline_seed2/baseline_seed2-rank0-african_savanna-seed0_regular.mp4",
+          "modified_metrics": {
+            "anchor_centroid_consistency": 0.8922279386690244,
+            "anchor_drift_aggregate_consistency": 0.581393912383551,
+            "anchor_to_shot0_consistency": 0.7400369831397572,
+            "background_anchor_consistency": 0.9488267351305613,
+            "background_anchor_to_shot0_consistency": 0.8992120521434412,
+            "background_worst_to_shot0_consistency": 0.8213812103350387,
+            "dynamic_degree": 88.08714866638184,
+            "inter_shot_composition_diversity": 0.159435746890918,
+            "invariant_margin_mean": 0.010651689022779465,
+            "invariant_margin_min": -0.006162285804748535,
+            "motion_profile_agreement": 0.9988618369910292,
+            "num_frames": 480.0,
+            "num_shots": 8.0,
+            "palette_agreement": 0.5087295125304175,
+            "prompt_adherence_mean": 0.3031279034912586,
+            "prompt_adherence_min": 0.2608635127544403,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.8356291422074875,
+            "subject_anchor_to_shot0_consistency": 0.5808619141360731,
+            "subject_worst_to_shot0_consistency": 0.4227508416273449,
+            "within_shot_motion": 0.0015080227385624312,
+            "worst_anchor_to_shot0_consistency": 0.4227508416273449
+          },
+          "negative_control": false,
+          "stem": "baseline_seed2-rank0-african_savanna-seed0_regular",
+          "theme": "african_savanna"
+        },
+        {
+          "baseline": "videos/frame_strategy_A/baseline_seed2/baseline_seed2-rank0-brown_bear_river-seed0_regular.mp4",
+          "baseline_metrics": {
+            "anchor_centroid_consistency": 0.8743833474249523,
+            "anchor_drift_aggregate_consistency": 0.5404729784323814,
+            "anchor_to_shot0_consistency": 0.7088972829289878,
+            "background_anchor_consistency": 0.9409381167088797,
+            "background_anchor_to_shot0_consistency": 0.8418073677220219,
+            "background_worst_to_shot0_consistency": 0.7141167390709855,
+            "dynamic_degree": 76.76327292124431,
+            "inter_shot_composition_diversity": 0.12235151665174471,
+            "invariant_margin_mean": 0.010756924748420715,
+            "invariant_margin_min": -0.00654640793800354,
+            "motion_profile_agreement": 0.9986476483802026,
+            "num_frames": 480.0,
+            "num_shots": 8.0,
+            "palette_agreement": 0.5041526289389002,
+            "prompt_adherence_mean": 0.28416771814227104,
+            "prompt_adherence_min": 0.2500910460948944,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.8078285781410249,
+            "subject_anchor_to_shot0_consistency": 0.5759871981359537,
+            "subject_worst_to_shot0_consistency": 0.372048673935775,
+            "within_shot_motion": 0.002248232834972441,
+            "worst_anchor_to_shot0_consistency": 0.372048673935775
+          },
+          "delta": {
+            "anchor_centroid_consistency": 0.0,
+            "anchor_drift_aggregate_consistency": 0.0,
+            "anchor_to_shot0_consistency": 0.0,
+            "background_anchor_consistency": 0.0,
+            "background_anchor_to_shot0_consistency": 0.0,
+            "background_worst_to_shot0_consistency": 0.0,
+            "dynamic_degree": 0.0,
+            "inter_shot_composition_diversity": 0.0,
+            "invariant_margin_mean": 0.0,
+            "invariant_margin_min": 0.0,
+            "motion_profile_agreement": 0.0,
+            "num_frames": 0.0,
+            "palette_agreement": 0.0,
+            "prompt_adherence_mean": 0.0,
+            "prompt_adherence_min": 0.0,
+            "shot_frame_duration_max": 0.0,
+            "shot_frame_duration_min": 0.0,
+            "subject_anchor_consistency": 0.0,
+            "subject_anchor_to_shot0_consistency": 0.0,
+            "subject_worst_to_shot0_consistency": 0.0,
+            "within_shot_motion": 0.0,
+            "worst_anchor_to_shot0_consistency": 0.0
+          },
+          "frame_metadata": {
+            "baseline_num_frames": 480.0,
+            "baseline_shot_frame_duration_max": 96.0,
+            "baseline_shot_frame_duration_min": 48.0,
+            "modified_num_frames": 480.0,
+            "modified_shot_frame_duration_max": 96.0,
+            "modified_shot_frame_duration_min": 48.0,
+            "shot_chunk_durations": [
+              12,
+              12,
+              6,
+              6,
+              6,
+              6,
+              6,
+              6
+            ]
+          },
+          "modified": "videos/frame_strategy_A/baseline_seed2/baseline_seed2-rank0-brown_bear_river-seed0_regular.mp4",
+          "modified_metrics": {
+            "anchor_centroid_consistency": 0.8743833474249523,
+            "anchor_drift_aggregate_consistency": 0.5404729784323814,
+            "anchor_to_shot0_consistency": 0.7088972829289878,
+            "background_anchor_consistency": 0.9409381167088797,
+            "background_anchor_to_shot0_consistency": 0.8418073677220219,
+            "background_worst_to_shot0_consistency": 0.7141167390709855,
+            "dynamic_degree": 76.76327292124431,
+            "inter_shot_composition_diversity": 0.12235151665174471,
+            "invariant_margin_mean": 0.010756924748420715,
+            "invariant_margin_min": -0.00654640793800354,
+            "motion_profile_agreement": 0.9986476483802026,
+            "num_frames": 480.0,
+            "num_shots": 8.0,
+            "palette_agreement": 0.5041526289389002,
+            "prompt_adherence_mean": 0.28416771814227104,
+            "prompt_adherence_min": 0.2500910460948944,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.8078285781410249,
+            "subject_anchor_to_shot0_consistency": 0.5759871981359537,
+            "subject_worst_to_shot0_consistency": 0.372048673935775,
+            "within_shot_motion": 0.002248232834972441,
+            "worst_anchor_to_shot0_consistency": 0.372048673935775
+          },
+          "negative_control": false,
+          "stem": "baseline_seed2-rank0-brown_bear_river-seed0_regular",
+          "theme": "brown_bear_river"
+        },
+        {
+          "baseline": "videos/frame_strategy_A/baseline_seed2/baseline_seed2-rank0-shimmering_puzzle_surface-seed0_regular.mp4",
+          "baseline_metrics": {
+            "anchor_centroid_consistency": 0.9389651647120133,
+            "anchor_drift_aggregate_consistency": 0.7602977954507728,
+            "anchor_to_shot0_consistency": 0.8467308847939632,
+            "background_anchor_consistency": 0.9699674896927938,
+            "background_anchor_to_shot0_consistency": 0.9310804140494839,
+            "background_worst_to_shot0_consistency": 0.8869213796992605,
+            "dynamic_degree": 57.28258502483368,
+            "inter_shot_composition_diversity": 0.11297730560470687,
+            "invariant_margin_mean": -0.005501789351304372,
+            "invariant_margin_min": -0.009337365627288818,
+            "motion_profile_agreement": 0.9986875901364727,
+            "num_frames": 480.0,
+            "num_shots": 6.0,
+            "palette_agreement": 0.6379642489027346,
+            "prompt_adherence_mean": 0.29238560050725937,
+            "prompt_adherence_min": 0.21173565089702606,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.9079628397312328,
+            "subject_anchor_to_shot0_consistency": 0.7623813555384424,
+            "subject_worst_to_shot0_consistency": 0.6738647061075824,
+            "within_shot_motion": 0.0022277369959435114,
+            "worst_anchor_to_shot0_consistency": 0.6738647061075824
+          },
+          "delta": {
+            "anchor_centroid_consistency": 0.0,
+            "anchor_drift_aggregate_consistency": 0.0,
+            "anchor_to_shot0_consistency": 0.0,
+            "background_anchor_consistency": 0.0,
+            "background_anchor_to_shot0_consistency": 0.0,
+            "background_worst_to_shot0_consistency": 0.0,
+            "dynamic_degree": 0.0,
+            "inter_shot_composition_diversity": 0.0,
+            "invariant_margin_mean": 0.0,
+            "invariant_margin_min": 0.0,
+            "motion_profile_agreement": 0.0,
+            "num_frames": 0.0,
+            "palette_agreement": 0.0,
+            "prompt_adherence_mean": 0.0,
+            "prompt_adherence_min": 0.0,
+            "shot_frame_duration_max": 0.0,
+            "shot_frame_duration_min": 0.0,
+            "subject_anchor_consistency": 0.0,
+            "subject_anchor_to_shot0_consistency": 0.0,
+            "subject_worst_to_shot0_consistency": 0.0,
+            "within_shot_motion": 0.0,
+            "worst_anchor_to_shot0_consistency": 0.0
+          },
+          "frame_metadata": {
+            "baseline_num_frames": 480.0,
+            "baseline_shot_frame_duration_max": 96.0,
+            "baseline_shot_frame_duration_min": 48.0,
+            "modified_num_frames": 480.0,
+            "modified_shot_frame_duration_max": 96.0,
+            "modified_shot_frame_duration_min": 48.0,
+            "shot_chunk_durations": [
+              12,
+              12,
+              12,
+              12,
+              6,
+              6
+            ]
+          },
+          "modified": "videos/frame_strategy_A/baseline_seed2/baseline_seed2-rank0-shimmering_puzzle_surface-seed0_regular.mp4",
+          "modified_metrics": {
+            "anchor_centroid_consistency": 0.9389651647120133,
+            "anchor_drift_aggregate_consistency": 0.7602977954507728,
+            "anchor_to_shot0_consistency": 0.8467308847939632,
+            "background_anchor_consistency": 0.9699674896927938,
+            "background_anchor_to_shot0_consistency": 0.9310804140494839,
+            "background_worst_to_shot0_consistency": 0.8869213796992605,
+            "dynamic_degree": 57.28258502483368,
+            "inter_shot_composition_diversity": 0.11297730560470687,
+            "invariant_margin_mean": -0.005501789351304372,
+            "invariant_margin_min": -0.009337365627288818,
+            "motion_profile_agreement": 0.9986875901364727,
+            "num_frames": 480.0,
+            "num_shots": 6.0,
+            "palette_agreement": 0.6379642489027346,
+            "prompt_adherence_mean": 0.29238560050725937,
+            "prompt_adherence_min": 0.21173565089702606,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.9079628397312328,
+            "subject_anchor_to_shot0_consistency": 0.7623813555384424,
+            "subject_worst_to_shot0_consistency": 0.6738647061075824,
+            "within_shot_motion": 0.0022277369959435114,
+            "worst_anchor_to_shot0_consistency": 0.6738647061075824
+          },
+          "negative_control": true,
+          "stem": "baseline_seed2-rank0-shimmering_puzzle_surface-seed0_regular",
+          "theme": "shimmering_puzzle_surface"
+        },
+        {
+          "baseline": "videos/frame_strategy_A/baseline_seed2/baseline_seed2-rank0-skateboarder_high_motion-seed0_regular.mp4",
+          "baseline_metrics": {
+            "anchor_centroid_consistency": 0.9260168455292915,
+            "anchor_drift_aggregate_consistency": 0.7509254730915221,
+            "anchor_to_shot0_consistency": 0.8507916836253627,
+            "background_anchor_consistency": 0.966226778943665,
+            "background_anchor_to_shot0_consistency": 0.9231572895798816,
+            "background_worst_to_shot0_consistency": 0.8922378845148902,
+            "dynamic_degree": 114.99877834320068,
+            "inter_shot_composition_diversity": 0.06998903116109778,
+            "invariant_margin_mean": 0.011603439847628275,
+            "invariant_margin_min": -0.0006089508533477783,
+            "motion_profile_agreement": 0.9988214680255451,
+            "num_frames": 480.0,
+            "num_shots": 6.0,
+            "palette_agreement": 0.41664150295648095,
+            "prompt_adherence_mean": 0.27386708557605743,
+            "prompt_adherence_min": 0.24844905734062195,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.885806912114918,
+            "subject_anchor_to_shot0_consistency": 0.7784260776708438,
+            "subject_worst_to_shot0_consistency": 0.6510592625576815,
+            "within_shot_motion": 0.0033130592588956156,
+            "worst_anchor_to_shot0_consistency": 0.6510592625576815
+          },
+          "delta": {
+            "anchor_centroid_consistency": 0.0,
+            "anchor_drift_aggregate_consistency": 0.0,
+            "anchor_to_shot0_consistency": 0.0,
+            "background_anchor_consistency": 0.0,
+            "background_anchor_to_shot0_consistency": 0.0,
+            "background_worst_to_shot0_consistency": 0.0,
+            "dynamic_degree": 0.0,
+            "inter_shot_composition_diversity": 0.0,
+            "invariant_margin_mean": 0.0,
+            "invariant_margin_min": 0.0,
+            "motion_profile_agreement": 0.0,
+            "num_frames": 0.0,
+            "palette_agreement": 0.0,
+            "prompt_adherence_mean": 0.0,
+            "prompt_adherence_min": 0.0,
+            "shot_frame_duration_max": 0.0,
+            "shot_frame_duration_min": 0.0,
+            "subject_anchor_consistency": 0.0,
+            "subject_anchor_to_shot0_consistency": 0.0,
+            "subject_worst_to_shot0_consistency": 0.0,
+            "within_shot_motion": 0.0,
+            "worst_anchor_to_shot0_consistency": 0.0
+          },
+          "frame_metadata": {
+            "baseline_num_frames": 480.0,
+            "baseline_shot_frame_duration_max": 96.0,
+            "baseline_shot_frame_duration_min": 48.0,
+            "modified_num_frames": 480.0,
+            "modified_shot_frame_duration_max": 96.0,
+            "modified_shot_frame_duration_min": 48.0,
+            "shot_chunk_durations": [
+              12,
+              12,
+              12,
+              12,
+              6,
+              6
+            ]
+          },
+          "modified": "videos/frame_strategy_A/baseline_seed2/baseline_seed2-rank0-skateboarder_high_motion-seed0_regular.mp4",
+          "modified_metrics": {
+            "anchor_centroid_consistency": 0.9260168455292915,
+            "anchor_drift_aggregate_consistency": 0.7509254730915221,
+            "anchor_to_shot0_consistency": 0.8507916836253627,
+            "background_anchor_consistency": 0.966226778943665,
+            "background_anchor_to_shot0_consistency": 0.9231572895798816,
+            "background_worst_to_shot0_consistency": 0.8922378845148902,
+            "dynamic_degree": 114.99877834320068,
+            "inter_shot_composition_diversity": 0.06998903116109778,
+            "invariant_margin_mean": 0.011603439847628275,
+            "invariant_margin_min": -0.0006089508533477783,
+            "motion_profile_agreement": 0.9988214680255451,
+            "num_frames": 480.0,
+            "num_shots": 6.0,
+            "palette_agreement": 0.41664150295648095,
+            "prompt_adherence_mean": 0.27386708557605743,
+            "prompt_adherence_min": 0.24844905734062195,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.885806912114918,
+            "subject_anchor_to_shot0_consistency": 0.7784260776708438,
+            "subject_worst_to_shot0_consistency": 0.6510592625576815,
+            "within_shot_motion": 0.0033130592588956156,
+            "worst_anchor_to_shot0_consistency": 0.6510592625576815
+          },
+          "negative_control": false,
+          "stem": "baseline_seed2-rank0-skateboarder_high_motion-seed0_regular",
+          "theme": "skateboarder_high_motion"
+        },
+        {
+          "baseline": "videos/frame_strategy_A/baseline_seed2/baseline_seed2-rank0-sunlit_balcony_tour-seed0_regular.mp4",
+          "baseline_metrics": {
+            "anchor_centroid_consistency": 0.9072551025428571,
+            "anchor_drift_aggregate_consistency": 0.6345427283094833,
+            "anchor_to_shot0_consistency": 0.793126977903174,
+            "background_anchor_consistency": 0.948433321936727,
+            "background_anchor_to_shot0_consistency": 0.8706920199261674,
+            "background_worst_to_shot0_consistency": 0.791445393032039,
+            "dynamic_degree": 95.70629501342773,
+            "inter_shot_composition_diversity": 0.10672394202301116,
+            "invariant_margin_mean": 0.015124663710594177,
+            "invariant_margin_min": 0.006633013486862183,
+            "motion_profile_agreement": 0.9958173794164414,
+            "num_frames": 480.0,
+            "num_shots": 6.0,
+            "palette_agreement": 0.857233534132909,
+            "prompt_adherence_mean": 0.24995471288760504,
+            "prompt_adherence_min": 0.21401278674602509,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.8660768831489872,
+            "subject_anchor_to_shot0_consistency": 0.7155619358801805,
+            "subject_worst_to_shot0_consistency": 0.47595847871579255,
+            "within_shot_motion": 0.002431100719453146,
+            "worst_anchor_to_shot0_consistency": 0.47595847871579255
+          },
+          "delta": {
+            "anchor_centroid_consistency": 0.0,
+            "anchor_drift_aggregate_consistency": 0.0,
+            "anchor_to_shot0_consistency": 0.0,
+            "background_anchor_consistency": 0.0,
+            "background_anchor_to_shot0_consistency": 0.0,
+            "background_worst_to_shot0_consistency": 0.0,
+            "dynamic_degree": 0.0,
+            "inter_shot_composition_diversity": 0.0,
+            "invariant_margin_mean": 0.0,
+            "invariant_margin_min": 0.0,
+            "motion_profile_agreement": 0.0,
+            "num_frames": 0.0,
+            "palette_agreement": 0.0,
+            "prompt_adherence_mean": 0.0,
+            "prompt_adherence_min": 0.0,
+            "shot_frame_duration_max": 0.0,
+            "shot_frame_duration_min": 0.0,
+            "subject_anchor_consistency": 0.0,
+            "subject_anchor_to_shot0_consistency": 0.0,
+            "subject_worst_to_shot0_consistency": 0.0,
+            "within_shot_motion": 0.0,
+            "worst_anchor_to_shot0_consistency": 0.0
+          },
+          "frame_metadata": {
+            "baseline_num_frames": 480.0,
+            "baseline_shot_frame_duration_max": 96.0,
+            "baseline_shot_frame_duration_min": 48.0,
+            "modified_num_frames": 480.0,
+            "modified_shot_frame_duration_max": 96.0,
+            "modified_shot_frame_duration_min": 48.0,
+            "shot_chunk_durations": [
+              12,
+              12,
+              12,
+              12,
+              6,
+              6
+            ]
+          },
+          "modified": "videos/frame_strategy_A/baseline_seed2/baseline_seed2-rank0-sunlit_balcony_tour-seed0_regular.mp4",
+          "modified_metrics": {
+            "anchor_centroid_consistency": 0.9072551025428571,
+            "anchor_drift_aggregate_consistency": 0.6345427283094833,
+            "anchor_to_shot0_consistency": 0.793126977903174,
+            "background_anchor_consistency": 0.948433321936727,
+            "background_anchor_to_shot0_consistency": 0.8706920199261674,
+            "background_worst_to_shot0_consistency": 0.791445393032039,
+            "dynamic_degree": 95.70629501342773,
+            "inter_shot_composition_diversity": 0.10672394202301116,
+            "invariant_margin_mean": 0.015124663710594177,
+            "invariant_margin_min": 0.006633013486862183,
+            "motion_profile_agreement": 0.9958173794164414,
+            "num_frames": 480.0,
+            "num_shots": 6.0,
+            "palette_agreement": 0.857233534132909,
+            "prompt_adherence_mean": 0.24995471288760504,
+            "prompt_adherence_min": 0.21401278674602509,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.8660768831489872,
+            "subject_anchor_to_shot0_consistency": 0.7155619358801805,
+            "subject_worst_to_shot0_consistency": 0.47595847871579255,
+            "within_shot_motion": 0.002431100719453146,
+            "worst_anchor_to_shot0_consistency": 0.47595847871579255
+          },
+          "negative_control": false,
+          "stem": "baseline_seed2-rank0-sunlit_balcony_tour-seed0_regular",
+          "theme": "sunlit_balcony_tour"
+        }
+      ],
+      "skipped_stems": []
+    }
+  },
+  "baseline_seeds": [
+    0,
+    1,
+    2
+  ],
+  "blocked_reason": null,
+  "chosen_scenes": [
+    "african_savanna",
+    "brown_bear_river",
+    "sunlit_balcony_tour",
+    "skateboarder_high_motion",
+    "shimmering_puzzle_surface"
+  ],
+  "guards": {
+    "adherence_tolerance": 0.02,
+    "admission_diversity_floor": 0.03,
+    "baseline_drift_floor": 0.02,
+    "diversity_tolerance_relative": 0.1,
+    "frame_contract_required": true,
+    "invariant_tolerance": 0.0,
+    "motion_tolerance_relative": 0.2,
+    "noise_sigma_multiplier": 2.0,
+    "require_adherence": true
+  },
+  "is_null_result": false,
+  "lint_passing_main_scenes": [
+    "african_savanna",
+    "brown_bear_river",
+    "sunlit_balcony_tour",
+    "skateboarder_high_motion"
+  ],
+  "metric": "anchor_drift_aggregate_consistency",
+  "negative_controls": [
+    "shimmering_puzzle_surface"
+  ],
+  "noise_floor": {
+    "african_savanna": {
+      "baseline_drift": 0.4100498020960594,
+      "baseline_values": [
+        0.5996250772944902,
+        0.5888316040337807,
+        0.581393912383551
+      ],
+      "sigma": 0.009166912385707365,
+      "sigma_multiplier": 2.0,
+      "threshold": 0.01833382477141473
+    },
+    "brown_bear_river": {
+      "baseline_drift": 0.4780194923565321,
+      "baseline_values": [
+        0.545728027106829,
+        0.4797405173911933,
+        0.5404729784323814
+      ],
+      "sigma": 0.03667514780511313,
+      "sigma_multiplier": 2.0,
+      "threshold": 0.07335029561022625
+    },
+    "shimmering_puzzle_surface": {
+      "baseline_drift": 0.2867030347988879,
+      "baseline_values": [
+        0.7327855457037262,
+        0.6468075544488372,
+        0.7602977954507728
+      ],
+      "sigma": 0.05920187731968059,
+      "sigma_multiplier": 2.0,
+      "threshold": 0.11840375463936118
+    },
+    "skateboarder_high_motion": {
+      "baseline_drift": 0.24241330294570188,
+      "baseline_values": [
+        0.7512963697291164,
+        0.7705382483422558,
+        0.7509254730915221
+      ],
+      "sigma": 0.01121790540396886,
+      "sigma_multiplier": 2.0,
+      "threshold": 0.02243581080793772
+    },
+    "sunlit_balcony_tour": {
+      "baseline_drift": 0.22778352658240367,
+      "baseline_values": [
+        0.8050120707916526,
+        0.877094621151653,
+        0.6345427283094833
+      ],
+      "sigma": 0.12455729037543628,
+      "sigma_multiplier": 2.0,
+      "threshold": 0.24911458075087256
+    }
+  },
+  "prompt_lint": {
+    "african_savanna": {
+      "floor": 0.12,
+      "matrix": [
+        [
+          1.0000000000000004,
+          0.8868861817345081,
+          0.8975014776728285,
+          0.7955266122847526,
+          0.8253133350898794,
+          0.8643634842639176,
+          0.8749481061900549,
+          0.8809943952778063
+        ],
+        [
+          0.8868861817345081,
+          1.0000000000000002,
+          0.8744786433145325,
+          0.9173097098806033,
+          0.8853513329002656,
+          0.8352521997029491,
+          0.9421089678424138,
+          0.9273621743800766
+        ],
+        [
+          0.8975014776728285,
+          0.8744786433145325,
+          1.0000000000000004,
+          0.8383384355225529,
+          0.8765525638252483,
+          0.8984766598459599,
+          0.8352331595577822,
+          0.9164562133213647
+        ],
+        [
+          0.7955266122847526,
+          0.9173097098806033,
+          0.8383384355225529,
+          1.000000000000001,
+          0.9305298875729726,
+          0.8142031779236774,
+          0.8902427884472078,
+          0.9159501473278562
+        ],
+        [
+          0.8253133350898794,
+          0.8853513329002656,
+          0.8765525638252483,
+          0.9305298875729726,
+          1.0000000000000002,
+          0.8939889037203561,
+          0.8517131622916203,
+          0.9029967650070199
+        ],
+        [
+          0.8643634842639176,
+          0.8352521997029491,
+          0.8984766598459599,
+          0.8142031779236774,
+          0.8939889037203561,
+          1.0000000000000002,
+          0.8096620722021377,
+          0.8687450420159096
+        ],
+        [
+          0.8749481061900549,
+          0.9421089678424138,
+          0.8352331595577822,
+          0.8902427884472078,
+          0.8517131622916203,
+          0.8096620722021377,
+          1.0000000000000004,
+          0.8852883942821848
+        ],
+        [
+          0.8809943952778063,
+          0.9273621743800766,
+          0.9164562133213647,
+          0.9159501473278562,
+          0.9029967650070199,
+          0.8687450420159096,
+          0.8852883942821848,
+          0.9999999999999999
+        ]
+      ],
+      "min_pairwise": 0.7955266122847526,
+      "negative_control": false,
+      "passed": true
+    },
+    "brown_bear_river": {
+      "floor": 0.12,
+      "matrix": [
+        [
+          0.9999999999999999,
+          0.790065632605317,
+          0.7879512567639047,
+          0.8096092669680989,
+          0.8825283287632466,
+          0.817602202022261,
+          0.7933083727244277,
+          0.8537484582623882
+        ],
+        [
+          0.790065632605317,
+          1.0000000000000002,
+          0.9539008538319567,
+          0.9776744807619977,
+          0.8462092400075234,
+          0.9394735344737966,
+          0.9664730220525637,
+          0.9018625734136977
+        ],
+        [
+          0.7879512567639047,
+          0.9539008538319567,
+          1.0,
+          0.9613820592420319,
+          0.8573629557345798,
+          0.926008445872561,
+          0.9646744441993298,
+          0.8964062859900433
+        ],
+        [
+          0.8096092669680989,
+          0.9776744807619977,
+          0.9613820592420319,
+          0.9999999999999992,
+          0.8531209039089339,
+          0.9405332494367058,
+          0.9635831525087721,
+          0.9115349749049844
+        ],
+        [
+          0.8825283287632466,
+          0.8462092400075234,
+          0.8573629557345798,
+          0.8531209039089339,
+          1.0,
+          0.8893463710252858,
+          0.8585966375056164,
+          0.8747539901679326
+        ],
+        [
+          0.817602202022261,
+          0.9394735344737966,
+          0.926008445872561,
+          0.9405332494367058,
+          0.8893463710252858,
+          0.9999999999999992,
+          0.9529601472004243,
+          0.9237118550236416
+        ],
+        [
+          0.7933083727244277,
+          0.9664730220525637,
+          0.9646744441993298,
+          0.9635831525087721,
+          0.8585966375056164,
+          0.9529601472004243,
+          0.9999999999999999,
+          0.8993371111086497
+        ],
+        [
+          0.8537484582623882,
+          0.9018625734136977,
+          0.8964062859900433,
+          0.9115349749049844,
+          0.8747539901679326,
+          0.9237118550236416,
+          0.8993371111086497,
+          1.0000000000000004
+        ]
+      ],
+      "min_pairwise": 0.7879512567639047,
+      "negative_control": false,
+      "passed": true
+    },
+    "shimmering_puzzle_surface": {
+      "floor": 0.12,
+      "matrix": [
+        [
+          1.0,
+          0.8313789729756749,
+          0.8085633830431473,
+          0.848226677727246,
+          0.8069270405589424,
+          0.8717213675728506
+        ],
+        [
+          0.8313789729756749,
+          1.0000000000000009,
+          0.9134815545879572,
+          0.9681491626141492,
+          0.9581727673956177,
+          0.9386550052601752
+        ],
+        [
+          0.8085633830431473,
+          0.9134815545879572,
+          0.9999999999999997,
+          0.9205489554817814,
+          0.915793122561632,
+          0.8848491352893335
+        ],
+        [
+          0.848226677727246,
+          0.9681491626141492,
+          0.9205489554817814,
+          0.9999999999999999,
+          0.9646010986010394,
+          0.9369576460603841
+        ],
+        [
+          0.8069270405589424,
+          0.9581727673956177,
+          0.915793122561632,
+          0.9646010986010394,
+          1.0,
+          0.9376233535110396
+        ],
+        [
+          0.8717213675728506,
+          0.9386550052601752,
+          0.8848491352893335,
+          0.9369576460603841,
+          0.9376233535110396,
+          1.0
+        ]
+      ],
+      "min_pairwise": 0.8069270405589424,
+      "negative_control": true,
+      "passed": true
+    },
+    "skateboarder_high_motion": {
+      "floor": 0.12,
+      "matrix": [
+        [
+          1.0,
+          0.8741254533277274,
+          0.8806125983720546,
+          0.8563131717635452,
+          0.8113810099628482,
+          0.880976064575675
+        ],
+        [
+          0.8741254533277274,
+          0.9999999999999999,
+          0.8575199757116649,
+          0.8792743713216671,
+          0.7960083992336959,
+          0.8384281713730786
+        ],
+        [
+          0.8806125983720546,
+          0.8575199757116649,
+          1.0000000000000009,
+          0.805521449838106,
+          0.7872898453389755,
+          0.8414707562237052
+        ],
+        [
+          0.8563131717635452,
+          0.8792743713216671,
+          0.805521449838106,
+          1.0,
+          0.8526413007899729,
+          0.8437340789564267
+        ],
+        [
+          0.8113810099628482,
+          0.7960083992336959,
+          0.7872898453389755,
+          0.8526413007899729,
+          0.9999999999999992,
+          0.7911365684969349
+        ],
+        [
+          0.880976064575675,
+          0.8384281713730786,
+          0.8414707562237052,
+          0.8437340789564267,
+          0.7911365684969349,
+          1.0000000000000002
+        ]
+      ],
+      "min_pairwise": 0.7872898453389755,
+      "negative_control": false,
+      "passed": true
+    },
+    "sunlit_balcony_tour": {
+      "floor": 0.12,
+      "matrix": [
+        [
+          1.0,
+          0.8092134689099204,
+          0.8018266158014808,
+          0.8238195173320971,
+          0.8299318508848914,
+          0.8595771207903924
+        ],
+        [
+          0.8092134689099204,
+          0.9999999999999996,
+          0.8015636147599536,
+          0.8245541305527571,
+          0.8020696761357073,
+          0.8398186113716863
+        ],
+        [
+          0.8018266158014808,
+          0.8015636147599536,
+          1.0000000000000004,
+          0.8839326064649152,
+          0.7840743404581407,
+          0.8453080045284787
+        ],
+        [
+          0.8238195173320971,
+          0.8245541305527571,
+          0.8839326064649152,
+          0.9999999999999996,
+          0.7830060894699169,
+          0.8531539130661885
+        ],
+        [
+          0.8299318508848914,
+          0.8020696761357073,
+          0.7840743404581407,
+          0.7830060894699169,
+          0.9999999999999999,
+          0.793062209219814
+        ],
+        [
+          0.8595771207903924,
+          0.8398186113716863,
+          0.8453080045284787,
+          0.8531539130661885,
+          0.793062209219814,
+          1.0000000000000007
+        ]
+      ],
+      "min_pairwise": 0.7830060894699169,
+      "negative_control": false,
+      "passed": true
+    }
+  },
+  "prompt_subset_dir": "videos/frame_strategy_A/prompt_subset",
+  "reauthor_scenes": [],
+  "regime_proof": {
+    "blocked_reason": null,
+    "frames_per_block": 8,
+    "local_attn_size": 32,
+    "passed": true,
+    "planned_blocks": 60,
+    "planned_frames": 480,
+    "scene_regime": {
+      "african_savanna": {
+        "blocked_reason": null,
+        "duration_blocks": 60,
+        "duration_frames": 480,
+        "durations_in_6_12_blocks": true,
+        "num_shots": 8,
+        "passed": true,
+        "shot_durations": [
+          12,
+          12,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ],
+        "shot_pair_separation": {
+          "passed": true,
+          "required_pairs": 14,
+          "separated_pairs": 28,
+          "total_pairs": 28
+        }
+      },
+      "brown_bear_river": {
+        "blocked_reason": null,
+        "duration_blocks": 60,
+        "duration_frames": 480,
+        "durations_in_6_12_blocks": true,
+        "num_shots": 8,
+        "passed": true,
+        "shot_durations": [
+          12,
+          12,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ],
+        "shot_pair_separation": {
+          "passed": true,
+          "required_pairs": 14,
+          "separated_pairs": 28,
+          "total_pairs": 28
+        }
+      },
+      "shimmering_puzzle_surface": {
+        "blocked_reason": null,
+        "duration_blocks": 60,
+        "duration_frames": 480,
+        "durations_in_6_12_blocks": true,
+        "num_shots": 6,
+        "passed": true,
+        "shot_durations": [
+          12,
+          12,
+          12,
+          12,
+          6,
+          6
+        ],
+        "shot_pair_separation": {
+          "passed": true,
+          "required_pairs": 8,
+          "separated_pairs": 15,
+          "total_pairs": 15
+        }
+      },
+      "skateboarder_high_motion": {
+        "blocked_reason": null,
+        "duration_blocks": 60,
+        "duration_frames": 480,
+        "durations_in_6_12_blocks": true,
+        "num_shots": 6,
+        "passed": true,
+        "shot_durations": [
+          12,
+          12,
+          12,
+          12,
+          6,
+          6
+        ],
+        "shot_pair_separation": {
+          "passed": true,
+          "required_pairs": 8,
+          "separated_pairs": 15,
+          "total_pairs": 15
+        }
+      },
+      "sunlit_balcony_tour": {
+        "blocked_reason": null,
+        "duration_blocks": 60,
+        "duration_frames": 480,
+        "durations_in_6_12_blocks": true,
+        "num_shots": 6,
+        "passed": true,
+        "shot_durations": [
+          12,
+          12,
+          12,
+          12,
+          6,
+          6
+        ],
+        "shot_pair_separation": {
+          "passed": true,
+          "required_pairs": 8,
+          "separated_pairs": 15,
+          "total_pairs": 15
+        }
+      }
+    }
+  },
+  "render_attempted": true,
+  "scorer_coverage": {
+    "adherence_clip": {
+      "loaded": true,
+      "requested": true
+    },
+    "background_clip": {
+      "loaded": true,
+      "requested": true
+    },
+    "dynamic_degree": {
+      "loaded": true,
+      "requested": "raft"
+    },
+    "prompt_lint_clip_text": {
+      "loaded": true,
+      "requested": true
+    },
+    "subject_dino": {
+      "loaded": true,
+      "requested": true
+    }
+  },
+  "selector": "long_multishot frame-level KV-RAG strategy",
+  "strategy_stage": "A",
+  "wall_clock_sec": 806.159,
+  "winner": null
+}

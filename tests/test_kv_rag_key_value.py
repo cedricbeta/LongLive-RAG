@@ -355,5 +355,113 @@ class TestBackwardCompat(unittest.TestCase):
         self.assertTrue(torch.allclose(mem._compute_key(x), mem._summarize(x)))
 
 
+class TestFrameLevelContract(unittest.TestCase):
+    def test_max_frames_per_entry_caps_whole_frames(self):
+        mem = _mem(max_frames_per_entry=2)
+        k, v, frames, fseq = _frame_aligned_kv(frames=5, frame_seqlen=4)
+        _store(mem, k, v, frames, fseq)
+        entry = mem.entries_by_layer[0][0]
+        self.assertEqual(entry.frames, 2)
+        self.assertEqual(entry.num_tokens, 2 * fseq)
+        self.assertEqual(entry.num_tokens % fseq, 0)
+
+    def test_legacy_token_cap_still_applies_when_frame_cap_absent(self):
+        mem = _mem(max_tokens_per_entry=8)
+        k, v, frames, fseq = _frame_aligned_kv(frames=5, frame_seqlen=4)
+        _store(mem, k, v, frames, fseq)
+        entry = mem.entries_by_layer[0][0]
+        self.assertEqual(entry.frames, 2)
+        self.assertEqual(entry.num_tokens, 8)
+
+    def test_required_frame_alignment_counts_store_drop(self):
+        mem = KVRAGMemory(KVRAGConfig(
+            enabled=True, layers=(0,), require_frame_aligned=True,
+            frame_aligned_store=True,
+        ))
+        k = torch.randn(1, 7, 2, 4)  # not a whole number of 4-token frames
+        v = torch.randn(1, 7, 2, 4)
+        mem.add(layer=0, k_pre=k, k_post=k, v=v, start_token=0, end_token=7,
+                frame_seqlen=4, h=2, w=2, frames=2)
+        self.assertEqual(mem.entries_by_layer.get(0, []), [])
+        self.assertEqual(mem.stats["frame_alignment_store_drops"], 1)
+        diag = mem.export_diagnostics()
+        self.assertEqual(diag["frame_alignment_drop_events"][0]["kind"], "store")
+
+    def test_successful_injection_counts_frame_multiples(self):
+        mem = KVRAGMemory(KVRAGConfig(enabled=True, scene_memory_enabled=True))
+        k, v, frames, fseq = _frame_aligned_kv(frames=2, frame_seqlen=4)
+        mem.add(layer=0, k_pre=k, k_post=k, v=v, start_token=0, end_token=8,
+                frame_seqlen=fseq, h=2, w=2, frames=frames, persistent=True)
+        entry = mem.scene_entries_by_layer[0][0]
+        mem.record_injection(tokens=entry.num_tokens, frame_seqlen=fseq,
+                             selected_entries=[entry], path="reinject_rope")
+        self.assertEqual(mem.stats["injected_frames"], 2)
+        self.assertEqual(mem.stats["persistent_injected_frames"], 2)
+        self.assertEqual(mem.stats["reinject_rope_injected_frames"], 2)
+        self.assertEqual(mem.stats["injected_tokens"] % fseq, 0)
+
+    def test_persistent_logit_bias_targets_whole_persistent_frames_only(self):
+        mem = KVRAGMemory(KVRAGConfig(
+            enabled=True,
+            scene_memory_enabled=True,
+            persistent_logit_bias_lambda=2.0,
+        ))
+        k, v, frames, fseq = _frame_aligned_kv(frames=2, frame_seqlen=4)
+        mem.add(layer=0, k_pre=k, k_post=k, v=v, start_token=0, end_token=8,
+                frame_seqlen=fseq, h=2, w=2, frames=frames, persistent=True)
+        mem.add(layer=0, k_pre=k, k_post=k, v=v, start_token=20, end_token=28,
+                frame_seqlen=fseq, h=2, w=2, frames=frames, persistent=False)
+        selected = [mem.scene_entries_by_layer[0][0], mem.entries_by_layer[0][0]]
+        bias = mem.build_persistent_logit_bias(
+            total_tokens=16,
+            selected_entries=selected,
+            device=torch.device("cpu"),
+            dtype=torch.float32,
+        )
+        self.assertEqual(tuple(bias.shape), (1, 1, 1, 16))
+        self.assertTrue(torch.equal(bias.reshape(-1)[:8], torch.full((8,), 2.0)))
+        self.assertTrue(torch.equal(bias.reshape(-1)[8:], torch.zeros(8)))
+        self.assertEqual(mem.stats["persistent_logit_bias_frames"], 2)
+        self.assertEqual(mem.stats["persistent_logit_bias_calls"], 1)
+
+    def test_attention_logit_bias_changes_selected_columns(self):
+        import importlib.util
+        from pathlib import Path
+        spec = importlib.util.spec_from_file_location(
+            "attention_module",
+            Path(__file__).resolve().parents[1] / "wan_5b" / "modules" / "attention.py",
+        )
+        attention_module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(attention_module)
+        attention = attention_module.attention
+        q = torch.zeros(1, 1, 1, 1)
+        k = torch.zeros(1, 2, 1, 1)
+        v = torch.tensor([[[[0.0]], [[1.0]]]])
+        no_bias = torch.zeros(1, 1, 1, 2)
+        strong_bias = torch.tensor([[[[0.0, 10.0]]]])
+        out_no = attention(q, k, v, dtype=torch.float32, logit_bias=no_bias)
+        out_bias = attention(q, k, v, dtype=torch.float32, logit_bias=strong_bias)
+        self.assertAlmostEqual(float(out_no[0, 0, 0, 0]), 0.5, places=5)
+        self.assertGreater(float(out_bias[0, 0, 0, 0]), 0.99)
+
+    def test_attention_diagnostic_reports_per_injected_frame(self):
+        mem = KVRAGMemory(KVRAGConfig(
+            enabled=True, scene_memory_enabled=True, attention_diagnostic=True,
+            attention_diag_max_query_rows=2,
+        ))
+        k, v, frames, fseq = _frame_aligned_kv(frames=2, frame_seqlen=4)
+        mem.add(layer=0, k_pre=k, k_post=k, v=v, start_token=0, end_token=8,
+                frame_seqlen=fseq, h=2, w=2, frames=frames, persistent=True)
+        entry = mem.scene_entries_by_layer[0][0]
+        mem.set_runtime_context(chunk_index=3, shot_index=1, phase="denoise")
+        query = torch.randn(1, 2, 2, 4)
+        window_k = torch.cat([entry.k, torch.randn(1, 4, 2, 4)], dim=1)
+        mem.record_injected_attention_mass(query, window_k, [entry], layer=0)
+        per_frame = mem.export_diagnostics()["attention_mass_by_shot_layer_frame"]
+        self.assertIn("1", per_frame)
+        self.assertIn("0", per_frame["1"])
+        self.assertGreaterEqual(len(per_frame["1"]["0"]), 2)
+
+
 if __name__ == "__main__":
     unittest.main()

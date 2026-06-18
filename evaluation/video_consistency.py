@@ -375,6 +375,22 @@ def _to_first_cosine(features: np.ndarray) -> float:
     return float(np.mean(feats[1:] @ first))
 
 
+def _to_first_cosine_stats(features: np.ndarray) -> tuple[float, float]:
+    """Mean and worst cosine of shots 1..N to shot 0."""
+    feats = np.asarray(features, dtype=np.float64)
+    if feats.ndim != 2 or feats.shape[0] < 2:
+        return float("nan"), float("nan")
+    norms = np.linalg.norm(feats, axis=1, keepdims=True)
+    feats = feats / np.clip(norms, 1e-8, None)
+    first = feats[0]
+    n = np.linalg.norm(first)
+    if n <= 1e-12:
+        return float("nan"), float("nan")
+    first = first / n
+    sims = feats[1:] @ first
+    return float(np.mean(sims)), float(np.min(sims))
+
+
 def _shot_sample(frames: np.ndarray, start: int, end: int, count: int = 3) -> np.ndarray:
     """Evenly sample representative frames from one shot range."""
     if end <= start:
@@ -391,14 +407,21 @@ def shot_anchor_centroid_consistency(
     """Cross-shot centroid score from per-shot DINO subject + CLIP background anchors."""
     subject = _centroid_cosine(subject_embeddings)
     background = _centroid_cosine(background_embeddings)
-    subject_to_first = _to_first_cosine(subject_embeddings)
-    background_to_first = _to_first_cosine(background_embeddings)
+    subject_to_first, subject_worst_to_first = _to_first_cosine_stats(subject_embeddings)
+    background_to_first, background_worst_to_first = _to_first_cosine_stats(background_embeddings)
     vals = [v for v in (subject, background) if not np.isnan(v)]
     to_first_vals = [
         v for v in (subject_to_first, background_to_first) if not np.isnan(v)
     ]
+    worst_vals = [
+        v for v in (subject_worst_to_first, background_worst_to_first)
+        if not np.isnan(v)
+    ]
     aggregate = float(np.mean(vals)) if len(vals) == 2 else float("nan")
     to_first = float(np.mean(to_first_vals)) if len(to_first_vals) == 2 else float("nan")
+    worst_to_first = float(np.min(worst_vals)) if len(worst_vals) == 2 else float("nan")
+    drift_vals = [v for v in (to_first, worst_to_first) if not np.isnan(v)]
+    drift_aggregate = float(np.mean(drift_vals)) if len(drift_vals) == 2 else float("nan")
     return {
         "subject_anchor_consistency": subject,
         "background_anchor_consistency": background,
@@ -406,6 +429,10 @@ def shot_anchor_centroid_consistency(
         "subject_anchor_to_shot0_consistency": subject_to_first,
         "background_anchor_to_shot0_consistency": background_to_first,
         "anchor_to_shot0_consistency": to_first,
+        "subject_worst_to_shot0_consistency": subject_worst_to_first,
+        "background_worst_to_shot0_consistency": background_worst_to_first,
+        "worst_anchor_to_shot0_consistency": worst_to_first,
+        "anchor_drift_aggregate_consistency": drift_aggregate,
     }
 
 
@@ -433,6 +460,10 @@ def shot_anchor_metrics(
             "subject_anchor_to_shot0_consistency": float("nan"),
             "background_anchor_to_shot0_consistency": float("nan"),
             "anchor_to_shot0_consistency": float("nan"),
+            "subject_worst_to_shot0_consistency": float("nan"),
+            "background_worst_to_shot0_consistency": float("nan"),
+            "worst_anchor_to_shot0_consistency": float("nan"),
+            "anchor_drift_aggregate_consistency": float("nan"),
         }
 
     def encode_video_shot(encoder, sample):
@@ -460,6 +491,10 @@ def shot_anchor_metrics(
             "subject_anchor_to_shot0_consistency": float("nan"),
             "background_anchor_to_shot0_consistency": float("nan"),
             "anchor_to_shot0_consistency": float("nan"),
+            "subject_worst_to_shot0_consistency": float("nan"),
+            "background_worst_to_shot0_consistency": float("nan"),
+            "worst_anchor_to_shot0_consistency": float("nan"),
+            "anchor_drift_aggregate_consistency": float("nan"),
         }
     return shot_anchor_centroid_consistency(np.stack(subject), np.stack(background))
 
@@ -592,6 +627,10 @@ def cross_perspective_metrics(
     result["motion_profile_agreement"] = _mean_pairwise(np.stack(motion_feats))
     result["within_shot_motion"] = float(np.mean(within_motion)) if within_motion else 0.0
     result["dynamic_degree"] = farneback_dynamic_degree(frames)
+    result["num_frames"] = float(frames.shape[0])
+    result["num_shots"] = float(len(ranges))
+    result["shot_frame_duration_min"] = float(min(end - start for start, end in ranges))
+    result["shot_frame_duration_max"] = float(max(end - start for start, end in ranges))
     return result
 
 
@@ -969,6 +1008,15 @@ def compare_cross_perspective_dirs(
                 "modified": str(modified_path),
                 "theme": spec.get("theme"),
                 "negative_control": bool(spec.get("negative_control", False)),
+                "frame_metadata": {
+                    "baseline_num_frames": baseline_metrics.get("num_frames"),
+                    "modified_num_frames": modified_metrics.get("num_frames"),
+                    "shot_chunk_durations": list(spec.get("chunk_durations") or []),
+                    "baseline_shot_frame_duration_min": baseline_metrics.get("shot_frame_duration_min"),
+                    "baseline_shot_frame_duration_max": baseline_metrics.get("shot_frame_duration_max"),
+                    "modified_shot_frame_duration_min": modified_metrics.get("shot_frame_duration_min"),
+                    "modified_shot_frame_duration_max": modified_metrics.get("shot_frame_duration_max"),
+                },
                 "baseline_metrics": baseline_metrics,
                 "modified_metrics": modified_metrics,
                 "delta": deltas,
@@ -1066,12 +1114,18 @@ def evaluate_cross_perspective_gate(
             "subject_anchor_modified": m.get("subject_anchor_consistency", float("nan")),
             "background_anchor_baseline": b.get("background_anchor_consistency", float("nan")),
             "background_anchor_modified": m.get("background_anchor_consistency", float("nan")),
+            "anchor_centroid_baseline": b.get("anchor_centroid_consistency", float("nan")),
+            "anchor_centroid_modified": m.get("anchor_centroid_consistency", float("nan")),
             "anchor_to_shot0_baseline": b.get("anchor_to_shot0_consistency", float("nan")),
             "anchor_to_shot0_modified": m.get("anchor_to_shot0_consistency", float("nan")),
             "subject_anchor_to_shot0_baseline": b.get("subject_anchor_to_shot0_consistency", float("nan")),
             "subject_anchor_to_shot0_modified": m.get("subject_anchor_to_shot0_consistency", float("nan")),
             "background_anchor_to_shot0_baseline": b.get("background_anchor_to_shot0_consistency", float("nan")),
             "background_anchor_to_shot0_modified": m.get("background_anchor_to_shot0_consistency", float("nan")),
+            "worst_anchor_to_shot0_baseline": b.get("worst_anchor_to_shot0_consistency", float("nan")),
+            "worst_anchor_to_shot0_modified": m.get("worst_anchor_to_shot0_consistency", float("nan")),
+            "anchor_drift_aggregate_baseline": b.get("anchor_drift_aggregate_consistency", float("nan")),
+            "anchor_drift_aggregate_modified": m.get("anchor_drift_aggregate_consistency", float("nan")),
             "palette_agreement_baseline": b.get("palette_agreement", float("nan")),
             "palette_agreement_modified": m.get("palette_agreement", float("nan")),
             "motion_profile_agreement_baseline": b.get("motion_profile_agreement", float("nan")),

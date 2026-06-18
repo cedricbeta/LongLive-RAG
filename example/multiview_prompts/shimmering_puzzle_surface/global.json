@@ -1,0 +1,6 @@
+{
+  "caption": "Negative control: this folder preserves an intentionally conflicting abstract scene. The invariant claims one coherent shimmering puzzle surface with stable interlocking pieces and a consistent reflective tabletop, while shot captions may pull toward incompatible object layouts. A consistency win without adherence loss here is text-override evidence, never a method pass.",
+  "invariant_caption": "The same coherent shimmering puzzle surface remains on the same reflective tabletop with stable interlocking pieces and consistent highlights.",
+  "contrast_caption": "The puzzle surface becomes a different object, landscape, animal, person, liquid, room, or unrelated abstract material.",
+  "negative_control": true
+}

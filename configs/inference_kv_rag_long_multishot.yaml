@@ -13,13 +13,13 @@ use_ema: false
 output_folder: videos/long_multishot_kv_rag
 num_samples: 1
 save_latents_only: false
-num_output_frames: 128
+num_output_frames: 480
 
 data:
   data_path: example/long_multishot_prompts
   image_or_video_shape:
   - 1
-  - 128
+  - 480
   - 48
   - 44
   - 80
@@ -43,6 +43,8 @@ inference:
     layers: [0, 7, 14, 21, 29]
     top_k: 2
     max_entries: 32
+    max_frames_per_entry: 1
+    # Legacy alias; ignored by the frame-level gate when max_frames_per_entry is set.
     max_tokens_per_entry: 1024
     min_frame_gap: 0
     retrieve_during_denoise: true
@@ -56,6 +58,8 @@ inference:
     summary_per_head: true
     reinject_rope: true
     frame_aligned_store: true
+    require_frame_aligned: true
+    persistent_logit_bias_lambda: 0.0
     scene_memory_enabled: true
     scene_memory_max_entries: 8
     scene_score_bonus: 0.15

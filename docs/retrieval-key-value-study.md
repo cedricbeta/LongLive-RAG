@@ -8,10 +8,110 @@ offline metric (the authoritative selector, enforced by the AC-7 gate).
 **Prior cross-shot context, not the current cross-video answer:** an earlier
 cross-shot protocol selected **`pooled` key + `raw` value** as its winner because
 it gave the largest cross-shot consistency gain in that older setup. That result
-is retained below only as history. **Current long-video conclusion:** see
-**Round 14: scene-memory mechanism sweep** below. The Round 1 Gate B
-`semantic+raw` leading-key claim is superseded history; Round 5 remains the
-corrected cross-video answer.
+is retained below only as history. **Round 13/14 correction:** those rounds are
+now classified as short-regime nulls, not method nulls: the rendered videos were
+128 frames, `build_mechanism_prompt_subset` wrote two-block shots, and
+`local_attn_size=32` frames spanned two complete shots. Baseline consistency sat
+near a 0.92 ceiling, so the tables remain useful substrate diagnostics but do
+not answer the long-window-outspanning KV-RAG ranking question.
+
+## 2026-06-11 Frame-Level Long-Regime Reset
+
+Status: code, gate contract, and staged runner update; no new rendered ranking
+yet.
+
+Regime fix:
+
+- `configs/inference_kv_rag_long_multishot.yaml` now plans 480 frames.
+- The mechanism-sweep prompt builder accepts `--blocks_per_shot` and, when the
+  render budget allows, writes shot durations that exactly fill the render as
+  6-12 block shots.
+- The gate records a `regime_proof` and blocks before render when planned frames
+  are <= `3*local_attn_size`, below 480, or when fewer than half of shot pairs
+  outspan the local attention window.
+
+Frame-level memory contract:
+
+- Gate configs use `max_frames_per_entry` and `require_frame_aligned`.
+- Non-frame-aligned store/inject payloads are counted in KV-RAG diagnostics; any
+  counted drop is a `blocked_reason`.
+- Attention diagnostics now report aggregate persistent mass and per injected
+  frame mass by shot/layer.
+
+Selector change:
+
+- The primary gate metric is now `anchor_drift_aggregate_consistency`
+  (`anchor_to_shot0` plus the weaker shot-0 anchor stream). Centroid consistency
+  remains reported.
+- Baseline drift floor rejects headroom-less scenes before method conclusions.
+  Stage A may validly stop and name scenes needing re-authoring if fewer than
+  three main scenes plus a negative control satisfy lint, invariant/contrast,
+  diversity, drift, and regime checks.
+- `--strategy_stage A` renders baseline seeds `0,1,2`, writes the drift audit,
+  and records admitted scenes, baseline dirs, noise floors, and regime proof.
+- `--strategy_stage B1` consumes Stage A JSON, screens every `KEY_MODE` with
+  `value=raw` on seed 0, logs the merged frame cap/contract for each arm, and
+  selects two guard-clean keys for B2.
+- `--strategy_stage B2` consumes B1 JSON, screens top-two keys against every
+  `VALUE_MODE` on seed 0, logs the same cap/contract fields, and selects two
+  guard-clean key/value combos for the verdict.
+- `--strategy_stage verdict` consumes B2 JSON and evaluates the top-two combos
+  on paired seeds `0,1,2`; only this stage can report pass/null. B1/B2 are
+  selectors, not conclusions.
+- If the verdict is below paired noise, `--strategy_stage lever` consumes the
+  verdict JSON, reruns the best ranked combo with persistent frame-column logit
+  bias lambdas `1,2`, verifies the frame-aligned re-RoPE path engaged, and uses
+  per-frame mass as the manipulation check. If both lever arms are null, the
+  recorded stop-rule pivot is latent re-anchoring or memory LoRA.
+
+Staged repro skeleton:
+
+```bash
+COMMON_ARGS="--config_path configs/inference_kv_rag_long_multishot.yaml \
+  --mode long_multishot \
+  --prompts_dir example/long_multishot_prompts:example/multiview_prompts \
+  --prompt_subset african_savanna,brown_bear_river,sunlit_balcony_tour,skateboarder_high_motion,shimmering_puzzle_surface \
+  --blocks_per_shot 6 \
+  --baseline_seeds 0,1,2 \
+  --baseline_drift_floor 0.02 \
+  --admission_diversity_floor 0.03 \
+  --noise_sigma_multiplier 2.0 \
+  --motion_tolerance 0.2 \
+  --diversity_tolerance 0.1 \
+  --adherence_tolerance 0.02 \
+  --generator_ckpt checkpoints/longlive2_5b/longlive2_merged_generator.pt \
+  --no_lora_adapter"
+
+python scripts/run_kv_rag_ablation.py $COMMON_ARGS \
+  --strategy_stage A \
+  --output_root videos/frame_strategy_A \
+  --metrics_json docs/multiview_gate_results/frame_strategy_A_drift_audit.json
+
+python scripts/run_kv_rag_ablation.py $COMMON_ARGS \
+  --strategy_stage B1 \
+  --previous_stage_json docs/multiview_gate_results/frame_strategy_A_drift_audit.json \
+  --output_root videos/frame_strategy_B1 \
+  --metrics_json docs/multiview_gate_results/frame_strategy_B1_key_screen.json
+
+python scripts/run_kv_rag_ablation.py $COMMON_ARGS \
+  --strategy_stage B2 \
+  --previous_stage_json docs/multiview_gate_results/frame_strategy_B1_key_screen.json \
+  --output_root videos/frame_strategy_B2 \
+  --metrics_json docs/multiview_gate_results/frame_strategy_B2_value_screen.json
+
+python scripts/run_kv_rag_ablation.py $COMMON_ARGS \
+  --strategy_stage verdict \
+  --previous_stage_json docs/multiview_gate_results/frame_strategy_B2_value_screen.json \
+  --output_root videos/frame_strategy_verdict \
+  --metrics_json docs/multiview_gate_results/frame_strategy_verdict.json
+
+python scripts/run_kv_rag_ablation.py $COMMON_ARGS \
+  --strategy_stage lever \
+  --previous_stage_json docs/multiview_gate_results/frame_strategy_verdict.json \
+  --logit_bias_lambdas 1,2 \
+  --output_root videos/frame_strategy_lever \
+  --metrics_json docs/multiview_gate_results/frame_strategy_lever.json
+```
 
 ## Why the key matters here
 
@@ -21,22 +121,25 @@ same scene across camera angles) while the **value** stays faithful enough to
 condition generation. The two are decoupled (`AC-3.1`) so a viewpoint-robust key
 can index a faithful raw-K/V payload.
 
-## Round 14: scene-memory mechanism sweep
+## Round 14: scene-memory mechanism sweep (short-regime result)
 
 Date: 2026-06-11.
 
-Purpose: after the Round 13 principled key/value gate returned an honest null,
+Purpose at the time: after the Round 13 principled key/value gate returned an honest null,
 the follow-up fixed the key/value family and varied only the smallest orthogonal
 scene-memory injection mechanisms: shot-0 versus rolling completed-shot memory,
 boundary versus every-chunk injection, and a single 8-anchor dose increase.
 This tests whether the null is a memory-placement/dose problem rather than a
 retrieval-representation problem.
 
-Setup:
+Setup as run:
 
 - JSON: `docs/multiview_gate_results/round14_scene_memory_mechanism_sweep.json`.
 - Render: 5B, seed 0 for arms, baseline seeds `0,1,2` to estimate per-scene
   noise.
+- Regime caveat: this was 128 frames total with two-block shots. With
+  `local_attn_size=32`, the local attention window covered two complete shots,
+  so this is not the requested long-regime method verdict.
 - Selector: `long_multishot scene-memory mechanism sweep`.
 - Data: existing prompt folders only, using
   `example/long_multishot_prompts:example/multiview_prompts`; sparse
@@ -78,10 +181,10 @@ Guarded result:
   for rolling every-chunk, and `0.0181` for the 8-anchor dose. Higher received
   memory attention did not produce a noise-cleared consistency gain.
 
-Current conclusion: honest null. Under the trusted long-multishot gate, changing
-the injection schedule/dose for `subject_identity+raw` scene memory does not
-improve cross-shot centroid consistency. The best mechanism is the least
-intrusive rolling-boundary arm, but it still wins `0/4` scenes.
+Current interpretation: honest short-regime null. The mechanism table shows that
+the substrate and diagnostics moved, but it does not decide whether frame-level
+KV injection improves cross-shot consistency when shots outspan the local
+attention window.
 
 Named next hypothesis: the limiting factor is not injected-memory dose; it is
 write/read admission quality. A next gate should keep the winning-lowest-dose
@@ -100,7 +203,9 @@ python scripts/run_kv_rag_ablation.py \
   --mechanism_sweep \
   --prompts_dir example/long_multishot_prompts:example/multiview_prompts \
   --prompt_subset african_savanna,brown_bear_river,sunlit_balcony_tour,skateboarder_high_motion,shimmering_puzzle_surface \
+  --blocks_per_shot 6 \
   --baseline_seeds 0,1,2 \
+  --baseline_drift_floor 0.02 \
   --admission_diversity_floor 0.03 \
   --noise_sigma_multiplier 2.0 \
   --motion_tolerance 0.2 \
@@ -112,7 +217,7 @@ python scripts/run_kv_rag_ablation.py \
   --output_root videos/round14_scene_memory_mechanism_sweep
 ```
 
-## Round 13 pivot: long_multishot principled gate
+## Round 13 pivot: long_multishot principled gate (short-regime result)
 
 Date: 2026-06-11.
 

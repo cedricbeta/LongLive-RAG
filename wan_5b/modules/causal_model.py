@@ -736,6 +736,7 @@ class CausalWanSelfAttention(nn.Module):
             rag_v_pending = None
             rag_selected = None
             rag_prepended_tokens = 0
+            rag_logit_bias = None
             kv_rag_cfg = getattr(kv_rag, "config", None) if kv_rag is not None else None
             kv_rag_summary_prerope = bool(getattr(kv_rag_cfg, "summary_prerope", True))
             kv_rag_reinject = bool(getattr(kv_rag, "reinject_rope", False)) if kv_rag is not None else False
@@ -795,9 +796,72 @@ class CausalWanSelfAttention(nn.Module):
                     # frame block just before the local window (absolute path).
                     rag_k_pending, rag_v_pending = rag_k, rag_v
                 else:
-                    window_k = torch.cat([rag_k, window_k], dim=1)
-                    window_v = torch.cat([rag_v, window_v], dim=1)
-                    rag_prepended_tokens = int(rag_k.shape[1])
+                    rag_tokens_direct = int(rag_k.shape[1])
+                    direct_aligned = (
+                        frame_seqlen > 0
+                        and rag_tokens_direct > 0
+                        and rag_tokens_direct % int(frame_seqlen) == 0
+                    )
+                    if (
+                        kv_rag_cfg is not None
+                        and bool(getattr(kv_rag_cfg, "require_frame_aligned", False))
+                        and not direct_aligned
+                    ):
+                        try:
+                            kv_rag.record_frame_alignment_drop(
+                                kind="inject",
+                                tokens=rag_tokens_direct,
+                                frame_seqlen=int(frame_seqlen),
+                                frames=0,
+                                persistent=any(
+                                    bool(getattr(e, "persistent", False))
+                                    for e in (rag_selected or [])
+                                ),
+                                reason="legacy injected payload is not whole-frame aligned",
+                            )
+                        except Exception:
+                            pass
+                    else:
+                        window_k = torch.cat([rag_k, window_k], dim=1)
+                        window_v = torch.cat([rag_v, window_v], dim=1)
+                        rag_prepended_tokens = rag_tokens_direct
+                        if kv_rag is not None and direct_aligned:
+                            try:
+                                kv_rag.record_injection(
+                                    tokens=rag_tokens_direct,
+                                    frame_seqlen=int(frame_seqlen),
+                                    selected_entries=rag_selected,
+                                    outside_live_window=True,
+                                    path="direct",
+                                )
+                            except Exception:
+                                pass
+
+            def _build_rag_logit_bias(total_tokens: int):
+                if (
+                    kv_rag is None
+                    or rag_selected is None
+                    or int(rag_prepended_tokens) <= 0
+                    or not hasattr(kv_rag, "build_persistent_logit_bias")
+                ):
+                    return None
+                try:
+                    return kv_rag.build_persistent_logit_bias(
+                        total_tokens=int(total_tokens),
+                        selected_entries=rag_selected,
+                        device=v.device,
+                        dtype=torch.float32,
+                    )
+                except Exception as exc:
+                    if getattr(kv_rag, "fail_open", True):
+                        warn_once = getattr(kv_rag, "warn_once", None)
+                        if warn_once is not None:
+                            warn_once(
+                                "persistent_logit_bias_failed",
+                                f"[KV-RAG][warn] persistent logit bias failed once: {exc}",
+                            )
+                        return None
+                    raise
 
             def _attach_received_attention(q_for_attn, k_for_attn):
                 if (
@@ -877,8 +941,9 @@ class CausalWanSelfAttention(nn.Module):
                         method=method, original_seq_len=original_seq_len,
                     ).type_as(v)
 
+                rag_logit_bias = _build_rag_logit_bias(roped_window_k.shape[1])
                 _attach_received_attention(roped_query, roped_window_k)
-                x = attention(roped_query, roped_window_k, window_v)
+                x = attention(roped_query, roped_window_k, window_v, logit_bias=rag_logit_bias)
             else:
                 if rag_k_pending is not None:
                     # Re-RoPE the retrieved (pre-RoPE) memory keys into a virtual
@@ -914,18 +979,51 @@ class CausalWanSelfAttention(nn.Module):
                         window_k = torch.cat([roped_rag_k, window_k], dim=1)
                         window_v = torch.cat([rag_v_pending, window_v], dim=1)
                         rag_prepended_tokens = rag_tokens
-                    # else: not frame-aligned -> skip injection (fail open)
+                        if kv_rag is not None:
+                            try:
+                                kv_rag.record_injection(
+                                    tokens=int(rag_tokens),
+                                    frame_seqlen=int(frame_seqlen),
+                                    selected_entries=rag_selected,
+                                    outside_live_window=True,
+                                    path="reinject_rope",
+                                )
+                            except Exception:
+                                pass
+                    else:
+                        # Not frame-aligned -> skip injection and count it so
+                        # frame-contract gate runs fail closed instead of
+                        # silently accepting a legacy token-subset fallback.
+                        if kv_rag is not None:
+                            try:
+                                kv_rag.record_frame_alignment_drop(
+                                    kind="inject",
+                                    tokens=int(rag_tokens),
+                                    frame_seqlen=int(frame_seqlen),
+                                    frames=int(rag_frames),
+                                    persistent=any(
+                                        bool(getattr(e, "persistent", False))
+                                        for e in (rag_selected or [])
+                                    ),
+                                    reason="retrieved payload is not whole-frame aligned",
+                                )
+                            except Exception:
+                                pass
                 if (kv_rag is not None and rag_prepended_tokens > 0
                         and getattr(kv_rag, "diag_enabled", False)
                         and rag_selected is not None):
+                    rag_logit_bias = _build_rag_logit_bias(window_k.shape[1])
                     kv_rag.record_injected_attention_mass(
                         roped_query,
                         window_k,
                         rag_selected,
                         layer=kv_rag_layer if kv_rag_layer is not None else -1,
+                        logit_bias=rag_logit_bias,
                     )
+                else:
+                    rag_logit_bias = _build_rag_logit_bias(window_k.shape[1])
                 _attach_received_attention(roped_query, window_k)
-                x = attention(roped_query, window_k, window_v)
+                x = attention(roped_query, window_k, window_v, logit_bias=rag_logit_bias)
 
         # output
         x = x.flatten(2)
