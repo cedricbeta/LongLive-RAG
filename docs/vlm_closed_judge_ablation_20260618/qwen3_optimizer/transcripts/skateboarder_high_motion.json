@@ -1,0 +1,211 @@
+{
+  "image_hashes": {
+    "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/skateboarder_high_motion/shot00_frame00_idx0000.png": "96eacc3dc5f5dd874a64867abfbd01bd0111bbaa31f4ec6fd4f17dbd721e472e",
+    "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/skateboarder_high_motion/shot00_frame01_idx0095.png": "6f9d2405d88dbb98192dc752f18fa4061ef22f3d8710c945591f4cab15c1b06a",
+    "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/skateboarder_high_motion/shot01_frame00_idx0096.png": "3da5ba7fe38fc9ac40c10364ca49e9a6001242ad449f2f5cddf11c14a20bf241",
+    "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/skateboarder_high_motion/shot01_frame01_idx0191.png": "3f50ea33ae6e91818ab153c5eecc97c00d37cb224fce3b479ecaa24c3ec7d22e",
+    "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/skateboarder_high_motion/shot02_frame00_idx0192.png": "79f49b0cb84c92f0ecb0506a3c40b60f727ec73e1f2b13eb2474a859d6919c48",
+    "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/skateboarder_high_motion/shot02_frame01_idx0287.png": "ae9f11a780837407da0099a528bd036e4f332eb714d39e5ce5429f1dd2fd6c34",
+    "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/skateboarder_high_motion/shot03_frame00_idx0288.png": "df32516ac8733b56da183423cd0d4b61c75a99d5013bd62431793ba74a7b7129",
+    "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/skateboarder_high_motion/shot03_frame01_idx0383.png": "6b1e41de37d7224ff159e9ac423060c0acf3a896820e4a3e0b9f2aa654a58a01",
+    "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/skateboarder_high_motion/shot04_frame00_idx0384.png": "5cb6c6d1f73a9aec0a66a5403f451382ffd91091cc5531624702b6fe33ff4f03",
+    "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/skateboarder_high_motion/shot04_frame01_idx0431.png": "0bd10ff3e876b6fee06431812d2c59b8d3b5a270e9ebb04e8a66d0629a27658c",
+    "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/skateboarder_high_motion/shot05_frame00_idx0432.png": "ceb3cfb30533d0f14d4b6df30da31cd2facc7f2ceffc4191e8046a789b00efb6",
+    "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/skateboarder_high_motion/shot05_frame01_idx0479.png": "27c156561d41b7f35fa76b6dc131d4ecaca3e45d86319ce404d0ae5bed943ca5"
+  },
+  "image_paths": [
+    "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/skateboarder_high_motion/shot00_frame00_idx0000.png",
+    "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/skateboarder_high_motion/shot00_frame01_idx0095.png",
+    "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/skateboarder_high_motion/shot01_frame00_idx0096.png",
+    "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/skateboarder_high_motion/shot01_frame01_idx0191.png",
+    "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/skateboarder_high_motion/shot02_frame00_idx0192.png",
+    "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/skateboarder_high_motion/shot02_frame01_idx0287.png",
+    "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/skateboarder_high_motion/shot03_frame00_idx0288.png",
+    "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/skateboarder_high_motion/shot03_frame01_idx0383.png",
+    "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/skateboarder_high_motion/shot04_frame00_idx0384.png",
+    "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/skateboarder_high_motion/shot04_frame01_idx0431.png",
+    "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/skateboarder_high_motion/shot05_frame00_idx0432.png",
+    "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/skateboarder_high_motion/shot05_frame01_idx0479.png"
+  ],
+  "parsed": {
+    "global_invariant_additions": [
+      "The skateboarder maintains consistent motion direction and trajectory through the bowl across all shots."
+    ],
+    "kv_anchor_plan": [
+      {
+        "boundary_shot_index": 1,
+        "decoded_frame_indices": [
+          0
+        ],
+        "rationale": "Frame 0 anchors the initial low-angle perspective and motion direction for Shot 1."
+      },
+      {
+        "boundary_shot_index": 2,
+        "decoded_frame_indices": [
+          95
+        ],
+        "rationale": "Frame 95 captures the rider at the bowl's lip, linking Shot 1's motion to Shot 2's action."
+      },
+      {
+        "boundary_shot_index": 3,
+        "decoded_frame_indices": [
+          191
+        ],
+        "rationale": "Frame 191 shows the rider mid-carve, establishing spatial continuity for Shot 3."
+      },
+      {
+        "boundary_shot_index": 4,
+        "decoded_frame_indices": [
+          287
+        ],
+        "rationale": "Frame 287 captures the rider at the lip again, anchoring Shot 4's telephoto perspective."
+      }
+    ],
+    "per_shot_additions": [
+      {
+        "rationale": "Establishes initial direction for continuity into Shot 1.",
+        "shot_index": 0,
+        "text": "The skateboarder rolls from left to right, initiating motion toward the bowl's curved wall."
+      },
+      {
+        "rationale": "Reinforces motion direction from Shot 0 and sets up for Shot 2's lip approach.",
+        "shot_index": 1,
+        "text": "The camera pans fast as the skateboarder carves up the opposite wall, continuing the left-to-right motion."
+      },
+      {
+        "rationale": "Explicitly links Shot 2 to Shot 1's trajectory and prevents spatial dislocation.",
+        "shot_index": 2,
+        "text": "The skateboarder approaches the lip from the opposite wall, maintaining left-to-right motion."
+      },
+      {
+        "rationale": "Maintains motion continuity from Shot 2 into Shot 4.",
+        "shot_index": 3,
+        "text": "The skateboarder accelerates toward the painted wall, continuing the left-to-right motion."
+      }
+    ],
+    "stop_rule": "one bounded refinement round",
+    "which_cut_broke": {
+      "cut_index": 2,
+      "how": "Shot 2's overhead angle breaks continuity with Shot 1's side tracking by omitting the rider's motion direction and spatial relationship to the bowl's lip."
+    }
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are the LOCAL Qwen3-VL optimizer, not the held-out judge.\nDiagnose which shot cut breaks cross-shot consistency and propose constrained fixes.\nReturn strict JSON only with this shape:\n{\n  \"which_cut_broke\": {\"cut_index\": integer_or_null, \"how\": \"short reason\"},\n  \"global_invariant_additions\": [\"additive invariant text\", ...],\n  \"per_shot_additions\": [{\"shot_index\": 0, \"text\": \"additive invariant text\", \"rationale\": \"why\"}, ...],\n  \"kv_anchor_plan\": [{\"boundary_shot_index\": 1, \"decoded_frame_indices\": [0], \"rationale\": \"why\"}, ...],\n  \"stop_rule\": \"one bounded refinement round\"\n}\nRules: ADD subject/scene invariants only. Do not delete or weaken per-shot camera/action.\nDo not collapse shots into near-identical text. Choose only listed decoded frame indices.\nCap KV anchors to 2 frames per boundary. Use only source shots outside the live local window.\nScene: skateboarder_high_motion\nGlobal invariant: The same skateboarder in a red hoodie and black helmet rides the same wooden skateboard through the same concrete skate bowl.\nSHOT 0: frames=[0, 95]; caption=Shot 0 starts low near the concrete. The skateboarder rolls quickly from left to right and pumps down the curved bowl wall.\nSHOT 1: frames=[96, 191]; caption=Shot 1 cuts to a tracking side view. The camera pans fast as the skateboarder carves up the opposite wall.\nSHOT 2: frames=[192, 287]; caption=Shot 2 switches to an overhead angle. The skateboarder snaps a small ollie near the lip and lands back into the bowl.\nSHOT 3: frames=[288, 383]; caption=Shot 3 cuts behind the rider. The camera follows as the skateboarder accelerates toward a painted wall and leans into a sharp turn.\nSHOT 4: frames=[384, 431]; caption=Shot 4 uses a telephoto view from across the bowl. The skateboarder crosses frame at speed and the background streaks with motion.\nSHOT 5: frames=[432, 479]; caption=Shot 5 ends in a front three-quarter view. The skateboarder rolls out of the trick, bends at the knees, and steadies the board.\nKV candidates for boundary entering shot 1: [0]\nKV candidates for boundary entering shot 2: [0, 95, 96]\nKV candidates for boundary entering shot 3: [0, 95, 96, 191, 192]\nKV candidates for boundary entering shot 4: [0, 95, 96, 191, 192, 287, 288]\nKV candidates for boundary entering shot 5: [0, 95, 96, 191, 192, 287, 288, 383, 384]",
+            "type": "text"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"which_cut_broke\": {\n    \"cut_index\": 2,\n    \"how\": \"Shot 2's overhead angle breaks continuity with Shot 1's side tracking by omitting the rider's motion direction and spatial relationship to the bowl's lip.\"\n  },\n  \"global_invariant_additions\": [\n    \"The skateboarder maintains consistent motion direction and trajectory through the bowl across all shots.\"\n  ],\n  \"per_shot_additions\": [\n    {\n      \"shot_index\": 0,\n      \"text\": \"The skateboarder rolls from left to right, initiating motion toward the bowl's curved wall.\",\n      \"rationale\": \"Establishes initial direction for continuity into Shot 1.\"\n    },\n    {\n      \"shot_index\": 1,\n      \"text\": \"The camera pans fast as the skateboarder carves up the opposite wall, continuing the left-to-right motion.\",\n      \"rationale\": \"Reinforces motion direction from Shot 0 and sets up for Shot 2's lip approach.\"\n    },\n    {\n      \"shot_index\": 2,\n      \"text\": \"The skateboarder approaches the lip from the opposite wall, maintaining left-to-right motion.\",\n      \"rationale\": \"Explicitly links Shot 2 to Shot 1's trajectory and prevents spatial dislocation.\"\n    },\n    {\n      \"shot_index\": 3,\n      \"text\": \"The skateboarder accelerates toward the painted wall, continuing the left-to-right motion.\",\n      \"rationale\": \"Maintains motion continuity from Shot 2 into Shot 4.\"\n    }\n  ],\n  \"kv_anchor_plan\": [\n    {\n      \"boundary_shot_index\": 1,\n      \"decoded_frame_indices\": [0],\n      \"rationale\": \"Frame 0 anchors the initial low-angle perspective and motion direction for Shot 1.\"\n    },\n    {\n      \"boundary_shot_index\": 2,\n      \"decoded_frame_indices\": [95],\n      \"rationale\": \"Frame 95 captures the rider at the bowl's lip, linking Shot 1's motion to Shot 2's action.\"\n    },\n    {\n      \"boundary_shot_index\": 3,\n      \"decoded_frame_indices\": [191],\n      \"rationale\": \"Frame 191 shows the rider mid-carve, establishing spatial continuity for Shot 3.\"\n    },\n    {\n      \"boundary_shot_index\": 4,\n      \"decoded_frame_indices\": [287],\n      \"rationale\": \"Frame 287 captures the rider at the lip again, anchoring Shot 4's telephoto perspective.\"\n    }\n  ],\n  \"stop_rule\": \"one bounded refinement round\"\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1781768626,
+    "id": "3aa72eb61df443f6800bf69ff0eff99c",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 548,
+      "prompt_tokens": 11253,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 11801
+    }
+  },
+  "wall_clock_seconds": 11.593828678131104
+}

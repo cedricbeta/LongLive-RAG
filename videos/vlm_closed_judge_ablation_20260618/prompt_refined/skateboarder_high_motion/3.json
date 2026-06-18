@@ -1,0 +1,12 @@
+{
+  "block_indices": [
+    6,
+    7
+  ],
+  "caption": "Shot 3 cuts behind the rider. The camera follows as the skateboarder accelerates toward a painted wall and leans into a sharp turn. Maintain invariant: The skateboarder accelerates toward the painted wall, continuing the left-to-right motion.",
+  "filename": "3.mp4",
+  "num_blocks": 2,
+  "relative_path": "skateboarder_high_motion/3.mp4",
+  "title": "Shot 3",
+  "video_path": ""
+}

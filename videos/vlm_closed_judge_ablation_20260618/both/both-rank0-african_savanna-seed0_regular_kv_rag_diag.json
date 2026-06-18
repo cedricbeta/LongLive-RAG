@@ -1,0 +1,3409 @@
+{
+  "config": {
+    "attention_diagnostic": true,
+    "boundary_inject_anchors": 2,
+    "retrieval_key_mode": "pooled",
+    "retrieval_value_mode": "raw",
+    "scene_memory_enabled": true,
+    "scene_memory_injection_schedule": "boundary",
+    "scene_memory_rolling": true
+  },
+  "neg": {
+    "attention_mass_by_shot_layer": {},
+    "attention_mass_by_shot_layer_frame": {},
+    "frame_alignment_drop_events": [],
+    "manual_anchor_events": [],
+    "manual_anchor_plan_path": "docs/vlm_closed_judge_ablation_20260618/manual_anchor_plan.json",
+    "stats": {
+      "boundary_injections": 0,
+      "direct_injected_frames": 0,
+      "direct_injection_calls": 0,
+      "frame_alignment_inject_drops": 0,
+      "frame_alignment_store_drops": 0,
+      "injected_frames": 0,
+      "injected_tokens": 0,
+      "injection_calls": 0,
+      "manual_anchor_injections": 0,
+      "manual_anchor_matched_frames": 0,
+      "manual_anchor_requested_frames": 0,
+      "outside_window_injected_frames": 0,
+      "outside_window_injected_tokens": 0,
+      "outside_window_injection_calls": 0,
+      "persistent_injected_frames": 0,
+      "persistent_injected_tokens": 0,
+      "persistent_logit_bias_calls": 0,
+      "persistent_logit_bias_frames": 0,
+      "persistent_logit_bias_lambda_sum": 0.0,
+      "persistent_logit_bias_skipped_unaligned": 0,
+      "persistent_logit_bias_tokens": 0,
+      "persistent_rag_attention_mass": 0.0,
+      "persistent_rag_attention_mass_mean": 0.0,
+      "persistent_rag_mass_calls": 0,
+      "rag_attention_mass": 0.0,
+      "rag_attention_mass_mean": 0.0,
+      "rag_mass_calls": 0,
+      "reinject_rope_injected_frames": 0,
+      "reinject_rope_injection_calls": 0,
+      "retrieval_calls": 0,
+      "retrieval_hits": 0,
+      "retrieved_tokens": 0,
+      "stored_entries": 0,
+      "stored_scene_entries": 0
+    }
+  },
+  "pos": {
+    "attention_mass_by_shot_layer": {
+      "2": {
+        "0": {
+          "calls": 4,
+          "mass_sum": 0.05167378671467304,
+          "mean_mass": 0.01291844667866826,
+          "persistent_tokens_mean": 880.0
+        },
+        "14": {
+          "calls": 4,
+          "mass_sum": 0.03521037474274635,
+          "mean_mass": 0.008802593685686588,
+          "persistent_tokens_mean": 880.0
+        },
+        "21": {
+          "calls": 4,
+          "mass_sum": 0.05031526181846857,
+          "mean_mass": 0.012578815454617143,
+          "persistent_tokens_mean": 880.0
+        },
+        "29": {
+          "calls": 4,
+          "mass_sum": 0.010530830244533718,
+          "mean_mass": 0.0026327075611334294,
+          "persistent_tokens_mean": 880.0
+        },
+        "7": {
+          "calls": 4,
+          "mass_sum": 0.042220842093229294,
+          "mean_mass": 0.010555210523307323,
+          "persistent_tokens_mean": 880.0
+        }
+      },
+      "3": {
+        "0": {
+          "calls": 4,
+          "mass_sum": 0.10279500670731068,
+          "mean_mass": 0.02569875167682767,
+          "persistent_tokens_mean": 1760.0
+        },
+        "14": {
+          "calls": 4,
+          "mass_sum": 0.0369876604527235,
+          "mean_mass": 0.009246915113180876,
+          "persistent_tokens_mean": 1760.0
+        },
+        "21": {
+          "calls": 4,
+          "mass_sum": 0.05252268444746733,
+          "mean_mass": 0.013130671111866832,
+          "persistent_tokens_mean": 1760.0
+        },
+        "29": {
+          "calls": 4,
+          "mass_sum": 0.0209253104403615,
+          "mean_mass": 0.005231327610090375,
+          "persistent_tokens_mean": 1760.0
+        },
+        "7": {
+          "calls": 4,
+          "mass_sum": 0.05447511561214924,
+          "mean_mass": 0.01361877890303731,
+          "persistent_tokens_mean": 1760.0
+        }
+      },
+      "4": {
+        "0": {
+          "calls": 4,
+          "mass_sum": 0.10045789368450642,
+          "mean_mass": 0.025114473421126604,
+          "persistent_tokens_mean": 1760.0
+        },
+        "14": {
+          "calls": 4,
+          "mass_sum": 0.034644571132957935,
+          "mean_mass": 0.008661142783239484,
+          "persistent_tokens_mean": 1760.0
+        },
+        "21": {
+          "calls": 4,
+          "mass_sum": 0.05580092314630747,
+          "mean_mass": 0.013950230786576867,
+          "persistent_tokens_mean": 1760.0
+        },
+        "29": {
+          "calls": 4,
+          "mass_sum": 0.023890944896265864,
+          "mean_mass": 0.005972736224066466,
+          "persistent_tokens_mean": 1760.0
+        },
+        "7": {
+          "calls": 4,
+          "mass_sum": 0.05005750432610512,
+          "mean_mass": 0.01251437608152628,
+          "persistent_tokens_mean": 1760.0
+        }
+      },
+      "5": {
+        "0": {
+          "calls": 4,
+          "mass_sum": 0.10188603028655052,
+          "mean_mass": 0.02547150757163763,
+          "persistent_tokens_mean": 1760.0
+        },
+        "14": {
+          "calls": 4,
+          "mass_sum": 0.06359712313860655,
+          "mean_mass": 0.015899280784651637,
+          "persistent_tokens_mean": 1760.0
+        },
+        "21": {
+          "calls": 4,
+          "mass_sum": 0.09349158778786659,
+          "mean_mass": 0.023372896946966648,
+          "persistent_tokens_mean": 1760.0
+        },
+        "29": {
+          "calls": 4,
+          "mass_sum": 0.018732953118160367,
+          "mean_mass": 0.004683238279540092,
+          "persistent_tokens_mean": 1760.0
+        },
+        "7": {
+          "calls": 4,
+          "mass_sum": 0.07795264013111591,
+          "mean_mass": 0.01948816003277898,
+          "persistent_tokens_mean": 1760.0
+        }
+      },
+      "6": {
+        "0": {
+          "calls": 4,
+          "mass_sum": 0.09996906854212284,
+          "mean_mass": 0.02499226713553071,
+          "persistent_tokens_mean": 1760.0
+        },
+        "14": {
+          "calls": 4,
+          "mass_sum": 0.05414428375661373,
+          "mean_mass": 0.013536070939153433,
+          "persistent_tokens_mean": 1760.0
+        },
+        "21": {
+          "calls": 4,
+          "mass_sum": 0.07299264706671238,
+          "mean_mass": 0.018248161766678095,
+          "persistent_tokens_mean": 1760.0
+        },
+        "29": {
+          "calls": 4,
+          "mass_sum": 0.02148946700617671,
+          "mean_mass": 0.0053723667515441775,
+          "persistent_tokens_mean": 1760.0
+        },
+        "7": {
+          "calls": 4,
+          "mass_sum": 0.06539122760295868,
+          "mean_mass": 0.01634780690073967,
+          "persistent_tokens_mean": 1760.0
+        }
+      },
+      "7": {
+        "0": {
+          "calls": 4,
+          "mass_sum": 0.10108150728046894,
+          "mean_mass": 0.025270376820117235,
+          "persistent_tokens_mean": 1760.0
+        },
+        "14": {
+          "calls": 4,
+          "mass_sum": 0.0448998911306262,
+          "mean_mass": 0.01122497278265655,
+          "persistent_tokens_mean": 1760.0
+        },
+        "21": {
+          "calls": 4,
+          "mass_sum": 0.06303456425666809,
+          "mean_mass": 0.015758641064167023,
+          "persistent_tokens_mean": 1760.0
+        },
+        "29": {
+          "calls": 4,
+          "mass_sum": 0.02139310585334897,
+          "mean_mass": 0.005348276463337243,
+          "persistent_tokens_mean": 1760.0
+        },
+        "7": {
+          "calls": 4,
+          "mass_sum": 0.07036840356886387,
+          "mean_mass": 0.017592100892215967,
+          "persistent_tokens_mean": 1760.0
+        }
+      }
+    },
+    "attention_mass_by_shot_layer_frame": {
+      "2": {
+        "0": {
+          "src_frame_88": {
+            "calls": 4,
+            "mass_sum": 0.05167378671467304,
+            "mean_mass": 0.01291844667866826,
+            "source_start_token": 77440,
+            "tokens_mean": 880.0
+          }
+        },
+        "14": {
+          "src_frame_88": {
+            "calls": 4,
+            "mass_sum": 0.03521037474274635,
+            "mean_mass": 0.008802593685686588,
+            "source_start_token": 77440,
+            "tokens_mean": 880.0
+          }
+        },
+        "21": {
+          "src_frame_88": {
+            "calls": 4,
+            "mass_sum": 0.05031526181846857,
+            "mean_mass": 0.012578815454617143,
+            "source_start_token": 77440,
+            "tokens_mean": 880.0
+          }
+        },
+        "29": {
+          "src_frame_88": {
+            "calls": 4,
+            "mass_sum": 0.010530830244533718,
+            "mean_mass": 0.0026327075611334294,
+            "source_start_token": 77440,
+            "tokens_mean": 880.0
+          }
+        },
+        "7": {
+          "src_frame_88": {
+            "calls": 4,
+            "mass_sum": 0.042220842093229294,
+            "mean_mass": 0.010555210523307323,
+            "source_start_token": 77440,
+            "tokens_mean": 880.0
+          }
+        }
+      },
+      "3": {
+        "0": {
+          "src_frame_184": {
+            "calls": 4,
+            "mass_sum": 0.05294555053114891,
+            "mean_mass": 0.013236387632787228,
+            "source_start_token": 161920,
+            "tokens_mean": 880.0
+          },
+          "src_frame_88": {
+            "calls": 4,
+            "mass_sum": 0.04984945710748434,
+            "mean_mass": 0.012462364276871085,
+            "source_start_token": 77440,
+            "tokens_mean": 880.0
+          }
+        },
+        "14": {
+          "src_frame_184": {
+            "calls": 4,
+            "mass_sum": 0.01345030590891838,
+            "mean_mass": 0.003362576477229595,
+            "source_start_token": 161920,
+            "tokens_mean": 880.0
+          },
+          "src_frame_88": {
+            "calls": 4,
+            "mass_sum": 0.023537354543805122,
+            "mean_mass": 0.005884338635951281,
+            "source_start_token": 77440,
+            "tokens_mean": 880.0
+          }
+        },
+        "21": {
+          "src_frame_184": {
+            "calls": 4,
+            "mass_sum": 0.012511123903095722,
+            "mean_mass": 0.0031277809757739305,
+            "source_start_token": 161920,
+            "tokens_mean": 880.0
+          },
+          "src_frame_88": {
+            "calls": 4,
+            "mass_sum": 0.04001156194135547,
+            "mean_mass": 0.010002890485338867,
+            "source_start_token": 77440,
+            "tokens_mean": 880.0
+          }
+        },
+        "29": {
+          "src_frame_184": {
+            "calls": 4,
+            "mass_sum": 0.010584603063762188,
+            "mean_mass": 0.002646150765940547,
+            "source_start_token": 161920,
+            "tokens_mean": 880.0
+          },
+          "src_frame_88": {
+            "calls": 4,
+            "mass_sum": 0.01034070667810738,
+            "mean_mass": 0.002585176669526845,
+            "source_start_token": 77440,
+            "tokens_mean": 880.0
+          }
+        },
+        "7": {
+          "src_frame_184": {
+            "calls": 4,
+            "mass_sum": 0.026068110950291157,
+            "mean_mass": 0.006517027737572789,
+            "source_start_token": 161920,
+            "tokens_mean": 880.0
+          },
+          "src_frame_88": {
+            "calls": 4,
+            "mass_sum": 0.02840700699016452,
+            "mean_mass": 0.00710175174754113,
+            "source_start_token": 77440,
+            "tokens_mean": 880.0
+          }
+        }
+      },
+      "4": {
+        "0": {
+          "src_frame_232": {
+            "calls": 4,
+            "mass_sum": 0.05096064601093531,
+            "mean_mass": 0.012740161502733827,
+            "source_start_token": 204160,
+            "tokens_mean": 880.0
+          },
+          "src_frame_88": {
+            "calls": 4,
+            "mass_sum": 0.04949724394828081,
+            "mean_mass": 0.012374310987070203,
+            "source_start_token": 77440,
+            "tokens_mean": 880.0
+          }
+        },
+        "14": {
+          "src_frame_232": {
+            "calls": 4,
+            "mass_sum": 0.01265959464944899,
+            "mean_mass": 0.0031648986623622477,
+            "source_start_token": 204160,
+            "tokens_mean": 880.0
+          },
+          "src_frame_88": {
+            "calls": 4,
+            "mass_sum": 0.021984976716339588,
+            "mean_mass": 0.005496244179084897,
+            "source_start_token": 77440,
+            "tokens_mean": 880.0
+          }
+        },
+        "21": {
+          "src_frame_232": {
+            "calls": 4,
+            "mass_sum": 0.01265176897868514,
+            "mean_mass": 0.003162942244671285,
+            "source_start_token": 204160,
+            "tokens_mean": 880.0
+          },
+          "src_frame_88": {
+            "calls": 4,
+            "mass_sum": 0.04314915090799332,
+            "mean_mass": 0.01078728772699833,
+            "source_start_token": 77440,
+            "tokens_mean": 880.0
+          }
+        },
+        "29": {
+          "src_frame_232": {
+            "calls": 4,
+            "mass_sum": 0.012166244210675359,
+            "mean_mass": 0.0030415610526688397,
+            "source_start_token": 204160,
+            "tokens_mean": 880.0
+          },
+          "src_frame_88": {
+            "calls": 4,
+            "mass_sum": 0.011724701849743724,
+            "mean_mass": 0.002931175462435931,
+            "source_start_token": 77440,
+            "tokens_mean": 880.0
+          }
+        },
+        "7": {
+          "src_frame_232": {
+            "calls": 4,
+            "mass_sum": 0.022689391626045108,
+            "mean_mass": 0.005672347906511277,
+            "source_start_token": 204160,
+            "tokens_mean": 880.0
+          },
+          "src_frame_88": {
+            "calls": 4,
+            "mass_sum": 0.02736811153590679,
+            "mean_mass": 0.006842027883976698,
+            "source_start_token": 77440,
+            "tokens_mean": 880.0
+          }
+        }
+      },
+      "5": {
+        "0": {
+          "src_frame_280": {
+            "calls": 4,
+            "mass_sum": 0.05230789817869663,
+            "mean_mass": 0.013076974544674158,
+            "source_start_token": 246400,
+            "tokens_mean": 880.0
+          },
+          "src_frame_88": {
+            "calls": 4,
+            "mass_sum": 0.049578127451241016,
+            "mean_mass": 0.012394531862810254,
+            "source_start_token": 77440,
+            "tokens_mean": 880.0
+          }
+        },
+        "14": {
+          "src_frame_280": {
+            "calls": 4,
+            "mass_sum": 0.02723318198695779,
+            "mean_mass": 0.006808295496739447,
+            "source_start_token": 246400,
+            "tokens_mean": 880.0
+          },
+          "src_frame_88": {
+            "calls": 4,
+            "mass_sum": 0.0363639397546649,
+            "mean_mass": 0.009090984938666224,
+            "source_start_token": 77440,
+            "tokens_mean": 880.0
+          }
+        },
+        "21": {
+          "src_frame_280": {
+            "calls": 4,
+            "mass_sum": 0.04475785233080387,
+            "mean_mass": 0.011189463082700968,
+            "source_start_token": 246400,
+            "tokens_mean": 880.0
+          },
+          "src_frame_88": {
+            "calls": 4,
+            "mass_sum": 0.04873373871669173,
+            "mean_mass": 0.012183434679172933,
+            "source_start_token": 77440,
+            "tokens_mean": 880.0
+          }
+        },
+        "29": {
+          "src_frame_280": {
+            "calls": 4,
+            "mass_sum": 0.009126392658799887,
+            "mean_mass": 0.0022815981646999717,
+            "source_start_token": 246400,
+            "tokens_mean": 880.0
+          },
+          "src_frame_88": {
+            "calls": 4,
+            "mass_sum": 0.009606559644453228,
+            "mean_mass": 0.002401639911113307,
+            "source_start_token": 77440,
+            "tokens_mean": 880.0
+          }
+        },
+        "7": {
+          "src_frame_280": {
+            "calls": 4,
+            "mass_sum": 0.03338658111169934,
+            "mean_mass": 0.008346645277924836,
+            "source_start_token": 246400,
+            "tokens_mean": 880.0
+          },
+          "src_frame_88": {
+            "calls": 4,
+            "mass_sum": 0.04456605855375528,
+            "mean_mass": 0.01114151463843882,
+            "source_start_token": 77440,
+            "tokens_mean": 880.0
+          }
+        }
+      },
+      "6": {
+        "0": {
+          "src_frame_184": {
+            "calls": 4,
+            "mass_sum": 0.05167975462973118,
+            "mean_mass": 0.012919938657432795,
+            "source_start_token": 161920,
+            "tokens_mean": 880.0
+          },
+          "src_frame_88": {
+            "calls": 4,
+            "mass_sum": 0.04828930553048849,
+            "mean_mass": 0.012072326382622123,
+            "source_start_token": 77440,
+            "tokens_mean": 880.0
+          }
+        },
+        "14": {
+          "src_frame_184": {
+            "calls": 4,
+            "mass_sum": 0.01858845679089427,
+            "mean_mass": 0.0046471141977235675,
+            "source_start_token": 161920,
+            "tokens_mean": 880.0
+          },
+          "src_frame_88": {
+            "calls": 4,
+            "mass_sum": 0.035555827897042036,
+            "mean_mass": 0.008888956974260509,
+            "source_start_token": 77440,
+            "tokens_mean": 880.0
+          }
+        },
+        "21": {
+          "src_frame_184": {
+            "calls": 4,
+            "mass_sum": 0.021686839405447245,
+            "mean_mass": 0.005421709851361811,
+            "source_start_token": 161920,
+            "tokens_mean": 880.0
+          },
+          "src_frame_88": {
+            "calls": 4,
+            "mass_sum": 0.051305802538990974,
+            "mean_mass": 0.012826450634747744,
+            "source_start_token": 77440,
+            "tokens_mean": 880.0
+          }
+        },
+        "29": {
+          "src_frame_184": {
+            "calls": 4,
+            "mass_sum": 0.010730383335612714,
+            "mean_mass": 0.0026825958339031786,
+            "source_start_token": 161920,
+            "tokens_mean": 880.0
+          },
+          "src_frame_88": {
+            "calls": 4,
+            "mass_sum": 0.010759084485471249,
+            "mean_mass": 0.002689771121367812,
+            "source_start_token": 77440,
+            "tokens_mean": 880.0
+          }
+        },
+        "7": {
+          "src_frame_184": {
+            "calls": 4,
+            "mass_sum": 0.03075624955818057,
+            "mean_mass": 0.007689062389545143,
+            "source_start_token": 161920,
+            "tokens_mean": 880.0
+          },
+          "src_frame_88": {
+            "calls": 4,
+            "mass_sum": 0.034634980373084545,
+            "mean_mass": 0.008658745093271136,
+            "source_start_token": 77440,
+            "tokens_mean": 880.0
+          }
+        }
+      },
+      "7": {
+        "0": {
+          "src_frame_184": {
+            "calls": 4,
+            "mass_sum": 0.05203483905643225,
+            "mean_mass": 0.013008709764108062,
+            "source_start_token": 161920,
+            "tokens_mean": 880.0
+          },
+          "src_frame_88": {
+            "calls": 4,
+            "mass_sum": 0.04904666356742382,
+            "mean_mass": 0.012261665891855955,
+            "source_start_token": 77440,
+            "tokens_mean": 880.0
+          }
+        },
+        "14": {
+          "src_frame_184": {
+            "calls": 4,
+            "mass_sum": 0.015889252070337534,
+            "mean_mass": 0.0039723130175843835,
+            "source_start_token": 161920,
+            "tokens_mean": 880.0
+          },
+          "src_frame_88": {
+            "calls": 4,
+            "mass_sum": 0.02901063859462738,
+            "mean_mass": 0.007252659648656845,
+            "source_start_token": 77440,
+            "tokens_mean": 880.0
+          }
+        },
+        "21": {
+          "src_frame_184": {
+            "calls": 4,
+            "mass_sum": 0.017436435911804438,
+            "mean_mass": 0.004359108977951109,
+            "source_start_token": 161920,
+            "tokens_mean": 880.0
+          },
+          "src_frame_88": {
+            "calls": 4,
+            "mass_sum": 0.04559812881052494,
+            "mean_mass": 0.011399532202631235,
+            "source_start_token": 77440,
+            "tokens_mean": 880.0
+          }
+        },
+        "29": {
+          "src_frame_184": {
+            "calls": 4,
+            "mass_sum": 0.01025697821751237,
+            "mean_mass": 0.0025642445543780923,
+            "source_start_token": 161920,
+            "tokens_mean": 880.0
+          },
+          "src_frame_88": {
+            "calls": 4,
+            "mass_sum": 0.011136127286590636,
+            "mean_mass": 0.002784031821647659,
+            "source_start_token": 77440,
+            "tokens_mean": 880.0
+          }
+        },
+        "7": {
+          "src_frame_184": {
+            "calls": 4,
+            "mass_sum": 0.03311102418228984,
+            "mean_mass": 0.00827775604557246,
+            "source_start_token": 161920,
+            "tokens_mean": 880.0
+          },
+          "src_frame_88": {
+            "calls": 4,
+            "mass_sum": 0.03725737985223532,
+            "mean_mass": 0.00931434496305883,
+            "source_start_token": 77440,
+            "tokens_mean": 880.0
+          }
+        }
+      }
+    },
+    "frame_alignment_drop_events": [],
+    "manual_anchor_events": [
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ]
+        ],
+        "selected_start_tokens": [
+          77440
+        ],
+        "shot_index": 2
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ]
+        ],
+        "selected_start_tokens": [
+          77440
+        ],
+        "shot_index": 2
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ]
+        ],
+        "selected_start_tokens": [
+          77440
+        ],
+        "shot_index": 2
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ]
+        ],
+        "selected_start_tokens": [
+          77440
+        ],
+        "shot_index": 2
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ]
+        ],
+        "selected_start_tokens": [
+          77440
+        ],
+        "shot_index": 2
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ]
+        ],
+        "selected_start_tokens": [
+          77440
+        ],
+        "shot_index": 2
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ]
+        ],
+        "selected_start_tokens": [
+          77440
+        ],
+        "shot_index": 2
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ]
+        ],
+        "selected_start_tokens": [
+          77440
+        ],
+        "shot_index": 2
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ]
+        ],
+        "selected_start_tokens": [
+          77440
+        ],
+        "shot_index": 2
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ]
+        ],
+        "selected_start_tokens": [
+          77440
+        ],
+        "shot_index": 2
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ]
+        ],
+        "selected_start_tokens": [
+          77440
+        ],
+        "shot_index": 2
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ]
+        ],
+        "selected_start_tokens": [
+          77440
+        ],
+        "shot_index": 2
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ]
+        ],
+        "selected_start_tokens": [
+          77440
+        ],
+        "shot_index": 2
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ]
+        ],
+        "selected_start_tokens": [
+          77440
+        ],
+        "shot_index": 2
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ]
+        ],
+        "selected_start_tokens": [
+          77440
+        ],
+        "shot_index": 2
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ]
+        ],
+        "selected_start_tokens": [
+          77440
+        ],
+        "shot_index": 2
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ]
+        ],
+        "selected_start_tokens": [
+          77440
+        ],
+        "shot_index": 2
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ]
+        ],
+        "selected_start_tokens": [
+          77440
+        ],
+        "shot_index": 2
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ]
+        ],
+        "selected_start_tokens": [
+          77440
+        ],
+        "shot_index": 2
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ]
+        ],
+        "selected_start_tokens": [
+          77440
+        ],
+        "shot_index": 2
+      },
+      {
+        "requested_frames": [
+          0,
+          191
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 3
+      },
+      {
+        "requested_frames": [
+          0,
+          191
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 3
+      },
+      {
+        "requested_frames": [
+          0,
+          191
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 3
+      },
+      {
+        "requested_frames": [
+          0,
+          191
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 3
+      },
+      {
+        "requested_frames": [
+          0,
+          191
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 3
+      },
+      {
+        "requested_frames": [
+          0,
+          191
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 3
+      },
+      {
+        "requested_frames": [
+          0,
+          191
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 3
+      },
+      {
+        "requested_frames": [
+          0,
+          191
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 3
+      },
+      {
+        "requested_frames": [
+          0,
+          191
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 3
+      },
+      {
+        "requested_frames": [
+          0,
+          191
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 3
+      },
+      {
+        "requested_frames": [
+          0,
+          191
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 3
+      },
+      {
+        "requested_frames": [
+          0,
+          191
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 3
+      },
+      {
+        "requested_frames": [
+          0,
+          191
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 3
+      },
+      {
+        "requested_frames": [
+          0,
+          191
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 3
+      },
+      {
+        "requested_frames": [
+          0,
+          191
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 3
+      },
+      {
+        "requested_frames": [
+          0,
+          191
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 3
+      },
+      {
+        "requested_frames": [
+          0,
+          191
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 3
+      },
+      {
+        "requested_frames": [
+          0,
+          191
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 3
+      },
+      {
+        "requested_frames": [
+          0,
+          191
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 3
+      },
+      {
+        "requested_frames": [
+          0,
+          191
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 3
+      },
+      {
+        "requested_frames": [
+          0,
+          287
+        ],
+        "selected_chunk_indices": [
+          11,
+          29
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            232
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          204160
+        ],
+        "shot_index": 4
+      },
+      {
+        "requested_frames": [
+          0,
+          287
+        ],
+        "selected_chunk_indices": [
+          11,
+          29
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            232
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          204160
+        ],
+        "shot_index": 4
+      },
+      {
+        "requested_frames": [
+          0,
+          287
+        ],
+        "selected_chunk_indices": [
+          11,
+          29
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            232
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          204160
+        ],
+        "shot_index": 4
+      },
+      {
+        "requested_frames": [
+          0,
+          287
+        ],
+        "selected_chunk_indices": [
+          11,
+          29
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            232
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          204160
+        ],
+        "shot_index": 4
+      },
+      {
+        "requested_frames": [
+          0,
+          287
+        ],
+        "selected_chunk_indices": [
+          11,
+          29
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            232
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          204160
+        ],
+        "shot_index": 4
+      },
+      {
+        "requested_frames": [
+          0,
+          287
+        ],
+        "selected_chunk_indices": [
+          11,
+          29
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            232
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          204160
+        ],
+        "shot_index": 4
+      },
+      {
+        "requested_frames": [
+          0,
+          287
+        ],
+        "selected_chunk_indices": [
+          11,
+          29
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            232
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          204160
+        ],
+        "shot_index": 4
+      },
+      {
+        "requested_frames": [
+          0,
+          287
+        ],
+        "selected_chunk_indices": [
+          11,
+          29
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            232
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          204160
+        ],
+        "shot_index": 4
+      },
+      {
+        "requested_frames": [
+          0,
+          287
+        ],
+        "selected_chunk_indices": [
+          11,
+          29
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            232
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          204160
+        ],
+        "shot_index": 4
+      },
+      {
+        "requested_frames": [
+          0,
+          287
+        ],
+        "selected_chunk_indices": [
+          11,
+          29
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            232
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          204160
+        ],
+        "shot_index": 4
+      },
+      {
+        "requested_frames": [
+          0,
+          287
+        ],
+        "selected_chunk_indices": [
+          11,
+          29
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            232
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          204160
+        ],
+        "shot_index": 4
+      },
+      {
+        "requested_frames": [
+          0,
+          287
+        ],
+        "selected_chunk_indices": [
+          11,
+          29
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            232
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          204160
+        ],
+        "shot_index": 4
+      },
+      {
+        "requested_frames": [
+          0,
+          287
+        ],
+        "selected_chunk_indices": [
+          11,
+          29
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            232
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          204160
+        ],
+        "shot_index": 4
+      },
+      {
+        "requested_frames": [
+          0,
+          287
+        ],
+        "selected_chunk_indices": [
+          11,
+          29
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            232
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          204160
+        ],
+        "shot_index": 4
+      },
+      {
+        "requested_frames": [
+          0,
+          287
+        ],
+        "selected_chunk_indices": [
+          11,
+          29
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            232
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          204160
+        ],
+        "shot_index": 4
+      },
+      {
+        "requested_frames": [
+          0,
+          287
+        ],
+        "selected_chunk_indices": [
+          11,
+          29
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            232
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          204160
+        ],
+        "shot_index": 4
+      },
+      {
+        "requested_frames": [
+          0,
+          287
+        ],
+        "selected_chunk_indices": [
+          11,
+          29
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            232
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          204160
+        ],
+        "shot_index": 4
+      },
+      {
+        "requested_frames": [
+          0,
+          287
+        ],
+        "selected_chunk_indices": [
+          11,
+          29
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            232
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          204160
+        ],
+        "shot_index": 4
+      },
+      {
+        "requested_frames": [
+          0,
+          287
+        ],
+        "selected_chunk_indices": [
+          11,
+          29
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            232
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          204160
+        ],
+        "shot_index": 4
+      },
+      {
+        "requested_frames": [
+          0,
+          287
+        ],
+        "selected_chunk_indices": [
+          11,
+          29
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            232
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          204160
+        ],
+        "shot_index": 4
+      },
+      {
+        "requested_frames": [
+          0,
+          383
+        ],
+        "selected_chunk_indices": [
+          11,
+          35
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            280
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          246400
+        ],
+        "shot_index": 5
+      },
+      {
+        "requested_frames": [
+          0,
+          383
+        ],
+        "selected_chunk_indices": [
+          11,
+          35
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            280
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          246400
+        ],
+        "shot_index": 5
+      },
+      {
+        "requested_frames": [
+          0,
+          383
+        ],
+        "selected_chunk_indices": [
+          11,
+          35
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            280
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          246400
+        ],
+        "shot_index": 5
+      },
+      {
+        "requested_frames": [
+          0,
+          383
+        ],
+        "selected_chunk_indices": [
+          11,
+          35
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            280
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          246400
+        ],
+        "shot_index": 5
+      },
+      {
+        "requested_frames": [
+          0,
+          383
+        ],
+        "selected_chunk_indices": [
+          11,
+          35
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            280
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          246400
+        ],
+        "shot_index": 5
+      },
+      {
+        "requested_frames": [
+          0,
+          383
+        ],
+        "selected_chunk_indices": [
+          11,
+          35
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            280
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          246400
+        ],
+        "shot_index": 5
+      },
+      {
+        "requested_frames": [
+          0,
+          383
+        ],
+        "selected_chunk_indices": [
+          11,
+          35
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            280
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          246400
+        ],
+        "shot_index": 5
+      },
+      {
+        "requested_frames": [
+          0,
+          383
+        ],
+        "selected_chunk_indices": [
+          11,
+          35
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            280
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          246400
+        ],
+        "shot_index": 5
+      },
+      {
+        "requested_frames": [
+          0,
+          383
+        ],
+        "selected_chunk_indices": [
+          11,
+          35
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            280
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          246400
+        ],
+        "shot_index": 5
+      },
+      {
+        "requested_frames": [
+          0,
+          383
+        ],
+        "selected_chunk_indices": [
+          11,
+          35
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            280
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          246400
+        ],
+        "shot_index": 5
+      },
+      {
+        "requested_frames": [
+          0,
+          383
+        ],
+        "selected_chunk_indices": [
+          11,
+          35
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            280
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          246400
+        ],
+        "shot_index": 5
+      },
+      {
+        "requested_frames": [
+          0,
+          383
+        ],
+        "selected_chunk_indices": [
+          11,
+          35
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            280
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          246400
+        ],
+        "shot_index": 5
+      },
+      {
+        "requested_frames": [
+          0,
+          383
+        ],
+        "selected_chunk_indices": [
+          11,
+          35
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            280
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          246400
+        ],
+        "shot_index": 5
+      },
+      {
+        "requested_frames": [
+          0,
+          383
+        ],
+        "selected_chunk_indices": [
+          11,
+          35
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            280
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          246400
+        ],
+        "shot_index": 5
+      },
+      {
+        "requested_frames": [
+          0,
+          383
+        ],
+        "selected_chunk_indices": [
+          11,
+          35
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            280
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          246400
+        ],
+        "shot_index": 5
+      },
+      {
+        "requested_frames": [
+          0,
+          383
+        ],
+        "selected_chunk_indices": [
+          11,
+          35
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            280
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          246400
+        ],
+        "shot_index": 5
+      },
+      {
+        "requested_frames": [
+          0,
+          383
+        ],
+        "selected_chunk_indices": [
+          11,
+          35
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            280
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          246400
+        ],
+        "shot_index": 5
+      },
+      {
+        "requested_frames": [
+          0,
+          383
+        ],
+        "selected_chunk_indices": [
+          11,
+          35
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            280
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          246400
+        ],
+        "shot_index": 5
+      },
+      {
+        "requested_frames": [
+          0,
+          383
+        ],
+        "selected_chunk_indices": [
+          11,
+          35
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            280
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          246400
+        ],
+        "shot_index": 5
+      },
+      {
+        "requested_frames": [
+          0,
+          383
+        ],
+        "selected_chunk_indices": [
+          11,
+          35
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            280
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          246400
+        ],
+        "shot_index": 5
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 6
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 6
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 6
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 6
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 6
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 6
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 6
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 6
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 6
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 6
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 6
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 6
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 6
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 6
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 6
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 6
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 6
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 6
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 6
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 6
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 7
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 7
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 7
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 7
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 7
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 7
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 7
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 7
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 7
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 7
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 7
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 7
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 7
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 7
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 7
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 7
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 7
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 7
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 7
+      },
+      {
+        "requested_frames": [
+          0,
+          95
+        ],
+        "selected_chunk_indices": [
+          11,
+          23
+        ],
+        "selected_source_frames": [
+          [
+            88
+          ],
+          [
+            184
+          ]
+        ],
+        "selected_start_tokens": [
+          77440,
+          161920
+        ],
+        "shot_index": 7
+      }
+    ],
+    "manual_anchor_plan_path": "docs/vlm_closed_judge_ablation_20260618/manual_anchor_plan.json",
+    "stats": {
+      "boundary_injections": 120,
+      "direct_injected_frames": 0,
+      "direct_injection_calls": 0,
+      "frame_alignment_inject_drops": 0,
+      "frame_alignment_store_drops": 0,
+      "injected_frames": 220,
+      "injected_tokens": 193600,
+      "injection_calls": 120,
+      "manual_anchor_injections": 120,
+      "manual_anchor_matched_frames": 220,
+      "manual_anchor_requested_frames": 240,
+      "outside_window_injected_frames": 220,
+      "outside_window_injected_tokens": 193600,
+      "outside_window_injection_calls": 120,
+      "persistent_injected_frames": 220,
+      "persistent_injected_tokens": 193600,
+      "persistent_logit_bias_calls": 0,
+      "persistent_logit_bias_frames": 0,
+      "persistent_logit_bias_lambda_sum": 0.0,
+      "persistent_logit_bias_skipped_unaligned": 0,
+      "persistent_logit_bias_tokens": 0,
+      "persistent_rag_attention_mass": 1.6929332109866664,
+      "persistent_rag_attention_mass_mean": 0.01410777675822222,
+      "persistent_rag_mass_calls": 120,
+      "rag_attention_mass": 0.0,
+      "rag_attention_mass_mean": 0.0,
+      "rag_mass_calls": 0,
+      "reinject_rope_injected_frames": 220,
+      "reinject_rope_injection_calls": 120,
+      "retrieval_calls": 140,
+      "retrieval_hits": 120,
+      "retrieved_tokens": 193600,
+      "stored_entries": 260,
+      "stored_scene_entries": 40
+    }
+  }
+}

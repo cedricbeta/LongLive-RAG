@@ -1,0 +1,11 @@
+[0,1,2,3,4,5,6,7,8,9,10,11] Shot 0 starts low near the concrete. The skateboarder rolls quickly from left to right and pumps down the curved bowl wall.
+[12] The camera cuts to another shot of the same continuous event. Shot 1 cuts to a tracking side view. The camera pans fast as the skateboarder carves up the opposite wall.
+[13,14,15,16,17,18,19,20,21,22,23] Shot 1 cuts to a tracking side view. The camera pans fast as the skateboarder carves up the opposite wall.
+[24] The camera cuts to another shot of the same continuous event. Shot 2 switches to an overhead angle. The skateboarder snaps a small ollie near the lip and lands back into the bowl.
+[25,26,27,28,29,30,31,32,33,34,35] Shot 2 switches to an overhead angle. The skateboarder snaps a small ollie near the lip and lands back into the bowl.
+[36] The camera cuts to another shot of the same continuous event. Shot 3 cuts behind the rider. The camera follows as the skateboarder accelerates toward a painted wall and leans into a sharp turn.
+[37,38,39,40,41,42,43,44,45,46,47] Shot 3 cuts behind the rider. The camera follows as the skateboarder accelerates toward a painted wall and leans into a sharp turn.
+[48] The camera cuts to another shot of the same continuous event. Shot 4 uses a telephoto view from across the bowl. The skateboarder crosses frame at speed and the background streaks with motion.
+[49,50,51,52,53] Shot 4 uses a telephoto view from across the bowl. The skateboarder crosses frame at speed and the background streaks with motion.
+[54] The camera cuts to another shot of the same continuous event. Shot 5 ends in a front three-quarter view. The skateboarder rolls out of the trick, bends at the knees, and steadies the board.
+[55,56,57,58,59] Shot 5 ends in a front three-quarter view. The skateboarder rolls out of the trick, bends at the knees, and steadies the board.

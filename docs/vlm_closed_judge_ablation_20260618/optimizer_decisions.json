@@ -1,0 +1,1078 @@
+{
+  "african_savanna": {
+    "decision": {
+      "global_invariant_additions": [
+        "The same African savanna remains visible with golden grass, acacia trees, distant hills, warm daylight, and the same group of large savanna animals, viewed from inside a safari vehicle with visible interior frame and windshield bars."
+      ],
+      "kv_anchor_plan": [
+        {
+          "boundary_shot_index": 1,
+          "decoded_frame_indices": [
+            0
+          ],
+          "rationale": "Frame 0 from Shot 0 provides the initial, consistent vehicle-based perspective that must be preserved across all shots."
+        },
+        {
+          "boundary_shot_index": 2,
+          "decoded_frame_indices": [
+            0,
+            95
+          ],
+          "rationale": "Frames 0 and 95 from Shot 0 and Shot 1 respectively, both show the vehicle interior and the elephant from the same perspective, ensuring continuity."
+        },
+        {
+          "boundary_shot_index": 3,
+          "decoded_frame_indices": [
+            0,
+            95
+          ],
+          "rationale": "Frames 0, 95, and 96 from Shot 0, Shot 1, and Shot 2 respectively, all maintain the vehicle interior and the elephant's position, preserving the viewpoint."
+        },
+        {
+          "boundary_shot_index": 4,
+          "decoded_frame_indices": [
+            0,
+            95
+          ],
+          "rationale": "Frames 0, 95, 96, and 191 from Shot 0, Shot 1, Shot 2, and Shot 3 respectively, all show the vehicle interior and the elephant from the same perspective, ensuring continuity."
+        },
+        {
+          "boundary_shot_index": 5,
+          "decoded_frame_indices": [
+            0,
+            95
+          ],
+          "rationale": "Frames 0, 95, 96, 191, and 192 from Shot 0, Shot 1, Shot 2, Shot 3, and Shot 4 respectively, all maintain the vehicle interior and the elephant's position, preserving the viewpoint."
+        },
+        {
+          "boundary_shot_index": 6,
+          "decoded_frame_indices": [
+            0,
+            95
+          ],
+          "rationale": "Frames 0, 95, 96, 191, 192, and 239 from Shot 0, Shot 1, Shot 2, Shot 3, Shot 4, and Shot 5 respectively, all show the vehicle interior and the elephant from the same perspective, ensuring continuity."
+        },
+        {
+          "boundary_shot_index": 7,
+          "decoded_frame_indices": [
+            0,
+            95
+          ],
+          "rationale": "Frames 0, 95, 96, 191, 192, 239, and 240 from Shot 0, Shot 1, Shot 2, Shot 3, Shot 4, Shot 5, and Shot 6 respectively, all maintain the vehicle interior and the elephant's position, preserving the viewpoint."
+        }
+      ],
+      "per_shot_additions": [
+        {
+          "rationale": "Establishes the consistent viewpoint for the entire sequence.",
+          "shot_index": 0,
+          "text": "The camera is mounted inside a safari vehicle, as indicated by the visible interior frame and windshield bars, lending a voyeuristic yet immersive perspective."
+        },
+        {
+          "rationale": "Prevents the introduction of an external perspective that breaks the established viewpoint.",
+          "shot_index": 1,
+          "text": "The camera perspective remains from inside the safari vehicle, with visible interior frame and windshield bars, maintaining the voyeuristic yet immersive viewpoint."
+        },
+        {
+          "rationale": "Ensures continuity of the vehicle-based viewpoint.",
+          "shot_index": 2,
+          "text": "The camera remains inside the safari vehicle, with visible interior frame and windshield bars, maintaining the voyeuristic yet immersive perspective."
+        },
+        {
+          "rationale": "Maintains the established viewpoint.",
+          "shot_index": 3,
+          "text": "The camera remains inside the safari vehicle, with visible interior frame and windshield bars, maintaining the voyeuristic yet immersive perspective."
+        },
+        {
+          "rationale": "Preserves the consistent viewpoint.",
+          "shot_index": 4,
+          "text": "The camera remains inside the safari vehicle, with visible interior frame and windshield bars, maintaining the voyeuristic yet immersive perspective."
+        },
+        {
+          "rationale": "Keeps the viewpoint consistent.",
+          "shot_index": 5,
+          "text": "The camera remains inside the safari vehicle, with visible interior frame and windshield bars, maintaining the voyeuristic yet immersive perspective."
+        },
+        {
+          "rationale": "Ensures the viewpoint remains unchanged.",
+          "shot_index": 6,
+          "text": "The camera remains inside the safari vehicle, with visible interior frame and windshield bars, maintaining the voyeuristic yet immersive perspective."
+        },
+        {
+          "rationale": "Maintains the established viewpoint throughout.",
+          "shot_index": 7,
+          "text": "The camera remains inside the safari vehicle, with visible interior frame and windshield bars, maintaining the voyeuristic yet immersive perspective."
+        }
+      ],
+      "stop_rule": "one bounded refinement round",
+      "which_cut_broke": {
+        "cut_index": 1,
+        "how": "Shot 1 introduces a filmmaker and camera equipment, breaking the initial immersive, voyeuristic perspective from inside the vehicle established in Shot 0."
+      }
+    },
+    "frames_shown": [
+      {
+        "end_frame": 96,
+        "paths": [
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/african_savanna/shot00_frame00_idx0000.png",
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/african_savanna/shot00_frame01_idx0095.png"
+        ],
+        "sampled_frame_indices": [
+          0,
+          95
+        ],
+        "shot_index": 0,
+        "start_frame": 0
+      },
+      {
+        "end_frame": 192,
+        "paths": [
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/african_savanna/shot01_frame00_idx0096.png",
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/african_savanna/shot01_frame01_idx0191.png"
+        ],
+        "sampled_frame_indices": [
+          96,
+          191
+        ],
+        "shot_index": 1,
+        "start_frame": 96
+      },
+      {
+        "end_frame": 240,
+        "paths": [
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/african_savanna/shot02_frame00_idx0192.png",
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/african_savanna/shot02_frame01_idx0239.png"
+        ],
+        "sampled_frame_indices": [
+          192,
+          239
+        ],
+        "shot_index": 2,
+        "start_frame": 192
+      },
+      {
+        "end_frame": 288,
+        "paths": [
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/african_savanna/shot03_frame00_idx0240.png",
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/african_savanna/shot03_frame01_idx0287.png"
+        ],
+        "sampled_frame_indices": [
+          240,
+          287
+        ],
+        "shot_index": 3,
+        "start_frame": 240
+      },
+      {
+        "end_frame": 336,
+        "paths": [
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/african_savanna/shot04_frame00_idx0288.png",
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/african_savanna/shot04_frame01_idx0335.png"
+        ],
+        "sampled_frame_indices": [
+          288,
+          335
+        ],
+        "shot_index": 4,
+        "start_frame": 288
+      },
+      {
+        "end_frame": 384,
+        "paths": [
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/african_savanna/shot05_frame00_idx0336.png",
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/african_savanna/shot05_frame01_idx0383.png"
+        ],
+        "sampled_frame_indices": [
+          336,
+          383
+        ],
+        "shot_index": 5,
+        "start_frame": 336
+      },
+      {
+        "end_frame": 432,
+        "paths": [
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/african_savanna/shot06_frame00_idx0384.png",
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/african_savanna/shot06_frame01_idx0431.png"
+        ],
+        "sampled_frame_indices": [
+          384,
+          431
+        ],
+        "shot_index": 6,
+        "start_frame": 384
+      },
+      {
+        "end_frame": 480,
+        "paths": [
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/african_savanna/shot07_frame00_idx0432.png",
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/african_savanna/shot07_frame01_idx0479.png"
+        ],
+        "sampled_frame_indices": [
+          432,
+          479
+        ],
+        "shot_index": 7,
+        "start_frame": 432
+      }
+    ],
+    "kv_candidates": {
+      "1": [
+        0
+      ],
+      "2": [
+        0,
+        95,
+        96
+      ],
+      "3": [
+        0,
+        95,
+        96,
+        191,
+        192
+      ],
+      "4": [
+        0,
+        95,
+        96,
+        191,
+        192,
+        239,
+        240
+      ],
+      "5": [
+        0,
+        95,
+        96,
+        191,
+        192,
+        239,
+        240,
+        287,
+        288
+      ],
+      "6": [
+        0,
+        95,
+        96,
+        191,
+        192,
+        239,
+        240,
+        287,
+        288,
+        335,
+        336
+      ],
+      "7": [
+        0,
+        95,
+        96,
+        191,
+        192,
+        239,
+        240,
+        287,
+        288,
+        335,
+        336,
+        383,
+        384
+      ]
+    },
+    "sanitization_notes": [],
+    "transcript": "docs/vlm_closed_judge_ablation_20260618/qwen3_optimizer/transcripts/african_savanna.json"
+  },
+  "brown_bear_river": {
+    "decision": {
+      "global_invariant_additions": [
+        "The bear\u2019s movement is continuous and natural, without artificial digital interventions."
+      ],
+      "kv_anchor_plan": [
+        {
+          "boundary_shot_index": 1,
+          "decoded_frame_indices": [
+            0
+          ],
+          "rationale": "Frame 0 from shot 0 provides a strong, consistent anchor for the bear\u2019s emergence from the river, which is the starting point of the narrative arc."
+        }
+      ],
+      "per_shot_additions": [
+        {
+          "rationale": "Shot 4 introduces digital overlays (vertical bars, yellow border, red dotted outline, 3D mesh) that contradict the established documentary realism and immersive style of the entire sequence. These elements break the naturalistic tone and must be removed to preserve cross-shot consistency.",
+          "shot_index": 4,
+          "text": "The video maintains a naturalistic, documentary style without digital overlays or artificial enhancements."
+        }
+      ],
+      "stop_rule": "one bounded refinement round",
+      "which_cut_broke": {
+        "cut_index": 4,
+        "how": "Introduces digital overlays breaking immersion and contradicting documentary realism"
+      }
+    },
+    "frames_shown": [
+      {
+        "end_frame": 96,
+        "paths": [
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/brown_bear_river/shot00_frame00_idx0000.png",
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/brown_bear_river/shot00_frame01_idx0095.png"
+        ],
+        "sampled_frame_indices": [
+          0,
+          95
+        ],
+        "shot_index": 0,
+        "start_frame": 0
+      },
+      {
+        "end_frame": 192,
+        "paths": [
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/brown_bear_river/shot01_frame00_idx0096.png",
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/brown_bear_river/shot01_frame01_idx0191.png"
+        ],
+        "sampled_frame_indices": [
+          96,
+          191
+        ],
+        "shot_index": 1,
+        "start_frame": 96
+      },
+      {
+        "end_frame": 240,
+        "paths": [
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/brown_bear_river/shot02_frame00_idx0192.png",
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/brown_bear_river/shot02_frame01_idx0239.png"
+        ],
+        "sampled_frame_indices": [
+          192,
+          239
+        ],
+        "shot_index": 2,
+        "start_frame": 192
+      },
+      {
+        "end_frame": 288,
+        "paths": [
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/brown_bear_river/shot03_frame00_idx0240.png",
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/brown_bear_river/shot03_frame01_idx0287.png"
+        ],
+        "sampled_frame_indices": [
+          240,
+          287
+        ],
+        "shot_index": 3,
+        "start_frame": 240
+      },
+      {
+        "end_frame": 336,
+        "paths": [
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/brown_bear_river/shot04_frame00_idx0288.png",
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/brown_bear_river/shot04_frame01_idx0335.png"
+        ],
+        "sampled_frame_indices": [
+          288,
+          335
+        ],
+        "shot_index": 4,
+        "start_frame": 288
+      },
+      {
+        "end_frame": 384,
+        "paths": [
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/brown_bear_river/shot05_frame00_idx0336.png",
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/brown_bear_river/shot05_frame01_idx0383.png"
+        ],
+        "sampled_frame_indices": [
+          336,
+          383
+        ],
+        "shot_index": 5,
+        "start_frame": 336
+      },
+      {
+        "end_frame": 432,
+        "paths": [
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/brown_bear_river/shot06_frame00_idx0384.png",
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/brown_bear_river/shot06_frame01_idx0431.png"
+        ],
+        "sampled_frame_indices": [
+          384,
+          431
+        ],
+        "shot_index": 6,
+        "start_frame": 384
+      },
+      {
+        "end_frame": 480,
+        "paths": [
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/brown_bear_river/shot07_frame00_idx0432.png",
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/brown_bear_river/shot07_frame01_idx0479.png"
+        ],
+        "sampled_frame_indices": [
+          432,
+          479
+        ],
+        "shot_index": 7,
+        "start_frame": 432
+      }
+    ],
+    "kv_candidates": {
+      "1": [
+        0
+      ],
+      "2": [
+        0,
+        95,
+        96
+      ],
+      "3": [
+        0,
+        95,
+        96,
+        191,
+        192
+      ],
+      "4": [
+        0,
+        95,
+        96,
+        191,
+        192,
+        239,
+        240
+      ],
+      "5": [
+        0,
+        95,
+        96,
+        191,
+        192,
+        239,
+        240,
+        287,
+        288
+      ],
+      "6": [
+        0,
+        95,
+        96,
+        191,
+        192,
+        239,
+        240,
+        287,
+        288,
+        335,
+        336
+      ],
+      "7": [
+        0,
+        95,
+        96,
+        191,
+        192,
+        239,
+        240,
+        287,
+        288,
+        335,
+        336,
+        383,
+        384
+      ]
+    },
+    "sanitization_notes": [
+      "optimizer omitted boundaries with eligible candidates: [2, 3, 4, 5, 6, 7]; left unforced"
+    ],
+    "transcript": "docs/vlm_closed_judge_ablation_20260618/qwen3_optimizer/transcripts/brown_bear_river.json"
+  },
+  "shimmering_puzzle_surface": {
+    "decision": {
+      "global_invariant_additions": [
+        "The same festive indoor setting with a decorated Christmas tree and scattered green puzzle pieces remains consistent across all shots."
+      ],
+      "kv_anchor_plan": [
+        {
+          "boundary_shot_index": 1,
+          "decoded_frame_indices": [
+            0
+          ],
+          "rationale": "Frame 0 establishes the initial environment with the puzzle pieces and tree, serving as a strong anchor for continuity."
+        },
+        {
+          "boundary_shot_index": 2,
+          "decoded_frame_indices": [
+            0,
+            95
+          ],
+          "rationale": "Frames 0 and 95 show the same puzzle pieces and tree, reinforcing the environment before the phone call begins."
+        },
+        {
+          "boundary_shot_index": 3,
+          "decoded_frame_indices": [
+            0,
+            95
+          ],
+          "rationale": "Frames 0, 95, and 96 maintain the same environment and puzzle pieces, ensuring continuity despite the phone model change."
+        },
+        {
+          "boundary_shot_index": 4,
+          "decoded_frame_indices": [
+            0,
+            95
+          ],
+          "rationale": "Frames 0, 95, 96, and 191 preserve the environment and puzzle pieces, ensuring continuity as the scene transitions to the outdoor setting."
+        },
+        {
+          "boundary_shot_index": 5,
+          "decoded_frame_indices": [
+            0,
+            95
+          ],
+          "rationale": "Frames 0, 95, 96, 191, and 192 maintain the environment and puzzle pieces, ensuring continuity as the scene transitions to the outdoor setting."
+        }
+      ],
+      "per_shot_additions": [
+        {
+          "rationale": "Establishes the core environment for continuity across all shots.",
+          "shot_index": 0,
+          "text": "The scene is set indoors on a gray carpeted floor with scattered green puzzle pieces and a decorated Christmas tree in the background."
+        },
+        {
+          "rationale": "Reinforces the consistent setting despite Santa's phone call.",
+          "shot_index": 1,
+          "text": "The scene remains indoors with the same gray carpeted floor, green puzzle pieces, and a decorated Christmas tree in the background."
+        },
+        {
+          "rationale": "Maintains environmental consistency as Santa continues his phone conversation.",
+          "shot_index": 2,
+          "text": "The scene continues indoors with the same gray carpeted floor, green puzzle pieces, and a decorated Christmas tree in the background."
+        },
+        {
+          "rationale": "Ensures continuity despite the phone model change by anchoring to the environment.",
+          "shot_index": 3,
+          "text": "The scene remains indoors with the same gray carpeted floor, green puzzle pieces, and a decorated Christmas tree in the background."
+        },
+        {
+          "rationale": "Introduces a new location while preserving the visual texture of the floor for continuity.",
+          "shot_index": 4,
+          "text": "The scene transitions to an outdoor festive setting with decorated Christmas trees and a paved pathway, maintaining the same gray carpeted floor texture underfoot."
+        },
+        {
+          "rationale": "Preserves the outdoor setting while keeping the narrative flow.",
+          "shot_index": 5,
+          "text": "The scene continues outdoors with the same decorated Christmas trees and paved pathway, maintaining the festive atmosphere."
+        }
+      ],
+      "stop_rule": "one bounded refinement round",
+      "which_cut_broke": {
+        "cut_index": 3,
+        "how": "Shot 3 introduces a new phone model with visible keypad, breaking continuity from Shot 2's cordless phone."
+      }
+    },
+    "frames_shown": [
+      {
+        "end_frame": 96,
+        "paths": [
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/shimmering_puzzle_surface/shot00_frame00_idx0000.png",
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/shimmering_puzzle_surface/shot00_frame01_idx0095.png"
+        ],
+        "sampled_frame_indices": [
+          0,
+          95
+        ],
+        "shot_index": 0,
+        "start_frame": 0
+      },
+      {
+        "end_frame": 192,
+        "paths": [
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/shimmering_puzzle_surface/shot01_frame00_idx0096.png",
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/shimmering_puzzle_surface/shot01_frame01_idx0191.png"
+        ],
+        "sampled_frame_indices": [
+          96,
+          191
+        ],
+        "shot_index": 1,
+        "start_frame": 96
+      },
+      {
+        "end_frame": 288,
+        "paths": [
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/shimmering_puzzle_surface/shot02_frame00_idx0192.png",
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/shimmering_puzzle_surface/shot02_frame01_idx0287.png"
+        ],
+        "sampled_frame_indices": [
+          192,
+          287
+        ],
+        "shot_index": 2,
+        "start_frame": 192
+      },
+      {
+        "end_frame": 384,
+        "paths": [
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/shimmering_puzzle_surface/shot03_frame00_idx0288.png",
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/shimmering_puzzle_surface/shot03_frame01_idx0383.png"
+        ],
+        "sampled_frame_indices": [
+          288,
+          383
+        ],
+        "shot_index": 3,
+        "start_frame": 288
+      },
+      {
+        "end_frame": 432,
+        "paths": [
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/shimmering_puzzle_surface/shot04_frame00_idx0384.png",
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/shimmering_puzzle_surface/shot04_frame01_idx0431.png"
+        ],
+        "sampled_frame_indices": [
+          384,
+          431
+        ],
+        "shot_index": 4,
+        "start_frame": 384
+      },
+      {
+        "end_frame": 480,
+        "paths": [
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/shimmering_puzzle_surface/shot05_frame00_idx0432.png",
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/shimmering_puzzle_surface/shot05_frame01_idx0479.png"
+        ],
+        "sampled_frame_indices": [
+          432,
+          479
+        ],
+        "shot_index": 5,
+        "start_frame": 432
+      }
+    ],
+    "kv_candidates": {
+      "1": [
+        0
+      ],
+      "2": [
+        0,
+        95,
+        96
+      ],
+      "3": [
+        0,
+        95,
+        96,
+        191,
+        192
+      ],
+      "4": [
+        0,
+        95,
+        96,
+        191,
+        192,
+        287,
+        288
+      ],
+      "5": [
+        0,
+        95,
+        96,
+        191,
+        192,
+        287,
+        288,
+        383,
+        384
+      ]
+    },
+    "sanitization_notes": [],
+    "transcript": "docs/vlm_closed_judge_ablation_20260618/qwen3_optimizer/transcripts/shimmering_puzzle_surface.json"
+  },
+  "skateboarder_high_motion": {
+    "decision": {
+      "global_invariant_additions": [
+        "The skateboarder maintains consistent motion direction and trajectory through the bowl across all shots."
+      ],
+      "kv_anchor_plan": [
+        {
+          "boundary_shot_index": 1,
+          "decoded_frame_indices": [
+            0
+          ],
+          "rationale": "Frame 0 anchors the initial low-angle perspective and motion direction for Shot 1."
+        },
+        {
+          "boundary_shot_index": 2,
+          "decoded_frame_indices": [
+            95
+          ],
+          "rationale": "Frame 95 captures the rider at the bowl's lip, linking Shot 1's motion to Shot 2's action."
+        },
+        {
+          "boundary_shot_index": 3,
+          "decoded_frame_indices": [
+            191
+          ],
+          "rationale": "Frame 191 shows the rider mid-carve, establishing spatial continuity for Shot 3."
+        },
+        {
+          "boundary_shot_index": 4,
+          "decoded_frame_indices": [
+            287
+          ],
+          "rationale": "Frame 287 captures the rider at the lip again, anchoring Shot 4's telephoto perspective."
+        }
+      ],
+      "per_shot_additions": [
+        {
+          "rationale": "Establishes initial direction for continuity into Shot 1.",
+          "shot_index": 0,
+          "text": "The skateboarder rolls from left to right, initiating motion toward the bowl's curved wall."
+        },
+        {
+          "rationale": "Reinforces motion direction from Shot 0 and sets up for Shot 2's lip approach.",
+          "shot_index": 1,
+          "text": "The camera pans fast as the skateboarder carves up the opposite wall, continuing the left-to-right motion."
+        },
+        {
+          "rationale": "Explicitly links Shot 2 to Shot 1's trajectory and prevents spatial dislocation.",
+          "shot_index": 2,
+          "text": "The skateboarder approaches the lip from the opposite wall, maintaining left-to-right motion."
+        },
+        {
+          "rationale": "Maintains motion continuity from Shot 2 into Shot 4.",
+          "shot_index": 3,
+          "text": "The skateboarder accelerates toward the painted wall, continuing the left-to-right motion."
+        }
+      ],
+      "stop_rule": "one bounded refinement round",
+      "which_cut_broke": {
+        "cut_index": 2,
+        "how": "Shot 2's overhead angle breaks continuity with Shot 1's side tracking by omitting the rider's motion direction and spatial relationship to the bowl's lip."
+      }
+    },
+    "frames_shown": [
+      {
+        "end_frame": 96,
+        "paths": [
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/skateboarder_high_motion/shot00_frame00_idx0000.png",
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/skateboarder_high_motion/shot00_frame01_idx0095.png"
+        ],
+        "sampled_frame_indices": [
+          0,
+          95
+        ],
+        "shot_index": 0,
+        "start_frame": 0
+      },
+      {
+        "end_frame": 192,
+        "paths": [
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/skateboarder_high_motion/shot01_frame00_idx0096.png",
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/skateboarder_high_motion/shot01_frame01_idx0191.png"
+        ],
+        "sampled_frame_indices": [
+          96,
+          191
+        ],
+        "shot_index": 1,
+        "start_frame": 96
+      },
+      {
+        "end_frame": 288,
+        "paths": [
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/skateboarder_high_motion/shot02_frame00_idx0192.png",
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/skateboarder_high_motion/shot02_frame01_idx0287.png"
+        ],
+        "sampled_frame_indices": [
+          192,
+          287
+        ],
+        "shot_index": 2,
+        "start_frame": 192
+      },
+      {
+        "end_frame": 384,
+        "paths": [
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/skateboarder_high_motion/shot03_frame00_idx0288.png",
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/skateboarder_high_motion/shot03_frame01_idx0383.png"
+        ],
+        "sampled_frame_indices": [
+          288,
+          383
+        ],
+        "shot_index": 3,
+        "start_frame": 288
+      },
+      {
+        "end_frame": 432,
+        "paths": [
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/skateboarder_high_motion/shot04_frame00_idx0384.png",
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/skateboarder_high_motion/shot04_frame01_idx0431.png"
+        ],
+        "sampled_frame_indices": [
+          384,
+          431
+        ],
+        "shot_index": 4,
+        "start_frame": 384
+      },
+      {
+        "end_frame": 480,
+        "paths": [
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/skateboarder_high_motion/shot05_frame00_idx0432.png",
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/skateboarder_high_motion/shot05_frame01_idx0479.png"
+        ],
+        "sampled_frame_indices": [
+          432,
+          479
+        ],
+        "shot_index": 5,
+        "start_frame": 432
+      }
+    ],
+    "kv_candidates": {
+      "1": [
+        0
+      ],
+      "2": [
+        0,
+        95,
+        96
+      ],
+      "3": [
+        0,
+        95,
+        96,
+        191,
+        192
+      ],
+      "4": [
+        0,
+        95,
+        96,
+        191,
+        192,
+        287,
+        288
+      ],
+      "5": [
+        0,
+        95,
+        96,
+        191,
+        192,
+        287,
+        288,
+        383,
+        384
+      ]
+    },
+    "sanitization_notes": [
+      "optimizer omitted boundaries with eligible candidates: [5]; left unforced"
+    ],
+    "transcript": "docs/vlm_closed_judge_ablation_20260618/qwen3_optimizer/transcripts/skateboarder_high_motion.json"
+  },
+  "sunlit_balcony_tour": {
+    "decision": {
+      "global_invariant_additions": [
+        "The host wears a dark T-shirt with a green logo throughout the tour."
+      ],
+      "kv_anchor_plan": [
+        {
+          "boundary_shot_index": 1,
+          "decoded_frame_indices": [
+            0
+          ],
+          "rationale": "Frame 0 shows the host in the dark T-shirt, establishing the correct visual invariant."
+        },
+        {
+          "boundary_shot_index": 2,
+          "decoded_frame_indices": [
+            95
+          ],
+          "rationale": "Frame 95 shows the host in the dark T-shirt, maintaining continuity."
+        },
+        {
+          "boundary_shot_index": 3,
+          "decoded_frame_indices": [
+            191
+          ],
+          "rationale": "Frame 191 shows the host in the dark T-shirt, maintaining continuity."
+        },
+        {
+          "boundary_shot_index": 4,
+          "decoded_frame_indices": [
+            287
+          ],
+          "rationale": "Frame 287 shows the host in the dark T-shirt, maintaining continuity."
+        },
+        {
+          "boundary_shot_index": 5,
+          "decoded_frame_indices": [
+            383
+          ],
+          "rationale": "Frame 383 shows the host in the dark T-shirt, maintaining continuity."
+        }
+      ],
+      "per_shot_additions": [
+        {
+          "rationale": "Corrects initial description to match actual shirt color.",
+          "shot_index": 0,
+          "text": "The host wears a dark T-shirt with a green logo."
+        },
+        {
+          "rationale": "Maintains consistency with the host's attire.",
+          "shot_index": 1,
+          "text": "The host wears a dark T-shirt with a green logo."
+        },
+        {
+          "rationale": "Maintains consistency with the host's attire.",
+          "shot_index": 2,
+          "text": "The host wears a dark T-shirt with a green logo."
+        },
+        {
+          "rationale": "Corrects description to match actual shirt color and maintains continuity.",
+          "shot_index": 3,
+          "text": "The host wears a dark T-shirt with a green logo."
+        },
+        {
+          "rationale": "Maintains consistency with the host's attire.",
+          "shot_index": 4,
+          "text": "The host wears a dark T-shirt with a green logo."
+        },
+        {
+          "rationale": "Maintains consistency with the host's attire.",
+          "shot_index": 5,
+          "text": "The host wears a dark T-shirt with a green logo."
+        }
+      ],
+      "stop_rule": "one bounded refinement round",
+      "which_cut_broke": {
+        "cut_index": 3,
+        "how": "Host's shirt color changed from white V-neck to dark T-shirt, breaking visual continuity."
+      }
+    },
+    "frames_shown": [
+      {
+        "end_frame": 96,
+        "paths": [
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/sunlit_balcony_tour/shot00_frame00_idx0000.png",
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/sunlit_balcony_tour/shot00_frame01_idx0095.png"
+        ],
+        "sampled_frame_indices": [
+          0,
+          95
+        ],
+        "shot_index": 0,
+        "start_frame": 0
+      },
+      {
+        "end_frame": 192,
+        "paths": [
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/sunlit_balcony_tour/shot01_frame00_idx0096.png",
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/sunlit_balcony_tour/shot01_frame01_idx0191.png"
+        ],
+        "sampled_frame_indices": [
+          96,
+          191
+        ],
+        "shot_index": 1,
+        "start_frame": 96
+      },
+      {
+        "end_frame": 288,
+        "paths": [
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/sunlit_balcony_tour/shot02_frame00_idx0192.png",
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/sunlit_balcony_tour/shot02_frame01_idx0287.png"
+        ],
+        "sampled_frame_indices": [
+          192,
+          287
+        ],
+        "shot_index": 2,
+        "start_frame": 192
+      },
+      {
+        "end_frame": 384,
+        "paths": [
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/sunlit_balcony_tour/shot03_frame00_idx0288.png",
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/sunlit_balcony_tour/shot03_frame01_idx0383.png"
+        ],
+        "sampled_frame_indices": [
+          288,
+          383
+        ],
+        "shot_index": 3,
+        "start_frame": 288
+      },
+      {
+        "end_frame": 432,
+        "paths": [
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/sunlit_balcony_tour/shot04_frame00_idx0384.png",
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/sunlit_balcony_tour/shot04_frame01_idx0431.png"
+        ],
+        "sampled_frame_indices": [
+          384,
+          431
+        ],
+        "shot_index": 4,
+        "start_frame": 384
+      },
+      {
+        "end_frame": 480,
+        "paths": [
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/sunlit_balcony_tour/shot05_frame00_idx0432.png",
+          "docs/vlm_closed_judge_ablation_20260618/optimizer_frames/sunlit_balcony_tour/shot05_frame01_idx0479.png"
+        ],
+        "sampled_frame_indices": [
+          432,
+          479
+        ],
+        "shot_index": 5,
+        "start_frame": 432
+      }
+    ],
+    "kv_candidates": {
+      "1": [
+        0
+      ],
+      "2": [
+        0,
+        95,
+        96
+      ],
+      "3": [
+        0,
+        95,
+        96,
+        191,
+        192
+      ],
+      "4": [
+        0,
+        95,
+        96,
+        191,
+        192,
+        287,
+        288
+      ],
+      "5": [
+        0,
+        95,
+        96,
+        191,
+        192,
+        287,
+        288,
+        383,
+        384
+      ]
+    },
+    "sanitization_notes": [],
+    "transcript": "docs/vlm_closed_judge_ablation_20260618/qwen3_optimizer/transcripts/sunlit_balcony_tour.json"
+  }
+}

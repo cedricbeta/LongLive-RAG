@@ -1,0 +1,12 @@
+{
+  "block_indices": [
+    2,
+    3
+  ],
+  "caption": "Shot 1 cuts to a tracking side view. The camera pans fast as the skateboarder carves up the opposite wall. Maintain invariant: The camera pans fast as the skateboarder carves up the opposite wall, continuing the left-to-right motion.",
+  "filename": "1.mp4",
+  "num_blocks": 2,
+  "relative_path": "skateboarder_high_motion/1.mp4",
+  "title": "Shot 1",
+  "video_path": ""
+}

@@ -1,0 +1,77 @@
+{
+  "gpu_policy": "use idle headroom: util <= 15% and enough free memory; idle shared allocations are allowed",
+  "observed_heavy_stage_gpu_assignment": {
+    "both_generation": {
+      "physical_gpu": 2,
+      "source": "operator run observation after GPU0 became busy; Wan log records elapsed time but not CUDA id"
+    },
+    "kv_only_generation": {
+      "physical_gpu": 0,
+      "source": "operator run observation during resumed render; Wan log records elapsed time but not CUDA id"
+    },
+    "numeric_final_rerun": {
+      "physical_gpu": 2,
+      "source": "final cached runs launched with CUDA_VISIBLE_DEVICES=2; nvidia-smi showed low-util GPU2 memory increase during scorer load"
+    },
+    "prompt_only_generation": {
+      "physical_gpu": 0,
+      "source": "operator run observation during first full render; Wan log records elapsed time but not CUDA id"
+    },
+    "qwen3_optimizer": {
+      "physical_gpu": 2,
+      "source": "qwen3_optimizer.launch.env CUDA_VISIBLE_DEVICES=2"
+    }
+  },
+  "pre_run_state_from_final_cached_ledger": [
+    {
+      "index": 0,
+      "memory_free_mib": 77792,
+      "memory_total_mib": 81920,
+      "memory_used_mib": 3363,
+      "name": "NVIDIA A100 80GB PCIe",
+      "process_users": [
+        "janamset"
+      ],
+      "utilization_gpu_percent": 96,
+      "utilization_memory_percent": 20
+    },
+    {
+      "index": 1,
+      "memory_free_mib": 77796,
+      "memory_total_mib": 81920,
+      "memory_used_mib": 3359,
+      "name": "NVIDIA A100 80GB PCIe",
+      "process_users": [
+        "janamset"
+      ],
+      "utilization_gpu_percent": 96,
+      "utilization_memory_percent": 20
+    },
+    {
+      "index": 2,
+      "memory_free_mib": 80105,
+      "memory_total_mib": 81920,
+      "memory_used_mib": 1049,
+      "name": "NVIDIA A100 80GB PCIe",
+      "process_users": [
+        "janamset"
+      ],
+      "utilization_gpu_percent": 0,
+      "utilization_memory_percent": 0
+    },
+    {
+      "index": 3,
+      "memory_free_mib": 78380,
+      "memory_total_mib": 81920,
+      "memory_used_mib": 2775,
+      "name": "NVIDIA A100 80GB PCIe",
+      "process_users": [
+        "janamset"
+      ],
+      "utilization_gpu_percent": 100,
+      "utilization_memory_percent": 21
+    }
+  ],
+  "resume_note": "Final ledger was rebuilt from cached generation/judge/numeric outputs; generation elapsed times are recovered from Wan tqdm logs and GPU IDs are preserved here as operator observations from the run.",
+  "timestamp_utc": "2026-06-18T10:43:27+00:00"
+}

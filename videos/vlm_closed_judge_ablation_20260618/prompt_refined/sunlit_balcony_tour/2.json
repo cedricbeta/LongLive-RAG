@@ -1,0 +1,12 @@
+{
+  "block_indices": [
+    4,
+    5
+  ],
+  "caption": "Shot 2 tracks toward the glass balcony door. The host turns his shoulders toward the bright doorway and points outside. Maintain invariant: The host wears a dark T-shirt with a green logo.",
+  "filename": "2.mp4",
+  "num_blocks": 2,
+  "relative_path": "sunlit_balcony_tour/2.mp4",
+  "title": "Shot 2",
+  "video_path": ""
+}

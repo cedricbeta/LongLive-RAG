@@ -1,0 +1,12 @@
+{
+  "block_indices": [
+    4,
+    5
+  ],
+  "caption": "Shot 2 switches to an overhead angle. The skateboarder snaps a small ollie near the lip and lands back into the bowl. Maintain invariant: The skateboarder approaches the lip from the opposite wall, maintaining left-to-right motion.",
+  "filename": "2.mp4",
+  "num_blocks": 2,
+  "relative_path": "skateboarder_high_motion/2.mp4",
+  "title": "Shot 2",
+  "video_path": ""
+}

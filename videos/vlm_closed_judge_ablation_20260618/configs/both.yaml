@@ -1,0 +1,81 @@
+model_kwargs:
+  model_name: Wan2.2-TI2V-5B
+  timestep_shift: 5.0
+  num_frame_per_block: 8
+  local_attn_size: 32
+use_ema: false
+output_folder: videos/vlm_closed_judge_ablation_20260618/both
+num_samples: 1
+save_latents_only: false
+num_output_frames: 480
+data:
+  data_path: videos/vlm_closed_judge_ablation_20260618/prompt_refined
+  image_or_video_shape:
+  - 1
+  - 480
+  - 48
+  - 44
+  - 80
+inference:
+  sampling_steps: 4
+  sink_size: 8
+  multiview_per_perspective: false
+  guidance_scale: 1.0
+  multi_shot_sink: true
+  multi_shot_rope_offset: 8
+  scene_cut_prefix: 'The camera cuts to another shot of the same continuous event. '
+  streaming_vae: true
+  async_vae: false
+  vae_decode_chunk_size: 1
+  vae_type: wan
+  vae_device: cuda:0
+  kv_rag:
+    enabled: true
+    top_k: 0
+    max_entries: 32
+    max_frames_per_entry: 1
+    max_tokens_per_entry: 1024
+    layers:
+    - 0
+    - 7
+    - 14
+    - 21
+    - 29
+    min_frame_gap: 0
+    retrieve_during_denoise: true
+    retrieve_during_recache: false
+    store_after_recache: true
+    token_policy: uniform
+    similarity: cosine
+    verbose: true
+    frame_aligned_store: true
+    require_frame_aligned: true
+    reinject_rope: true
+    persistent_logit_bias_lambda: 0.0
+    store_on_cpu: false
+    summary_prerope: true
+    summary_per_head: true
+    scene_memory_enabled: true
+    scene_memory_max_entries: 64
+    scene_score_bonus: 0.15
+    boundary_inject_anchors: 2
+    retrieval_key_mode: pooled
+    retrieval_key_centroids: 4
+    retrieval_key_top_m: 8
+    retrieval_value_mode: raw
+    scene_memory_rolling: true
+    scene_memory_injection_schedule: boundary
+    manual_anchor_plan_path: docs/vlm_closed_judge_ablation_20260618/manual_anchor_plan.json
+    attention_diagnostic: true
+  sparse_long_multishot: true
+  output_folder: videos/vlm_closed_judge_ablation_20260618/both
+  filename_prefix: both
+  filename_from_sample_name: true
+checkpoints:
+  generator_ckpt: checkpoints/longlive2_5b/longlive2_merged_generator.pt
+logging:
+  seed: 0
+data_path: videos/vlm_closed_judge_ablation_20260618/prompt_refined
+seed: 0
+sparse_long_multishot: true
+filename_from_sample_name: true
