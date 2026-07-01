@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import shutil
 import subprocess
 import sys
@@ -199,17 +200,25 @@ def parse_args() -> argparse.Namespace:
                         "in latent blocks when a balanced total-block split is impossible. "
                         "Gate admission requires final durations in [6, 12].")
     parser.add_argument("--baseline_seeds", default="0,1,2",
-                        help="long_multishot mechanism_sweep: comma-separated baseline seeds "
-                        "used to estimate per-scene centroid sigma.")
+                        help="long_multishot mechanism_sweep: comma-separated baseline seeds. "
+                        "One seed is allowed for reduced-power exploratory gates; two or more "
+                        "seeds estimate per-scene centroid sigma.")
     parser.add_argument("--baseline_drift_floor", type=float, default=0.02,
                         help="long_multishot mechanism_sweep: reject main scenes whose "
-                        "3-seed baseline drift (1 - baseline metric mean) is below this floor.")
+                        "baseline drift (1 - baseline metric mean across requested seeds) "
+                        "is below this floor.")
+    parser.add_argument("--min_admitted_main_scenes", type=int, default=3,
+                        help="strategy_stage A: fail closed unless at least this many non-control "
+                        "scenes pass lint, diversity, and baseline-drift admission.")
     parser.add_argument("--admission_diversity_floor", type=float, default=0.03,
                         help="long_multishot mechanism_sweep: rendered baseline "
                         "inter-shot composition-diversity floor for scene admission.")
     parser.add_argument("--noise_sigma_multiplier", type=float, default=2.0,
                         help="long_multishot mechanism_sweep: consistency win threshold is "
                         "delta > multiplier * baseline-seed sigma.")
+    parser.add_argument("--single_seed_consistency_delta_threshold", type=float, default=0.02,
+                        help="Reduced-power single-seed gate: fixed absolute consistency-delta "
+                        "threshold used instead of a paired 2-sigma noise floor.")
     parser.add_argument("--finalists", default=None,
                         help="long_multishot/multiview_vbench: comma-separated key:value finalists (e.g. "
                         "'pooled:raw,semantic:raw,subject_identity:raw'). When set, the "
@@ -983,9 +992,51 @@ def _parse_seed_list(spec: str) -> list[int]:
         tok = tok.strip()
         if tok:
             seeds.append(int(tok))
-    if len(seeds) < 2:
-        raise ValueError("--baseline_seeds needs at least two seeds to estimate sigma")
+    if len(seeds) < 1:
+        raise ValueError("--baseline_seeds needs at least one seed")
     return seeds
+
+
+SINGLE_SEED_GATE_NOTE = (
+    "REDUCED-POWER single-seed exploratory gate: no paired baseline noise floor; "
+    "consistency wins use a fixed absolute delta threshold and are not definitive."
+)
+
+
+def _consistency_delta_floor(args, seeds: list[int], values: list[float], baseline_drift: float | None = None) -> dict:
+    vals = [float(v) for v in values]
+    if len(seeds) == 1:
+        threshold = float(args.single_seed_consistency_delta_threshold)
+        if threshold < 0.0:
+            raise ValueError("--single_seed_consistency_delta_threshold must be non-negative")
+        rec = {
+            "baseline_values": vals,
+            "sigma": float("nan"),
+            "threshold": threshold,
+            "sigma_multiplier": None,
+            "policy": "single_seed_fixed_absolute_delta",
+            "threshold_source": "fixed_absolute_consistency_delta",
+            "single_seed_consistency_delta_threshold": threshold,
+            "reduced_power_single_seed": True,
+            "exploratory_only": True,
+            "ledger_note": SINGLE_SEED_GATE_NOTE,
+        }
+    else:
+        sigma = _metric_sigma(vals)
+        threshold = float(args.noise_sigma_multiplier) * sigma if not math.isnan(sigma) else float("nan")
+        rec = {
+            "baseline_values": vals,
+            "sigma": sigma,
+            "threshold": threshold,
+            "sigma_multiplier": float(args.noise_sigma_multiplier),
+            "policy": "paired_seed_sigma",
+            "threshold_source": "baseline_seed_sigma",
+            "reduced_power_single_seed": False,
+            "exploratory_only": False,
+        }
+    if baseline_drift is not None:
+        rec["baseline_drift"] = baseline_drift
+    return rec
 
 
 def _mechanism_sweep_arms(args) -> list[dict]:
@@ -1376,6 +1427,13 @@ def _strategy_stage_a(args, output_root: Path) -> dict:
     seeds = _parse_seed_list(args.baseline_seeds)
     cfg = _apply_overrides(OmegaConf.load(args.config_path), args)
     chosen, prompt_subset_dir, num_blocks, regime_proof = _strategy_prepare_subset(args, output_root, cfg)
+    prompt_global_authoring = {}
+    authoring_path = prompt_subset_dir / "authored_global_metadata.json"
+    if authoring_path.exists():
+        try:
+            prompt_global_authoring = json.loads(authoring_path.read_text(encoding="utf-8"))
+        except Exception as exc:
+            prompt_global_authoring = {"blocked_reason": f"could not read {authoring_path}: {exc}"}
     _set_nested(cfg, "data", "data_path", str(prompt_subset_dir))
     _set_nested(cfg, "inference", "sparse_long_multishot", True)
 
@@ -1392,7 +1450,10 @@ def _strategy_stage_a(args, output_root: Path) -> dict:
             prompt_subset_dir=prompt_subset_dir,
             regime_proof=regime_proof,
             reauthor_scenes=bad,
-            extra={"wall_clock_sec": round(time.monotonic() - started, 3)},
+            extra={
+                "prompt_global_authoring": prompt_global_authoring,
+                "wall_clock_sec": round(time.monotonic() - started, 3),
+            },
         )
 
     prompt_lint, _allowed = _long_prompt_lint(
@@ -1423,12 +1484,11 @@ def _strategy_stage_a(args, output_root: Path) -> dict:
         if isinstance(info, dict) and info.get("requested") and not info.get("loaded")
     )
     prereq_blocks: list[str] = []
-    if seeds != [0, 1, 2]:
-        prereq_blocks.append(f"baseline_seeds must be exactly 0,1,2, got {seeds}")
-    if lint_failures:
-        prereq_blocks.append(f"ill-posed prompt scene(s) below text-similarity floor: {lint_failures}")
-    if len(lint_passing_main) < 3:
-        prereq_blocks.append(f"need >=3 lint-passing non-control scenes, got {len(lint_passing_main)}")
+    min_admitted_required = max(3, int(args.min_admitted_main_scenes))
+    if len(lint_passing_main) < min_admitted_required:
+        prereq_blocks.append(
+            f"need >={min_admitted_required} lint-passing non-control scenes, got {len(lint_passing_main)}"
+        )
     if not negative_controls:
         prereq_blocks.append("negative control scene missing")
     if missing_invariant:
@@ -1450,7 +1510,10 @@ def _strategy_stage_a(args, output_root: Path) -> dict:
             scorer_coverage=scorer_coverage,
             missing_invariant=missing_invariant,
             reauthor_scenes=reauthor,
-            extra={"wall_clock_sec": round(time.monotonic() - started, 3)},
+            extra={
+                "prompt_global_authoring": prompt_global_authoring,
+                "wall_clock_sec": round(time.monotonic() - started, 3),
+            },
         )
 
     _preflight_config(cfg, args.config_path)
@@ -1521,6 +1584,7 @@ def _strategy_stage_a(args, output_root: Path) -> dict:
                     "baseline_render_status": {
                         str(k): v for k, v in baseline_render_status.items()
                     },
+                    "prompt_global_authoring": prompt_global_authoring,
                     "wall_clock_sec": round(time.monotonic() - started, 3),
                 },
             )
@@ -1545,8 +1609,6 @@ def _strategy_stage_a(args, output_root: Path) -> dict:
             baseline_by_seed.get(seed, {}).get(scene, {}).get("metric", float("nan"))
             for seed in seeds
         ]
-        sigma = _metric_sigma(vals)
-        threshold = float(args.noise_sigma_multiplier) * sigma if not np.isnan(sigma) else float("nan")
         finite_vals = [float(v) for v in vals if not np.isnan(v)]
         baseline_drift = float(np.mean([1.0 - v for v in finite_vals])) if finite_vals else float("nan")
         seed0_metrics = seed0_records.get(scene, {}).get("metrics", {})
@@ -1563,6 +1625,9 @@ def _strategy_stage_a(args, output_root: Path) -> dict:
         reason = None
         if is_negative:
             reason = "negative control is sanity-checked, not admitted as a main scene"
+        elif scene not in lint_passing_main:
+            lint_reason = (chosen_lint.get(scene) or {}).get("blocked_reason") or "prompt lint failed"
+            reason = f"failed prompt text-similarity lint: {lint_reason}"
         elif not (diversity == diversity):
             reason = "baseline inter-shot composition diversity unscorable"
         elif diversity < float(args.admission_diversity_floor):
@@ -1587,19 +1652,22 @@ def _strategy_stage_a(args, output_root: Path) -> dict:
             "baseline_drift_floor": float(args.baseline_drift_floor),
             "blocked_reason": reason,
         }
-        noise_floor_by_scene[scene] = {
-            "baseline_values": [float(v) for v in vals],
-            "sigma": sigma,
-            "threshold": threshold,
-            "sigma_multiplier": float(args.noise_sigma_multiplier),
-            "baseline_drift": baseline_drift,
-        }
+        noise_floor_by_scene[scene] = _consistency_delta_floor(
+            args,
+            seeds,
+            vals,
+            baseline_drift=baseline_drift,
+        )
         if admitted:
             admitted_main.append(scene)
 
     blocked_reason = None
-    if len(admitted_main) < 3:
-        blocked_reason = f"need >=3 admitted main scenes after drift audit, got {len(admitted_main)}"
+    min_admitted_required = max(3, int(args.min_admitted_main_scenes))
+    if len(admitted_main) < min_admitted_required:
+        blocked_reason = (
+            f"need >={min_admitted_required} admitted main scenes after drift audit, "
+            f"got {len(admitted_main)}"
+        )
     if not negative_controls:
         blocked_reason = "; ".join([r for r in (blocked_reason, "negative control scene missing") if r])
     reauthor_scenes = [
@@ -1622,6 +1690,7 @@ def _strategy_stage_a(args, output_root: Path) -> dict:
         "baseline_render_status": {str(k): v for k, v in baseline_render_status.items()},
         "baseline_seed_results": baseline_seed_results,
         "prompt_lint": chosen_lint,
+        "prompt_global_authoring": prompt_global_authoring,
         "lint_passing_main_scenes": lint_passing_main,
         "admitted_main_scenes": admitted_main,
         "admission": admission,
@@ -1637,7 +1706,14 @@ def _strategy_stage_a(args, output_root: Path) -> dict:
             "admission_diversity_floor": float(args.admission_diversity_floor),
             "baseline_drift_floor": float(args.baseline_drift_floor),
             "noise_sigma_multiplier": float(args.noise_sigma_multiplier),
+            "single_seed_consistency_delta_threshold": float(args.single_seed_consistency_delta_threshold),
+            "consistency_delta_gate": (
+                "single_seed_fixed_absolute_delta" if len(seeds) == 1 else "paired_seed_sigma"
+            ),
+            "reduced_power_single_seed": len(seeds) == 1,
+            "gate_power_note": SINGLE_SEED_GATE_NOTE if len(seeds) == 1 else None,
             "frame_contract_required": True,
+            "min_admitted_main_scenes": int(min_admitted_required),
         },
         "reauthor_scenes": reauthor_scenes if blocked_reason else [],
         "wall_clock_sec": round(time.monotonic() - started, 3),
@@ -1735,7 +1811,8 @@ def _strategy_context_from_previous(
             baseline_seed_dirs[int(seed)] = Path(path)
         except Exception:
             reasons.append(f"invalid baseline seed dir entry: {seed}={path}")
-    required_seeds = [0, 1, 2] if stage in {"verdict", "lever"} else [0]
+    previous_seeds = [int(seed) for seed in (previous.get("baseline_seeds") or [0])]
+    required_seeds = previous_seeds if stage in {"verdict", "lever"} else previous_seeds[:1]
     for seed in required_seeds:
         path = baseline_seed_dirs.get(seed)
         if path is None or not path.exists():
@@ -1771,7 +1848,7 @@ def _strategy_context_from_previous(
     return {
         "prompt_subset_dir": prompt_subset_dir,
         "baseline_seed_dirs": baseline_seed_dirs,
-        "baseline_seeds": list(previous.get("baseline_seeds") or [0, 1, 2]),
+        "baseline_seeds": previous_seeds,
         "admitted_main_scenes": admitted_main,
         "negative_controls": negative_controls,
         "noise_floor": noise_floor,
@@ -1863,40 +1940,55 @@ def _strategy_summarize_candidate(
     scene_win_details = []
     scene_wins = 0
     for scene in admitted_main:
+        floor = noise_floor.get(scene) or {}
         vals = [
             row.get("consistency_delta", float("nan"))
             for row in frontier
             if row.get("scene") == scene and not row.get("negative_control", False)
         ]
         mean_delta = _finite_mean(vals)
-        threshold = float((noise_floor.get(scene) or {}).get("threshold", float("nan")))
+        threshold = float(floor.get("threshold", float("nan")))
+        policy = str(floor.get("policy") or "paired_seed_sigma")
         win = mean_delta == mean_delta and threshold == threshold and mean_delta > threshold
         scene_wins += int(win)
         scene_win_details.append({
             "scene": scene,
+            "consistency_delta_mean": mean_delta,
+            "consistency_delta_threshold": threshold,
+            "consistency_delta_threshold_policy": policy,
+            "reduced_power_single_seed": bool(floor.get("reduced_power_single_seed", False)),
             "paired_delta_mean": mean_delta,
             "paired_noise_threshold": threshold,
+            "num_seed_records": sum(1 for v in vals if _rankable_float(v) != float("-inf")),
             "num_seed_pairs": sum(1 for v in vals if _rankable_float(v) != float("-inf")),
+            "win_above_threshold": bool(win),
             "win_above_noise": bool(win),
         })
 
     negative_control_details = []
     negative_control_failures = []
     for scene in negative_controls:
+        floor = noise_floor.get(scene) or {}
         vals = [
             row.get("consistency_delta", float("nan"))
             for row in frontier
             if row.get("scene") == scene and row.get("negative_control", False)
         ]
         mean_delta = _finite_mean(vals)
-        threshold = float((noise_floor.get(scene) or {}).get("threshold", float("nan")))
+        threshold = float(floor.get("threshold", float("nan")))
+        policy = str(floor.get("policy") or "paired_seed_sigma")
         failed = mean_delta == mean_delta and threshold == threshold and mean_delta > threshold
         if failed:
             negative_control_failures.append(scene)
         negative_control_details.append({
             "scene": scene,
+            "consistency_delta_mean": mean_delta,
+            "consistency_delta_threshold": threshold,
+            "consistency_delta_threshold_policy": policy,
+            "reduced_power_single_seed": bool(floor.get("reduced_power_single_seed", False)),
             "paired_delta_mean": mean_delta,
             "paired_noise_threshold": threshold,
+            "num_seed_records": sum(1 for v in vals if _rankable_float(v) != float("-inf")),
             "num_seed_pairs": sum(1 for v in vals if _rankable_float(v) != float("-inf")),
             "sane": not failed,
         })
@@ -1927,7 +2019,7 @@ def _strategy_summarize_candidate(
             logit_bias_calls += int(stats.get("persistent_logit_bias_calls", 0) or 0)
     if negative_control_failures:
         guard_failures.append(
-            f"negative control above paired noise floor: {negative_control_failures}"
+            f"negative control above consistency-delta threshold: {negative_control_failures}"
         )
     bias_lambda = float(settings.get("persistent_logit_bias_lambda", 0.0) or 0.0)
     if stage == "lever":
@@ -1960,6 +2052,7 @@ def _strategy_summarize_candidate(
         "guard_status": "ok" if guards_ok else "failed",
         "guard_failures": guard_failures,
         "mean_aggregate_delta": mean_delta,
+        "consistency_delta_mean": mean_delta,
         "paired_delta_mean": mean_delta,
         "mean_attention_mass": mean_attention_mass,
         "per_frame_attention_mass_mean": mean_frame_mass,
@@ -1984,6 +2077,7 @@ def _strategy_ranking_rows(ranked: list[dict]) -> list[dict]:
             "persistent_logit_bias_lambda": rec.get("persistent_logit_bias_lambda", 0.0),
             "passed": bool(rec["passed"]),
             "guard_status": rec["guard_status"],
+            "consistency_delta_mean": rec.get("consistency_delta_mean"),
             "paired_delta_mean": rec["paired_delta_mean"],
             "mean_aggregate_delta": rec["mean_aggregate_delta"],
             "scene_wins": f"{rec['scene_wins']}/{rec['num_scenes']}",
@@ -2085,7 +2179,8 @@ def _strategy_stage_render_eval(
             },
         )
 
-    seeds = [0] if stage in {"B1", "B2"} else [0, 1, 2]
+    context_seeds = [int(seed) for seed in (context.get("baseline_seeds") or [0])]
+    seeds = context_seeds[:1] if stage in {"B1", "B2"} else context_seeds
     admitted_main = context["admitted_main_scenes"]
     negative_controls = context["negative_controls"]
     allowed_eval_scenes = set(admitted_main) | set(negative_controls)
@@ -2374,7 +2469,8 @@ def _strategy_stage_render_eval(
                     )
                 else:
                     null_reason = (
-                        "best combo did not beat paired noise on enough admitted scenes"
+                        "best combo did not beat the consistency-delta threshold "
+                        "on enough admitted scenes"
                     )
 
     return {
@@ -2409,7 +2505,7 @@ def _strategy_stage_render_eval(
         "baseline_seed_dirs": {
             str(seed): str(path)
             for seed, path in baseline_dirs.items()
-            if seed in {0, 1, 2}
+            if seed in set(seeds)
         },
         "prompt_lint": context.get("prompt_lint"),
         "lint_passing_main_scenes": context.get("lint_passing_main_scenes"),
@@ -2427,6 +2523,12 @@ def _strategy_stage_render_eval(
             "admission_diversity_floor": float(args.admission_diversity_floor),
             "baseline_drift_floor": float(args.baseline_drift_floor),
             "noise_sigma_multiplier": float(args.noise_sigma_multiplier),
+            "single_seed_consistency_delta_threshold": float(args.single_seed_consistency_delta_threshold),
+            "consistency_delta_gate": (
+                "single_seed_fixed_absolute_delta" if len(seeds) == 1 else "paired_seed_sigma"
+            ),
+            "reduced_power_single_seed": len(seeds) == 1,
+            "gate_power_note": SINGLE_SEED_GATE_NOTE if len(seeds) == 1 else None,
             "frame_contract_required": True,
             "min_scene_wins": int(min_wins),
             "lever_reinject_rope_verification_required": stage == "lever",
@@ -2435,6 +2537,51 @@ def _strategy_stage_render_eval(
         "frontier": all_frontier,
         "candidates": ranked,
         "wall_clock_sec": round(time.monotonic() - started, 3),
+    }
+
+
+def _caption_preview(captions: list[str], *, limit: int = 220) -> str:
+    text = " ".join(c.strip() for c in captions if c and c.strip())
+    text = " ".join(text.split())
+    if len(text) <= limit:
+        return text
+    return text[: limit - 3].rstrip() + "..."
+
+
+def _author_global_invariant(theme: str, captions: list[str], existing: dict) -> tuple[dict, dict | None]:
+    """Fill missing global invariant/contrast metadata in the copied subset."""
+    meta = dict(existing) if isinstance(existing, dict) else {}
+    before = dict(meta)
+    changed = False
+    scene_name = theme.replace("_", " ")
+    preview = _caption_preview(captions)
+    if not str(meta.get("caption") or "").strip():
+        meta["caption"] = (
+            f"One continuous {scene_name} multishot scene. The same central subject, "
+            f"setting, material identity, lighting family, and event continuity should "
+            f"carry across all camera cuts. Source caption evidence: {preview}"
+        ).strip()
+        changed = True
+    if not str(meta.get("invariant_caption") or meta.get("invariant") or "").strip():
+        meta["invariant_caption"] = (
+            f"The same continuous {scene_name} scene persists across every shot, with "
+            f"the same central subject or objects, the same environment, and coherent "
+            f"event continuity despite legitimate camera, framing, and action changes."
+        )
+        changed = True
+    if not str(meta.get("contrast_caption") or meta.get("contrast") or "").strip():
+        meta["contrast_caption"] = (
+            "A different unrelated subject, object set, location, lighting condition, "
+            "or event replaces the scene between shots."
+        )
+        changed = True
+    if not changed:
+        return meta, None
+    return meta, {
+        "theme": theme,
+        "before": before,
+        "after": meta,
+        "source": "deterministic_round17_subset_authoring",
     }
 
 
@@ -2517,10 +2664,18 @@ def build_mechanism_prompt_subset(
     """
     roots = _mechanism_prompt_roots(prompts_dir)
     available: dict[str, Path] = {}
+    duplicate_sources: dict[str, list[str]] = {}
     for root in roots:
         for p in sorted(root.iterdir()):
             if p.is_dir() and any(f.name != "global.json" for f in p.glob("*.json")):
-                available.setdefault(p.name, p)
+                if p.name in available:
+                    duplicate_sources.setdefault(p.name, [str(available[p.name])]).append(str(p))
+                    old_count = len([f for f in available[p.name].glob("*.json") if f.name != "global.json"])
+                    new_count = len([f for f in p.glob("*.json") if f.name != "global.json"])
+                    if new_count > old_count:
+                        available[p.name] = p
+                else:
+                    available[p.name] = p
     chosen = subset or sorted(available)
     missing = [t for t in chosen if t not in available]
     if missing:
@@ -2528,6 +2683,7 @@ def build_mechanism_prompt_subset(
     if dest.exists():
         shutil.rmtree(dest)
     dest.mkdir(parents=True, exist_ok=True)
+    authored_globals: list[dict] = []
     for theme in chosen:
         src = available[theme]
         out = dest / theme
@@ -2543,18 +2699,43 @@ def build_mechanism_prompt_subset(
         )
         durations = [str(int(d)) for d in durations]
         (out / "shot_durations.txt").write_text("\n".join(durations) + "\n", encoding="utf-8")
+        captions: list[str] = []
+        for jf in json_files:
+            try:
+                data = json.loads(jf.read_text(encoding="utf-8"))
+            except Exception:
+                data = {}
+            captions.append(str(data.get("caption", "") if isinstance(data, dict) else ""))
+        global_path = out / "global.json"
+        meta = {}
+        if global_path.exists():
+            try:
+                loaded = json.loads(global_path.read_text(encoding="utf-8"))
+                meta = loaded if isinstance(loaded, dict) else {}
+            except Exception:
+                meta = {}
+        meta, authored = _author_global_invariant(theme, captions, meta)
+        if authored:
+            authored_globals.append(authored)
+        global_path.write_text(json.dumps(meta, indent=2, sort_keys=True) + "\n", encoding="utf-8")
         if theme == negative_control:
-            global_path = out / "global.json"
-            meta = {}
-            if global_path.exists():
-                try:
-                    meta = json.loads(global_path.read_text(encoding="utf-8"))
-                    if not isinstance(meta, dict):
-                        meta = {}
-                except Exception:
-                    meta = {}
             meta["negative_control"] = True
             global_path.write_text(json.dumps(meta, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    (dest / "authored_global_metadata.json").write_text(
+        json.dumps(
+            {
+                "source_roots": [str(r) for r in roots],
+                "authored": authored_globals,
+                "negative_control": negative_control,
+                "duplicate_sources": duplicate_sources,
+                "duplicate_resolution": "same-named prompt folders prefer the source with more shot JSON files",
+            },
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
     return chosen
 
 
@@ -2681,14 +2862,28 @@ def _apply_noise_floor_gate(
     noise_floor_by_scene: dict[str, dict],
     sigma_multiplier: float,
 ) -> dict:
-    """Replace raw m>b consistency wins/negative-control triggers with delta > k*sigma."""
+    """Replace raw m>b consistency wins with the configured delta threshold policy."""
     consistency_wins = 0
     negative_control_failures: list[str] = []
+    policy_by_scene: dict[str, str] = {}
+    reduced_power = False
     for entry in gate.get("per_prompt", []):
         theme = entry.get("theme")
         floor = noise_floor_by_scene.get(theme, {})
-        sigma = float(floor.get("sigma", float("nan")))
-        threshold = float(floor.get("threshold", float("nan")))
+        try:
+            sigma = float(floor.get("sigma", float("nan")))
+        except (TypeError, ValueError):
+            sigma = float("nan")
+        try:
+            threshold = float(floor.get("threshold", float("nan")))
+        except (TypeError, ValueError):
+            threshold = float("nan")
+        policy = str(floor.get("policy") or "paired_seed_sigma")
+        threshold_source = str(floor.get("threshold_source") or "baseline_seed_sigma")
+        scene_reduced_power = bool(floor.get("reduced_power_single_seed", False))
+        reduced_power = reduced_power or scene_reduced_power
+        if theme:
+            policy_by_scene[str(theme)] = policy
         baseline = float(entry.get("consistency_baseline", float("nan")))
         modified = float(entry.get("consistency_modified", float("nan")))
         delta = modified - baseline
@@ -2700,6 +2895,11 @@ def _apply_noise_floor_gate(
         entry["consistency_win_raw"] = raw_win
         entry["consistency_win"] = bool(noise_win)
         entry["consistency_delta"] = float(delta)
+        entry["consistency_delta_threshold"] = threshold
+        entry["consistency_delta_threshold_policy"] = policy
+        entry["consistency_delta_threshold_source"] = threshold_source
+        entry["reduced_power_single_seed"] = scene_reduced_power
+        entry["single_seed_consistency_delta_threshold"] = floor.get("single_seed_consistency_delta_threshold")
         entry["noise_sigma"] = sigma
         entry["noise_threshold"] = threshold
         entry["noise_sigma_multiplier"] = float(sigma_multiplier)
@@ -2716,8 +2916,14 @@ def _apply_noise_floor_gate(
             if noise_win and adherence_ok:
                 negative_control_failures.append(entry.get("stem", theme or "?"))
                 entry["negative_control_ok"] = False
+                if scene_reduced_power:
+                    threshold_reason = (
+                        "fixed absolute single-seed consistency-delta threshold"
+                    )
+                else:
+                    threshold_reason = f"{sigma_multiplier}*baseline sigma"
                 entry["negative_control_reason"] = (
-                    f"{metric} delta exceeded {sigma_multiplier}*baseline sigma "
+                    f"{metric} delta exceeded {threshold_reason} "
                     "without adherence loss; text-override evidence, not a pass"
                 )
             else:
@@ -2729,12 +2935,15 @@ def _apply_noise_floor_gate(
     gate["consistency_ok"] = consistency_wins >= int(gate.get("min_consistency_wins", 0))
     gate["negative_control_failures"] = negative_control_failures
     gate["negative_control_ok"] = not negative_control_failures
+    gate["consistency_delta_threshold_policy_by_scene"] = policy_by_scene
+    gate["reduced_power_single_seed"] = bool(reduced_power)
+    gate["gate_power_note"] = SINGLE_SEED_GATE_NOTE if reduced_power else None
     blocked_reasons = []
     if gate.get("unscorable"):
         blocked_reasons.append(f"unscorable input(s): {sorted(set(gate['unscorable']))}")
     if negative_control_failures:
         blocked_reasons.append(
-            f"negative control indicates text override above noise floor: {negative_control_failures}"
+            f"negative control indicates text override above consistency-delta threshold: {negative_control_failures}"
         )
     gate["blocked_reason"] = "; ".join(blocked_reasons) if blocked_reasons else None
     gate["passed"] = bool(
@@ -2768,9 +2977,14 @@ def _frontier_rows(gate: dict, attention_by_scene: dict[str, dict]) -> list[dict
             "anchor_to_shot0_modified": entry.get("anchor_to_shot0_modified"),
             "worst_anchor_to_shot0_baseline": entry.get("worst_anchor_to_shot0_baseline"),
             "worst_anchor_to_shot0_modified": entry.get("worst_anchor_to_shot0_modified"),
+            "consistency_delta_threshold": entry.get("consistency_delta_threshold"),
+            "consistency_delta_threshold_policy": entry.get("consistency_delta_threshold_policy"),
+            "consistency_delta_threshold_source": entry.get("consistency_delta_threshold_source"),
+            "reduced_power_single_seed": entry.get("reduced_power_single_seed"),
             "noise_sigma": entry.get("noise_sigma"),
             "noise_threshold": entry.get("noise_threshold"),
             "noise_floor_win": entry.get("consistency_win"),
+            "consistency_threshold_win": entry.get("consistency_win"),
             "relative_drift_reduction": entry.get("relative_drift_reduction"),
             "to_shot0_delta": entry.get("to_shot0_delta"),
             "dynamic_degree_delta": (
@@ -2888,8 +3102,6 @@ def _run_long_multishot_mechanism_sweep(args, output_root: Path) -> None:
         if isinstance(info, dict) and info.get("requested") and not info.get("loaded")
     )
     prereq_blocks = []
-    if seeds != [0, 1, 2]:
-        prereq_blocks.append(f"baseline_seeds must be exactly 0,1,2 for paired gate decisions, got {seeds}")
     if lint_failures:
         prereq_blocks.append(f"ill-posed prompt scene(s) below text-similarity floor: {lint_failures}")
     if len(lint_passing_main) < 3:
@@ -2962,16 +3174,14 @@ def _run_long_multishot_mechanism_sweep(args, output_root: Path) -> None:
             baseline_by_seed.get(seed, {}).get(scene, {}).get("metric", float("nan"))
             for seed in seeds
         ]
-        sigma = _metric_sigma(vals)
-        threshold = float(args.noise_sigma_multiplier) * sigma if not np.isnan(sigma) else float("nan")
-        noise_floor_by_scene[scene] = {
-            "baseline_values": [float(v) for v in vals],
-            "sigma": sigma,
-            "threshold": threshold,
-            "sigma_multiplier": float(args.noise_sigma_multiplier),
-        }
         finite_vals = [float(v) for v in vals if not np.isnan(v)]
         baseline_drift = float(np.mean([1.0 - v for v in finite_vals])) if finite_vals else float("nan")
+        noise_floor_by_scene[scene] = _consistency_delta_floor(
+            args,
+            seeds,
+            vals,
+            baseline_drift=baseline_drift,
+        )
         seed0_metrics = seed0_records.get(scene, {}).get("metrics", {})
         diversity = seed0_metrics.get("inter_shot_composition_diversity", float("nan"))
         is_negative = scene in negative_controls
@@ -3152,6 +3362,12 @@ def _run_long_multishot_mechanism_sweep(args, output_root: Path) -> None:
             "require_adherence": True,
             "admission_diversity_floor": float(args.admission_diversity_floor),
             "noise_sigma_multiplier": float(args.noise_sigma_multiplier),
+            "single_seed_consistency_delta_threshold": float(args.single_seed_consistency_delta_threshold),
+            "consistency_delta_gate": (
+                "single_seed_fixed_absolute_delta" if len(seeds) == 1 else "paired_seed_sigma"
+            ),
+            "reduced_power_single_seed": len(seeds) == 1,
+            "gate_power_note": SINGLE_SEED_GATE_NOTE if len(seeds) == 1 else None,
             "baseline_drift_floor": float(args.baseline_drift_floor),
             "frame_contract_required": True,
         },

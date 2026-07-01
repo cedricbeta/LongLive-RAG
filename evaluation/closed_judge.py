@@ -74,6 +74,26 @@ JUDGE_SCHEMA: dict[str, Any] = {
                 "additionalProperties": False,
             },
         },
+        "inter_shot_diversity": {
+            "type": "object",
+            "properties": {
+                "score": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+                "verdict": {"type": "string", "enum": ["collapsed", "borderline", "healthy"]},
+                "rationale": {"type": "string"},
+            },
+            "required": ["score", "verdict", "rationale"],
+            "additionalProperties": False,
+        },
+        "motion_continuity": {
+            "type": "object",
+            "properties": {
+                "score": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+                "verdict": {"type": "string", "enum": ["frozen", "borderline", "active"]},
+                "rationale": {"type": "string"},
+            },
+            "required": ["score", "verdict", "rationale"],
+            "additionalProperties": False,
+        },
         "which_cut_broke": {
             "type": "object",
             "properties": {
@@ -108,6 +128,8 @@ JUDGE_SCHEMA: dict[str, Any] = {
         "subject_identity_preserved",
         "background_coherent",
         "per_shot_adherence",
+        "inter_shot_diversity",
+        "motion_continuity",
         "which_cut_broke",
         "cheat_flags",
         "overall_consistency_score",
@@ -125,13 +147,20 @@ cross-shot consistency:
   across shot cuts.
 - background_coherent: whether the same scene/place/event persists.
 - per_shot_adherence: whether each shot still follows its own caption.
+- inter_shot_diversity: whether the shots preserve legitimate requested camera,
+  action, composition, and scene variation instead of collapsing toward the same
+  looking shot.
+- motion_continuity: whether the sampled sequence shows plausible motion/change
+  for the captions instead of becoming frozen or near-static.
 - which_cut_broke: the cut index i for transition shot i -> i+1 that most
   clearly broke consistency, or null if no cut broke.
 - cheat_flags: flag copy/freeze/prompt-collapse cheats. Do not reward a copied
   frame sequence when captions ask for distinct actions or camera views.
 
-Do not penalize a legitimate camera/viewpoint/framing change by itself. Return
-only the strict JSON object required by the response schema."""
+Do not penalize a legitimate camera/viewpoint/framing change by itself. Do
+penalize any apparent consistency gain that comes from reducing inter-shot
+diversity or motion. Return only the strict JSON object required by the
+response schema."""
 
 
 @dataclass(frozen=True)
@@ -849,6 +878,16 @@ def validate_verdict_shape(verdict: dict[str, Any]) -> None:
         score = float(node["score"])
         if not 0.0 <= score <= 1.0:
             raise ValueError(f"{key}.score outside [0,1]")
+    for key in ("inter_shot_diversity", "motion_continuity"):
+        node = verdict[key]
+        if not isinstance(node, dict):
+            raise ValueError(f"{key} must be an object")
+        for child in ("score", "verdict", "rationale"):
+            if child not in node:
+                raise ValueError(f"{key} missing {child}")
+        score = float(node["score"])
+        if not 0.0 <= score <= 1.0:
+            raise ValueError(f"{key}.score outside [0,1]")
     flags = verdict["cheat_flags"]
     if not isinstance(flags, dict):
         raise ValueError("cheat_flags must be an object")
@@ -940,6 +979,7 @@ def run_judge_validation(
         "stage": "judge_validation",
         "timestamp_utc": utc_timestamp(),
         "model": model,
+        "schema_required_fields": list(JUDGE_SCHEMA["required"]),
         "passed": False,
         "blocked_reason": None,
         "auth": auth,
@@ -1093,6 +1133,7 @@ def run_oauth_judge_validation(
         "stage": "judge_validation",
         "timestamp_utc": utc_timestamp(),
         "model": primary_model,
+        "schema_required_fields": list(JUDGE_SCHEMA["required"]),
         "passed": False,
         "blocked_reason": "all OAuth judge paths failed validation: " + "; ".join(reasons),
         "attempts": attempts,

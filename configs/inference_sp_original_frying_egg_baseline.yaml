@@ -1,0 +1,49 @@
+# 4-GPU Ulysses sequence-parallel baseline run for the original
+# frying_egg_closeup prompts. This path can split ONE long video across 4 GPUs,
+# but it does not support KV-RAG yet.
+
+model_kwargs:
+  model_name: Wan2.2-TI2V-5B
+  timestep_shift: 5.0
+  num_frame_per_block: 8
+  local_attn_size: 32
+
+sp_size: 4
+dp_size: 1
+auto_sp_remainder: false
+model_num_heads: 24
+
+use_ema: false
+output_folder: videos/original_prompts_frying_egg_sp4/baseline
+num_samples: 1
+save_latents_only: false
+save_with_index: true
+num_output_frames: 384
+
+data:
+  data_path: videos/original_prompts_frying_egg/prompt_subset
+  image_or_video_shape:
+  - 1
+  - 384
+  - 48
+  - 44
+  - 80
+
+inference:
+  sampling_steps: 4
+  sink_size: 8
+  guidance_scale: 1.0
+  multi_shot_sink: true
+  multi_shot_rope_offset: 8
+  streaming_vae: true
+  async_vae: false
+  vae_type: wan
+  vae_device: "cuda:0"
+  kv_rag:
+    enabled: false
+
+checkpoints:
+  generator_ckpt: checkpoints/longlive2_5b/longlive2_merged_generator.pt
+
+logging:
+  seed: 0

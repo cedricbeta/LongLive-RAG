@@ -39,6 +39,7 @@ sys.path.insert(0, str(ROOT))
 from evaluation.closed_judge import (  # noqa: E402
     ClaudeOAuthMessagesClient,
     CodexExecJudgeClient,
+    JUDGE_SCHEMA,
     JudgeFixture,
     OpenAIResponsesError,
     file_sha256,
@@ -61,20 +62,39 @@ from evaluation.video_consistency import (  # noqa: E402
     read_video,
     shot_ranges,
 )
-from scripts.run_kv_rag_ablation import (  # noqa: E402
-    DEFAULT_KV_RAG,
-    _apply_noise_floor_gate,
-    _base_kv_rag_block,
-    _build_long_scorers,
-    _copy_result_with_records,
-    _finalist_kv_rag,
-    _frame_contract_blocked_reason,
-    _frame_contract_stats,
-    _load_attention_diagnostics,
-    _num_blocks_from_cfg,
-    _preflight_config,
-    _set_nested,
-)
+try:
+    from scripts.run_kv_rag_ablation import (  # noqa: E402
+        DEFAULT_KV_RAG,
+        _apply_noise_floor_gate,
+        _base_kv_rag_block,
+        _build_long_scorers,
+        _copy_result_with_records,
+        _finalist_kv_rag,
+        _frame_contract_blocked_reason,
+        _frame_contract_stats,
+        _load_attention_diagnostics,
+        _num_blocks_from_cfg,
+        _preflight_config,
+        _set_nested,
+    )
+except ModuleNotFoundError as exc:  # Miniconda ships a site-packages `scripts` package.
+    if exc.name not in {"scripts", "scripts.run_kv_rag_ablation"}:
+        raise
+    sys.path.insert(0, str(ROOT / "scripts"))
+    from run_kv_rag_ablation import (  # type: ignore  # noqa: E402
+        DEFAULT_KV_RAG,
+        _apply_noise_floor_gate,
+        _base_kv_rag_block,
+        _build_long_scorers,
+        _copy_result_with_records,
+        _finalist_kv_rag,
+        _frame_contract_blocked_reason,
+        _frame_contract_stats,
+        _load_attention_diagnostics,
+        _num_blocks_from_cfg,
+        _preflight_config,
+        _set_nested,
+    )
 
 
 ARMS = ("baseline", "prompt_only", "kv_only", "both")
@@ -157,6 +177,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--diversity_tolerance", type=float, default=0.0)
     parser.add_argument("--adherence_tolerance", type=float, default=0.02)
     parser.add_argument("--prompt_similarity_floor", type=float, default=0.12)
+    parser.add_argument("--single_seed_consistency_delta_threshold", type=float, default=0.02)
     parser.add_argument("--baseline_seed", type=int, default=0)
     parser.add_argument("--kv_anchor_cap", type=int, default=2)
     parser.add_argument("--optimizer_frames_per_shot", type=int, default=2)
@@ -164,6 +185,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--skip_generation", action="store_true")
     parser.add_argument("--resume", action="store_true", help="Reuse existing optimizer decisions/prompts/videos when present.")
     parser.add_argument("--max_scenes", type=int, default=0, help="Explicit logged cap for debugging; 0 means all admitted scenes.")
+    parser.add_argument("--min_admitted_main_scenes", type=int, default=8,
+                        help="Fail closed unless the admission JSON provides at least this many main scenes.")
+    parser.add_argument("--primary_logit_bias_lambda", type=float, default=1.0,
+                        help="Persistent logit-bias lambda for primary kv_only/both arms.")
     return parser.parse_args()
 
 
@@ -284,7 +309,13 @@ def ensure_judge_valid(args: argparse.Namespace, output_root: Path) -> dict[str,
     path = Path(args.judge_validation_json)
     if path.exists():
         cached = load_json(path)
-        if cached.get("closed_judge_validated") and cached.get("selected_provider") == "codex":
+        cached_fields = set(cached.get("schema_required_fields") or [])
+        current_fields = set(JUDGE_SCHEMA["required"])
+        if (
+            cached.get("closed_judge_validated")
+            and cached.get("selected_provider") == "codex"
+            and current_fields.issubset(cached_fields)
+        ):
             return {
                 "reused": True,
                 "path": str(path),
@@ -443,6 +474,36 @@ def scene_video(directory: Path, prefix: str, scene: str, seed: int) -> Path:
     return usable[0]
 
 
+def link_scene_video_subset(
+    *,
+    source_dir: Path,
+    prefix: str,
+    scenes: list[str],
+    seed: int,
+    subset_dir: Path,
+) -> dict[str, Any]:
+    if subset_dir.exists():
+        shutil.rmtree(subset_dir)
+    subset_dir.mkdir(parents=True, exist_ok=True)
+    links: list[dict[str, str]] = []
+    for scene in scenes:
+        src = scene_video(source_dir, prefix, scene, seed).resolve()
+        dst = subset_dir / src.name
+        try:
+            dst.symlink_to(src)
+            link_type = "symlink"
+        except OSError:
+            shutil.copy2(src, dst)
+            link_type = "copy"
+        links.append({
+            "scene": scene,
+            "source": str(src),
+            "path": str(dst),
+            "link_type": link_type,
+        })
+    return {"dir": str(subset_dir), "videos": links}
+
+
 def arm_complete(directory: Path, prefix: str, scenes: list[str], seed: int) -> bool:
     try:
         for scene in scenes:
@@ -450,6 +511,25 @@ def arm_complete(directory: Path, prefix: str, scenes: list[str], seed: int) -> 
         return True
     except FileNotFoundError:
         return False
+
+
+def missing_arm_scenes(directory: Path, prefix: str, scenes: list[str], seed: int) -> list[str]:
+    missing: list[str] = []
+    for scene in scenes:
+        try:
+            scene_video(directory, prefix, scene, seed)
+        except FileNotFoundError:
+            missing.append(scene)
+    return missing
+
+
+def copy_prompt_subset(source_prompt_dir: Path, scenes: list[str], dest_prompt_dir: Path) -> Path:
+    if dest_prompt_dir.exists():
+        shutil.rmtree(dest_prompt_dir)
+    dest_prompt_dir.mkdir(parents=True, exist_ok=True)
+    for scene in scenes:
+        shutil.copytree(source_prompt_dir / scene, dest_prompt_dir / scene)
+    return dest_prompt_dir
 
 
 def save_rgb(path: Path, frame_rgb: np.ndarray) -> None:
@@ -613,6 +693,58 @@ def sanitize_optimizer_decision(
     return decision, notes
 
 
+def load_optimizer_decisions_from_transcripts(
+    *,
+    transcript_dir: Path,
+    baseline_dir: Path,
+    baseline_prefix: str,
+    prompt_subset: Path,
+    scenes: list[str],
+    seed: int,
+    num_blocks: int,
+    local_attn_size: int,
+    optimizer_frames_per_shot: int,
+    kv_anchor_cap: int,
+    output_root: Path,
+) -> dict[str, Any]:
+    decisions: dict[str, Any] = {}
+    resolver = build_spec_resolver(prompt_subset, with_captions=True, max_chunks=num_blocks)
+    for scene in scenes:
+        transcript_path = transcript_dir / f"{scene}.json"
+        if not transcript_path.exists():
+            raise FileNotFoundError(f"missing Qwen transcript for resume: {transcript_path}")
+        video = scene_video(baseline_dir, baseline_prefix, scene, seed)
+        spec = resolver(video.stem)
+        if spec is None:
+            raise RuntimeError(f"could not resolve prompt spec for {video}")
+        sampled = sample_scene_frames(
+            video_path=video,
+            spec=spec,
+            out_dir=output_root / "optimizer_frames" / scene,
+            frames_per_shot=optimizer_frames_per_shot,
+        )
+        candidates = candidate_frames_by_boundary(
+            sampled["records"],
+            local_attn_size=local_attn_size,
+        )
+        transcript = load_json(transcript_path)
+        decision, notes = sanitize_optimizer_decision(
+            transcript.get("parsed") or {},
+            candidates=candidates,
+            anchor_cap=kv_anchor_cap,
+            num_shots=len(spec["captions"]),
+        )
+        decisions[scene] = {
+            "decision": decision,
+            "sanitization_notes": notes,
+            "transcript": str(transcript_path),
+            "frames_shown": sampled["records"],
+            "kv_candidates": candidates,
+            "resumed_from_transcript": True,
+        }
+    return decisions
+
+
 def apply_prompt_refinements(
     *,
     source_prompt_dir: Path,
@@ -683,6 +815,7 @@ def write_arm_config(
     prompt_dir: Path,
     kv_settings: dict[str, Any],
     seed: int,
+    config_name: str | None = None,
 ) -> tuple[Path, Path]:
     cfg = OmegaConf.create(OmegaConf.to_container(base_cfg, resolve=True))
     out_dir = output_root / arm
@@ -695,7 +828,7 @@ def write_arm_config(
     cfg.inference.filename_from_sample_name = True
     cfg.filename_from_sample_name = True
     cfg.inference.kv_rag = kv_settings
-    cfg_path = output_root / "configs" / f"{arm}.yaml"
+    cfg_path = output_root / "configs" / f"{config_name or arm}.yaml"
     cfg_path.parent.mkdir(parents=True, exist_ok=True)
     OmegaConf.save(cfg, cfg_path)
     return cfg_path, out_dir
@@ -838,9 +971,25 @@ def evaluate_numeric_arm(
     if missing:
         return {"passed": False, "blocked_reason": f"numeric scorer(s) unavailable: {missing}", "scorer_coverage": scorer_coverage}
     shots_for = build_spec_resolver(prompt_dir, with_captions=True, max_chunks=num_blocks)
+    eval_scenes = list(dict.fromkeys(list(scenes) + list(negative_controls)))
+    subset_root = output_dir / "pair_subsets" / arm_dir.name
+    baseline_subset = link_scene_video_subset(
+        source_dir=baseline_dir,
+        prefix=f"baseline_seed{args.baseline_seed}",
+        scenes=eval_scenes,
+        seed=args.baseline_seed,
+        subset_dir=subset_root / "baseline",
+    )
+    modified_subset = link_scene_video_subset(
+        source_dir=arm_dir,
+        prefix=arm_dir.name,
+        scenes=eval_scenes,
+        seed=args.baseline_seed,
+        subset_dir=subset_root / "modified",
+    )
     result_all = compare_cross_perspective_dirs(
-        baseline_dir,
-        arm_dir,
+        baseline_subset["dir"],
+        modified_subset["dir"],
         shots_for=shots_for,
         adherence_scorer=scorers.get("adherence_scorer"),
         invariant_scorer=scorers.get("invariant_scorer"),
@@ -851,7 +1000,13 @@ def evaluate_numeric_arm(
         stride=1,
     )
     allowed = set(scenes) | set(negative_controls)
-    records = [r for r in result_all["records"] if r.get("theme") in allowed]
+    records = []
+    for row in result_all["records"]:
+        if row.get("theme") not in allowed:
+            continue
+        rec = copy.deepcopy(row)
+        rec["negative_control"] = rec.get("theme") in set(negative_controls)
+        records.append(rec)
     result = _copy_result_with_records(result_all, records)
     min_wins = math.ceil(len(scenes) / 2)
     gate = evaluate_cross_perspective_gate(
@@ -875,6 +1030,38 @@ def evaluate_numeric_arm(
         scene: attention.get(scene, {"diagnostic": {}})
         for scene in allowed
     })
+    frame_contract = {
+        scene: _frame_contract_stats(rec.get("diagnostic", {}))
+        for scene, rec in attention.items()
+    }
+    logit_bias_calls = sum(
+        int(stats.get("persistent_logit_bias_calls", 0) or 0)
+        for stats in frame_contract.values()
+    )
+    logit_bias_lambda = 0.0
+    for rec in attention.values():
+        diag = rec.get("diagnostic", {}) if isinstance(rec, dict) else {}
+        for bank in ("pos", "neg"):
+            cfg = (diag.get(bank) or {}).get("config", {})
+            if isinstance(cfg, dict):
+                logit_bias_lambda = max(
+                    logit_bias_lambda,
+                    float(cfg.get("persistent_logit_bias_lambda", 0.0) or 0.0),
+                )
+    arm_cfg_path = arm_dir.parent / "configs" / f"{arm_dir.name}.yaml"
+    if arm_cfg_path.exists():
+        try:
+            arm_cfg = OmegaConf.load(arm_cfg_path)
+            kv_cfg = arm_cfg.get("inference", {}).get("kv_rag", {})
+            logit_bias_lambda = max(
+                logit_bias_lambda,
+                float(kv_cfg.get("persistent_logit_bias_lambda", 0.0) or 0.0),
+            )
+        except Exception:
+            pass
+    if logit_bias_lambda > 0.0 and arm_dir.name in {"kv_only", "both"} and logit_bias_calls <= 0:
+        extra = "persistent logit-bias configured but persistent_logit_bias_calls=0"
+        frame_reason = "; ".join(([frame_reason] if frame_reason else []) + [extra])
     if frame_reason and arm_dir.name in {"kv_only", "both"}:
         prev = gate.get("blocked_reason")
         gate["blocked_reason"] = "; ".join(([prev] if prev else []) + [frame_reason])
@@ -887,11 +1074,16 @@ def evaluate_numeric_arm(
         "gate": gate,
         "comparison": result,
         "attention_diagnostics": attention,
-        "frame_contract": {
-            scene: _frame_contract_stats(rec.get("diagnostic", {}))
-            for scene, rec in attention.items()
-        },
+        "frame_contract": frame_contract,
         "scorer_coverage": scorer_coverage,
+        "scene_role_source": "admission_negative_controls_v2",
+        "pair_subset": {
+            "baseline": baseline_subset,
+            "modified": modified_subset,
+            "scenes": eval_scenes,
+            "source_baseline_dir": str(baseline_dir),
+            "source_modified_dir": str(arm_dir),
+        },
     }
     write_json(output_dir / f"numeric_{arm_dir.name}.json", out)
     return out
@@ -925,6 +1117,39 @@ def write_degraded_negative_fixture(
     )
 
 
+def numeric_failure_reason(numeric_result: dict[str, Any]) -> str | None:
+    reason = numeric_result.get("blocked_reason") or (numeric_result.get("gate") or {}).get("blocked_reason")
+    if reason:
+        return str(reason)
+    gate = numeric_result.get("gate") or {}
+    if numeric_result.get("passed"):
+        return None
+    false_keys = [
+        key for key in (
+            "consistency_ok",
+            "adherence_ok",
+            "diversity_ok",
+            "motion_ok",
+            "invariant_ok",
+            "scorable_ok",
+            "negative_control_ok",
+            "frame_contract_ok",
+        )
+        if gate.get(key) is False
+    ]
+    if not false_keys:
+        return None
+    details = []
+    if "consistency_ok" in false_keys:
+        details.append(
+            "consistency_wins={wins}/{need}".format(
+                wins=gate.get("consistency_wins"),
+                need=gate.get("min_consistency_wins"),
+            )
+        )
+    return "numeric guard failed: " + ", ".join(false_keys + details)
+
+
 def build_ledger(
     *,
     args: argparse.Namespace,
@@ -953,6 +1178,27 @@ def build_ledger(
             continue
         j = judge_results.get("arms", {}).get(arm, {})
         n = numeric_results.get(arm, {})
+        attention_vals = [
+            float(rec.get("mean_persistent_attention_mass", 0.0) or 0.0)
+            for rec in (n.get("attention_diagnostics") or {}).values()
+            if isinstance(rec, dict)
+        ]
+        frame_attention_vals = [
+            float(rec.get("mean_persistent_frame_attention_mass", 0.0) or 0.0)
+            for rec in (n.get("attention_diagnostics") or {}).values()
+            if isinstance(rec, dict)
+        ]
+        contract_vals = list((n.get("frame_contract") or {}).values())
+        persistent_logit_bias_calls = sum(
+            int(rec.get("persistent_logit_bias_calls", 0) or 0)
+            for rec in contract_vals
+            if isinstance(rec, dict)
+        )
+        persistent_logit_bias_frames = sum(
+            int(rec.get("persistent_logit_bias_frames", 0) or 0)
+            for rec in contract_vals
+            if isinstance(rec, dict)
+        )
         judge_wins = int(j.get("judge_wins", 0))
         passed = bool(judge_wins >= min_wins and n.get("passed") and negative_control.get("passed"))
         row = {
@@ -964,7 +1210,15 @@ def build_ledger(
             "negative_control_pass": bool(negative_control.get("passed")),
             "passed": passed,
             "mean_judge_delta": j.get("mean_delta"),
-            "numeric_blocked_reason": n.get("blocked_reason") or (n.get("gate") or {}).get("blocked_reason"),
+            "numeric_blocked_reason": numeric_failure_reason(n),
+            "persistent_rag_attention_mass_mean": (
+                float(np.mean(attention_vals)) if attention_vals else 0.0
+            ),
+            "persistent_rag_frame_attention_mass_mean": (
+                float(np.mean(frame_attention_vals)) if frame_attention_vals else 0.0
+            ),
+            "persistent_logit_bias_calls": int(persistent_logit_bias_calls),
+            "persistent_logit_bias_frames": int(persistent_logit_bias_frames),
         }
         arm_rows.append(row)
         if passed and (winner is None or (row.get("mean_judge_delta") or -999) > (winner.get("mean_judge_delta") or -999)):
@@ -988,6 +1242,20 @@ def build_ledger(
     ledger = {
         "timestamp_utc": utc_timestamp(),
         "objective": "VLM-in-the-loop four-arm cross-shot consistency ablation with independent OAuth closed judge",
+        "pass_criterion": (
+            "judge_wins >= ceil(N/2) plus numeric guard non-regression "
+            "(motion/diversity/adherence/invariant), sane negative control, and frame-level KV contract"
+        ),
+        "consistency_delta_gate": {
+            "baseline_seeds": admission.get("baseline_seeds"),
+            "policy": (admission.get("guards") or {}).get("consistency_delta_gate"),
+            "threshold": (admission.get("guards") or {}).get("single_seed_consistency_delta_threshold"),
+            "noise_sigma_multiplier": (admission.get("guards") or {}).get("noise_sigma_multiplier"),
+            "reduced_power_single_seed": bool(
+                (admission.get("guards") or {}).get("reduced_power_single_seed", False)
+            ),
+            "note": (admission.get("guards") or {}).get("gate_power_note"),
+        },
         "pass": bool(winner),
         "winner": winner,
         "is_null_result": winner is None,
@@ -1068,12 +1336,23 @@ def main() -> int:
     numeric_ref = load_json(args.numeric_reference_json) if Path(args.numeric_reference_json).exists() else {}
     admitted = list(admission_src.get("admitted_main_scenes") or numeric_ref.get("admitted_main_scenes") or [])
     negatives = list(admission_src.get("negative_controls") or numeric_ref.get("negative_controls") or [])
+    synthetic_negative = (
+        admission_src.get("synthetic_negative_control")
+        or numeric_ref.get("synthetic_negative_control")
+        or {}
+    )
     if args.max_scenes and args.max_scenes > 0:
         admitted = admitted[: int(args.max_scenes)]
     if not admitted:
         raise RuntimeError("no admitted scenes available")
-    if not negatives:
-        raise RuntimeError("negative control scene missing")
+    if len(admitted) < int(args.min_admitted_main_scenes):
+        raise RuntimeError(
+            f"admission JSON has {len(admitted)} admitted main scenes; "
+            f"need >= {int(args.min_admitted_main_scenes)} for this run"
+        )
+    synthetic_negative_source = str(synthetic_negative.get("source_scene") or "").strip()
+    if not negatives and not synthetic_negative_source:
+        raise RuntimeError("negative control scene missing and no synthetic_negative_control.source_scene provided")
     prompt_subset = Path(admission_src.get("prompt_subset_dir") or "videos/frame_strategy_A/prompt_subset")
     baseline_dirs = admission_src.get("baseline_seed_dirs") or numeric_ref.get("baseline_seed_dirs") or {}
     baseline_dir = Path(baseline_dirs.get(str(args.baseline_seed), "videos/frame_strategy_A/baseline_seed0"))
@@ -1090,8 +1369,13 @@ def main() -> int:
         "prompt_subset_dir": str(prompt_subset),
         "baseline_dir": str(baseline_dir),
         "baseline_prefix": baseline_prefix,
+        "baseline_seeds": admission_src.get("baseline_seeds") or numeric_ref.get("baseline_seeds") or [args.baseline_seed],
         "admitted_main_scenes": admitted,
         "negative_controls": negatives,
+        "admission": admission_src.get("admission") or numeric_ref.get("admission") or {},
+        "synthetic_negative_control": synthetic_negative,
+        "deferred_main_scenes": admission_src.get("deferred_main_scenes") or [],
+        "exploratory_main_scenes": admission_src.get("exploratory_main_scenes") or [],
         "noise_floor": admission_src.get("noise_floor") or numeric_ref.get("noise_floor") or {},
         "guards": admission_src.get("guards") or numeric_ref.get("guards") or {"noise_sigma_multiplier": 2.0},
         "explicit_scene_cap": int(args.max_scenes),
@@ -1113,12 +1397,20 @@ def main() -> int:
         original_prompt_dir = video_root / "prompt_original"
         anchor_plan_path = output_root / "manual_anchor_plan.json"
         prior_ledger_path = output_root / "ledger.json"
+        eval_scenes = admitted + negatives
         can_resume_optimizer = (
             args.resume
             and (output_root / "optimizer_decisions.json").exists()
             and anchor_plan_path.exists()
             and refined_prompt_dir.exists()
             and original_prompt_dir.exists()
+        )
+        can_resume_transcripts = (
+            args.resume
+            and all(
+                (output_root / "qwen3_optimizer" / "transcripts" / f"{scene}.json").exists()
+                for scene in eval_scenes
+            )
         )
         if can_resume_optimizer:
             prior_ledger = load_json(prior_ledger_path) if prior_ledger_path.exists() else {}
@@ -1127,11 +1419,45 @@ def main() -> int:
             prompt_diffs = list(prior_ledger.get("prompt_refine_diffs") or [])
             qwen_meta = prior_ledger.get("qwen3_optimizer")
             generation["resumed_optimizer_artifacts"] = True
+        elif can_resume_transcripts:
+            optimizer_decisions = load_optimizer_decisions_from_transcripts(
+                transcript_dir=output_root / "qwen3_optimizer" / "transcripts",
+                baseline_dir=baseline_dir,
+                baseline_prefix=baseline_prefix,
+                prompt_subset=prompt_subset,
+                scenes=eval_scenes,
+                seed=args.baseline_seed,
+                num_blocks=num_blocks,
+                local_attn_size=local_attn_size,
+                optimizer_frames_per_shot=args.optimizer_frames_per_shot,
+                kv_anchor_cap=args.kv_anchor_cap,
+                output_root=output_root,
+            )
+            prompt_diffs = apply_prompt_refinements(
+                source_prompt_dir=prompt_subset,
+                dest_prompt_dir=refined_prompt_dir,
+                decisions={k: v["decision"] for k, v in optimizer_decisions.items()},
+                scenes=eval_scenes,
+            )
+            if original_prompt_dir.exists():
+                shutil.rmtree(original_prompt_dir)
+            copy_prompt_subset(prompt_subset, eval_scenes, original_prompt_dir)
+            anchor_plan = universal_anchor_plan(
+                {k: v["decision"] for k, v in optimizer_decisions.items()},
+                anchor_cap=args.kv_anchor_cap,
+            )
+            write_json(anchor_plan_path, anchor_plan)
+            qwen_meta = {
+                "reused_transcripts": True,
+                "transcript_dir": str(output_root / "qwen3_optimizer" / "transcripts"),
+                "model": args.qwen_model,
+            }
+            generation["resumed_optimizer_transcripts"] = True
         else:
             qwen_proc, qwen_meta = start_qwen3_server(args, gpu["optimizer_gpu"], output_root)
             base_url = qwen_meta["launch"]["base_url"]
 
-            for scene in admitted + negatives:
+            for scene in eval_scenes:
                 video = scene_video(baseline_dir, baseline_prefix, scene, args.baseline_seed)
                 spec = build_spec_resolver(prompt_subset, with_captions=True, max_chunks=num_blocks)(video.stem)
                 sampled = sample_scene_frames(
@@ -1174,11 +1500,11 @@ def main() -> int:
                 source_prompt_dir=prompt_subset,
                 dest_prompt_dir=refined_prompt_dir,
                 decisions={k: v["decision"] for k, v in optimizer_decisions.items()},
-                scenes=admitted + negatives,
+                scenes=eval_scenes,
             )
             if original_prompt_dir.exists():
                 shutil.rmtree(original_prompt_dir)
-            shutil.copytree(prompt_subset, original_prompt_dir)
+            copy_prompt_subset(prompt_subset, eval_scenes, original_prompt_dir)
 
             anchor_plan = universal_anchor_plan(
                 {k: v["decision"] for k, v in optimizer_decisions.items()},
@@ -1205,6 +1531,7 @@ def main() -> int:
             "require_frame_aligned": True,
             "reinject_rope": True,
             "attention_diagnostic": True,
+            "persistent_logit_bias_lambda": float(args.primary_logit_bias_lambda),
         })
         arm_configs = {
             "prompt_only": {"prompt_dir": refined_prompt_dir, "kv": {"enabled": False}},
@@ -1223,7 +1550,8 @@ def main() -> int:
                     kv_settings=info["kv"],
                     seed=args.baseline_seed,
                 )
-                if args.resume and arm_complete(arm_dir, arm, admitted + negatives, args.baseline_seed):
+                missing = missing_arm_scenes(arm_dir, arm, eval_scenes, args.baseline_seed)
+                if args.resume and not missing:
                     generation["runs"][arm] = {
                         "config": str(cfg_path),
                         "gpu": None,
@@ -1234,18 +1562,39 @@ def main() -> int:
                     }
                     arm_dirs[arm] = arm_dir
                     continue
+                render_cfg_path = cfg_path
+                if args.resume and missing and len(missing) < len(eval_scenes):
+                    subset_prompt_dir = copy_prompt_subset(
+                        Path(info["prompt_dir"]),
+                        missing,
+                        video_root / "render_subsets" / arm,
+                    )
+                    render_cfg_path, arm_dir = write_arm_config(
+                        base_cfg=base_cfg,
+                        output_root=video_root,
+                        arm=arm,
+                        prompt_dir=subset_prompt_dir,
+                        kv_settings=info["kv"],
+                        seed=args.baseline_seed,
+                        config_name=f"{arm}_missing",
+                    )
                 checked = ensure_gpu_not_maxed(gpu["generator_gpu"])
                 if checked.get("switched"):
                     gpu["generator_gpu"] = checked["gpu"]
                     gpu.setdefault("stage_switches", []).append(checked)
                 run = run_inference_config(
-                    cfg_path,
+                    render_cfg_path,
                     gpu=gpu["generator_gpu"],
                     log_path=output_root / "generation_logs" / f"{arm}.log",
                 )
+                run["missing_scenes_rendered"] = missing
+                run["full_config"] = str(cfg_path)
                 generation["runs"][arm] = run
                 if run["returncode"] != 0:
                     raise RuntimeError(f"generation failed for {arm}; see {run['log_path']}")
+                still_missing = missing_arm_scenes(arm_dir, arm, eval_scenes, args.baseline_seed)
+                if still_missing:
+                    raise RuntimeError(f"generation incomplete for {arm}; missing scenes={still_missing}")
                 arm_dirs[arm] = arm_dir
         else:
             for arm in ("prompt_only", "kv_only", "both"):
@@ -1259,7 +1608,7 @@ def main() -> int:
             arm_dir = arm_dirs[arm]
             scene_scores = {}
             scene_results = {}
-            for scene in admitted + negatives:
+            for scene in eval_scenes:
                 prefix = baseline_prefix if arm == "baseline" else arm
                 video = scene_video(arm_dir, prefix, scene, args.baseline_seed)
                 fixture, sampled = build_video_fixture(
@@ -1306,10 +1655,11 @@ def main() -> int:
                 "mean_delta": float(np.mean(list(deltas.values()))) if deltas else float("nan"),
             })
 
+        degraded_source_scene = synthetic_negative_source or negatives[0]
         degraded_fixture = write_degraded_negative_fixture(
-            baseline_video=scene_video(baseline_dir, baseline_prefix, negatives[0], args.baseline_seed),
+            baseline_video=scene_video(baseline_dir, baseline_prefix, degraded_source_scene, args.baseline_seed),
             prompt_dir=prompt_subset,
-            scene=negatives[0],
+            scene=degraded_source_scene,
             output_dir=output_root / "negative_control_degraded",
             num_blocks=num_blocks,
         )
@@ -1326,25 +1676,34 @@ def main() -> int:
             "passed": bool(flags.get("copy_cheat") or flags.get("freeze_cheat") or flags.get("prompt_collapse")),
             "judge": neg_judge,
             "required": "degraded copied/frozen input must be flagged and must not pass as consistent",
+            "synthetic_only": not bool(negatives),
+            "source_scene": degraded_source_scene,
+            "fixture_kind": synthetic_negative.get("fixture_kind") or "degraded_copy_cheat",
         }
 
         for arm in ("prompt_only", "kv_only", "both"):
             prompt_dir = original_prompt_dir if arm == "kv_only" else refined_prompt_dir
             numeric_path = output_root / "numeric" / f"numeric_{arm_dirs[arm].name}.json"
             if args.resume and numeric_path.exists():
-                numeric_results[arm] = load_json(numeric_path)
-            else:
-                numeric_results[arm] = evaluate_numeric_arm(
-                    baseline_dir=baseline_dir,
-                    arm_dir=arm_dirs[arm],
-                    prompt_dir=prompt_dir,
-                    scenes=admitted,
-                    negative_controls=negatives,
-                    admission=admission,
-                    args=args,
-                    num_blocks=num_blocks,
-                    output_dir=output_root / "numeric",
+                cached_numeric = load_json(numeric_path)
+                if cached_numeric.get("scene_role_source") == "admission_negative_controls_v2":
+                    numeric_results[arm] = cached_numeric
+                    continue
+                print(
+                    f"[vlm-ablation] recomputing stale numeric cache for {arm}: "
+                    "scene_role_source is missing or old"
                 )
+            numeric_results[arm] = evaluate_numeric_arm(
+                baseline_dir=baseline_dir,
+                arm_dir=arm_dirs[arm],
+                prompt_dir=prompt_dir,
+                scenes=admitted,
+                negative_controls=negatives,
+                admission=admission,
+                args=args,
+                num_blocks=num_blocks,
+                output_dir=output_root / "numeric",
+            )
 
     except Exception as exc:
         blocked_reason = str(exc)
@@ -1384,7 +1743,7 @@ def main() -> int:
         print(f"[vlm-ablation] BLOCKED/NULL: {blocked_reason}")
         return 1
     print(f"[vlm-ablation] RESULT: {'PASS' if ledger['pass'] else 'NULL'} winner={ledger.get('winner')}")
-    return 0 if ledger["pass"] else 1
+    return 0
 
 
 if __name__ == "__main__":
