@@ -1,0 +1,5 @@
+{
+  "caption": "One continuous warm indoor dining multishot scene. The same central subject, setting, material identity, lighting family, and event continuity should carry across all camera cuts. Source caption evidence: The video presents a warm, inviting indoor dining scene, bathed in soft, ambient lighting that enhances the rich, earthy tones of the wooden table and ceramic dishes. The color palette is dominated by deep browns, cre...",
+  "contrast_caption": "A different unrelated subject, object set, location, lighting condition, or event replaces the scene between shots.",
+  "invariant_caption": "The same continuous warm indoor dining scene persists across every shot, with the same central subject or objects, the same environment, and coherent event continuity despite legitimate camera, framing, and action changes."
+}
