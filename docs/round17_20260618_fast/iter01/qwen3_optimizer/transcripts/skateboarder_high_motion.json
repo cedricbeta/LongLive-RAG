@@ -1,0 +1,223 @@
+{
+  "image_hashes": {
+    "docs/round17_20260618/iter01/optimizer_frames/skateboarder_high_motion/shot00_frame00_idx0000.png": "96eacc3dc5f5dd874a64867abfbd01bd0111bbaa31f4ec6fd4f17dbd721e472e",
+    "docs/round17_20260618/iter01/optimizer_frames/skateboarder_high_motion/shot00_frame01_idx0048.png": "4d0ed4fdb1a5305a7e196c72b1ae4a0312032f609aec0737884aca4299c479b4",
+    "docs/round17_20260618/iter01/optimizer_frames/skateboarder_high_motion/shot00_frame02_idx0095.png": "6f9d2405d88dbb98192dc752f18fa4061ef22f3d8710c945591f4cab15c1b06a",
+    "docs/round17_20260618/iter01/optimizer_frames/skateboarder_high_motion/shot01_frame00_idx0096.png": "3da5ba7fe38fc9ac40c10364ca49e9a6001242ad449f2f5cddf11c14a20bf241",
+    "docs/round17_20260618/iter01/optimizer_frames/skateboarder_high_motion/shot01_frame01_idx0144.png": "f4ed99d413291d77c990b9926eb677801889c5fd5ef07a1ee702f557979f629b",
+    "docs/round17_20260618/iter01/optimizer_frames/skateboarder_high_motion/shot01_frame02_idx0191.png": "3f50ea33ae6e91818ab153c5eecc97c00d37cb224fce3b479ecaa24c3ec7d22e",
+    "docs/round17_20260618/iter01/optimizer_frames/skateboarder_high_motion/shot02_frame00_idx0192.png": "79f49b0cb84c92f0ecb0506a3c40b60f727ec73e1f2b13eb2474a859d6919c48",
+    "docs/round17_20260618/iter01/optimizer_frames/skateboarder_high_motion/shot02_frame01_idx0240.png": "54210dfd4b8213e831ad00245ee6301823eeec402a7953cb038f3eace59fb6a0",
+    "docs/round17_20260618/iter01/optimizer_frames/skateboarder_high_motion/shot02_frame02_idx0287.png": "ae9f11a780837407da0099a528bd036e4f332eb714d39e5ce5429f1dd2fd6c34",
+    "docs/round17_20260618/iter01/optimizer_frames/skateboarder_high_motion/shot03_frame00_idx0288.png": "df32516ac8733b56da183423cd0d4b61c75a99d5013bd62431793ba74a7b7129",
+    "docs/round17_20260618/iter01/optimizer_frames/skateboarder_high_motion/shot03_frame01_idx0336.png": "38bc7532517d20e073353c9f129f511f27ac823bff87f28da943da044d2e6c9f",
+    "docs/round17_20260618/iter01/optimizer_frames/skateboarder_high_motion/shot03_frame02_idx0383.png": "6b1e41de37d7224ff159e9ac423060c0acf3a896820e4a3e0b9f2aa654a58a01",
+    "docs/round17_20260618/iter01/optimizer_frames/skateboarder_high_motion/shot04_frame00_idx0384.png": "5cb6c6d1f73a9aec0a66a5403f451382ffd91091cc5531624702b6fe33ff4f03",
+    "docs/round17_20260618/iter01/optimizer_frames/skateboarder_high_motion/shot04_frame01_idx0408.png": "eb0e0938683da005d116f82d56053339f3c69a833cbf508ac8327cb55cf33085",
+    "docs/round17_20260618/iter01/optimizer_frames/skateboarder_high_motion/shot04_frame02_idx0431.png": "0bd10ff3e876b6fee06431812d2c59b8d3b5a270e9ebb04e8a66d0629a27658c",
+    "docs/round17_20260618/iter01/optimizer_frames/skateboarder_high_motion/shot05_frame00_idx0432.png": "ceb3cfb30533d0f14d4b6df30da31cd2facc7f2ceffc4191e8046a789b00efb6",
+    "docs/round17_20260618/iter01/optimizer_frames/skateboarder_high_motion/shot05_frame01_idx0456.png": "ea030de1878d8bc0f036b18b398742aa94c68cbe68eb199c9aaec7bcf6e9e7b9",
+    "docs/round17_20260618/iter01/optimizer_frames/skateboarder_high_motion/shot05_frame02_idx0479.png": "27c156561d41b7f35fa76b6dc131d4ecaca3e45d86319ce404d0ae5bed943ca5"
+  },
+  "image_paths": [
+    "docs/round17_20260618/iter01/optimizer_frames/skateboarder_high_motion/shot00_frame00_idx0000.png",
+    "docs/round17_20260618/iter01/optimizer_frames/skateboarder_high_motion/shot00_frame01_idx0048.png",
+    "docs/round17_20260618/iter01/optimizer_frames/skateboarder_high_motion/shot00_frame02_idx0095.png",
+    "docs/round17_20260618/iter01/optimizer_frames/skateboarder_high_motion/shot01_frame00_idx0096.png",
+    "docs/round17_20260618/iter01/optimizer_frames/skateboarder_high_motion/shot01_frame01_idx0144.png",
+    "docs/round17_20260618/iter01/optimizer_frames/skateboarder_high_motion/shot01_frame02_idx0191.png",
+    "docs/round17_20260618/iter01/optimizer_frames/skateboarder_high_motion/shot02_frame00_idx0192.png",
+    "docs/round17_20260618/iter01/optimizer_frames/skateboarder_high_motion/shot02_frame01_idx0240.png",
+    "docs/round17_20260618/iter01/optimizer_frames/skateboarder_high_motion/shot02_frame02_idx0287.png",
+    "docs/round17_20260618/iter01/optimizer_frames/skateboarder_high_motion/shot03_frame00_idx0288.png",
+    "docs/round17_20260618/iter01/optimizer_frames/skateboarder_high_motion/shot03_frame01_idx0336.png",
+    "docs/round17_20260618/iter01/optimizer_frames/skateboarder_high_motion/shot03_frame02_idx0383.png",
+    "docs/round17_20260618/iter01/optimizer_frames/skateboarder_high_motion/shot04_frame00_idx0384.png",
+    "docs/round17_20260618/iter01/optimizer_frames/skateboarder_high_motion/shot04_frame01_idx0408.png",
+    "docs/round17_20260618/iter01/optimizer_frames/skateboarder_high_motion/shot04_frame02_idx0431.png",
+    "docs/round17_20260618/iter01/optimizer_frames/skateboarder_high_motion/shot05_frame00_idx0432.png",
+    "docs/round17_20260618/iter01/optimizer_frames/skateboarder_high_motion/shot05_frame01_idx0456.png",
+    "docs/round17_20260618/iter01/optimizer_frames/skateboarder_high_motion/shot05_frame02_idx0479.png"
+  ],
+  "parsed": {
+    "global_invariant_additions": [
+      "The skateboarder wears a black helmet and a black t-shirt with white lettering throughout."
+    ],
+    "kv_anchor_plan": [
+      {
+        "boundary_shot_index": 1,
+        "decoded_frame_indices": [
+          96
+        ],
+        "rationale": "Frame 96 is the first frame of Shot 1 and captures the rider's helmet and hoodie clearly, providing a stable anchor for Shot 2."
+      }
+    ],
+    "per_shot_additions": [
+      {
+        "rationale": "Shot 2's overhead angle previously omitted the rider's helmet and hoodie details visible in Shot 1, breaking continuity.",
+        "shot_index": 2,
+        "text": "The skateboarder wears a black helmet and a black t-shirt with white lettering."
+      }
+    ],
+    "stop_rule": "one bounded refinement round",
+    "which_cut_broke": {
+      "cut_index": 2,
+      "how": "Shot 2's overhead angle breaks continuity with Shot 1's tracking side view by omitting the rider's helmet and hoodie details visible in Shot 1."
+    }
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are the LOCAL Qwen3-VL optimizer, not the held-out judge.\nDiagnose which shot cut breaks cross-shot consistency and propose constrained fixes.\nReturn strict JSON only with this shape:\n{\n  \"which_cut_broke\": {\"cut_index\": integer_or_null, \"how\": \"short reason\"},\n  \"global_invariant_additions\": [\"additive invariant text\", ...],\n  \"per_shot_additions\": [{\"shot_index\": 0, \"text\": \"additive invariant text\", \"rationale\": \"why\"}, ...],\n  \"kv_anchor_plan\": [{\"boundary_shot_index\": 1, \"decoded_frame_indices\": [0], \"rationale\": \"why\"}, ...],\n  \"stop_rule\": \"one bounded refinement round\"\n}\nRules: ADD subject/scene invariants only. Do not delete or weaken per-shot camera/action.\nDo not collapse shots into near-identical text. Choose only listed decoded frame indices.\nCap KV anchors to 4 frames per boundary. Use only source shots outside the live local window.\nScene: skateboarder_high_motion\nGlobal invariant: The same skateboarder in a red hoodie and black helmet rides the same wooden skateboard through the same concrete skate bowl.\nSHOT 0: frames=[0, 48, 95]; caption=Shot 0 starts low near the concrete. The skateboarder rolls quickly from left to right and pumps down the curved bowl wall.\nSHOT 1: frames=[96, 144, 191]; caption=Shot 1 cuts to a tracking side view. The camera pans fast as the skateboarder carves up the opposite wall.\nSHOT 2: frames=[192, 240, 287]; caption=Shot 2 switches to an overhead angle. The skateboarder snaps a small ollie near the lip and lands back into the bowl.\nSHOT 3: frames=[288, 336, 383]; caption=Shot 3 cuts behind the rider. The camera follows as the skateboarder accelerates toward a painted wall and leans into a sharp turn.\nSHOT 4: frames=[384, 408, 431]; caption=Shot 4 uses a telephoto view from across the bowl. The skateboarder crosses frame at speed and the background streaks with motion.\nSHOT 5: frames=[432, 456, 479]; caption=Shot 5 ends in a front three-quarter view. The skateboarder rolls out of the trick, bends at the knees, and steadies the board.\nKV candidates for boundary entering shot 1: [0, 48]\nKV candidates for boundary entering shot 2: [0, 48, 95, 96, 144]\nKV candidates for boundary entering shot 3: [0, 48, 95, 96, 144, 191, 192, 240]\nKV candidates for boundary entering shot 4: [0, 48, 95, 96, 144, 191, 192, 240, 287, 288, 336]\nKV candidates for boundary entering shot 5: [0, 48, 95, 96, 144, 191, 192, 240, 287, 288, 336, 383, 384]",
+            "type": "text"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"which_cut_broke\": {\n    \"cut_index\": 2,\n    \"how\": \"Shot 2's overhead angle breaks continuity with Shot 1's tracking side view by omitting the rider's helmet and hoodie details visible in Shot 1.\"\n  },\n  \"global_invariant_additions\": [\n    \"The skateboarder wears a black helmet and a black t-shirt with white lettering throughout.\"\n  ],\n  \"per_shot_additions\": [\n    {\n      \"shot_index\": 2,\n      \"text\": \"The skateboarder wears a black helmet and a black t-shirt with white lettering.\",\n      \"rationale\": \"Shot 2's overhead angle previously omitted the rider's helmet and hoodie details visible in Shot 1, breaking continuity.\"\n    }\n  ],\n  \"kv_anchor_plan\": [\n    {\n      \"boundary_shot_index\": 1,\n      \"decoded_frame_indices\": [96],\n      \"rationale\": \"Frame 96 is the first frame of Shot 1 and captures the rider's helmet and hoodie clearly, providing a stable anchor for Shot 2.\"\n    }\n  ],\n  \"stop_rule\": \"one bounded refinement round\"\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1781825342,
+    "id": "ca3acf6c00c244ac833acc42067887e7",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 243,
+      "prompt_tokens": 16639,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 16882
+    }
+  },
+  "wall_clock_seconds": 10.998249292373657
+}

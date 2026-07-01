@@ -1,0 +1,30 @@
+{
+  "resumed_optimizer_artifacts": true,
+  "runs": {
+    "both": {
+      "config": "videos/round17_20260618_fast/iter01/configs/both.yaml",
+      "gpu": null,
+      "log_path": "docs/round17_20260618_fast/iter01/generation_logs/both.log",
+      "returncode": 0,
+      "reused": true,
+      "wall_clock_seconds": 0.0
+    },
+    "kv_only": {
+      "config": "videos/round17_20260618_fast/iter01/configs/kv_only.yaml",
+      "gpu": null,
+      "log_path": "docs/round17_20260618_fast/iter01/generation_logs/kv_only.log",
+      "returncode": 0,
+      "reused": true,
+      "wall_clock_seconds": 0.0
+    },
+    "prompt_only": {
+      "config": "videos/round17_20260618_fast/iter01/configs/prompt_only.yaml",
+      "gpu": null,
+      "log_path": "docs/round17_20260618_fast/iter01/generation_logs/prompt_only.log",
+      "returncode": 0,
+      "reused": true,
+      "wall_clock_seconds": 0.0
+    }
+  },
+  "skipped_generation": false
+}

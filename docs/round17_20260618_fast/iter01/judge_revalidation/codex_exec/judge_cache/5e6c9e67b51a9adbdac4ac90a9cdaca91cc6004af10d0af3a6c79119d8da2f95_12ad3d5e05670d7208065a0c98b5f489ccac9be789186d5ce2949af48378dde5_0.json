@@ -1,0 +1,49 @@
+{
+  "response": {
+    "output_text": "{\"subject_identity_preserved\": {\"score\": 0.94, \"verdict\": \"high\", \"rationale\": \"The same simple red robot with rounded head, rectangular body, and white eyes persists across all shots.\"}, \"background_coherent\": {\"score\": 0.88, \"verdict\": \"high\", \"rationale\": \"All shots remain in the same gray studio setup with recurring dark rectangular prop, yellow circle, and sloped floor/mark elements, despite viewpoint/framing shifts.\"}, \"per_shot_adherence\": [{\"shot_index\": 0, \"score\": 0.82, \"issue\": \"Closer angled view is plausible and the robot remains in the same studio, though the return-to-mark action is only weakly visible in a single frame.\"}, {\"shot_index\": 1, \"score\": 0.9, \"issue\": \"Wide studio shot with the red robot standing is well matched.\"}, {\"shot_index\": 2, \"score\": 0.84, \"issue\": \"Same studio and movement cue/mark are present, but the side-view aspect is not very strong because the robot still reads mostly front-facing.\"}], \"inter_shot_diversity\": {\"score\": 0.86, \"verdict\": \"healthy\", \"rationale\": \"The sequence preserves distinct framing and composition changes without collapsing into copied shots.\"}, \"motion_continuity\": {\"score\": 0.72, \"verdict\": \"active\", \"rationale\": \"Robot placement and scene elements shift plausibly across shots, though only one sampled frame per shot limits direct motion evidence.\"}, \"which_cut_broke\": {\"cut_index\": null, \"confidence\": 0.82, \"how\": \"No transition clearly breaks subject or scene continuity; changes read as intended viewpoint/framing variation.\"}, \"cheat_flags\": {\"copy_cheat\": false, \"freeze_cheat\": false, \"prompt_collapse\": false, \"position_bias_suspected\": false, \"rationale\": \"Frames are not identical, preserve requested viewpoint variation, and show meaningful composition/position differences.\"}, \"overall_consistency_score\": 0.87}",
+    "usage": {
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "total_tokens": 0
+    },
+    "raw_response": {
+      "stdout_prefix": "{\"subject_identity_preserved\":{\"score\":0.94,\"verdict\":\"high\",\"rationale\":\"The same simple red robot with rounded head, rectangular body, and white eyes persists across all shots.\"},\"background_coherent\":{\"score\":0.88,\"verdict\":\"high\",\"rationale\":\"All shots remain in the same gray studio setup with recurring dark rectangular prop, yellow circle, and sloped floor/mark elements, despite viewpoint/framing shifts.\"},\"per_shot_adherence\":[{\"shot_index\":0,\"score\":0.82,\"issue\":\"Closer angled view is plausible and the robot remains in the same studio, though the return-to-mark action is only weakly visible in a single frame.\"},{\"shot_index\":1,\"score\":0.9,\"issue\":\"Wide studio shot with the red robot standing is well matched.\"},{\"shot_index\":2,\"score\":0.84,\"issue\":\"Same studio and movement cue/mark are present, but the side-view aspect is not very strong because the robot still reads mostly front-facing.\"}],\"inter_shot_diversity\":{\"score\":0.86,\"verdict\":\"healthy\",\"rationale\":\"The sequence preserv",
+      "stderr_prefix": "Reading prompt from stdin...\nOpenAI Codex v0.141.0\n--------\nworkdir: /home/chendong/video-gen/LongLive-RAG\nmodel: gpt-5.5\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: xhigh\nreasoning summaries: none\nsession id: 019edd3e-24f9-78c0-949d-5d033feb6c4f\n--------\nuser\nYou are a held-out video consistency judge.\n\nYou will see 1-3 decoded frames per shot, in temporal shot order unless the\nfixture explicitly says it is a shuffled-order probe. Judge only perceptual\ncross-shot consistency:\n- subject_identity_preserved: whether the same central subject/object continues\n  across shot cuts.\n- background_coherent: whether the same scene/place/event persists.\n- per_shot_adherence: whether each shot still follows its own caption.\n- inter_shot_diversity: whether the shots preserve legitimate requested camera,\n  action, composition, and scene variation instead of collapsing toward the same\n  looking shot.\n- motion_continuity: whether the sampled sequence shows plausible motion/cha"
+    },
+    "client": {
+      "provider": "codex_exec_oauth",
+      "command": "codex exec --output-schema ... --image ...",
+      "auth": "reused Codex login through codex CLI; no token file extraction",
+      "codex_bin": "/home/chendong/.nvm/versions/node/v22.17.0/bin/codex",
+      "model": "gpt-5.5",
+      "last_command": {
+        "argv_redacted": [
+          "/home/chendong/.nvm/versions/node/v22.17.0/bin/codex",
+          "exec",
+          "-C",
+          "/home/chendong/video-gen/LongLive-RAG",
+          "--sandbox",
+          "read-only",
+          "--ephemeral",
+          "--output-schema",
+          "docs/round17_20260618_fast/iter01/judge_revalidation/codex_exec/judge_validation_transcripts/codex_judge_schema.json",
+          "--output-last-message",
+          "docs/round17_20260618_fast/iter01/judge_revalidation/codex_exec/judge_validation_transcripts/codex_viewpoint_only_shuffled_last_message.json",
+          "--model",
+          "gpt-5.5",
+          "--image",
+          "<image-path>",
+          "--image",
+          "<image-path>",
+          "--image",
+          "<image-path>",
+          "-"
+        ],
+        "schema_path": "docs/round17_20260618_fast/iter01/judge_revalidation/codex_exec/judge_validation_transcripts/codex_judge_schema.json",
+        "output_path": "docs/round17_20260618_fast/iter01/judge_revalidation/codex_exec/judge_validation_transcripts/codex_viewpoint_only_shuffled_last_message.json",
+        "returncode": 0,
+        "stderr_prefix": "Reading prompt from stdin...\nOpenAI Codex v0.141.0\n--------\nworkdir: /home/chendong/video-gen/LongLive-RAG\nmodel: gpt-5.5\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: xhigh\nreasoning summaries: none\nsession id: 019edd3e-24f9-78c0-949d-5d033feb6c4f\n--------\nuser\nYou are a held-out video consistency judge.\n\nYou will see 1-3 decoded frames per shot, in temporal shot order unless the\nfixture explicitly says it is a shuffled-order probe. Judge only perceptual\ncross-shot consistency:\n- subject_identity_preserved: whether the same central subject/object continues\n  across shot cuts.\n- background_coherent: whether the same scene/place/event persists.\n- per_shot_adherence: whether each shot still follows its own caption.\n- inter_shot_diversity: whether the shots preserve legitimate requested camera,\n  action, composition, and scene variation instead of collapsing toward the same\n  looking shot.\n- motion_continuity: whether the sampled sequence shows plausible motion/cha"
+      }
+    }
+  }
+}

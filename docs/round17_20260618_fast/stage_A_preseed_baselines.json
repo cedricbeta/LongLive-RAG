@@ -1,0 +1,7 @@
+{
+  "admission_json_override": "docs/round17_20260618_fast/fast5_admission.json",
+  "policy": "stage-A skipped; using explicit admission_json_override",
+  "requested_seeds": [
+    0
+  ]
+}

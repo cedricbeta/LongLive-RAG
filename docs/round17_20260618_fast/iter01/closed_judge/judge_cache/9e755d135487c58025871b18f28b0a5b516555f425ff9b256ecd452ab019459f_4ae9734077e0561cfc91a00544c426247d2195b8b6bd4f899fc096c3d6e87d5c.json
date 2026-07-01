@@ -1,0 +1,149 @@
+{
+  "captions": [
+    "Shot 0 starts low near the concrete. The skateboarder rolls quickly from left to right and pumps down the curved bowl wall.",
+    "Shot 1 cuts to a tracking side view. The camera pans fast as the skateboarder carves up the opposite wall.",
+    "Shot 2 switches to an overhead angle. The skateboarder snaps a small ollie near the lip and lands back into the bowl.",
+    "Shot 3 cuts behind the rider. The camera follows as the skateboarder accelerates toward a painted wall and leans into a sharp turn.",
+    "Shot 4 uses a telephoto view from across the bowl. The skateboarder crosses frame at speed and the background streaks with motion.",
+    "Shot 5 ends in a front three-quarter view. The skateboarder rolls out of the trick, bends at the knees, and steadies the board."
+  ],
+  "client": {
+    "auth": "reused Codex login through codex CLI; no token file extraction",
+    "codex_bin": "/home/chendong/.nvm/versions/node/v22.17.0/bin/codex",
+    "command": "codex exec --output-schema ... --image ...",
+    "last_command": {
+      "argv_redacted": [
+        "/home/chendong/.nvm/versions/node/v22.17.0/bin/codex",
+        "exec",
+        "-C",
+        "/home/chendong/video-gen/LongLive-RAG",
+        "--sandbox",
+        "read-only",
+        "--ephemeral",
+        "--output-schema",
+        "docs/round17_20260618_fast/iter01/closed_judge/judge_transcripts/codex_judge_schema.json",
+        "--output-last-message",
+        "docs/round17_20260618_fast/iter01/closed_judge/judge_transcripts/codex_skateboarder_high_motion_kv_only_last_message.json",
+        "--model",
+        "gpt-5.5",
+        "--image",
+        "<image-path>",
+        "--image",
+        "<image-path>",
+        "--image",
+        "<image-path>",
+        "--image",
+        "<image-path>",
+        "--image",
+        "<image-path>",
+        "--image",
+        "<image-path>",
+        "-"
+      ],
+      "output_path": "docs/round17_20260618_fast/iter01/closed_judge/judge_transcripts/codex_skateboarder_high_motion_kv_only_last_message.json",
+      "returncode": 0,
+      "schema_path": "docs/round17_20260618_fast/iter01/closed_judge/judge_transcripts/codex_judge_schema.json",
+      "stderr_prefix": "Reading prompt from stdin...\nOpenAI Codex v0.141.0\n--------\nworkdir: /home/chendong/video-gen/LongLive-RAG\nmodel: gpt-5.5\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: xhigh\nreasoning summaries: none\nsession id: 019edda2-90aa-7853-8eb3-38048ebda21a\n--------\nuser\nYou are a held-out video consistency judge.\n\nYou will see 1-3 decoded frames per shot, in temporal shot order unless the\nfixture explicitly says it is a shuffled-order probe. Judge only perceptual\ncross-shot consistency:\n- subject_identity_preserved: whether the same central subject/object continues\n  across shot cuts.\n- background_coherent: whether the same scene/place/event persists.\n- per_shot_adherence: whether each shot still follows its own caption.\n- inter_shot_diversity: whether the shots preserve legitimate requested camera,\n  action, composition, and scene variation instead of collapsing toward the same\n  looking shot.\n- motion_continuity: whether the sampled sequence shows plausible motion/cha"
+    },
+    "model": "gpt-5.5",
+    "provider": "codex_exec_oauth"
+  },
+  "fixture": "skateboarder_high_motion_kv_only",
+  "frames_shown": [
+    [
+      "docs/round17_20260618_fast/iter01/judge_frames/skateboarder_high_motion/kv_only/shot00_frame00_idx0000.png"
+    ],
+    [
+      "docs/round17_20260618_fast/iter01/judge_frames/skateboarder_high_motion/kv_only/shot01_frame00_idx0096.png"
+    ],
+    [
+      "docs/round17_20260618_fast/iter01/judge_frames/skateboarder_high_motion/kv_only/shot02_frame00_idx0192.png"
+    ],
+    [
+      "docs/round17_20260618_fast/iter01/judge_frames/skateboarder_high_motion/kv_only/shot03_frame00_idx0288.png"
+    ],
+    [
+      "docs/round17_20260618_fast/iter01/judge_frames/skateboarder_high_motion/kv_only/shot04_frame00_idx0384.png"
+    ],
+    [
+      "docs/round17_20260618_fast/iter01/judge_frames/skateboarder_high_motion/kv_only/shot05_frame00_idx0432.png"
+    ]
+  ],
+  "from_cache": false,
+  "prompt_hash": "4ae9734077e0561cfc91a00544c426247d2195b8b6bd4f899fc096c3d6e87d5c",
+  "provider": "codex",
+  "usage": {
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "total_tokens": 0
+  },
+  "verdict": {
+    "background_coherent": {
+      "rationale": "All shots stay in the same outdoor skate bowl with tan curved walls, blue coping/rails, chain-link fencing, trees, and bright sunlight.",
+      "score": 0.93,
+      "verdict": "high"
+    },
+    "cheat_flags": {
+      "copy_cheat": false,
+      "freeze_cheat": false,
+      "position_bias_suspected": false,
+      "prompt_collapse": false,
+      "rationale": "Shots are visually varied and show changing body poses, board orientation, scale, and camera placement."
+    },
+    "inter_shot_diversity": {
+      "rationale": "The sequence preserves distinct framings and action states: cropped low entry, side carve, close jump, rear follow, across-bowl view, and front three-quarter rollout.",
+      "score": 0.88,
+      "verdict": "healthy"
+    },
+    "motion_continuity": {
+      "rationale": "The frames show clear progression through rolling, carving, popping the board, landing, accelerating, and stabilizing. There is no freeze or copy-frame behavior.",
+      "score": 0.91,
+      "verdict": "active"
+    },
+    "overall_consistency_score": 0.86,
+    "per_shot_adherence": [
+      {
+        "issue": "Low near-concrete view and left-to-right motion are plausible, but the skateboarder is partly cropped at frame edge.",
+        "score": 0.78,
+        "shot_index": 0
+      },
+      {
+        "issue": "Side tracking view of the rider carving in the bowl fits well; an extra partial figure appears at the far left but is not central.",
+        "score": 0.86,
+        "shot_index": 1
+      },
+      {
+        "issue": "The ollie/action is visible, but the requested overhead angle is not really present; it reads more like a close low/side view.",
+        "score": 0.63,
+        "shot_index": 2
+      },
+      {
+        "issue": "Behind-rider follow view with a lean into motion is consistent with the caption.",
+        "score": 0.86,
+        "shot_index": 3
+      },
+      {
+        "issue": "Telephoto-like cross-bowl view and speed are plausible, though background streaking is modest.",
+        "score": 0.84,
+        "shot_index": 4
+      },
+      {
+        "issue": "Front three-quarter rollout is mostly present, but the rider is cropped at the top and the pose is mid-trick rather than clearly settled.",
+        "score": 0.78,
+        "shot_index": 5
+      }
+    ],
+    "subject_identity_preserved": {
+      "rationale": "The central skateboarder remains visually consistent across shots: black shirt, dark pants, dark helmet/cap, purple shoes, and skateboard. Shot 0 is heavily cropped, so identity evidence there is weaker, but it does not contradict the later shots.",
+      "score": 0.84,
+      "verdict": "high"
+    },
+    "which_cut_broke": {
+      "confidence": 0.18,
+      "cut_index": null,
+      "how": "No transition clearly breaks cross-shot consistency; the largest weakness is shot 2's camera angle not matching the overhead caption rather than an identity or scene break."
+    }
+  },
+  "video_hash": "9e755d135487c58025871b18f28b0a5b516555f425ff9b256ecd452ab019459f",
+  "wall_clock_seconds": 25.252307176589966
+}

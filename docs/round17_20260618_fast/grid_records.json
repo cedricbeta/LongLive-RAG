@@ -1,0 +1,101 @@
+[
+  {
+    "fps": 24.0,
+    "frames": 480,
+    "labels": {
+      "baseline": "baseline=[REUSED]",
+      "both": "both",
+      "kv_only": "kv_only",
+      "prompt_only": "prompt_only"
+    },
+    "path": "videos/round17_20260618_fast/grid_comparisons/african_savanna_seed0_4up.mp4",
+    "scene": "african_savanna",
+    "shot_cut_boundaries": [
+      96,
+      192,
+      240,
+      288,
+      336,
+      384,
+      432
+    ]
+  },
+  {
+    "fps": 24.0,
+    "frames": 480,
+    "labels": {
+      "baseline": "baseline=[REUSED]",
+      "both": "both",
+      "kv_only": "kv_only",
+      "prompt_only": "prompt_only"
+    },
+    "path": "videos/round17_20260618_fast/grid_comparisons/brown_bear_river_seed0_4up.mp4",
+    "scene": "brown_bear_river",
+    "shot_cut_boundaries": [
+      96,
+      192,
+      240,
+      288,
+      336,
+      384,
+      432
+    ]
+  },
+  {
+    "fps": 24.0,
+    "frames": 480,
+    "labels": {
+      "baseline": "baseline=[REUSED]",
+      "both": "both",
+      "kv_only": "kv_only",
+      "prompt_only": "prompt_only"
+    },
+    "path": "videos/round17_20260618_fast/grid_comparisons/skateboarder_high_motion_seed0_4up.mp4",
+    "scene": "skateboarder_high_motion",
+    "shot_cut_boundaries": [
+      96,
+      192,
+      288,
+      384,
+      432
+    ]
+  },
+  {
+    "fps": 24.0,
+    "frames": 480,
+    "labels": {
+      "baseline": "baseline=[REUSED]",
+      "both": "both",
+      "kv_only": "kv_only",
+      "prompt_only": "prompt_only"
+    },
+    "path": "videos/round17_20260618_fast/grid_comparisons/sunlit_balcony_tour_seed0_4up.mp4",
+    "scene": "sunlit_balcony_tour",
+    "shot_cut_boundaries": [
+      96,
+      192,
+      288,
+      384,
+      432
+    ]
+  },
+  {
+    "fps": 24.0,
+    "frames": 480,
+    "labels": {
+      "baseline": "baseline=[REUSED]",
+      "both": "both",
+      "kv_only": "kv_only",
+      "prompt_only": "prompt_only"
+    },
+    "path": "videos/round17_20260618_fast/grid_comparisons/shimmering_puzzle_surface_seed0_4up.mp4",
+    "scene": "shimmering_puzzle_surface",
+    "shot_cut_boundaries": [
+      96,
+      192,
+      288,
+      384,
+      432
+    ]
+  }
+]

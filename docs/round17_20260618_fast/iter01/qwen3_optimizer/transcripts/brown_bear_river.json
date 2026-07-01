@@ -1,0 +1,301 @@
+{
+  "image_hashes": {
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot00_frame00_idx0000.png": "0cb95f1d486909881d7613ecb674af903ef005a1a3df9b174580a694ca50cd4a",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot00_frame01_idx0048.png": "578c117c411b395cef31b3747cd93f30c119d29527055c3e509ad6282fbbfab3",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot00_frame02_idx0095.png": "71c16d73d64fba6c8802857786132ff6a15d2657ed6816c054818ef1d9b7f20f",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot01_frame00_idx0096.png": "0c1d961e8b0e3f7b20d2ddd28a233fed36396ca29db19f95b05ed147b5b5c2b1",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot01_frame01_idx0144.png": "4597dbfa53a3e02b570e7f7e65edb154bdb70ede452f6ab17ee55fa1a9a03e36",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot01_frame02_idx0191.png": "ac8e300a910f472623e62f1ccd4ab5e0bc0fa3bed2218fa0cd0789173d9172a3",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot02_frame00_idx0192.png": "eaf3d21a1763e5947bf6a1a1adce42f4525d685c7b9170a5851d8400a7e4bcab",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot02_frame01_idx0216.png": "4b6a22b3abc92f93e2f300e7a86bbde93261c5b60fb568a8acab169ff3af2c43",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot02_frame02_idx0239.png": "add75ff389471249f8823b27254091fb6c3f677530d317aaeaaf0182820da68c",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot03_frame00_idx0240.png": "4d10b09fe3e57bf026936b8c9596d1a4532ccf358de313a3de5e429eeb252969",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot03_frame01_idx0264.png": "cc7db715d5435dde4bbf110bdb8c0632ef0e62382de4ab7dbb633c2ba647b94a",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot03_frame02_idx0287.png": "1d8f978c820df976c165c1b205d51f5961c620fb4cc5ab0f22b8adaa4aae0521",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot04_frame00_idx0288.png": "619f757c8132990a02ea07ee0a3c33184de158b9a2da108e193312692d1abcd5",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot04_frame01_idx0312.png": "26db0abf37c6cd063036575b3252f2b31bf4ba2a5cd28a2dd1989263abdbe0d7",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot04_frame02_idx0335.png": "1e9120743cf2889f8050304c4b09e1406c9ec12fad6f27ca54f7f2c59289a95a",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot05_frame00_idx0336.png": "8a03d5516b7f76299891eab315805e07aab7ba2dbd09bd2bd4cad45fb16f5958",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot05_frame01_idx0360.png": "d1a2cfb8f21fbea9892653e05243210560a73e3a959c6f94b7cd5c6e749b9ee5",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot05_frame02_idx0383.png": "1ae5652f6b7454e49ef5c2bbf5e58092fea2ee0cd05aa08ddb04a1069cbc74c4",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot06_frame00_idx0384.png": "2e228909cfd3069a51870d9b59d83ba74e137291261de0866cad83033d5374ac",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot06_frame01_idx0408.png": "c6ad3a27a32a41b7d4e0981621a3dde8cfcbe2d8599170eb6c285960a116b035",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot06_frame02_idx0431.png": "8c13951ef6d5378b5431fc29b284b58db44919431a34bb4ba95597a70e5cf3cd",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot07_frame00_idx0432.png": "768567996fd2903e97a5b9994c1d01ebe2fdc379edd1277499e14329f6540ce2",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot07_frame01_idx0456.png": "18122388f38cc7847a4906b901407f44a9702a941206d65e24b9d63c12b0eb6a",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot07_frame02_idx0479.png": "14dae5ed8f33ec9c2f5df27983855da9f9e1282feea8452e6139b6aa7724f062"
+  },
+  "image_paths": [
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot00_frame00_idx0000.png",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot00_frame01_idx0048.png",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot00_frame02_idx0095.png",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot01_frame00_idx0096.png",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot01_frame01_idx0144.png",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot01_frame02_idx0191.png",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot02_frame00_idx0192.png",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot02_frame01_idx0216.png",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot02_frame02_idx0239.png",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot03_frame00_idx0240.png",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot03_frame01_idx0264.png",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot03_frame02_idx0287.png",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot04_frame00_idx0288.png",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot04_frame01_idx0312.png",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot04_frame02_idx0335.png",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot05_frame00_idx0336.png",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot05_frame01_idx0360.png",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot05_frame02_idx0383.png",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot06_frame00_idx0384.png",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot06_frame01_idx0408.png",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot06_frame02_idx0431.png",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot07_frame00_idx0432.png",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot07_frame01_idx0456.png",
+    "docs/round17_20260618/iter01/optimizer_frames/brown_bear_river/shot07_frame02_idx0479.png"
+  ],
+  "parsed": {
+    "global_invariant_additions": [
+      "The bear\u2019s movement is continuous and natural, without artificial digital interventions."
+    ],
+    "kv_anchor_plan": [
+      {
+        "boundary_shot_index": 1,
+        "decoded_frame_indices": [
+          0,
+          48
+        ],
+        "rationale": "Frames 0 and 48 establish the bear emerging from the river under natural daylight, setting the baseline for the scene\u2019s lighting and environment."
+      },
+      {
+        "boundary_shot_index": 2,
+        "decoded_frame_indices": [
+          0,
+          48,
+          95
+        ],
+        "rationale": "Frames 0, 48, and 95 capture the bear\u2019s transition from water to land, reinforcing the riverbank habitat and the bear\u2019s movement."
+      },
+      {
+        "boundary_shot_index": 3,
+        "decoded_frame_indices": [
+          0,
+          48,
+          95,
+          96
+        ],
+        "rationale": "Frames 0, 48, 95, and 96 show the bear walking away from the water, maintaining continuity of the riverbank environment."
+      },
+      {
+        "boundary_shot_index": 4,
+        "decoded_frame_indices": [
+          0,
+          48,
+          95,
+          96
+        ],
+        "rationale": "Frames 0, 48, 95, and 96 are sufficient to anchor the transition into shot 4, as the bear is still in the riverbank environment before the digital overlays appear."
+      }
+    ],
+    "per_shot_additions": [
+      {
+        "rationale": "Shot 4 introduces digital overlays (vertical bars, yellow border, red dotted outline, 3D mesh) that contradict the established documentary realism and immersive style of the entire sequence.",
+        "shot_index": 4,
+        "text": "The video maintains a naturalistic, documentary style without digital overlays or visual effects."
+      }
+    ],
+    "stop_rule": "one bounded refinement round",
+    "which_cut_broke": {
+      "cut_index": 4,
+      "how": "Introduces digital overlays breaking immersion and contradicting documentary realism."
+    }
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are the LOCAL Qwen3-VL optimizer, not the held-out judge.\nDiagnose which shot cut breaks cross-shot consistency and propose constrained fixes.\nReturn strict JSON only with this shape:\n{\n  \"which_cut_broke\": {\"cut_index\": integer_or_null, \"how\": \"short reason\"},\n  \"global_invariant_additions\": [\"additive invariant text\", ...],\n  \"per_shot_additions\": [{\"shot_index\": 0, \"text\": \"additive invariant text\", \"rationale\": \"why\"}, ...],\n  \"kv_anchor_plan\": [{\"boundary_shot_index\": 1, \"decoded_frame_indices\": [0], \"rationale\": \"why\"}, ...],\n  \"stop_rule\": \"one bounded refinement round\"\n}\nRules: ADD subject/scene invariants only. Do not delete or weaken per-shot camera/action.\nDo not collapse shots into near-identical text. Choose only listed decoded frame indices.\nCap KV anchors to 4 frames per boundary. Use only source shots outside the live local window.\nScene: brown_bear_river\nGlobal invariant: The same large brown bear remains in the same shallow river and forest-bank habitat with mud, stones, grass, and dense green vegetation.\nSHOT 0: frames=[0, 48, 95]; caption=The video features a close-up, dynamic sequence of a brown bear partially submerged in a river, captured under natural daylight with a warm, earthy color tone that highlights the wet, glistening fur. The lighting is bright and evenly distributed, suggesting a sunny day, casting soft reflections on the water\u2019s surface and emphasizing the bear\u2019s muscular contours. The atmosphere is serene yet wild, with the natural sounds of flowing water and the bear\u2019s movements enhancing the immersive feel. The camera maintains a steady, eye-level perspective, slowly panning upward and slightly to the side as the bear lifts its head, creating a medium close-up shot that focuses on its face and upper body. The water is clear and shallow, with gentle ripples and splashes around the bear\u2019s head and shoulders, indicating movement as it emerges from the river. The bear\u2019s fur is thick, wet, and matted, with water streaming down its muzzle and cheeks, revealing a dark brown face with alert, amber eyes and a slightly open mouth. Its ears are perked, and its expression is calm yet attentive, suggesting it is either surveying its surroundings or preparing to move. The bear\u2019s head and shoulders dominate the foreground, while the background remains blurred, emphasizing the animal\u2019s presence. The scene is entirely outdoors, set in a natural riverine environment, likely during midday. No human elements or artificial structures are visible, reinforcing the untamed wilderness setting. The bear\u2019s movements are slow and deliberate, with a subtle shift in posture as it lifts its head, allowing water to cascade off its face. The camera\u2019s movement is smooth and controlled, tracking the bear\u2019s emergence with a shallow depth of field that keeps the focus sharp on the animal while softly blurring the water\u2019s background. This creates a cinematic, intimate portrayal of wildlife behavior, capturing the bear\u2019s natural grace and power in its habitat.\nSHOT 1: frames=[96, 144, 191]; caption=The video features a natural, outdoor environment with a cool, earthy color tone dominated by muted browns, greens, and grays. The lighting is soft and diffused, suggesting an overcast or cloudy day, with no harsh shadows. The atmosphere is serene and wild, capturing the raw beauty of a wilderness setting. The style is realistic and documentary-like, with a steady, observational camera that follows the subject without intrusive manipulation.\nThe scene unfolds at the edge of a shallow, calm river bordered by a sandy and muddy bank. In the background, dense green vegetation and trees line the riverbank, indicating a forested or semi-wilderness area. The river\u2019s surface ripples gently, reflecting the subdued light, while the surrounding terrain is dotted with scattered twigs and patches of grass. The environment appears tranquil, with no signs of human presence or urban influence.\n\nThe video\u2019s sole subject is a large brown bear, viewed from behind as it wades through the water and exits onto the riverbank. The bear\u2019s fur is thick and wet, glistening with droplets as it moves. It is a mature adult, with a robust, muscular build, and its back is rounded and broad. The bear\u2019s head is slightly lowered as it navigates the shallows, and its powerful legs kick up splashes as it steps forward. Its ears are perked, indicating alertness. The bear's movement is deliberate and unhurried, suggesting a purposeful exit from the water \u2014 perhaps after foraging or cooling off. As it reaches the bank, it continues walking away from the camera, its body gradually disappearing into the vegetation.\n\nThe camera follows the bear in a medium shot, maintaining a consistent distance, allowing the viewer to observe its movements in context. The focal length remains steady, with a shallow depth of field that keeps the bear in sharp focus while softly blurring the background. The shooting angle is slightly elevated, capturing the bear\u2019s rear and the surrounding landscape. The camera pans subtly to keep the bear centered as it moves, enhancing the sense of immersion in the natural environment.\n\nThe bear\u2019s exit from the water is the central narrative, emphasizing its strength, adaptability, and connection to its habitat. There is no interaction with other animals or humans \u2014 the scene is solitary and peaceful. The movement is slow and steady, with the water\u2019s gentle ripples and the bear\u2019s deliberate steps creating a rhythmic, almost meditative quality. The video captures a moment of quiet wilderness, highlighting the bear\u2019s grace and the untouched beauty of its surroundings.\nSHOT 2: frames=[192, 216, 239]; caption=The video exhibits a natural, earthy color tone dominated by muted greens, browns, and soft yellows, evoking a tranquil, forested environment. Lighting appears diffused, suggesting an overcast day or dappled sunlight filtering through tree canopies, creating a soft, even illumination without harsh shadows. The atmosphere is serene and immersive, with a shallow depth of field that blurs the background slightly, emphasizing the foreground foliage and the movement of the subject. The style is documentary-like, capturing wildlife in its natural habitat with minimal interference, using a handheld or steady cam approach that subtly tracks the subject\u2019s motion.\nThe scene unfolds outdoors in a lush, dense woodland, likely during late morning or early afternoon, given the even, natural light. Ferns and shrubs with serrated leaves dominate the foreground, while taller greenery and tree trunks form the background. The environment is rich with vegetation, including yellow wildflowers intermingled with ferns, suggesting a temperate forest ecosystem. There are no man-made structures or urban elements, reinforcing the untouched wilderness setting.\n\nA single large brown bear, likely a mature adult, is the central subject. It first appears partially obscured by foliage in the foreground, its thick fur and muscular build visible as it moves from the left to the right edge of the frame. The bear\u2019s movement is deliberate and slow, suggesting it is foraging or exploring. Its head is often lowered, indicating it may be sniffing or searching for food. The bear\u2019s fur appears thick and slightly matted, blending seamlessly with the surrounding earth tones.\n\nThe camera remains relatively static but pans slightly to follow the bear\u2019s movement, maintaining a medium shot that captures its upper body and surroundings. The depth of field keeps the bear in focus while rendering the foreground ferns slightly blurred, enhancing the sense of immersion. The bear\u2019s motion is unhurried and purposeful, with no signs of agitation. There is no interaction with other animals or humans, reinforcing the solitary nature of the creature. The gentle rustling of leaves and subtle swaying of plants suggest a light breeze, adding to the natural ambiance.\n\nThe video\u2019s narrative is observational, aiming to showcase wildlife behavior in its natural habitat. The shot composition, shallow depth of field, and smooth camera tracking create an intimate yet respectful portrayal of the bear\u2019s movement through its environment. The overall tone is calm and reverent, inviting viewers to witness the quiet majesty of nature.\nSHOT 3: frames=[240, 264, 287]; caption=The video exhibits a natural, earthy color tone with muted browns, greens, and grays dominating the scene. The lighting is soft and diffused, suggesting an overcast or shaded outdoor environment, likely during midday or early afternoon. The atmosphere is serene yet wild, with a sense of quiet wilderness. The style is documentary-like, capturing realistic wildlife behavior with a handheld, slightly shaky camera that follows the subject closely, enhancing immersion.\nThe setting is outdoors in a forested or semi-wooded area, with patches of grass, scattered dry leaves, twigs, and small stones on the ground. The terrain appears uneven and natural, with a mix of dirt and sparse vegetation. No urban elements are visible, reinforcing the wild, untamed environment. The background includes tree roots and possibly a low rock or log partially visible, hinting at a natural habitat.\n\nThe main subject is a large brown bear, likely a grizzly or black bear, captured in motion. The bear appears in the first frame, with only its paw and part of its leg visible. As the video progresses, the bear walks from right to left across the frame, its powerful, shaggy fur and thick limbs clearly visible. The bear\u2019s gait is deliberate and steady, with each step creating a slight disturbance in the dirt and grass. Its claws are visible, gripping the ground as it moves. The bear\u2019s head is lowered, focused on the path ahead, suggesting purposeful movement, possibly searching or traveling. No other characters are present.\n\nKey objects include the ground surface, which is composed of dirt, grass, and scattered debris. The bear\u2019s paws and legs are in the foreground, while the background remains slightly out of focus, emphasizing the bear\u2019s movement. The camera follows the bear\u2019s motion, panning left to maintain framing, creating a sense of dynamic tracking. The bear\u2019s movement is slow and grounded, with each step deliberate and heavy. The camera angle is low, almost at ground level, enhancing the bear\u2019s imposing presence. The overall shot is a medium close-up, focusing on the bear\u2019s lower body and movement, with a shallow depth of field that blurs the background slightly. The video captures the raw, unfiltered essence of wildlife in its natural habitat, emphasizing the bear\u2019s power and grace as it moves through its environment.\nSHOT 4: frames=[288, 312, 335]; caption=The video presents a serene, naturalistic close-up of a brown bear\u2019s face, bathed in soft, diffused daylight that suggests either early morning or late afternoon. The color tone is warm and earthy, dominated by browns and muted greens, with a shallow depth of field that blurs the background into a soft bokeh of foliage, emphasizing the bear\u2019s facial features. The lighting is gentle and even, casting subtle shadows that contour the bear\u2019s fur and facial structure without harsh contrast. The atmosphere is tranquil and immersive, evoking a sense of wild, untouched nature.\nThe scene is entirely outdoors, set in a forest or woodland environment, with blurred greenery and hints of sunlight filtering through trees in the background. The bear is the sole subject, positioned centrally in the frame, its face filling most of the shot. No other characters or objects are present, allowing the viewer to focus entirely on the bear\u2019s expression and anatomy. The bear\u2019s fur is thick, coarse, and textured, with shades of dark and light brown, particularly around the muzzle and ears. Its eyes are dark, soulful, and slightly reflective, gazing forward with an alert yet calm demeanor. The bear\u2019s ears are rounded and tufted with lighter fur on the tips, and its nose is large, wet, and black, with visible nostrils.\n\nIn the sequence, the video begins with a static close-up of the bear\u2019s face. At 0:02, vertical bars appear, briefly dividing the frame before fading. At 0:03, a yellow border forms around the image, and at 0:04, a red dotted outline appears around the bear\u2019s muzzle. By 0:05, the muzzle is highlighted with a 3D mesh overlay, revealing anatomical structures beneath the fur. The overlay fades by 0:07, and at 0:08, the vertical bars reappear before disappearing at 0:09, returning to the original close-up. The camera remains fixed throughout, with no movement or panning, maintaining an eye-level shot. The bear remains still, with only subtle micro-movements in its eyes and slight shifts in its mouth, conveying a sense of quiet observation. The video\u2019s style is documentary and educational, with an emphasis on anatomical detail and natural beauty, enhanced by the digital overlays that momentarily dissect the bear\u2019s facial structure. The overall mood is contemplative and intimate, inviting viewers to appreciate the bear\u2019s majesty and complexity.\nSHOT 5: frames=[336, 360, 383]; caption=The video presents a serene, naturalistic tone with muted earthy tones and soft, diffused lighting, likely captured during early morning or late afternoon under overcast skies. The atmosphere is tranquil and immersive, emphasizing the quietude of the wild. The style is realistic, with a shallow depth of field that blurs foreground foliage while keeping the bear in focus, enhancing the sense of intimacy and observation.\nThe scene unfolds outdoors in a dense, verdant forest environment. Thick green ferns and leafy underbrush dominate the foreground, partially obscuring the view and creating a natural frame. Behind the foliage, a weathered, moss-covered log lies horizontally, adding texture and grounding the setting in a woodland habitat. The background reveals dappled sunlight filtering through unseen trees, suggesting a shaded, humid environment.\n\nThe main subject is a single brown bear, likely an adult male or female, with thick, shaggy fur in shades of dark brown. Its face is partially obscured by foliage in the early frames, but as the camera subtly pans right and zooms slightly, the bear\u2019s features become clearer \u2014 alert, focused eyes, a broad snout, and rounded ears. The bear is foraging, its head lowered as it sniffs and investigates the ground near the log, occasionally shifting its weight and moving its muzzle closer to the earth. Its movements are deliberate and slow, conveying a sense of purpose and curiosity. It remains largely stationary, occasionally adjusting its position slightly, suggesting it is tracking scent or searching for food.\n\nThe camera maintains a medium close-up shot throughout, keeping the bear\u2019s head and upper torso in focus while foreground plants remain softly blurred. The shallow depth of field and gentle camera movement create a sense of immersion, as if the viewer is hidden within the underbrush, quietly observing the bear\u2019s natural behavior. There is no wind or rain, but the subtle sway of leaves hints at a gentle breeze. The overall narrative is observational, capturing the bear\u2019s quiet, methodical exploration of its environment, evoking a sense of reverence for wildlife in its natural state. The bear\u2019s calm demeanor and the lush, textured surroundings form a harmonious visual story of wilderness life.\nSHOT 6: frames=[384, 408, 431]; caption=The video presents a natural, earthy-toned scene with a muted green and brown color palette, bathed in soft, diffused daylight that suggests an overcast or shaded forest environment. The atmosphere feels tranquil yet slightly wild, with gentle movement in the foliage hinting at a breeze. The style is documentary-like, employing a shallow depth of field that keeps the foreground vegetation in sharp focus while softly blurring the background, creating a sense of immersion in the wild.\nThe setting is entirely outdoors, nestled in a dense, verdant forest. Ferns and small leafy plants dominate the foreground, their fronds delicately swaying as if stirred by a light breeze. The background, though blurred, reveals more trees and underbrush, reinforcing the secluded, untamed nature of the habitat. The time appears to be daytime\u2014perhaps late morning or early afternoon\u2014given the even, natural lighting without harsh shadows.\n\nA large, brown-furred animal, likely a bear, is the central subject. It first appears partially obscured by ferns at 0:00, its massive body moving from left to right across the frame. The bear\u2019s fur is thick and textured, blending subtly with the forest floor. It moves steadily, its motion deliberate and unhurried, suggesting foraging or exploration. The animal\u2019s head is not visible, emphasizing its bulk and the natural camouflage of its surroundings. Its movement is fluid, with its body shifting slightly as it navigates the undergrowth, occasionally brushing against nearby plants.\n\nThe camera remains static throughout, capturing the bear\u2019s passage in a medium shot that emphasizes its scale relative to the environment. The shallow depth of field isolates the bear as it moves through the frame, with the foreground ferns acting as a natural screen. The bear\u2019s path is linear, moving from left to right, gradually exiting the frame by 0:03. No other characters or objects appear, keeping the focus entirely on the animal\u2019s quiet, natural behavior. The scene conveys a sense of harmony between the creature and its habitat, untouched by human presence. The wind\u2019s subtle influence on the foliage adds a gentle, organic rhythm to the visual narrative.\nSHOT 7: frames=[432, 456, 479]; caption=The video features a warm, natural daylight tone with soft, even illumination, casting a distinct shadow of the bear onto the ground. The atmosphere is serene and observational, capturing wildlife in its natural habitat. The style is documentary realism, with a steady, unobtrusive camera that follows the bear\u2019s movement without interruption. The scene is entirely outdoors, set in a rugged, open terrain with sparse vegetation. The ground is a mix of gravel and patches of green grass, suggesting a semi-wild or lightly disturbed natural environment. The weather is clear and sunny, with no visible clouds or precipitation, and the time of day appears to be midday, judging by the sharpness of the shadows.\nThe primary subject is a single brown bear, seen from behind, walking steadily away from the camera. The bear\u2019s fur is thick, medium-brown, and slightly tousled, indicating movement. It moves with a calm, deliberate gait, its legs swinging in a natural rhythm. The bear\u2019s head is slightly raised, suggesting alertness or curiosity as it navigates the terrain. No human characters are present, and the video focuses solely on the bear\u2019s solitary motion.\n\nForeground elements include a small green bush with dense, leafy branches partially obscuring the lower right corner of the frame. The bear walks past this bush, moving from the center-left toward the upper-right of the frame. The camera follows the bear at a medium distance, maintaining a consistent eye-level shot that captures the bear\u2019s full silhouette. The depth of field is moderate, keeping the bear in sharp focus while softly blurring the distant background, which consists of more gravel and sparse vegetation.\n\nThe bear\u2019s movement is slow and methodical, with no abrupt turns or acceleration. The camera remains steady, tracking its motion without panning or zooming, reinforcing the documentary\u2019s observational nature. There are no visible natural elements like wind or rain, though the bear\u2019s fur occasionally shifts slightly, suggesting a light breeze. The shot is a medium-long shot, allowing viewers to observe both the bear\u2019s anatomy and its environment in context. The composition is balanced, with the bear\u2019s path leading the viewer\u2019s eye through the frame, creating a sense of quiet exploration and immersion in the wild.\nKV candidates for boundary entering shot 1: [0, 48]\nKV candidates for boundary entering shot 2: [0, 48, 95, 96, 144]\nKV candidates for boundary entering shot 3: [0, 48, 95, 96, 144, 191, 192]\nKV candidates for boundary entering shot 4: [0, 48, 95, 96, 144, 191, 192, 216, 239, 240]\nKV candidates for boundary entering shot 5: [0, 48, 95, 96, 144, 191, 192, 216, 239, 240, 264, 287, 288]\nKV candidates for boundary entering shot 6: [0, 48, 95, 96, 144, 191, 192, 216, 239, 240, 264, 287, 288, 312, 335, 336]\nKV candidates for boundary entering shot 7: [0, 48, 95, 96, 144, 191, 192, 216, 239, 240, 264, 287, 288, 312, 335, 336, 360, 383, 384]",
+            "type": "text"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"which_cut_broke\": {\n    \"cut_index\": 4,\n    \"how\": \"Introduces digital overlays breaking immersion and contradicting documentary realism.\"\n  },\n  \"global_invariant_additions\": [\n    \"The bear\u2019s movement is continuous and natural, without artificial digital interventions.\"\n  ],\n  \"per_shot_additions\": [\n    {\n      \"shot_index\": 4,\n      \"text\": \"The video maintains a naturalistic, documentary style without digital overlays or visual effects.\",\n      \"rationale\": \"Shot 4 introduces digital overlays (vertical bars, yellow border, red dotted outline, 3D mesh) that contradict the established documentary realism and immersive style of the entire sequence.\"\n    }\n  ],\n  \"kv_anchor_plan\": [\n    {\n      \"boundary_shot_index\": 1,\n      \"decoded_frame_indices\": [0, 48],\n      \"rationale\": \"Frames 0 and 48 establish the bear emerging from the river under natural daylight, setting the baseline for the scene\u2019s lighting and environment.\"\n    },\n    {\n      \"boundary_shot_index\": 2,\n      \"decoded_frame_indices\": [0, 48, 95],\n      \"rationale\": \"Frames 0, 48, and 95 capture the bear\u2019s transition from water to land, reinforcing the riverbank habitat and the bear\u2019s movement.\"\n    },\n    {\n      \"boundary_shot_index\": 3,\n      \"decoded_frame_indices\": [0, 48, 95, 96],\n      \"rationale\": \"Frames 0, 48, 95, and 96 show the bear walking away from the water, maintaining continuity of the riverbank environment.\"\n    },\n    {\n      \"boundary_shot_index\": 4,\n      \"decoded_frame_indices\": [0, 48, 95, 96],\n      \"rationale\": \"Frames 0, 48, 95, and 96 are sufficient to anchor the transition into shot 4, as the bear is still in the riverbank environment before the digital overlays appear.\"\n    }\n  ],\n  \"stop_rule\": \"one bounded refinement round\"\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1781825217,
+    "id": "6fce068602d642a484f9ea31356a3d0c",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 457,
+      "prompt_tokens": 25680,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 26137
+    }
+  },
+  "wall_clock_seconds": 18.788118839263916
+}
