@@ -1,0 +1,67 @@
+{
+  "caps": {
+    "extra_logit_bias_lambdas": [],
+    "kv_anchor_cap": 4,
+    "max_refinement_rounds": 1,
+    "optimizer_frames_per_shot": 3,
+    "primary_logit_bias_lambda": 0.0
+  },
+  "command_args": {
+    "adherence_tolerance": 0.02,
+    "admission_diversity_floor": 0.03,
+    "admission_json_override": "docs/round17_20260618_fast/fast5_admission.json",
+    "baseline_drift_floor": 0.02,
+    "baseline_seeds": "0",
+    "claude_model": "claude-opus-4-8",
+    "clip_device": "cuda:0",
+    "codex_model": "gpt-5.5",
+    "config_path": "configs/inference_kv_rag_long_multishot.yaml",
+    "diversity_tolerance": 0.1,
+    "docs_root": "docs/round17_20260618_fast",
+    "extra_logit_bias_lambdas": "",
+    "generator_gpu": null,
+    "judge_frames_per_shot": 1,
+    "kv_anchor_cap": 4,
+    "min_admitted_main_scenes": 5,
+    "motion_tolerance": 0.2,
+    "noise_sigma_multiplier": 2.0,
+    "optimizer_frames_per_shot": 3,
+    "optimizer_gpu": null,
+    "primary_logit_bias_lambda": 0.0,
+    "prompt_similarity_floor": 0.12,
+    "prompt_subset": null,
+    "prompts_dir": "example/long_multishot_prompts:example/multiview_prompts",
+    "qwen_mem_fraction_static": 0.45,
+    "qwen_model": "Qwen/Qwen3-VL-8B-Instruct",
+    "resume": true,
+    "rounds": 1,
+    "single_seed_consistency_delta_threshold": 0.02,
+    "video_root": "videos/round17_20260618_fast"
+  },
+  "extra_logit_bias_runs": [],
+  "final_iteration": {
+    "blocked_reason": null,
+    "docs": "docs/round17_20260618_fast/iter01",
+    "is_null_result": true,
+    "ledger": "docs/round17_20260618_fast/iter01/ledger.json",
+    "pass": false,
+    "round": 1,
+    "videos": "videos/round17_20260618_fast/iter01",
+    "winner": null
+  },
+  "iterations": [
+    {
+      "blocked_reason": null,
+      "docs": "docs/round17_20260618_fast/iter01",
+      "is_null_result": true,
+      "ledger": "docs/round17_20260618_fast/iter01/ledger.json",
+      "pass": false,
+      "round": 1,
+      "videos": "videos/round17_20260618_fast/iter01",
+      "winner": null
+    }
+  ],
+  "stage_A": "docs/round17_20260618_fast/fast5_admission.json",
+  "stage_A_preseed": "docs/round17_20260618_fast/stage_A_preseed_baselines.json",
+  "stage_A_video_root": "videos/round17_20260618_fast/stage_A"
+}

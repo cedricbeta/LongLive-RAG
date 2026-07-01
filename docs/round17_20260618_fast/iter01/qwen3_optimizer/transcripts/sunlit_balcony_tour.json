@@ -1,0 +1,307 @@
+{
+  "image_hashes": {
+    "docs/round17_20260618/iter01/optimizer_frames/sunlit_balcony_tour/shot00_frame00_idx0000.png": "d4defa07db6615b23792aff83ebf19e2d487f125165582aea970428d40374c2c",
+    "docs/round17_20260618/iter01/optimizer_frames/sunlit_balcony_tour/shot00_frame01_idx0048.png": "939834b80caad53c6a308dc92812e4985eec331467de898ecb042ec5f3e7581f",
+    "docs/round17_20260618/iter01/optimizer_frames/sunlit_balcony_tour/shot00_frame02_idx0095.png": "c93b3f7148e66d315293c225638dd300f519297f3b8a99895c3264fa33a8bfcd",
+    "docs/round17_20260618/iter01/optimizer_frames/sunlit_balcony_tour/shot01_frame00_idx0096.png": "6e4404a5004282c31955984dde70ef4b43564dc04bc8bff15c6394c4b94149d9",
+    "docs/round17_20260618/iter01/optimizer_frames/sunlit_balcony_tour/shot01_frame01_idx0144.png": "c9811bec8306b6f1c6451397e1941315f83f5b55fd284fa995da04b57159db03",
+    "docs/round17_20260618/iter01/optimizer_frames/sunlit_balcony_tour/shot01_frame02_idx0191.png": "aaf0e901dacdb143e85dd7a27b0eafd76345bbf062218f96ace9ac4b67ea795d",
+    "docs/round17_20260618/iter01/optimizer_frames/sunlit_balcony_tour/shot02_frame00_idx0192.png": "88590c42112846d4fb9698be7d5e443b89fd3ad2b8732cb616280f8e7c07103f",
+    "docs/round17_20260618/iter01/optimizer_frames/sunlit_balcony_tour/shot02_frame01_idx0240.png": "768c96b39ad669be8c09899159500a44d114abb3e8a5eb3fb292e3f0f73c718a",
+    "docs/round17_20260618/iter01/optimizer_frames/sunlit_balcony_tour/shot02_frame02_idx0287.png": "ebf8a5f8865d1edeb03c775f9b6f23245c3a25f95a0f61f81443d88262690325",
+    "docs/round17_20260618/iter01/optimizer_frames/sunlit_balcony_tour/shot03_frame00_idx0288.png": "a4948d3388274bda960abf7adb2cdd21ba0eaf3451a6968432df84f00f159fb6",
+    "docs/round17_20260618/iter01/optimizer_frames/sunlit_balcony_tour/shot03_frame01_idx0336.png": "9afb58c8e42e42c05c1cd3cda066407890233e718fc402bc466e97a06f036e3e",
+    "docs/round17_20260618/iter01/optimizer_frames/sunlit_balcony_tour/shot03_frame02_idx0383.png": "5feaeedfa8faedd6edf72c1364c2a4c143758ee338b1f4d4e9a0e376bda3939d",
+    "docs/round17_20260618/iter01/optimizer_frames/sunlit_balcony_tour/shot04_frame00_idx0384.png": "5ddbfb9b533d25b632e89debbfc3ccf6c7cd94bd39be503232242540a37dac9f",
+    "docs/round17_20260618/iter01/optimizer_frames/sunlit_balcony_tour/shot04_frame01_idx0408.png": "a8acad06e2980223f48f8853e37dfb335dbe072d80d0908aa098e214c2612f9e",
+    "docs/round17_20260618/iter01/optimizer_frames/sunlit_balcony_tour/shot04_frame02_idx0431.png": "4ad76ccab9a20d15b1ed22138cc54f766e9353e78b9b2a692c03a84696ca3491",
+    "docs/round17_20260618/iter01/optimizer_frames/sunlit_balcony_tour/shot05_frame00_idx0432.png": "cd16c5d5f66a9790573454f6331c37c169e14931a805c1d931704fe8fc115f93",
+    "docs/round17_20260618/iter01/optimizer_frames/sunlit_balcony_tour/shot05_frame01_idx0456.png": "5765182152fdc273aa2900187c54e7a3150e3bb55eba945ac0b3b6ef0fd0e9ee",
+    "docs/round17_20260618/iter01/optimizer_frames/sunlit_balcony_tour/shot05_frame02_idx0479.png": "9bb1804d6b0ff69da1c6a8e6b4c649266ee366d8305ee98b7ce9d19dfaa65efd"
+  },
+  "image_paths": [
+    "docs/round17_20260618/iter01/optimizer_frames/sunlit_balcony_tour/shot00_frame00_idx0000.png",
+    "docs/round17_20260618/iter01/optimizer_frames/sunlit_balcony_tour/shot00_frame01_idx0048.png",
+    "docs/round17_20260618/iter01/optimizer_frames/sunlit_balcony_tour/shot00_frame02_idx0095.png",
+    "docs/round17_20260618/iter01/optimizer_frames/sunlit_balcony_tour/shot01_frame00_idx0096.png",
+    "docs/round17_20260618/iter01/optimizer_frames/sunlit_balcony_tour/shot01_frame01_idx0144.png",
+    "docs/round17_20260618/iter01/optimizer_frames/sunlit_balcony_tour/shot01_frame02_idx0191.png",
+    "docs/round17_20260618/iter01/optimizer_frames/sunlit_balcony_tour/shot02_frame00_idx0192.png",
+    "docs/round17_20260618/iter01/optimizer_frames/sunlit_balcony_tour/shot02_frame01_idx0240.png",
+    "docs/round17_20260618/iter01/optimizer_frames/sunlit_balcony_tour/shot02_frame02_idx0287.png",
+    "docs/round17_20260618/iter01/optimizer_frames/sunlit_balcony_tour/shot03_frame00_idx0288.png",
+    "docs/round17_20260618/iter01/optimizer_frames/sunlit_balcony_tour/shot03_frame01_idx0336.png",
+    "docs/round17_20260618/iter01/optimizer_frames/sunlit_balcony_tour/shot03_frame02_idx0383.png",
+    "docs/round17_20260618/iter01/optimizer_frames/sunlit_balcony_tour/shot04_frame00_idx0384.png",
+    "docs/round17_20260618/iter01/optimizer_frames/sunlit_balcony_tour/shot04_frame01_idx0408.png",
+    "docs/round17_20260618/iter01/optimizer_frames/sunlit_balcony_tour/shot04_frame02_idx0431.png",
+    "docs/round17_20260618/iter01/optimizer_frames/sunlit_balcony_tour/shot05_frame00_idx0432.png",
+    "docs/round17_20260618/iter01/optimizer_frames/sunlit_balcony_tour/shot05_frame01_idx0456.png",
+    "docs/round17_20260618/iter01/optimizer_frames/sunlit_balcony_tour/shot05_frame02_idx0479.png"
+  ],
+  "parsed": {
+    "global_invariant_additions": [
+      "The host wears a dark blue T-shirt with a green logo throughout the tour."
+    ],
+    "kv_anchor_plan": [
+      {
+        "boundary_shot_index": 1,
+        "decoded_frame_indices": [
+          0,
+          48
+        ],
+        "rationale": "Frames 0 and 48 establish the host's initial appearance and shirt color before the cut to shot 1."
+      },
+      {
+        "boundary_shot_index": 2,
+        "decoded_frame_indices": [
+          0,
+          48,
+          95,
+          96
+        ],
+        "rationale": "Frames 0, 48, 95, and 96 provide a stable anchor for the transition into shot 2, maintaining visual continuity."
+      },
+      {
+        "boundary_shot_index": 3,
+        "decoded_frame_indices": [
+          0,
+          48,
+          95,
+          96,
+          144,
+          191,
+          192
+        ],
+        "rationale": "Frames 0, 48, 95, 96, 144, 191, and 192 anchor the transition into shot 3, ensuring the host's appearance remains consistent."
+      },
+      {
+        "boundary_shot_index": 4,
+        "decoded_frame_indices": [
+          0,
+          48,
+          95,
+          96,
+          144,
+          191,
+          192,
+          240,
+          287,
+          288
+        ],
+        "rationale": "Frames 0, 48, 95, 96, 144, 191, 192, 240, 287, and 288 anchor the transition into shot 4, maintaining visual continuity."
+      },
+      {
+        "boundary_shot_index": 5,
+        "decoded_frame_indices": [
+          0,
+          48,
+          95,
+          96,
+          144,
+          191,
+          192,
+          240,
+          287,
+          288,
+          336,
+          383,
+          384
+        ],
+        "rationale": "Frames 0, 48, 95, 96, 144, 191, 192, 240, 287, 288, 336, 383, and 384 anchor the transition into shot 5, ensuring the host's appearance remains consistent."
+      }
+    ],
+    "per_shot_additions": [
+      {
+        "rationale": "Corrects initial description to match actual shirt color seen in frames 0-48.",
+        "shot_index": 0,
+        "text": "The host wears a dark blue T-shirt with a green logo."
+      },
+      {
+        "rationale": "Maintains consistency with the shirt color established in shot 0.",
+        "shot_index": 1,
+        "text": "The host wears a dark blue T-shirt with a green logo."
+      },
+      {
+        "rationale": "Ensures continuity with the shirt color from previous shots.",
+        "shot_index": 2,
+        "text": "The host wears a dark blue T-shirt with a green logo."
+      },
+      {
+        "rationale": "Corrects the description to match the actual shirt color in frames 288-336.",
+        "shot_index": 3,
+        "text": "The host wears a dark blue T-shirt with a green logo."
+      },
+      {
+        "rationale": "Maintains consistency with the shirt color from previous shots.",
+        "shot_index": 4,
+        "text": "The host wears a dark blue T-shirt with a green logo."
+      },
+      {
+        "rationale": "Ensures continuity with the shirt color from previous shots.",
+        "shot_index": 5,
+        "text": "The host wears a dark blue T-shirt with a green logo."
+      }
+    ],
+    "stop_rule": "one bounded refinement round",
+    "which_cut_broke": {
+      "cut_index": 3,
+      "how": "Host's shirt color changed from white V-neck to dark blue T-shirt, breaking visual continuity."
+    }
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are the LOCAL Qwen3-VL optimizer, not the held-out judge.\nDiagnose which shot cut breaks cross-shot consistency and propose constrained fixes.\nReturn strict JSON only with this shape:\n{\n  \"which_cut_broke\": {\"cut_index\": integer_or_null, \"how\": \"short reason\"},\n  \"global_invariant_additions\": [\"additive invariant text\", ...],\n  \"per_shot_additions\": [{\"shot_index\": 0, \"text\": \"additive invariant text\", \"rationale\": \"why\"}, ...],\n  \"kv_anchor_plan\": [{\"boundary_shot_index\": 1, \"decoded_frame_indices\": [0], \"rationale\": \"why\"}, ...],\n  \"stop_rule\": \"one bounded refinement round\"\n}\nRules: ADD subject/scene invariants only. Do not delete or weaken per-shot camera/action.\nDo not collapse shots into near-identical text. Choose only listed decoded frame indices.\nCap KV anchors to 4 frames per boundary. Use only source shots outside the live local window.\nScene: sunlit_balcony_tour\nGlobal invariant: The same male host in a white V-neck T-shirt and clipped microphone remains inside the same sunlit apartment living room and balcony area.\nSHOT 0: frames=[0, 48, 95]; caption=Shot 0 opens in a medium view near the living room doorway. The host faces the camera and gestures toward the seating area while daylight enters from the balcony side.\nSHOT 1: frames=[96, 144, 191]; caption=Shot 1 cuts wider. The host walks a few steps past the blue armchair and sweeps one hand across the room to show the layout.\nSHOT 2: frames=[192, 240, 287]; caption=Shot 2 tracks toward the glass balcony door. The host turns his shoulders toward the bright doorway and points outside.\nSHOT 3: frames=[288, 336, 383]; caption=Shot 3 moves to a closer side angle by the balcony door. The host opens the door partway and steps into the light.\nSHOT 4: frames=[384, 408, 431]; caption=Shot 4 looks back from near the balcony into the room. The host gestures from the doorway toward the chair, table, and wall art.\nSHOT 5: frames=[432, 456, 479]; caption=Shot 5 finishes with a steady medium shot. The host stands beside the balcony door, nods to the camera, and lowers his hands.\nKV candidates for boundary entering shot 1: [0, 48]\nKV candidates for boundary entering shot 2: [0, 48, 95, 96, 144]\nKV candidates for boundary entering shot 3: [0, 48, 95, 96, 144, 191, 192, 240]\nKV candidates for boundary entering shot 4: [0, 48, 95, 96, 144, 191, 192, 240, 287, 288, 336]\nKV candidates for boundary entering shot 5: [0, 48, 95, 96, 144, 191, 192, 240, 287, 288, 336, 383, 384]",
+            "type": "text"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"which_cut_broke\": {\n    \"cut_index\": 3,\n    \"how\": \"Host's shirt color changed from white V-neck to dark blue T-shirt, breaking visual continuity.\"\n  },\n  \"global_invariant_additions\": [\n    \"The host wears a dark blue T-shirt with a green logo throughout the tour.\"\n  ],\n  \"per_shot_additions\": [\n    {\n      \"shot_index\": 0,\n      \"text\": \"The host wears a dark blue T-shirt with a green logo.\",\n      \"rationale\": \"Corrects initial description to match actual shirt color seen in frames 0-48.\"\n    },\n    {\n      \"shot_index\": 1,\n      \"text\": \"The host wears a dark blue T-shirt with a green logo.\",\n      \"rationale\": \"Maintains consistency with the shirt color established in shot 0.\"\n    },\n    {\n      \"shot_index\": 2,\n      \"text\": \"The host wears a dark blue T-shirt with a green logo.\",\n      \"rationale\": \"Ensures continuity with the shirt color from previous shots.\"\n    },\n    {\n      \"shot_index\": 3,\n      \"text\": \"The host wears a dark blue T-shirt with a green logo.\",\n      \"rationale\": \"Corrects the description to match the actual shirt color in frames 288-336.\"\n    },\n    {\n      \"shot_index\": 4,\n      \"text\": \"The host wears a dark blue T-shirt with a green logo.\",\n      \"rationale\": \"Maintains consistency with the shirt color from previous shots.\"\n    },\n    {\n      \"shot_index\": 5,\n      \"text\": \"The host wears a dark blue T-shirt with a green logo.\",\n      \"rationale\": \"Ensures continuity with the shirt color from previous shots.\"\n    }\n  ],\n  \"kv_anchor_plan\": [\n    {\n      \"boundary_shot_index\": 1,\n      \"decoded_frame_indices\": [0, 48],\n      \"rationale\": \"Frames 0 and 48 establish the host's initial appearance and shirt color before the cut to shot 1.\"\n    },\n    {\n      \"boundary_shot_index\": 2,\n      \"decoded_frame_indices\": [0, 48, 95, 96],\n      \"rationale\": \"Frames 0, 48, 95, and 96 provide a stable anchor for the transition into shot 2, maintaining visual continuity.\"\n    },\n    {\n      \"boundary_shot_index\": 3,\n      \"decoded_frame_indices\": [0, 48, 95, 96, 144, 191, 192],\n      \"rationale\": \"Frames 0, 48, 95, 96, 144, 191, and 192 anchor the transition into shot 3, ensuring the host's appearance remains consistent.\"\n    },\n    {\n      \"boundary_shot_index\": 4,\n      \"decoded_frame_indices\": [0, 48, 95, 96, 144, 191, 192, 240, 287, 288],\n      \"rationale\": \"Frames 0, 48, 95, 96, 144, 191, 192, 240, 287, and 288 anchor the transition into shot 4, maintaining visual continuity.\"\n    },\n    {\n      \"boundary_shot_index\": 5,\n      \"decoded_frame_indices\": [0, 48, 95, 96, 144, 191, 192, 240, 287, 288, 336, 383, 384],\n      \"rationale\": \"Frames 0, 48, 95, 96, 144, 191, 192, 240, 287, 288, 336, 383, and 384 anchor the transition into shot 5, ensuring the host's appearance remains consistent.\"\n    }\n  ],\n  \"stop_rule\": \"one bounded refinement round\"\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1781825364,
+    "id": "49e56c120d684472bb8215afc79b48bc",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 925,
+      "prompt_tokens": 16649,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 17574
+    }
+  },
+  "wall_clock_seconds": 20.359601736068726
+}

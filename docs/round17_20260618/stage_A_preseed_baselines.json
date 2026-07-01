@@ -1,0 +1,9 @@
+{
+  "copied": [],
+  "missing": [],
+  "policy": "reuse requested existing baseline seed videos; render only missing broader-scene stems",
+  "requested_seeds": [
+    0
+  ],
+  "source_root": "/home/chendong/video-gen/LongLive-RAG/videos/frame_strategy_A"
+}

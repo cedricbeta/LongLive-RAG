@@ -1,0 +1,3500 @@
+{
+  "admission": {
+    "african_savanna": {
+      "admitted": true,
+      "baseline_drift": 0.4003749227055098,
+      "baseline_drift_floor": 0.02,
+      "baseline_inter_shot_composition_diversity": 0.17462273101289882,
+      "baseline_seed": 0,
+      "blocked_reason": null,
+      "diversity_floor": 0.03,
+      "negative_control": false
+    },
+    "aquamarine_underwater": {
+      "admitted": true,
+      "baseline_drift": 0.43385557116918083,
+      "baseline_drift_floor": 0.02,
+      "baseline_inter_shot_composition_diversity": 0.11095972672984722,
+      "baseline_seed": 0,
+      "blocked_reason": null,
+      "diversity_floor": 0.03,
+      "negative_control": false
+    },
+    "brown_bear_river": {
+      "admitted": true,
+      "baseline_drift": 0.454271972893171,
+      "baseline_drift_floor": 0.02,
+      "baseline_inter_shot_composition_diversity": 0.12407153715951558,
+      "baseline_seed": 0,
+      "blocked_reason": null,
+      "diversity_floor": 0.03,
+      "negative_control": false
+    },
+    "cozy_red_room": {
+      "admitted": true,
+      "baseline_drift": 0.11075508132212541,
+      "baseline_drift_floor": 0.02,
+      "baseline_inter_shot_composition_diversity": 0.16809788654501578,
+      "baseline_seed": 0,
+      "blocked_reason": null,
+      "diversity_floor": 0.03,
+      "negative_control": false
+    },
+    "frying_egg_closeup": {
+      "admitted": true,
+      "baseline_drift": 0.41665587968351125,
+      "baseline_drift_floor": 0.02,
+      "baseline_inter_shot_composition_diversity": 0.12402978289959865,
+      "baseline_seed": 0,
+      "blocked_reason": null,
+      "diversity_floor": 0.03,
+      "negative_control": false
+    },
+    "frying_egg_same_event": {
+      "admitted": true,
+      "baseline_drift": 0.24699423211980753,
+      "baseline_drift_floor": 0.02,
+      "baseline_inter_shot_composition_diversity": 0.12636504055318853,
+      "baseline_seed": 0,
+      "blocked_reason": null,
+      "diversity_floor": 0.03,
+      "negative_control": false
+    },
+    "indoor_tender_moment": {
+      "admitted": true,
+      "baseline_drift": 0.5202144622785498,
+      "baseline_drift_floor": 0.02,
+      "baseline_inter_shot_composition_diversity": 0.21846628416221514,
+      "baseline_seed": 0,
+      "blocked_reason": null,
+      "diversity_floor": 0.03,
+      "negative_control": false
+    },
+    "sandy_beach_driftwood": {
+      "admitted": true,
+      "baseline_drift": 0.6369372853637285,
+      "baseline_drift_floor": 0.02,
+      "baseline_inter_shot_composition_diversity": 0.16236572069363764,
+      "baseline_seed": 0,
+      "blocked_reason": null,
+      "diversity_floor": 0.03,
+      "negative_control": false
+    },
+    "shimmering_puzzle_surface": {
+      "admitted": false,
+      "baseline_drift": 0.2672144542962738,
+      "baseline_drift_floor": 0.02,
+      "baseline_inter_shot_composition_diversity": 0.12220321710916504,
+      "baseline_seed": 0,
+      "blocked_reason": "negative control is sanity-checked, not admitted as a main scene",
+      "diversity_floor": 0.03,
+      "negative_control": true
+    },
+    "skateboarder_high_motion": {
+      "admitted": true,
+      "baseline_drift": 0.2487036302708836,
+      "baseline_drift_floor": 0.02,
+      "baseline_inter_shot_composition_diversity": 0.06339344961765248,
+      "baseline_seed": 0,
+      "blocked_reason": null,
+      "diversity_floor": 0.03,
+      "negative_control": false
+    },
+    "sunlit_balcony_tour": {
+      "admitted": true,
+      "baseline_drift": 0.1949879292083474,
+      "baseline_drift_floor": 0.02,
+      "baseline_inter_shot_composition_diversity": 0.1058198130121265,
+      "baseline_seed": 0,
+      "blocked_reason": null,
+      "diversity_floor": 0.03,
+      "negative_control": false
+    },
+    "vintage_archival_scene": {
+      "admitted": true,
+      "baseline_drift": 0.45024677707481053,
+      "baseline_drift_floor": 0.02,
+      "baseline_inter_shot_composition_diversity": 0.17103437177326153,
+      "baseline_seed": 0,
+      "blocked_reason": null,
+      "diversity_floor": 0.03,
+      "negative_control": false
+    },
+    "warm_indoor_dining": {
+      "admitted": true,
+      "baseline_drift": 0.39921549422151825,
+      "baseline_drift_floor": 0.02,
+      "baseline_inter_shot_composition_diversity": 0.12795492704658729,
+      "baseline_seed": 0,
+      "blocked_reason": null,
+      "diversity_floor": 0.03,
+      "negative_control": false
+    }
+  },
+  "admitted_main_scenes": [
+    "african_savanna",
+    "aquamarine_underwater",
+    "brown_bear_river",
+    "cozy_red_room",
+    "frying_egg_closeup",
+    "frying_egg_same_event",
+    "indoor_tender_moment",
+    "sandy_beach_driftwood",
+    "skateboarder_high_motion",
+    "sunlit_balcony_tour",
+    "vintage_archival_scene",
+    "warm_indoor_dining"
+  ],
+  "baseline_render_status": {
+    "0": {
+      "complete": true,
+      "missing_stems": [],
+      "per_stem": {
+        "african_savanna": {
+          "complete": true,
+          "paths": [
+            "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-african_savanna-seed0_regular.mp4"
+          ]
+        },
+        "aquamarine_underwater": {
+          "complete": true,
+          "paths": [
+            "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-aquamarine_underwater-seed0_regular.mp4"
+          ]
+        },
+        "brown_bear_river": {
+          "complete": true,
+          "paths": [
+            "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-brown_bear_river-seed0_regular.mp4"
+          ]
+        },
+        "cozy_red_room": {
+          "complete": true,
+          "paths": [
+            "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-cozy_red_room-seed0_regular.mp4"
+          ]
+        },
+        "frying_egg_closeup": {
+          "complete": true,
+          "paths": [
+            "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-frying_egg_closeup-seed0_regular.mp4"
+          ]
+        },
+        "frying_egg_same_event": {
+          "complete": true,
+          "paths": [
+            "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-frying_egg_same_event-seed0_regular.mp4"
+          ]
+        },
+        "indoor_tender_moment": {
+          "complete": true,
+          "paths": [
+            "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-indoor_tender_moment-seed0_regular.mp4"
+          ]
+        },
+        "sandy_beach_driftwood": {
+          "complete": true,
+          "paths": [
+            "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-sandy_beach_driftwood-seed0_regular.mp4"
+          ]
+        },
+        "shimmering_puzzle_surface": {
+          "complete": true,
+          "paths": [
+            "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-shimmering_puzzle_surface-seed0_regular.mp4"
+          ]
+        },
+        "skateboarder_high_motion": {
+          "complete": true,
+          "paths": [
+            "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-skateboarder_high_motion-seed0_regular.mp4"
+          ]
+        },
+        "sunlit_balcony_tour": {
+          "complete": true,
+          "paths": [
+            "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-sunlit_balcony_tour-seed0_regular.mp4"
+          ]
+        },
+        "vintage_archival_scene": {
+          "complete": true,
+          "paths": [
+            "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-vintage_archival_scene-seed0_regular.mp4"
+          ]
+        },
+        "warm_indoor_dining": {
+          "complete": true,
+          "paths": [
+            "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-warm_indoor_dining-seed0_regular.mp4"
+          ]
+        }
+      },
+      "rendered": false,
+      "reused": true
+    }
+  },
+  "baseline_seed_dirs": {
+    "0": "videos/round17_20260618/stage_A/baseline_seed0"
+  },
+  "baseline_seed_results": {
+    "0": {
+      "baseline_summary": {
+        "anchor_centroid_consistency": {
+          "count": 13,
+          "mean": 0.900231170283772,
+          "std": 0.039967201930110885
+        },
+        "anchor_drift_aggregate_consistency": {
+          "count": 13,
+          "mean": 0.6322747928763526,
+          "std": 0.13966158942995233
+        },
+        "anchor_to_shot0_consistency": {
+          "count": 13,
+          "mean": 0.7695131576404898,
+          "std": 0.09098772988638974
+        },
+        "background_anchor_consistency": {
+          "count": 13,
+          "mean": 0.9468314040463726,
+          "std": 0.021875630078319136
+        },
+        "background_anchor_to_shot0_consistency": {
+          "count": 13,
+          "mean": 0.8738258495573068,
+          "std": 0.05006363303080984
+        },
+        "background_worst_to_shot0_consistency": {
+          "count": 13,
+          "mean": 0.8133569425338443,
+          "std": 0.07506149525074755
+        },
+        "dynamic_degree": {
+          "count": 13,
+          "mean": 80.09746629152544,
+          "std": 37.90725116716042
+        },
+        "inter_shot_composition_diversity": {
+          "count": 13,
+          "mean": 0.13841419140882388,
+          "std": 0.03783823796558196
+        },
+        "invariant_margin_mean": {
+          "count": 13,
+          "mean": 0.015437064501337517,
+          "std": 0.023908645691391273
+        },
+        "invariant_margin_min": {
+          "count": 13,
+          "mean": -0.0015980807634500356,
+          "std": 0.023530925303601513
+        },
+        "motion_profile_agreement": {
+          "count": 13,
+          "mean": 0.9980634902120961,
+          "std": 0.0009209033887422624
+        },
+        "num_frames": {
+          "count": 13,
+          "mean": 480.0,
+          "std": 0.0
+        },
+        "num_shots": {
+          "count": 13,
+          "mean": 7.076923076923077,
+          "std": 0.9166442529086912
+        },
+        "palette_agreement": {
+          "count": 13,
+          "mean": 0.6004907150747292,
+          "std": 0.13701130549539703
+        },
+        "prompt_adherence_mean": {
+          "count": 13,
+          "mean": 0.2736809819240819,
+          "std": 0.021651570014444295
+        },
+        "prompt_adherence_min": {
+          "count": 13,
+          "mean": 0.23681387305259705,
+          "std": 0.020960319269192146
+        },
+        "shot_frame_duration_max": {
+          "count": 13,
+          "mean": 96.0,
+          "std": 0.0
+        },
+        "shot_frame_duration_min": {
+          "count": 13,
+          "mean": 48.0,
+          "std": 0.0
+        },
+        "subject_anchor_consistency": {
+          "count": 13,
+          "mean": 0.8536309365211713,
+          "std": 0.059712979750941295
+        },
+        "subject_anchor_to_shot0_consistency": {
+          "count": 13,
+          "mean": 0.6652004657236729,
+          "std": 0.13673164934437682
+        },
+        "subject_worst_to_shot0_consistency": {
+          "count": 13,
+          "mean": 0.49503642811221515,
+          "std": 0.19445120403833235
+        },
+        "within_shot_motion": {
+          "count": 13,
+          "mean": 0.002181484182367371,
+          "std": 0.0006558459802695865
+        },
+        "worst_anchor_to_shot0_consistency": {
+          "count": 13,
+          "mean": 0.49503642811221515,
+          "std": 0.19445120403833235
+        }
+      },
+      "delta_summary": {
+        "anchor_centroid_consistency": {
+          "count": 13,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "anchor_drift_aggregate_consistency": {
+          "count": 13,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "anchor_to_shot0_consistency": {
+          "count": 13,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "background_anchor_consistency": {
+          "count": 13,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "background_anchor_to_shot0_consistency": {
+          "count": 13,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "background_worst_to_shot0_consistency": {
+          "count": 13,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "dynamic_degree": {
+          "count": 13,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "inter_shot_composition_diversity": {
+          "count": 13,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "invariant_margin_mean": {
+          "count": 13,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "invariant_margin_min": {
+          "count": 13,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "motion_profile_agreement": {
+          "count": 13,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "num_frames": {
+          "count": 13,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "palette_agreement": {
+          "count": 13,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "prompt_adherence_mean": {
+          "count": 13,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "prompt_adherence_min": {
+          "count": 13,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "shot_frame_duration_max": {
+          "count": 13,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "shot_frame_duration_min": {
+          "count": 13,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "subject_anchor_consistency": {
+          "count": 13,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "subject_anchor_to_shot0_consistency": {
+          "count": 13,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "subject_worst_to_shot0_consistency": {
+          "count": 13,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "within_shot_motion": {
+          "count": 13,
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "worst_anchor_to_shot0_consistency": {
+          "count": 13,
+          "mean": 0.0,
+          "std": 0.0
+        }
+      },
+      "modified_summary": {
+        "anchor_centroid_consistency": {
+          "count": 13,
+          "mean": 0.900231170283772,
+          "std": 0.039967201930110885
+        },
+        "anchor_drift_aggregate_consistency": {
+          "count": 13,
+          "mean": 0.6322747928763526,
+          "std": 0.13966158942995233
+        },
+        "anchor_to_shot0_consistency": {
+          "count": 13,
+          "mean": 0.7695131576404898,
+          "std": 0.09098772988638974
+        },
+        "background_anchor_consistency": {
+          "count": 13,
+          "mean": 0.9468314040463726,
+          "std": 0.021875630078319136
+        },
+        "background_anchor_to_shot0_consistency": {
+          "count": 13,
+          "mean": 0.8738258495573068,
+          "std": 0.05006363303080984
+        },
+        "background_worst_to_shot0_consistency": {
+          "count": 13,
+          "mean": 0.8133569425338443,
+          "std": 0.07506149525074755
+        },
+        "dynamic_degree": {
+          "count": 13,
+          "mean": 80.09746629152544,
+          "std": 37.90725116716042
+        },
+        "inter_shot_composition_diversity": {
+          "count": 13,
+          "mean": 0.13841419140882388,
+          "std": 0.03783823796558196
+        },
+        "invariant_margin_mean": {
+          "count": 13,
+          "mean": 0.015437064501337517,
+          "std": 0.023908645691391273
+        },
+        "invariant_margin_min": {
+          "count": 13,
+          "mean": -0.0015980807634500356,
+          "std": 0.023530925303601513
+        },
+        "motion_profile_agreement": {
+          "count": 13,
+          "mean": 0.9980634902120961,
+          "std": 0.0009209033887422624
+        },
+        "num_frames": {
+          "count": 13,
+          "mean": 480.0,
+          "std": 0.0
+        },
+        "num_shots": {
+          "count": 13,
+          "mean": 7.076923076923077,
+          "std": 0.9166442529086912
+        },
+        "palette_agreement": {
+          "count": 13,
+          "mean": 0.6004907150747292,
+          "std": 0.13701130549539703
+        },
+        "prompt_adherence_mean": {
+          "count": 13,
+          "mean": 0.2736809819240819,
+          "std": 0.021651570014444295
+        },
+        "prompt_adherence_min": {
+          "count": 13,
+          "mean": 0.23681387305259705,
+          "std": 0.020960319269192146
+        },
+        "shot_frame_duration_max": {
+          "count": 13,
+          "mean": 96.0,
+          "std": 0.0
+        },
+        "shot_frame_duration_min": {
+          "count": 13,
+          "mean": 48.0,
+          "std": 0.0
+        },
+        "subject_anchor_consistency": {
+          "count": 13,
+          "mean": 0.8536309365211713,
+          "std": 0.059712979750941295
+        },
+        "subject_anchor_to_shot0_consistency": {
+          "count": 13,
+          "mean": 0.6652004657236729,
+          "std": 0.13673164934437682
+        },
+        "subject_worst_to_shot0_consistency": {
+          "count": 13,
+          "mean": 0.49503642811221515,
+          "std": 0.19445120403833235
+        },
+        "within_shot_motion": {
+          "count": 13,
+          "mean": 0.002181484182367371,
+          "std": 0.0006558459802695865
+        },
+        "worst_anchor_to_shot0_consistency": {
+          "count": 13,
+          "mean": 0.49503642811221515,
+          "std": 0.19445120403833235
+        }
+      },
+      "num_pairs": 13,
+      "records": [
+        {
+          "baseline": "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-african_savanna-seed0_regular.mp4",
+          "baseline_metrics": {
+            "anchor_centroid_consistency": 0.8987818520529938,
+            "anchor_drift_aggregate_consistency": 0.5996250772944902,
+            "anchor_to_shot0_consistency": 0.7741320382414378,
+            "background_anchor_consistency": 0.95199753210255,
+            "background_anchor_to_shot0_consistency": 0.881367311130627,
+            "background_worst_to_shot0_consistency": 0.7827735973313916,
+            "dynamic_degree": 92.65818866093953,
+            "inter_shot_composition_diversity": 0.17462273101289882,
+            "invariant_margin_mean": 0.017501629889011383,
+            "invariant_margin_min": -0.02676105499267578,
+            "motion_profile_agreement": 0.9993418055205595,
+            "num_frames": 480.0,
+            "num_shots": 8.0,
+            "palette_agreement": 0.5150976334235908,
+            "prompt_adherence_mean": 0.30685489624738693,
+            "prompt_adherence_min": 0.2697921693325043,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.8455661720034375,
+            "subject_anchor_to_shot0_consistency": 0.6668967653522487,
+            "subject_worst_to_shot0_consistency": 0.42511811634754265,
+            "within_shot_motion": 0.0013930880086263642,
+            "worst_anchor_to_shot0_consistency": 0.42511811634754265
+          },
+          "delta": {
+            "anchor_centroid_consistency": 0.0,
+            "anchor_drift_aggregate_consistency": 0.0,
+            "anchor_to_shot0_consistency": 0.0,
+            "background_anchor_consistency": 0.0,
+            "background_anchor_to_shot0_consistency": 0.0,
+            "background_worst_to_shot0_consistency": 0.0,
+            "dynamic_degree": 0.0,
+            "inter_shot_composition_diversity": 0.0,
+            "invariant_margin_mean": 0.0,
+            "invariant_margin_min": 0.0,
+            "motion_profile_agreement": 0.0,
+            "num_frames": 0.0,
+            "palette_agreement": 0.0,
+            "prompt_adherence_mean": 0.0,
+            "prompt_adherence_min": 0.0,
+            "shot_frame_duration_max": 0.0,
+            "shot_frame_duration_min": 0.0,
+            "subject_anchor_consistency": 0.0,
+            "subject_anchor_to_shot0_consistency": 0.0,
+            "subject_worst_to_shot0_consistency": 0.0,
+            "within_shot_motion": 0.0,
+            "worst_anchor_to_shot0_consistency": 0.0
+          },
+          "frame_metadata": {
+            "baseline_num_frames": 480.0,
+            "baseline_shot_frame_duration_max": 96.0,
+            "baseline_shot_frame_duration_min": 48.0,
+            "modified_num_frames": 480.0,
+            "modified_shot_frame_duration_max": 96.0,
+            "modified_shot_frame_duration_min": 48.0,
+            "shot_chunk_durations": [
+              12,
+              12,
+              6,
+              6,
+              6,
+              6,
+              6,
+              6
+            ]
+          },
+          "modified": "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-african_savanna-seed0_regular.mp4",
+          "modified_metrics": {
+            "anchor_centroid_consistency": 0.8987818520529938,
+            "anchor_drift_aggregate_consistency": 0.5996250772944902,
+            "anchor_to_shot0_consistency": 0.7741320382414378,
+            "background_anchor_consistency": 0.95199753210255,
+            "background_anchor_to_shot0_consistency": 0.881367311130627,
+            "background_worst_to_shot0_consistency": 0.7827735973313916,
+            "dynamic_degree": 92.65818866093953,
+            "inter_shot_composition_diversity": 0.17462273101289882,
+            "invariant_margin_mean": 0.017501629889011383,
+            "invariant_margin_min": -0.02676105499267578,
+            "motion_profile_agreement": 0.9993418055205595,
+            "num_frames": 480.0,
+            "num_shots": 8.0,
+            "palette_agreement": 0.5150976334235908,
+            "prompt_adherence_mean": 0.30685489624738693,
+            "prompt_adherence_min": 0.2697921693325043,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.8455661720034375,
+            "subject_anchor_to_shot0_consistency": 0.6668967653522487,
+            "subject_worst_to_shot0_consistency": 0.42511811634754265,
+            "within_shot_motion": 0.0013930880086263642,
+            "worst_anchor_to_shot0_consistency": 0.42511811634754265
+          },
+          "negative_control": false,
+          "stem": "baseline_seed0-rank0-african_savanna-seed0_regular",
+          "theme": "african_savanna"
+        },
+        {
+          "baseline": "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-aquamarine_underwater-seed0_regular.mp4",
+          "baseline_metrics": {
+            "anchor_centroid_consistency": 0.896581632180076,
+            "anchor_drift_aggregate_consistency": 0.5661444288308192,
+            "anchor_to_shot0_consistency": 0.7461417986001102,
+            "background_anchor_consistency": 0.9545164654917309,
+            "background_anchor_to_shot0_consistency": 0.8813105565095801,
+            "background_worst_to_shot0_consistency": 0.8146101857701141,
+            "dynamic_degree": 125.53077570597331,
+            "inter_shot_composition_diversity": 0.11095972672984722,
+            "invariant_margin_mean": 0.03674653172492981,
+            "invariant_margin_min": 0.028903856873512268,
+            "motion_profile_agreement": 0.9981007885486647,
+            "num_frames": 480.0,
+            "num_shots": 8.0,
+            "palette_agreement": 0.3605139725284837,
+            "prompt_adherence_mean": 0.28691790252923965,
+            "prompt_adherence_min": 0.26725393533706665,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.8386467988684212,
+            "subject_anchor_to_shot0_consistency": 0.6109730406906403,
+            "subject_worst_to_shot0_consistency": 0.3861470590615282,
+            "within_shot_motion": 0.0032484664843650535,
+            "worst_anchor_to_shot0_consistency": 0.3861470590615282
+          },
+          "delta": {
+            "anchor_centroid_consistency": 0.0,
+            "anchor_drift_aggregate_consistency": 0.0,
+            "anchor_to_shot0_consistency": 0.0,
+            "background_anchor_consistency": 0.0,
+            "background_anchor_to_shot0_consistency": 0.0,
+            "background_worst_to_shot0_consistency": 0.0,
+            "dynamic_degree": 0.0,
+            "inter_shot_composition_diversity": 0.0,
+            "invariant_margin_mean": 0.0,
+            "invariant_margin_min": 0.0,
+            "motion_profile_agreement": 0.0,
+            "num_frames": 0.0,
+            "palette_agreement": 0.0,
+            "prompt_adherence_mean": 0.0,
+            "prompt_adherence_min": 0.0,
+            "shot_frame_duration_max": 0.0,
+            "shot_frame_duration_min": 0.0,
+            "subject_anchor_consistency": 0.0,
+            "subject_anchor_to_shot0_consistency": 0.0,
+            "subject_worst_to_shot0_consistency": 0.0,
+            "within_shot_motion": 0.0,
+            "worst_anchor_to_shot0_consistency": 0.0
+          },
+          "frame_metadata": {
+            "baseline_num_frames": 480.0,
+            "baseline_shot_frame_duration_max": 96.0,
+            "baseline_shot_frame_duration_min": 48.0,
+            "modified_num_frames": 480.0,
+            "modified_shot_frame_duration_max": 96.0,
+            "modified_shot_frame_duration_min": 48.0,
+            "shot_chunk_durations": [
+              12,
+              12,
+              6,
+              6,
+              6,
+              6,
+              6,
+              6
+            ]
+          },
+          "modified": "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-aquamarine_underwater-seed0_regular.mp4",
+          "modified_metrics": {
+            "anchor_centroid_consistency": 0.896581632180076,
+            "anchor_drift_aggregate_consistency": 0.5661444288308192,
+            "anchor_to_shot0_consistency": 0.7461417986001102,
+            "background_anchor_consistency": 0.9545164654917309,
+            "background_anchor_to_shot0_consistency": 0.8813105565095801,
+            "background_worst_to_shot0_consistency": 0.8146101857701141,
+            "dynamic_degree": 125.53077570597331,
+            "inter_shot_composition_diversity": 0.11095972672984722,
+            "invariant_margin_mean": 0.03674653172492981,
+            "invariant_margin_min": 0.028903856873512268,
+            "motion_profile_agreement": 0.9981007885486647,
+            "num_frames": 480.0,
+            "num_shots": 8.0,
+            "palette_agreement": 0.3605139725284837,
+            "prompt_adherence_mean": 0.28691790252923965,
+            "prompt_adherence_min": 0.26725393533706665,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.8386467988684212,
+            "subject_anchor_to_shot0_consistency": 0.6109730406906403,
+            "subject_worst_to_shot0_consistency": 0.3861470590615282,
+            "within_shot_motion": 0.0032484664843650535,
+            "worst_anchor_to_shot0_consistency": 0.3861470590615282
+          },
+          "negative_control": false,
+          "stem": "baseline_seed0-rank0-aquamarine_underwater-seed0_regular",
+          "theme": "aquamarine_underwater"
+        },
+        {
+          "baseline": "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-brown_bear_river-seed0_regular.mp4",
+          "baseline_metrics": {
+            "anchor_centroid_consistency": 0.8846782565403462,
+            "anchor_drift_aggregate_consistency": 0.545728027106829,
+            "anchor_to_shot0_consistency": 0.7694488609603936,
+            "background_anchor_consistency": 0.9366490852693097,
+            "background_anchor_to_shot0_consistency": 0.8662974221434168,
+            "background_worst_to_shot0_consistency": 0.7375412607006151,
+            "dynamic_degree": 88.01671759287517,
+            "inter_shot_composition_diversity": 0.12407153715951558,
+            "invariant_margin_mean": 0.017703287303447723,
+            "invariant_margin_min": -0.0004431307315826416,
+            "motion_profile_agreement": 0.9982265655776709,
+            "num_frames": 480.0,
+            "num_shots": 8.0,
+            "palette_agreement": 0.4705384533574587,
+            "prompt_adherence_mean": 0.2885937914252281,
+            "prompt_adherence_min": 0.24251070618629456,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.8327074278113825,
+            "subject_anchor_to_shot0_consistency": 0.6726002997773705,
+            "subject_worst_to_shot0_consistency": 0.3220071932532645,
+            "within_shot_motion": 0.00276145784300752,
+            "worst_anchor_to_shot0_consistency": 0.3220071932532645
+          },
+          "delta": {
+            "anchor_centroid_consistency": 0.0,
+            "anchor_drift_aggregate_consistency": 0.0,
+            "anchor_to_shot0_consistency": 0.0,
+            "background_anchor_consistency": 0.0,
+            "background_anchor_to_shot0_consistency": 0.0,
+            "background_worst_to_shot0_consistency": 0.0,
+            "dynamic_degree": 0.0,
+            "inter_shot_composition_diversity": 0.0,
+            "invariant_margin_mean": 0.0,
+            "invariant_margin_min": 0.0,
+            "motion_profile_agreement": 0.0,
+            "num_frames": 0.0,
+            "palette_agreement": 0.0,
+            "prompt_adherence_mean": 0.0,
+            "prompt_adherence_min": 0.0,
+            "shot_frame_duration_max": 0.0,
+            "shot_frame_duration_min": 0.0,
+            "subject_anchor_consistency": 0.0,
+            "subject_anchor_to_shot0_consistency": 0.0,
+            "subject_worst_to_shot0_consistency": 0.0,
+            "within_shot_motion": 0.0,
+            "worst_anchor_to_shot0_consistency": 0.0
+          },
+          "frame_metadata": {
+            "baseline_num_frames": 480.0,
+            "baseline_shot_frame_duration_max": 96.0,
+            "baseline_shot_frame_duration_min": 48.0,
+            "modified_num_frames": 480.0,
+            "modified_shot_frame_duration_max": 96.0,
+            "modified_shot_frame_duration_min": 48.0,
+            "shot_chunk_durations": [
+              12,
+              12,
+              6,
+              6,
+              6,
+              6,
+              6,
+              6
+            ]
+          },
+          "modified": "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-brown_bear_river-seed0_regular.mp4",
+          "modified_metrics": {
+            "anchor_centroid_consistency": 0.8846782565403462,
+            "anchor_drift_aggregate_consistency": 0.545728027106829,
+            "anchor_to_shot0_consistency": 0.7694488609603936,
+            "background_anchor_consistency": 0.9366490852693097,
+            "background_anchor_to_shot0_consistency": 0.8662974221434168,
+            "background_worst_to_shot0_consistency": 0.7375412607006151,
+            "dynamic_degree": 88.01671759287517,
+            "inter_shot_composition_diversity": 0.12407153715951558,
+            "invariant_margin_mean": 0.017703287303447723,
+            "invariant_margin_min": -0.0004431307315826416,
+            "motion_profile_agreement": 0.9982265655776709,
+            "num_frames": 480.0,
+            "num_shots": 8.0,
+            "palette_agreement": 0.4705384533574587,
+            "prompt_adherence_mean": 0.2885937914252281,
+            "prompt_adherence_min": 0.24251070618629456,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.8327074278113825,
+            "subject_anchor_to_shot0_consistency": 0.6726002997773705,
+            "subject_worst_to_shot0_consistency": 0.3220071932532645,
+            "within_shot_motion": 0.00276145784300752,
+            "worst_anchor_to_shot0_consistency": 0.3220071932532645
+          },
+          "negative_control": false,
+          "stem": "baseline_seed0-rank0-brown_bear_river-seed0_regular",
+          "theme": "brown_bear_river"
+        },
+        {
+          "baseline": "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-cozy_red_room-seed0_regular.mp4",
+          "baseline_metrics": {
+            "anchor_centroid_consistency": 0.9612987487210021,
+            "anchor_drift_aggregate_consistency": 0.8892449186778746,
+            "anchor_to_shot0_consistency": 0.9210405619577704,
+            "background_anchor_consistency": 0.9695198488728475,
+            "background_anchor_to_shot0_consistency": 0.9326594773183293,
+            "background_worst_to_shot0_consistency": 0.9193248234547062,
+            "dynamic_degree": 73.99144657452901,
+            "inter_shot_composition_diversity": 0.16809788654501578,
+            "invariant_margin_mean": -0.021480614319443703,
+            "invariant_margin_min": -0.026746436953544617,
+            "motion_profile_agreement": 0.9956822486836182,
+            "num_frames": 480.0,
+            "num_shots": 8.0,
+            "palette_agreement": 0.6356895127389954,
+            "prompt_adherence_mean": 0.24303936213254929,
+            "prompt_adherence_min": 0.21816110610961914,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.9530776485691568,
+            "subject_anchor_to_shot0_consistency": 0.9094216465972116,
+            "subject_worst_to_shot0_consistency": 0.8574492753979788,
+            "within_shot_motion": 0.0032744369673309848,
+            "worst_anchor_to_shot0_consistency": 0.8574492753979788
+          },
+          "delta": {
+            "anchor_centroid_consistency": 0.0,
+            "anchor_drift_aggregate_consistency": 0.0,
+            "anchor_to_shot0_consistency": 0.0,
+            "background_anchor_consistency": 0.0,
+            "background_anchor_to_shot0_consistency": 0.0,
+            "background_worst_to_shot0_consistency": 0.0,
+            "dynamic_degree": 0.0,
+            "inter_shot_composition_diversity": 0.0,
+            "invariant_margin_mean": 0.0,
+            "invariant_margin_min": 0.0,
+            "motion_profile_agreement": 0.0,
+            "num_frames": 0.0,
+            "palette_agreement": 0.0,
+            "prompt_adherence_mean": 0.0,
+            "prompt_adherence_min": 0.0,
+            "shot_frame_duration_max": 0.0,
+            "shot_frame_duration_min": 0.0,
+            "subject_anchor_consistency": 0.0,
+            "subject_anchor_to_shot0_consistency": 0.0,
+            "subject_worst_to_shot0_consistency": 0.0,
+            "within_shot_motion": 0.0,
+            "worst_anchor_to_shot0_consistency": 0.0
+          },
+          "frame_metadata": {
+            "baseline_num_frames": 480.0,
+            "baseline_shot_frame_duration_max": 96.0,
+            "baseline_shot_frame_duration_min": 48.0,
+            "modified_num_frames": 480.0,
+            "modified_shot_frame_duration_max": 96.0,
+            "modified_shot_frame_duration_min": 48.0,
+            "shot_chunk_durations": [
+              12,
+              12,
+              6,
+              6,
+              6,
+              6,
+              6,
+              6
+            ]
+          },
+          "modified": "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-cozy_red_room-seed0_regular.mp4",
+          "modified_metrics": {
+            "anchor_centroid_consistency": 0.9612987487210021,
+            "anchor_drift_aggregate_consistency": 0.8892449186778746,
+            "anchor_to_shot0_consistency": 0.9210405619577704,
+            "background_anchor_consistency": 0.9695198488728475,
+            "background_anchor_to_shot0_consistency": 0.9326594773183293,
+            "background_worst_to_shot0_consistency": 0.9193248234547062,
+            "dynamic_degree": 73.99144657452901,
+            "inter_shot_composition_diversity": 0.16809788654501578,
+            "invariant_margin_mean": -0.021480614319443703,
+            "invariant_margin_min": -0.026746436953544617,
+            "motion_profile_agreement": 0.9956822486836182,
+            "num_frames": 480.0,
+            "num_shots": 8.0,
+            "palette_agreement": 0.6356895127389954,
+            "prompt_adherence_mean": 0.24303936213254929,
+            "prompt_adherence_min": 0.21816110610961914,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.9530776485691568,
+            "subject_anchor_to_shot0_consistency": 0.9094216465972116,
+            "subject_worst_to_shot0_consistency": 0.8574492753979788,
+            "within_shot_motion": 0.0032744369673309848,
+            "worst_anchor_to_shot0_consistency": 0.8574492753979788
+          },
+          "negative_control": false,
+          "stem": "baseline_seed0-rank0-cozy_red_room-seed0_regular",
+          "theme": "cozy_red_room"
+        },
+        {
+          "baseline": "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-frying_egg_closeup-seed0_regular.mp4",
+          "baseline_metrics": {
+            "anchor_centroid_consistency": 0.9133881641699519,
+            "anchor_drift_aggregate_consistency": 0.5833441203164887,
+            "anchor_to_shot0_consistency": 0.6744765234679351,
+            "background_anchor_consistency": 0.9545608388384123,
+            "background_anchor_to_shot0_consistency": 0.826248919408191,
+            "background_worst_to_shot0_consistency": 0.7993091153521734,
+            "dynamic_degree": 37.14120308558146,
+            "inter_shot_composition_diversity": 0.12402978289959865,
+            "invariant_margin_mean": 0.05191860454423087,
+            "invariant_margin_min": 0.03175260126590729,
+            "motion_profile_agreement": 0.997385272728688,
+            "num_frames": 480.0,
+            "num_shots": 7.0,
+            "palette_agreement": 0.7334712352424883,
+            "prompt_adherence_mean": 0.3062188582760947,
+            "prompt_adherence_min": 0.2587377727031708,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.8722154895014916,
+            "subject_anchor_to_shot0_consistency": 0.522704127527679,
+            "subject_worst_to_shot0_consistency": 0.49221171716504236,
+            "within_shot_motion": 0.0027223819135023014,
+            "worst_anchor_to_shot0_consistency": 0.49221171716504236
+          },
+          "delta": {
+            "anchor_centroid_consistency": 0.0,
+            "anchor_drift_aggregate_consistency": 0.0,
+            "anchor_to_shot0_consistency": 0.0,
+            "background_anchor_consistency": 0.0,
+            "background_anchor_to_shot0_consistency": 0.0,
+            "background_worst_to_shot0_consistency": 0.0,
+            "dynamic_degree": 0.0,
+            "inter_shot_composition_diversity": 0.0,
+            "invariant_margin_mean": 0.0,
+            "invariant_margin_min": 0.0,
+            "motion_profile_agreement": 0.0,
+            "num_frames": 0.0,
+            "palette_agreement": 0.0,
+            "prompt_adherence_mean": 0.0,
+            "prompt_adherence_min": 0.0,
+            "shot_frame_duration_max": 0.0,
+            "shot_frame_duration_min": 0.0,
+            "subject_anchor_consistency": 0.0,
+            "subject_anchor_to_shot0_consistency": 0.0,
+            "subject_worst_to_shot0_consistency": 0.0,
+            "within_shot_motion": 0.0,
+            "worst_anchor_to_shot0_consistency": 0.0
+          },
+          "frame_metadata": {
+            "baseline_num_frames": 480.0,
+            "baseline_shot_frame_duration_max": 96.0,
+            "baseline_shot_frame_duration_min": 48.0,
+            "modified_num_frames": 480.0,
+            "modified_shot_frame_duration_max": 96.0,
+            "modified_shot_frame_duration_min": 48.0,
+            "shot_chunk_durations": [
+              12,
+              12,
+              12,
+              6,
+              6,
+              6,
+              6
+            ]
+          },
+          "modified": "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-frying_egg_closeup-seed0_regular.mp4",
+          "modified_metrics": {
+            "anchor_centroid_consistency": 0.9133881641699519,
+            "anchor_drift_aggregate_consistency": 0.5833441203164887,
+            "anchor_to_shot0_consistency": 0.6744765234679351,
+            "background_anchor_consistency": 0.9545608388384123,
+            "background_anchor_to_shot0_consistency": 0.826248919408191,
+            "background_worst_to_shot0_consistency": 0.7993091153521734,
+            "dynamic_degree": 37.14120308558146,
+            "inter_shot_composition_diversity": 0.12402978289959865,
+            "invariant_margin_mean": 0.05191860454423087,
+            "invariant_margin_min": 0.03175260126590729,
+            "motion_profile_agreement": 0.997385272728688,
+            "num_frames": 480.0,
+            "num_shots": 7.0,
+            "palette_agreement": 0.7334712352424883,
+            "prompt_adherence_mean": 0.3062188582760947,
+            "prompt_adherence_min": 0.2587377727031708,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.8722154895014916,
+            "subject_anchor_to_shot0_consistency": 0.522704127527679,
+            "subject_worst_to_shot0_consistency": 0.49221171716504236,
+            "within_shot_motion": 0.0027223819135023014,
+            "worst_anchor_to_shot0_consistency": 0.49221171716504236
+          },
+          "negative_control": false,
+          "stem": "baseline_seed0-rank0-frying_egg_closeup-seed0_regular",
+          "theme": "frying_egg_closeup"
+        },
+        {
+          "baseline": "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-frying_egg_same_event-seed0_regular.mp4",
+          "baseline_metrics": {
+            "anchor_centroid_consistency": 0.9261054706527969,
+            "anchor_drift_aggregate_consistency": 0.7530057678801925,
+            "anchor_to_shot0_consistency": 0.8452308880584212,
+            "background_anchor_consistency": 0.9709167385311712,
+            "background_anchor_to_shot0_consistency": 0.9370461075790214,
+            "background_worst_to_shot0_consistency": 0.91711070696522,
+            "dynamic_degree": 38.25694545110067,
+            "inter_shot_composition_diversity": 0.12636504055318853,
+            "invariant_margin_mean": -0.025178149342536926,
+            "invariant_margin_min": -0.045893073081970215,
+            "motion_profile_agreement": 0.9992241960520859,
+            "num_frames": 480.0,
+            "num_shots": 6.0,
+            "palette_agreement": 0.6909477073161601,
+            "prompt_adherence_mean": 0.2586551904678345,
+            "prompt_adherence_min": 0.2190917432308197,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.8812942027744226,
+            "subject_anchor_to_shot0_consistency": 0.7534156685378208,
+            "subject_worst_to_shot0_consistency": 0.6607806477019639,
+            "within_shot_motion": 0.0017074656983216603,
+            "worst_anchor_to_shot0_consistency": 0.6607806477019639
+          },
+          "delta": {
+            "anchor_centroid_consistency": 0.0,
+            "anchor_drift_aggregate_consistency": 0.0,
+            "anchor_to_shot0_consistency": 0.0,
+            "background_anchor_consistency": 0.0,
+            "background_anchor_to_shot0_consistency": 0.0,
+            "background_worst_to_shot0_consistency": 0.0,
+            "dynamic_degree": 0.0,
+            "inter_shot_composition_diversity": 0.0,
+            "invariant_margin_mean": 0.0,
+            "invariant_margin_min": 0.0,
+            "motion_profile_agreement": 0.0,
+            "num_frames": 0.0,
+            "palette_agreement": 0.0,
+            "prompt_adherence_mean": 0.0,
+            "prompt_adherence_min": 0.0,
+            "shot_frame_duration_max": 0.0,
+            "shot_frame_duration_min": 0.0,
+            "subject_anchor_consistency": 0.0,
+            "subject_anchor_to_shot0_consistency": 0.0,
+            "subject_worst_to_shot0_consistency": 0.0,
+            "within_shot_motion": 0.0,
+            "worst_anchor_to_shot0_consistency": 0.0
+          },
+          "frame_metadata": {
+            "baseline_num_frames": 480.0,
+            "baseline_shot_frame_duration_max": 96.0,
+            "baseline_shot_frame_duration_min": 48.0,
+            "modified_num_frames": 480.0,
+            "modified_shot_frame_duration_max": 96.0,
+            "modified_shot_frame_duration_min": 48.0,
+            "shot_chunk_durations": [
+              12,
+              12,
+              12,
+              12,
+              6,
+              6
+            ]
+          },
+          "modified": "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-frying_egg_same_event-seed0_regular.mp4",
+          "modified_metrics": {
+            "anchor_centroid_consistency": 0.9261054706527969,
+            "anchor_drift_aggregate_consistency": 0.7530057678801925,
+            "anchor_to_shot0_consistency": 0.8452308880584212,
+            "background_anchor_consistency": 0.9709167385311712,
+            "background_anchor_to_shot0_consistency": 0.9370461075790214,
+            "background_worst_to_shot0_consistency": 0.91711070696522,
+            "dynamic_degree": 38.25694545110067,
+            "inter_shot_composition_diversity": 0.12636504055318853,
+            "invariant_margin_mean": -0.025178149342536926,
+            "invariant_margin_min": -0.045893073081970215,
+            "motion_profile_agreement": 0.9992241960520859,
+            "num_frames": 480.0,
+            "num_shots": 6.0,
+            "palette_agreement": 0.6909477073161601,
+            "prompt_adherence_mean": 0.2586551904678345,
+            "prompt_adherence_min": 0.2190917432308197,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.8812942027744226,
+            "subject_anchor_to_shot0_consistency": 0.7534156685378208,
+            "subject_worst_to_shot0_consistency": 0.6607806477019639,
+            "within_shot_motion": 0.0017074656983216603,
+            "worst_anchor_to_shot0_consistency": 0.6607806477019639
+          },
+          "negative_control": false,
+          "stem": "baseline_seed0-rank0-frying_egg_same_event-seed0_regular",
+          "theme": "frying_egg_same_event"
+        },
+        {
+          "baseline": "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-indoor_tender_moment-seed0_regular.mp4",
+          "baseline_metrics": {
+            "anchor_centroid_consistency": 0.8469392013696495,
+            "anchor_drift_aggregate_consistency": 0.47978553772145016,
+            "anchor_to_shot0_consistency": 0.6728392157165597,
+            "background_anchor_consistency": 0.9119980754906711,
+            "background_anchor_to_shot0_consistency": 0.7953922606917436,
+            "background_worst_to_shot0_consistency": 0.6915420790139836,
+            "dynamic_degree": 55.581855158011116,
+            "inter_shot_composition_diversity": 0.21846628416221514,
+            "invariant_margin_mean": 0.010286221901575724,
+            "invariant_margin_min": 0.001799061894416809,
+            "motion_profile_agreement": 0.9974960842753278,
+            "num_frames": 480.0,
+            "num_shots": 6.0,
+            "palette_agreement": 0.46326850006259107,
+            "prompt_adherence_mean": 0.24853198726971945,
+            "prompt_adherence_min": 0.21702063083648682,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.781880327248628,
+            "subject_anchor_to_shot0_consistency": 0.5502861707413758,
+            "subject_worst_to_shot0_consistency": 0.2867318597263407,
+            "within_shot_motion": 0.0013483777317257288,
+            "worst_anchor_to_shot0_consistency": 0.2867318597263407
+          },
+          "delta": {
+            "anchor_centroid_consistency": 0.0,
+            "anchor_drift_aggregate_consistency": 0.0,
+            "anchor_to_shot0_consistency": 0.0,
+            "background_anchor_consistency": 0.0,
+            "background_anchor_to_shot0_consistency": 0.0,
+            "background_worst_to_shot0_consistency": 0.0,
+            "dynamic_degree": 0.0,
+            "inter_shot_composition_diversity": 0.0,
+            "invariant_margin_mean": 0.0,
+            "invariant_margin_min": 0.0,
+            "motion_profile_agreement": 0.0,
+            "num_frames": 0.0,
+            "palette_agreement": 0.0,
+            "prompt_adherence_mean": 0.0,
+            "prompt_adherence_min": 0.0,
+            "shot_frame_duration_max": 0.0,
+            "shot_frame_duration_min": 0.0,
+            "subject_anchor_consistency": 0.0,
+            "subject_anchor_to_shot0_consistency": 0.0,
+            "subject_worst_to_shot0_consistency": 0.0,
+            "within_shot_motion": 0.0,
+            "worst_anchor_to_shot0_consistency": 0.0
+          },
+          "frame_metadata": {
+            "baseline_num_frames": 480.0,
+            "baseline_shot_frame_duration_max": 96.0,
+            "baseline_shot_frame_duration_min": 48.0,
+            "modified_num_frames": 480.0,
+            "modified_shot_frame_duration_max": 96.0,
+            "modified_shot_frame_duration_min": 48.0,
+            "shot_chunk_durations": [
+              12,
+              12,
+              12,
+              12,
+              6,
+              6
+            ]
+          },
+          "modified": "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-indoor_tender_moment-seed0_regular.mp4",
+          "modified_metrics": {
+            "anchor_centroid_consistency": 0.8469392013696495,
+            "anchor_drift_aggregate_consistency": 0.47978553772145016,
+            "anchor_to_shot0_consistency": 0.6728392157165597,
+            "background_anchor_consistency": 0.9119980754906711,
+            "background_anchor_to_shot0_consistency": 0.7953922606917436,
+            "background_worst_to_shot0_consistency": 0.6915420790139836,
+            "dynamic_degree": 55.581855158011116,
+            "inter_shot_composition_diversity": 0.21846628416221514,
+            "invariant_margin_mean": 0.010286221901575724,
+            "invariant_margin_min": 0.001799061894416809,
+            "motion_profile_agreement": 0.9974960842753278,
+            "num_frames": 480.0,
+            "num_shots": 6.0,
+            "palette_agreement": 0.46326850006259107,
+            "prompt_adherence_mean": 0.24853198726971945,
+            "prompt_adherence_min": 0.21702063083648682,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.781880327248628,
+            "subject_anchor_to_shot0_consistency": 0.5502861707413758,
+            "subject_worst_to_shot0_consistency": 0.2867318597263407,
+            "within_shot_motion": 0.0013483777317257288,
+            "worst_anchor_to_shot0_consistency": 0.2867318597263407
+          },
+          "negative_control": false,
+          "stem": "baseline_seed0-rank0-indoor_tender_moment-seed0_regular",
+          "theme": "indoor_tender_moment"
+        },
+        {
+          "baseline": "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-sandy_beach_driftwood-seed0_regular.mp4",
+          "baseline_metrics": {
+            "anchor_centroid_consistency": 0.8204364145194185,
+            "anchor_drift_aggregate_consistency": 0.3630627146362715,
+            "anchor_to_shot0_consistency": 0.582290634437265,
+            "background_anchor_consistency": 0.9000455158065728,
+            "background_anchor_to_shot0_consistency": 0.7824714073071092,
+            "background_worst_to_shot0_consistency": 0.7323357089096854,
+            "dynamic_degree": 110.26277430852254,
+            "inter_shot_composition_diversity": 0.16236572069363764,
+            "invariant_margin_mean": 0.041118672117590904,
+            "invariant_margin_min": 0.008410677313804626,
+            "motion_profile_agreement": 0.9978792707854917,
+            "num_frames": 480.0,
+            "num_shots": 8.0,
+            "palette_agreement": 0.5818080176912509,
+            "prompt_adherence_mean": 0.27449773252010345,
+            "prompt_adherence_min": 0.23698097467422485,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.7408273132322643,
+            "subject_anchor_to_shot0_consistency": 0.3821098615674208,
+            "subject_worst_to_shot0_consistency": 0.1438347948352779,
+            "within_shot_motion": 0.0016046547461883165,
+            "worst_anchor_to_shot0_consistency": 0.1438347948352779
+          },
+          "delta": {
+            "anchor_centroid_consistency": 0.0,
+            "anchor_drift_aggregate_consistency": 0.0,
+            "anchor_to_shot0_consistency": 0.0,
+            "background_anchor_consistency": 0.0,
+            "background_anchor_to_shot0_consistency": 0.0,
+            "background_worst_to_shot0_consistency": 0.0,
+            "dynamic_degree": 0.0,
+            "inter_shot_composition_diversity": 0.0,
+            "invariant_margin_mean": 0.0,
+            "invariant_margin_min": 0.0,
+            "motion_profile_agreement": 0.0,
+            "num_frames": 0.0,
+            "palette_agreement": 0.0,
+            "prompt_adherence_mean": 0.0,
+            "prompt_adherence_min": 0.0,
+            "shot_frame_duration_max": 0.0,
+            "shot_frame_duration_min": 0.0,
+            "subject_anchor_consistency": 0.0,
+            "subject_anchor_to_shot0_consistency": 0.0,
+            "subject_worst_to_shot0_consistency": 0.0,
+            "within_shot_motion": 0.0,
+            "worst_anchor_to_shot0_consistency": 0.0
+          },
+          "frame_metadata": {
+            "baseline_num_frames": 480.0,
+            "baseline_shot_frame_duration_max": 96.0,
+            "baseline_shot_frame_duration_min": 48.0,
+            "modified_num_frames": 480.0,
+            "modified_shot_frame_duration_max": 96.0,
+            "modified_shot_frame_duration_min": 48.0,
+            "shot_chunk_durations": [
+              12,
+              12,
+              6,
+              6,
+              6,
+              6,
+              6,
+              6
+            ]
+          },
+          "modified": "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-sandy_beach_driftwood-seed0_regular.mp4",
+          "modified_metrics": {
+            "anchor_centroid_consistency": 0.8204364145194185,
+            "anchor_drift_aggregate_consistency": 0.3630627146362715,
+            "anchor_to_shot0_consistency": 0.582290634437265,
+            "background_anchor_consistency": 0.9000455158065728,
+            "background_anchor_to_shot0_consistency": 0.7824714073071092,
+            "background_worst_to_shot0_consistency": 0.7323357089096854,
+            "dynamic_degree": 110.26277430852254,
+            "inter_shot_composition_diversity": 0.16236572069363764,
+            "invariant_margin_mean": 0.041118672117590904,
+            "invariant_margin_min": 0.008410677313804626,
+            "motion_profile_agreement": 0.9978792707854917,
+            "num_frames": 480.0,
+            "num_shots": 8.0,
+            "palette_agreement": 0.5818080176912509,
+            "prompt_adherence_mean": 0.27449773252010345,
+            "prompt_adherence_min": 0.23698097467422485,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.7408273132322643,
+            "subject_anchor_to_shot0_consistency": 0.3821098615674208,
+            "subject_worst_to_shot0_consistency": 0.1438347948352779,
+            "within_shot_motion": 0.0016046547461883165,
+            "worst_anchor_to_shot0_consistency": 0.1438347948352779
+          },
+          "negative_control": false,
+          "stem": "baseline_seed0-rank0-sandy_beach_driftwood-seed0_regular",
+          "theme": "sandy_beach_driftwood"
+        },
+        {
+          "baseline": "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-shimmering_puzzle_surface-seed0_regular.mp4",
+          "baseline_metrics": {
+            "anchor_centroid_consistency": 0.926354402104794,
+            "anchor_drift_aggregate_consistency": 0.7327855457037262,
+            "anchor_to_shot0_consistency": 0.812594804600089,
+            "background_anchor_consistency": 0.9523195549140673,
+            "background_anchor_to_shot0_consistency": 0.8729031218608897,
+            "background_worst_to_shot0_consistency": 0.820207854490305,
+            "dynamic_degree": 37.18874975045522,
+            "inter_shot_composition_diversity": 0.12220321710916504,
+            "invariant_margin_mean": -0.00621718168258667,
+            "invariant_margin_min": -0.013800173997879028,
+            "motion_profile_agreement": 0.9985893024361711,
+            "num_frames": 480.0,
+            "num_shots": 6.0,
+            "palette_agreement": 0.7051764265716158,
+            "prompt_adherence_mean": 0.2818872630596161,
+            "prompt_adherence_min": 0.22396382689476013,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.9003892492955208,
+            "subject_anchor_to_shot0_consistency": 0.7522864873392884,
+            "subject_worst_to_shot0_consistency": 0.6529762868073635,
+            "within_shot_motion": 0.0016253269180500258,
+            "worst_anchor_to_shot0_consistency": 0.6529762868073635
+          },
+          "delta": {
+            "anchor_centroid_consistency": 0.0,
+            "anchor_drift_aggregate_consistency": 0.0,
+            "anchor_to_shot0_consistency": 0.0,
+            "background_anchor_consistency": 0.0,
+            "background_anchor_to_shot0_consistency": 0.0,
+            "background_worst_to_shot0_consistency": 0.0,
+            "dynamic_degree": 0.0,
+            "inter_shot_composition_diversity": 0.0,
+            "invariant_margin_mean": 0.0,
+            "invariant_margin_min": 0.0,
+            "motion_profile_agreement": 0.0,
+            "num_frames": 0.0,
+            "palette_agreement": 0.0,
+            "prompt_adherence_mean": 0.0,
+            "prompt_adherence_min": 0.0,
+            "shot_frame_duration_max": 0.0,
+            "shot_frame_duration_min": 0.0,
+            "subject_anchor_consistency": 0.0,
+            "subject_anchor_to_shot0_consistency": 0.0,
+            "subject_worst_to_shot0_consistency": 0.0,
+            "within_shot_motion": 0.0,
+            "worst_anchor_to_shot0_consistency": 0.0
+          },
+          "frame_metadata": {
+            "baseline_num_frames": 480.0,
+            "baseline_shot_frame_duration_max": 96.0,
+            "baseline_shot_frame_duration_min": 48.0,
+            "modified_num_frames": 480.0,
+            "modified_shot_frame_duration_max": 96.0,
+            "modified_shot_frame_duration_min": 48.0,
+            "shot_chunk_durations": [
+              12,
+              12,
+              12,
+              12,
+              6,
+              6
+            ]
+          },
+          "modified": "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-shimmering_puzzle_surface-seed0_regular.mp4",
+          "modified_metrics": {
+            "anchor_centroid_consistency": 0.926354402104794,
+            "anchor_drift_aggregate_consistency": 0.7327855457037262,
+            "anchor_to_shot0_consistency": 0.812594804600089,
+            "background_anchor_consistency": 0.9523195549140673,
+            "background_anchor_to_shot0_consistency": 0.8729031218608897,
+            "background_worst_to_shot0_consistency": 0.820207854490305,
+            "dynamic_degree": 37.18874975045522,
+            "inter_shot_composition_diversity": 0.12220321710916504,
+            "invariant_margin_mean": -0.00621718168258667,
+            "invariant_margin_min": -0.013800173997879028,
+            "motion_profile_agreement": 0.9985893024361711,
+            "num_frames": 480.0,
+            "num_shots": 6.0,
+            "palette_agreement": 0.7051764265716158,
+            "prompt_adherence_mean": 0.2818872630596161,
+            "prompt_adherence_min": 0.22396382689476013,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.9003892492955208,
+            "subject_anchor_to_shot0_consistency": 0.7522864873392884,
+            "subject_worst_to_shot0_consistency": 0.6529762868073635,
+            "within_shot_motion": 0.0016253269180500258,
+            "worst_anchor_to_shot0_consistency": 0.6529762868073635
+          },
+          "negative_control": true,
+          "stem": "baseline_seed0-rank0-shimmering_puzzle_surface-seed0_regular",
+          "theme": "shimmering_puzzle_surface"
+        },
+        {
+          "baseline": "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-skateboarder_high_motion-seed0_regular.mp4",
+          "baseline_metrics": {
+            "anchor_centroid_consistency": 0.943000471975321,
+            "anchor_drift_aggregate_consistency": 0.7512963697291164,
+            "anchor_to_shot0_consistency": 0.8469316284311474,
+            "background_anchor_consistency": 0.9769960616798733,
+            "background_anchor_to_shot0_consistency": 0.9487252087997516,
+            "background_worst_to_shot0_consistency": 0.9315030404500417,
+            "dynamic_degree": 147.92332776387533,
+            "inter_shot_composition_diversity": 0.06339344961765248,
+            "invariant_margin_mean": 0.008360187212626139,
+            "invariant_margin_min": -0.00018233060836791992,
+            "motion_profile_agreement": 0.9977299884439894,
+            "num_frames": 480.0,
+            "num_shots": 6.0,
+            "palette_agreement": 0.5406012849394839,
+            "prompt_adherence_mean": 0.27905284365018207,
+            "prompt_adherence_min": 0.2563212513923645,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.9090048822707687,
+            "subject_anchor_to_shot0_consistency": 0.7451380480625431,
+            "subject_worst_to_shot0_consistency": 0.6556611110270854,
+            "within_shot_motion": 0.002653410192579031,
+            "worst_anchor_to_shot0_consistency": 0.6556611110270854
+          },
+          "delta": {
+            "anchor_centroid_consistency": 0.0,
+            "anchor_drift_aggregate_consistency": 0.0,
+            "anchor_to_shot0_consistency": 0.0,
+            "background_anchor_consistency": 0.0,
+            "background_anchor_to_shot0_consistency": 0.0,
+            "background_worst_to_shot0_consistency": 0.0,
+            "dynamic_degree": 0.0,
+            "inter_shot_composition_diversity": 0.0,
+            "invariant_margin_mean": 0.0,
+            "invariant_margin_min": 0.0,
+            "motion_profile_agreement": 0.0,
+            "num_frames": 0.0,
+            "palette_agreement": 0.0,
+            "prompt_adherence_mean": 0.0,
+            "prompt_adherence_min": 0.0,
+            "shot_frame_duration_max": 0.0,
+            "shot_frame_duration_min": 0.0,
+            "subject_anchor_consistency": 0.0,
+            "subject_anchor_to_shot0_consistency": 0.0,
+            "subject_worst_to_shot0_consistency": 0.0,
+            "within_shot_motion": 0.0,
+            "worst_anchor_to_shot0_consistency": 0.0
+          },
+          "frame_metadata": {
+            "baseline_num_frames": 480.0,
+            "baseline_shot_frame_duration_max": 96.0,
+            "baseline_shot_frame_duration_min": 48.0,
+            "modified_num_frames": 480.0,
+            "modified_shot_frame_duration_max": 96.0,
+            "modified_shot_frame_duration_min": 48.0,
+            "shot_chunk_durations": [
+              12,
+              12,
+              12,
+              12,
+              6,
+              6
+            ]
+          },
+          "modified": "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-skateboarder_high_motion-seed0_regular.mp4",
+          "modified_metrics": {
+            "anchor_centroid_consistency": 0.943000471975321,
+            "anchor_drift_aggregate_consistency": 0.7512963697291164,
+            "anchor_to_shot0_consistency": 0.8469316284311474,
+            "background_anchor_consistency": 0.9769960616798733,
+            "background_anchor_to_shot0_consistency": 0.9487252087997516,
+            "background_worst_to_shot0_consistency": 0.9315030404500417,
+            "dynamic_degree": 147.92332776387533,
+            "inter_shot_composition_diversity": 0.06339344961765248,
+            "invariant_margin_mean": 0.008360187212626139,
+            "invariant_margin_min": -0.00018233060836791992,
+            "motion_profile_agreement": 0.9977299884439894,
+            "num_frames": 480.0,
+            "num_shots": 6.0,
+            "palette_agreement": 0.5406012849394839,
+            "prompt_adherence_mean": 0.27905284365018207,
+            "prompt_adherence_min": 0.2563212513923645,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.9090048822707687,
+            "subject_anchor_to_shot0_consistency": 0.7451380480625431,
+            "subject_worst_to_shot0_consistency": 0.6556611110270854,
+            "within_shot_motion": 0.002653410192579031,
+            "worst_anchor_to_shot0_consistency": 0.6556611110270854
+          },
+          "negative_control": false,
+          "stem": "baseline_seed0-rank0-skateboarder_high_motion-seed0_regular",
+          "theme": "skateboarder_high_motion"
+        },
+        {
+          "baseline": "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-sunlit_balcony_tour-seed0_regular.mp4",
+          "baseline_metrics": {
+            "anchor_centroid_consistency": 0.9428066184589377,
+            "anchor_drift_aggregate_consistency": 0.8050120707916526,
+            "anchor_to_shot0_consistency": 0.8902312427249517,
+            "background_anchor_consistency": 0.9602898425072915,
+            "background_anchor_to_shot0_consistency": 0.9182409082960937,
+            "background_worst_to_shot0_consistency": 0.87061840443973,
+            "dynamic_degree": 110.64755129814148,
+            "inter_shot_composition_diversity": 0.1058198130121265,
+            "invariant_margin_mean": 0.021947920322418213,
+            "invariant_margin_min": -0.005224958062171936,
+            "motion_profile_agreement": 0.9978522174918072,
+            "num_frames": 480.0,
+            "num_shots": 6.0,
+            "palette_agreement": 0.7680815105227048,
+            "prompt_adherence_mean": 0.2351796900232633,
+            "prompt_adherence_min": 0.20177893340587616,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.9253233944105838,
+            "subject_anchor_to_shot0_consistency": 0.8622215771538098,
+            "subject_worst_to_shot0_consistency": 0.7197928988583534,
+            "within_shot_motion": 0.0023045966227073222,
+            "worst_anchor_to_shot0_consistency": 0.7197928988583534
+          },
+          "delta": {
+            "anchor_centroid_consistency": 0.0,
+            "anchor_drift_aggregate_consistency": 0.0,
+            "anchor_to_shot0_consistency": 0.0,
+            "background_anchor_consistency": 0.0,
+            "background_anchor_to_shot0_consistency": 0.0,
+            "background_worst_to_shot0_consistency": 0.0,
+            "dynamic_degree": 0.0,
+            "inter_shot_composition_diversity": 0.0,
+            "invariant_margin_mean": 0.0,
+            "invariant_margin_min": 0.0,
+            "motion_profile_agreement": 0.0,
+            "num_frames": 0.0,
+            "palette_agreement": 0.0,
+            "prompt_adherence_mean": 0.0,
+            "prompt_adherence_min": 0.0,
+            "shot_frame_duration_max": 0.0,
+            "shot_frame_duration_min": 0.0,
+            "subject_anchor_consistency": 0.0,
+            "subject_anchor_to_shot0_consistency": 0.0,
+            "subject_worst_to_shot0_consistency": 0.0,
+            "within_shot_motion": 0.0,
+            "worst_anchor_to_shot0_consistency": 0.0
+          },
+          "frame_metadata": {
+            "baseline_num_frames": 480.0,
+            "baseline_shot_frame_duration_max": 96.0,
+            "baseline_shot_frame_duration_min": 48.0,
+            "modified_num_frames": 480.0,
+            "modified_shot_frame_duration_max": 96.0,
+            "modified_shot_frame_duration_min": 48.0,
+            "shot_chunk_durations": [
+              12,
+              12,
+              12,
+              12,
+              6,
+              6
+            ]
+          },
+          "modified": "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-sunlit_balcony_tour-seed0_regular.mp4",
+          "modified_metrics": {
+            "anchor_centroid_consistency": 0.9428066184589377,
+            "anchor_drift_aggregate_consistency": 0.8050120707916526,
+            "anchor_to_shot0_consistency": 0.8902312427249517,
+            "background_anchor_consistency": 0.9602898425072915,
+            "background_anchor_to_shot0_consistency": 0.9182409082960937,
+            "background_worst_to_shot0_consistency": 0.87061840443973,
+            "dynamic_degree": 110.64755129814148,
+            "inter_shot_composition_diversity": 0.1058198130121265,
+            "invariant_margin_mean": 0.021947920322418213,
+            "invariant_margin_min": -0.005224958062171936,
+            "motion_profile_agreement": 0.9978522174918072,
+            "num_frames": 480.0,
+            "num_shots": 6.0,
+            "palette_agreement": 0.7680815105227048,
+            "prompt_adherence_mean": 0.2351796900232633,
+            "prompt_adherence_min": 0.20177893340587616,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.9253233944105838,
+            "subject_anchor_to_shot0_consistency": 0.8622215771538098,
+            "subject_worst_to_shot0_consistency": 0.7197928988583534,
+            "within_shot_motion": 0.0023045966227073222,
+            "worst_anchor_to_shot0_consistency": 0.7197928988583534
+          },
+          "negative_control": false,
+          "stem": "baseline_seed0-rank0-sunlit_balcony_tour-seed0_regular",
+          "theme": "sunlit_balcony_tour"
+        },
+        {
+          "baseline": "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-vintage_archival_scene-seed0_regular.mp4",
+          "baseline_metrics": {
+            "anchor_centroid_consistency": 0.8521707847357524,
+            "anchor_drift_aggregate_consistency": 0.5497532229251895,
+            "anchor_to_shot0_consistency": 0.7363808688588828,
+            "background_anchor_consistency": 0.9295282069344436,
+            "background_anchor_to_shot0_consistency": 0.8669924396390996,
+            "background_worst_to_shot0_consistency": 0.8185968918781409,
+            "dynamic_degree": 102.18523899714152,
+            "inter_shot_composition_diversity": 0.17103437177326153,
+            "invariant_margin_mean": -0.0008171434913362775,
+            "invariant_margin_min": -0.010609596967697144,
+            "motion_profile_agreement": 0.998218267324594,
+            "num_frames": 480.0,
+            "num_shots": 7.0,
+            "palette_agreement": 0.4923741125753813,
+            "prompt_adherence_mean": 0.26525306701660156,
+            "prompt_adherence_min": 0.22054168581962585,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.7748133625370611,
+            "subject_anchor_to_shot0_consistency": 0.605769298078666,
+            "subject_worst_to_shot0_consistency": 0.36312557699149617,
+            "within_shot_motion": 0.0018533711097136671,
+            "worst_anchor_to_shot0_consistency": 0.36312557699149617
+          },
+          "delta": {
+            "anchor_centroid_consistency": 0.0,
+            "anchor_drift_aggregate_consistency": 0.0,
+            "anchor_to_shot0_consistency": 0.0,
+            "background_anchor_consistency": 0.0,
+            "background_anchor_to_shot0_consistency": 0.0,
+            "background_worst_to_shot0_consistency": 0.0,
+            "dynamic_degree": 0.0,
+            "inter_shot_composition_diversity": 0.0,
+            "invariant_margin_mean": 0.0,
+            "invariant_margin_min": 0.0,
+            "motion_profile_agreement": 0.0,
+            "num_frames": 0.0,
+            "palette_agreement": 0.0,
+            "prompt_adherence_mean": 0.0,
+            "prompt_adherence_min": 0.0,
+            "shot_frame_duration_max": 0.0,
+            "shot_frame_duration_min": 0.0,
+            "subject_anchor_consistency": 0.0,
+            "subject_anchor_to_shot0_consistency": 0.0,
+            "subject_worst_to_shot0_consistency": 0.0,
+            "within_shot_motion": 0.0,
+            "worst_anchor_to_shot0_consistency": 0.0
+          },
+          "frame_metadata": {
+            "baseline_num_frames": 480.0,
+            "baseline_shot_frame_duration_max": 96.0,
+            "baseline_shot_frame_duration_min": 48.0,
+            "modified_num_frames": 480.0,
+            "modified_shot_frame_duration_max": 96.0,
+            "modified_shot_frame_duration_min": 48.0,
+            "shot_chunk_durations": [
+              12,
+              12,
+              12,
+              6,
+              6,
+              6,
+              6
+            ]
+          },
+          "modified": "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-vintage_archival_scene-seed0_regular.mp4",
+          "modified_metrics": {
+            "anchor_centroid_consistency": 0.8521707847357524,
+            "anchor_drift_aggregate_consistency": 0.5497532229251895,
+            "anchor_to_shot0_consistency": 0.7363808688588828,
+            "background_anchor_consistency": 0.9295282069344436,
+            "background_anchor_to_shot0_consistency": 0.8669924396390996,
+            "background_worst_to_shot0_consistency": 0.8185968918781409,
+            "dynamic_degree": 102.18523899714152,
+            "inter_shot_composition_diversity": 0.17103437177326153,
+            "invariant_margin_mean": -0.0008171434913362775,
+            "invariant_margin_min": -0.010609596967697144,
+            "motion_profile_agreement": 0.998218267324594,
+            "num_frames": 480.0,
+            "num_shots": 7.0,
+            "palette_agreement": 0.4923741125753813,
+            "prompt_adherence_mean": 0.26525306701660156,
+            "prompt_adherence_min": 0.22054168581962585,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.7748133625370611,
+            "subject_anchor_to_shot0_consistency": 0.605769298078666,
+            "subject_worst_to_shot0_consistency": 0.36312557699149617,
+            "within_shot_motion": 0.0018533711097136671,
+            "worst_anchor_to_shot0_consistency": 0.36312557699149617
+          },
+          "negative_control": false,
+          "stem": "baseline_seed0-rank0-vintage_archival_scene-seed0_regular",
+          "theme": "vintage_archival_scene"
+        },
+        {
+          "baseline": "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-warm_indoor_dining-seed0_regular.mp4",
+          "baseline_metrics": {
+            "anchor_centroid_consistency": 0.8904631962079945,
+            "anchor_drift_aggregate_consistency": 0.6007845057784817,
+            "anchor_to_shot0_consistency": 0.7319319832714042,
+            "background_anchor_consistency": 0.9394704861639,
+            "background_anchor_to_shot0_consistency": 0.8500809035611355,
+            "background_worst_to_shot0_consistency": 0.738166584183869,
+            "dynamic_degree": 21.882287442684174,
+            "inter_shot_composition_diversity": 0.12795492704658729,
+            "invariant_margin_mean": 0.04879187233746052,
+            "invariant_margin_min": 0.03801950812339783,
+            "motion_profile_agreement": 0.9990993648885794,
+            "num_frames": 480.0,
+            "num_shots": 8.0,
+            "palette_agreement": 0.8488109290012742,
+            "prompt_adherence_mean": 0.28317018039524555,
+            "prompt_adherence_min": 0.24642561376094818,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.841455906252089,
+            "subject_anchor_to_shot0_consistency": 0.6137830629816727,
+            "subject_worst_to_shot0_consistency": 0.4696370282855592,
+            "within_shot_motion": 0.001862260134657845,
+            "worst_anchor_to_shot0_consistency": 0.4696370282855592
+          },
+          "delta": {
+            "anchor_centroid_consistency": 0.0,
+            "anchor_drift_aggregate_consistency": 0.0,
+            "anchor_to_shot0_consistency": 0.0,
+            "background_anchor_consistency": 0.0,
+            "background_anchor_to_shot0_consistency": 0.0,
+            "background_worst_to_shot0_consistency": 0.0,
+            "dynamic_degree": 0.0,
+            "inter_shot_composition_diversity": 0.0,
+            "invariant_margin_mean": 0.0,
+            "invariant_margin_min": 0.0,
+            "motion_profile_agreement": 0.0,
+            "num_frames": 0.0,
+            "palette_agreement": 0.0,
+            "prompt_adherence_mean": 0.0,
+            "prompt_adherence_min": 0.0,
+            "shot_frame_duration_max": 0.0,
+            "shot_frame_duration_min": 0.0,
+            "subject_anchor_consistency": 0.0,
+            "subject_anchor_to_shot0_consistency": 0.0,
+            "subject_worst_to_shot0_consistency": 0.0,
+            "within_shot_motion": 0.0,
+            "worst_anchor_to_shot0_consistency": 0.0
+          },
+          "frame_metadata": {
+            "baseline_num_frames": 480.0,
+            "baseline_shot_frame_duration_max": 96.0,
+            "baseline_shot_frame_duration_min": 48.0,
+            "modified_num_frames": 480.0,
+            "modified_shot_frame_duration_max": 96.0,
+            "modified_shot_frame_duration_min": 48.0,
+            "shot_chunk_durations": [
+              12,
+              12,
+              6,
+              6,
+              6,
+              6,
+              6,
+              6
+            ]
+          },
+          "modified": "videos/round17_20260618/stage_A/baseline_seed0/baseline_seed0-rank0-warm_indoor_dining-seed0_regular.mp4",
+          "modified_metrics": {
+            "anchor_centroid_consistency": 0.8904631962079945,
+            "anchor_drift_aggregate_consistency": 0.6007845057784817,
+            "anchor_to_shot0_consistency": 0.7319319832714042,
+            "background_anchor_consistency": 0.9394704861639,
+            "background_anchor_to_shot0_consistency": 0.8500809035611355,
+            "background_worst_to_shot0_consistency": 0.738166584183869,
+            "dynamic_degree": 21.882287442684174,
+            "inter_shot_composition_diversity": 0.12795492704658729,
+            "invariant_margin_mean": 0.04879187233746052,
+            "invariant_margin_min": 0.03801950812339783,
+            "motion_profile_agreement": 0.9990993648885794,
+            "num_frames": 480.0,
+            "num_shots": 8.0,
+            "palette_agreement": 0.8488109290012742,
+            "prompt_adherence_mean": 0.28317018039524555,
+            "prompt_adherence_min": 0.24642561376094818,
+            "shot_frame_duration_max": 96.0,
+            "shot_frame_duration_min": 48.0,
+            "subject_anchor_consistency": 0.841455906252089,
+            "subject_anchor_to_shot0_consistency": 0.6137830629816727,
+            "subject_worst_to_shot0_consistency": 0.4696370282855592,
+            "within_shot_motion": 0.001862260134657845,
+            "worst_anchor_to_shot0_consistency": 0.4696370282855592
+          },
+          "negative_control": false,
+          "stem": "baseline_seed0-rank0-warm_indoor_dining-seed0_regular",
+          "theme": "warm_indoor_dining"
+        }
+      ],
+      "skipped_stems": []
+    }
+  },
+  "baseline_seeds": [
+    0
+  ],
+  "blocked_reason": null,
+  "chosen_scenes": [
+    "african_savanna",
+    "aquamarine_underwater",
+    "brown_bear_river",
+    "cozy_red_room",
+    "frying_egg_closeup",
+    "frying_egg_same_event",
+    "indoor_tender_moment",
+    "sandy_beach_driftwood",
+    "shimmering_puzzle_surface",
+    "skateboarder_high_motion",
+    "sunlit_balcony_tour",
+    "vintage_archival_scene",
+    "warm_indoor_dining"
+  ],
+  "guards": {
+    "adherence_tolerance": 0.02,
+    "admission_diversity_floor": 0.03,
+    "baseline_drift_floor": 0.02,
+    "consistency_delta_gate": "single_seed_fixed_absolute_delta",
+    "diversity_tolerance_relative": 0.1,
+    "frame_contract_required": true,
+    "gate_power_note": "REDUCED-POWER single-seed exploratory gate: no paired baseline noise floor; consistency wins use a fixed absolute delta threshold and are not definitive.",
+    "invariant_tolerance": 0.0,
+    "min_admitted_main_scenes": 8,
+    "motion_tolerance_relative": 0.2,
+    "noise_sigma_multiplier": 2.0,
+    "reduced_power_single_seed": true,
+    "require_adherence": true,
+    "single_seed_consistency_delta_threshold": 0.02
+  },
+  "is_null_result": false,
+  "lint_passing_main_scenes": [
+    "african_savanna",
+    "aquamarine_underwater",
+    "brown_bear_river",
+    "cozy_red_room",
+    "frying_egg_closeup",
+    "frying_egg_same_event",
+    "indoor_tender_moment",
+    "sandy_beach_driftwood",
+    "skateboarder_high_motion",
+    "sunlit_balcony_tour",
+    "vintage_archival_scene",
+    "warm_indoor_dining"
+  ],
+  "metric": "anchor_drift_aggregate_consistency",
+  "negative_controls": [
+    "shimmering_puzzle_surface"
+  ],
+  "noise_floor": {
+    "african_savanna": {
+      "baseline_drift": 0.4003749227055098,
+      "baseline_values": [
+        0.5996250772944902
+      ],
+      "exploratory_only": true,
+      "ledger_note": "REDUCED-POWER single-seed exploratory gate: no paired baseline noise floor; consistency wins use a fixed absolute delta threshold and are not definitive.",
+      "policy": "single_seed_fixed_absolute_delta",
+      "reduced_power_single_seed": true,
+      "sigma": NaN,
+      "sigma_multiplier": null,
+      "single_seed_consistency_delta_threshold": 0.02,
+      "threshold": 0.02,
+      "threshold_source": "fixed_absolute_consistency_delta"
+    },
+    "aquamarine_underwater": {
+      "baseline_drift": 0.43385557116918083,
+      "baseline_values": [
+        0.5661444288308192
+      ],
+      "exploratory_only": true,
+      "ledger_note": "REDUCED-POWER single-seed exploratory gate: no paired baseline noise floor; consistency wins use a fixed absolute delta threshold and are not definitive.",
+      "policy": "single_seed_fixed_absolute_delta",
+      "reduced_power_single_seed": true,
+      "sigma": NaN,
+      "sigma_multiplier": null,
+      "single_seed_consistency_delta_threshold": 0.02,
+      "threshold": 0.02,
+      "threshold_source": "fixed_absolute_consistency_delta"
+    },
+    "brown_bear_river": {
+      "baseline_drift": 0.454271972893171,
+      "baseline_values": [
+        0.545728027106829
+      ],
+      "exploratory_only": true,
+      "ledger_note": "REDUCED-POWER single-seed exploratory gate: no paired baseline noise floor; consistency wins use a fixed absolute delta threshold and are not definitive.",
+      "policy": "single_seed_fixed_absolute_delta",
+      "reduced_power_single_seed": true,
+      "sigma": NaN,
+      "sigma_multiplier": null,
+      "single_seed_consistency_delta_threshold": 0.02,
+      "threshold": 0.02,
+      "threshold_source": "fixed_absolute_consistency_delta"
+    },
+    "cozy_red_room": {
+      "baseline_drift": 0.11075508132212541,
+      "baseline_values": [
+        0.8892449186778746
+      ],
+      "exploratory_only": true,
+      "ledger_note": "REDUCED-POWER single-seed exploratory gate: no paired baseline noise floor; consistency wins use a fixed absolute delta threshold and are not definitive.",
+      "policy": "single_seed_fixed_absolute_delta",
+      "reduced_power_single_seed": true,
+      "sigma": NaN,
+      "sigma_multiplier": null,
+      "single_seed_consistency_delta_threshold": 0.02,
+      "threshold": 0.02,
+      "threshold_source": "fixed_absolute_consistency_delta"
+    },
+    "frying_egg_closeup": {
+      "baseline_drift": 0.41665587968351125,
+      "baseline_values": [
+        0.5833441203164887
+      ],
+      "exploratory_only": true,
+      "ledger_note": "REDUCED-POWER single-seed exploratory gate: no paired baseline noise floor; consistency wins use a fixed absolute delta threshold and are not definitive.",
+      "policy": "single_seed_fixed_absolute_delta",
+      "reduced_power_single_seed": true,
+      "sigma": NaN,
+      "sigma_multiplier": null,
+      "single_seed_consistency_delta_threshold": 0.02,
+      "threshold": 0.02,
+      "threshold_source": "fixed_absolute_consistency_delta"
+    },
+    "frying_egg_same_event": {
+      "baseline_drift": 0.24699423211980753,
+      "baseline_values": [
+        0.7530057678801925
+      ],
+      "exploratory_only": true,
+      "ledger_note": "REDUCED-POWER single-seed exploratory gate: no paired baseline noise floor; consistency wins use a fixed absolute delta threshold and are not definitive.",
+      "policy": "single_seed_fixed_absolute_delta",
+      "reduced_power_single_seed": true,
+      "sigma": NaN,
+      "sigma_multiplier": null,
+      "single_seed_consistency_delta_threshold": 0.02,
+      "threshold": 0.02,
+      "threshold_source": "fixed_absolute_consistency_delta"
+    },
+    "indoor_tender_moment": {
+      "baseline_drift": 0.5202144622785498,
+      "baseline_values": [
+        0.47978553772145016
+      ],
+      "exploratory_only": true,
+      "ledger_note": "REDUCED-POWER single-seed exploratory gate: no paired baseline noise floor; consistency wins use a fixed absolute delta threshold and are not definitive.",
+      "policy": "single_seed_fixed_absolute_delta",
+      "reduced_power_single_seed": true,
+      "sigma": NaN,
+      "sigma_multiplier": null,
+      "single_seed_consistency_delta_threshold": 0.02,
+      "threshold": 0.02,
+      "threshold_source": "fixed_absolute_consistency_delta"
+    },
+    "sandy_beach_driftwood": {
+      "baseline_drift": 0.6369372853637285,
+      "baseline_values": [
+        0.3630627146362715
+      ],
+      "exploratory_only": true,
+      "ledger_note": "REDUCED-POWER single-seed exploratory gate: no paired baseline noise floor; consistency wins use a fixed absolute delta threshold and are not definitive.",
+      "policy": "single_seed_fixed_absolute_delta",
+      "reduced_power_single_seed": true,
+      "sigma": NaN,
+      "sigma_multiplier": null,
+      "single_seed_consistency_delta_threshold": 0.02,
+      "threshold": 0.02,
+      "threshold_source": "fixed_absolute_consistency_delta"
+    },
+    "shimmering_puzzle_surface": {
+      "baseline_drift": 0.2672144542962738,
+      "baseline_values": [
+        0.7327855457037262
+      ],
+      "exploratory_only": true,
+      "ledger_note": "REDUCED-POWER single-seed exploratory gate: no paired baseline noise floor; consistency wins use a fixed absolute delta threshold and are not definitive.",
+      "policy": "single_seed_fixed_absolute_delta",
+      "reduced_power_single_seed": true,
+      "sigma": NaN,
+      "sigma_multiplier": null,
+      "single_seed_consistency_delta_threshold": 0.02,
+      "threshold": 0.02,
+      "threshold_source": "fixed_absolute_consistency_delta"
+    },
+    "skateboarder_high_motion": {
+      "baseline_drift": 0.2487036302708836,
+      "baseline_values": [
+        0.7512963697291164
+      ],
+      "exploratory_only": true,
+      "ledger_note": "REDUCED-POWER single-seed exploratory gate: no paired baseline noise floor; consistency wins use a fixed absolute delta threshold and are not definitive.",
+      "policy": "single_seed_fixed_absolute_delta",
+      "reduced_power_single_seed": true,
+      "sigma": NaN,
+      "sigma_multiplier": null,
+      "single_seed_consistency_delta_threshold": 0.02,
+      "threshold": 0.02,
+      "threshold_source": "fixed_absolute_consistency_delta"
+    },
+    "sunlit_balcony_tour": {
+      "baseline_drift": 0.1949879292083474,
+      "baseline_values": [
+        0.8050120707916526
+      ],
+      "exploratory_only": true,
+      "ledger_note": "REDUCED-POWER single-seed exploratory gate: no paired baseline noise floor; consistency wins use a fixed absolute delta threshold and are not definitive.",
+      "policy": "single_seed_fixed_absolute_delta",
+      "reduced_power_single_seed": true,
+      "sigma": NaN,
+      "sigma_multiplier": null,
+      "single_seed_consistency_delta_threshold": 0.02,
+      "threshold": 0.02,
+      "threshold_source": "fixed_absolute_consistency_delta"
+    },
+    "vintage_archival_scene": {
+      "baseline_drift": 0.45024677707481053,
+      "baseline_values": [
+        0.5497532229251895
+      ],
+      "exploratory_only": true,
+      "ledger_note": "REDUCED-POWER single-seed exploratory gate: no paired baseline noise floor; consistency wins use a fixed absolute delta threshold and are not definitive.",
+      "policy": "single_seed_fixed_absolute_delta",
+      "reduced_power_single_seed": true,
+      "sigma": NaN,
+      "sigma_multiplier": null,
+      "single_seed_consistency_delta_threshold": 0.02,
+      "threshold": 0.02,
+      "threshold_source": "fixed_absolute_consistency_delta"
+    },
+    "warm_indoor_dining": {
+      "baseline_drift": 0.39921549422151825,
+      "baseline_values": [
+        0.6007845057784817
+      ],
+      "exploratory_only": true,
+      "ledger_note": "REDUCED-POWER single-seed exploratory gate: no paired baseline noise floor; consistency wins use a fixed absolute delta threshold and are not definitive.",
+      "policy": "single_seed_fixed_absolute_delta",
+      "reduced_power_single_seed": true,
+      "sigma": NaN,
+      "sigma_multiplier": null,
+      "single_seed_consistency_delta_threshold": 0.02,
+      "threshold": 0.02,
+      "threshold_source": "fixed_absolute_consistency_delta"
+    }
+  },
+  "prompt_global_authoring": {
+    "authored": [
+      {
+        "after": {
+          "caption": "One continuous aquamarine underwater multishot scene. The same central subject, setting, material identity, lighting family, and event continuity should carry across all camera cuts. Source caption evidence: The video presents a serene underwater scene bathed in a cool, aquamarine-blue tone, with natural daylight filtering through the water\u2019s surface, creating a soft, diffused illumination. The atmosphere is tranquil and...",
+          "contrast_caption": "A different unrelated subject, object set, location, lighting condition, or event replaces the scene between shots.",
+          "invariant_caption": "The same continuous aquamarine underwater scene persists across every shot, with the same central subject or objects, the same environment, and coherent event continuity despite legitimate camera, framing, and action changes."
+        },
+        "before": {},
+        "source": "deterministic_round17_subset_authoring",
+        "theme": "aquamarine_underwater"
+      },
+      {
+        "after": {
+          "caption": "One continuous cozy red room multishot scene. The same central subject, setting, material identity, lighting family, and event continuity should carry across all camera cuts. Source caption evidence: The video features a warm, cozy indoor atmosphere with soft, natural lighting filtering through unseen windows, casting gentle shadows across the scene. The color tone is dominated by earthy red walls and wooden furni...",
+          "contrast_caption": "A different unrelated subject, object set, location, lighting condition, or event replaces the scene between shots.",
+          "invariant_caption": "The same continuous cozy red room scene persists across every shot, with the same central subject or objects, the same environment, and coherent event continuity despite legitimate camera, framing, and action changes."
+        },
+        "before": {},
+        "source": "deterministic_round17_subset_authoring",
+        "theme": "cozy_red_room"
+      },
+      {
+        "after": {
+          "caption": "One continuous frying egg closeup multishot scene. The same central subject, setting, material identity, lighting family, and event continuity should carry across all camera cuts. Source caption evidence: The video exhibits a warm, golden-yellow color tone with soft, diffused lighting, emphasizing the glossy, bubbling surface of the frying egg. The atmosphere is intimate and sensory, evoking the comforting aroma and vi...",
+          "contrast_caption": "A different unrelated subject, object set, location, lighting condition, or event replaces the scene between shots.",
+          "invariant_caption": "The same continuous frying egg closeup scene persists across every shot, with the same central subject or objects, the same environment, and coherent event continuity despite legitimate camera, framing, and action changes."
+        },
+        "before": {},
+        "source": "deterministic_round17_subset_authoring",
+        "theme": "frying_egg_closeup"
+      },
+      {
+        "after": {
+          "caption": "One continuous indoor tender moment multishot scene. The same central subject, setting, material identity, lighting family, and event continuity should carry across all camera cuts. Source caption evidence: The video clip presents a tender, emotionally charged moment between two individuals in an indoor urban setting, bathed in warm, golden-hour lighting that enhances the intimate atmosphere. The color tone is soft and m...",
+          "contrast_caption": "A different unrelated subject, object set, location, lighting condition, or event replaces the scene between shots.",
+          "invariant_caption": "The same continuous indoor tender moment scene persists across every shot, with the same central subject or objects, the same environment, and coherent event continuity despite legitimate camera, framing, and action changes."
+        },
+        "before": {},
+        "source": "deterministic_round17_subset_authoring",
+        "theme": "indoor_tender_moment"
+      },
+      {
+        "after": {
+          "caption": "One continuous sandy beach driftwood multishot scene. The same central subject, setting, material identity, lighting family, and event continuity should carry across all camera cuts. Source caption evidence: The video opens with a close-up shot of a sandy beach scene, where weathered driftwood and scattered rocks form a natural arrangement. The sand is pale and textured, with visible footprints and debris, illuminated by...",
+          "contrast_caption": "A different unrelated subject, object set, location, lighting condition, or event replaces the scene between shots.",
+          "invariant_caption": "The same continuous sandy beach driftwood scene persists across every shot, with the same central subject or objects, the same environment, and coherent event continuity despite legitimate camera, framing, and action changes."
+        },
+        "before": {},
+        "source": "deterministic_round17_subset_authoring",
+        "theme": "sandy_beach_driftwood"
+      },
+      {
+        "after": {
+          "caption": "One continuous vintage archival scene multishot scene. The same central subject, setting, material identity, lighting family, and event continuity should carry across all camera cuts. Source caption evidence: The video exhibits a muted, desaturated color tone with a grainy, vintage aesthetic, suggesting archival footage from the mid-20th century. The lighting is diffused and natural, likely from an overcast sky, casting so...",
+          "contrast_caption": "A different unrelated subject, object set, location, lighting condition, or event replaces the scene between shots.",
+          "invariant_caption": "The same continuous vintage archival scene scene persists across every shot, with the same central subject or objects, the same environment, and coherent event continuity despite legitimate camera, framing, and action changes."
+        },
+        "before": {},
+        "source": "deterministic_round17_subset_authoring",
+        "theme": "vintage_archival_scene"
+      },
+      {
+        "after": {
+          "caption": "One continuous warm indoor dining multishot scene. The same central subject, setting, material identity, lighting family, and event continuity should carry across all camera cuts. Source caption evidence: The video presents a warm, inviting indoor dining scene, bathed in soft, ambient lighting that enhances the rich, earthy tones of the wooden table and ceramic dishes. The color palette is dominated by deep browns, cre...",
+          "contrast_caption": "A different unrelated subject, object set, location, lighting condition, or event replaces the scene between shots.",
+          "invariant_caption": "The same continuous warm indoor dining scene persists across every shot, with the same central subject or objects, the same environment, and coherent event continuity despite legitimate camera, framing, and action changes."
+        },
+        "before": {},
+        "source": "deterministic_round17_subset_authoring",
+        "theme": "warm_indoor_dining"
+      }
+    ],
+    "duplicate_resolution": "same-named prompt folders prefer the source with more shot JSON files",
+    "duplicate_sources": {
+      "frying_egg_closeup": [
+        "example/long_multishot_prompts/frying_egg_closeup",
+        "example/multiview_prompts/frying_egg_closeup"
+      ],
+      "sunlit_balcony_tour": [
+        "example/long_multishot_prompts/sunlit_balcony_tour",
+        "example/multiview_prompts/sunlit_balcony_tour"
+      ]
+    },
+    "negative_control": "shimmering_puzzle_surface",
+    "source_roots": [
+      "example/long_multishot_prompts",
+      "example/multiview_prompts"
+    ]
+  },
+  "prompt_lint": {
+    "african_savanna": {
+      "floor": 0.12,
+      "matrix": [
+        [
+          1.0000000000000004,
+          0.8868861817345081,
+          0.8975014776728285,
+          0.7955266122847526,
+          0.8253133350898794,
+          0.8643634842639176,
+          0.8749481061900549,
+          0.8809943952778063
+        ],
+        [
+          0.8868861817345081,
+          1.0000000000000002,
+          0.8744786433145325,
+          0.9173097098806033,
+          0.8853513329002656,
+          0.8352521997029491,
+          0.9421089678424138,
+          0.9273621743800766
+        ],
+        [
+          0.8975014776728285,
+          0.8744786433145325,
+          1.0000000000000004,
+          0.8383384355225529,
+          0.8765525638252483,
+          0.8984766598459599,
+          0.8352331595577822,
+          0.9164562133213647
+        ],
+        [
+          0.7955266122847526,
+          0.9173097098806033,
+          0.8383384355225529,
+          1.000000000000001,
+          0.9305298875729726,
+          0.8142031779236774,
+          0.8902427884472078,
+          0.9159501473278562
+        ],
+        [
+          0.8253133350898794,
+          0.8853513329002656,
+          0.8765525638252483,
+          0.9305298875729726,
+          1.0000000000000002,
+          0.8939889037203561,
+          0.8517131622916203,
+          0.9029967650070199
+        ],
+        [
+          0.8643634842639176,
+          0.8352521997029491,
+          0.8984766598459599,
+          0.8142031779236774,
+          0.8939889037203561,
+          1.0000000000000002,
+          0.8096620722021377,
+          0.8687450420159096
+        ],
+        [
+          0.8749481061900549,
+          0.9421089678424138,
+          0.8352331595577822,
+          0.8902427884472078,
+          0.8517131622916203,
+          0.8096620722021377,
+          1.0000000000000004,
+          0.8852883942821848
+        ],
+        [
+          0.8809943952778063,
+          0.9273621743800766,
+          0.9164562133213647,
+          0.9159501473278562,
+          0.9029967650070199,
+          0.8687450420159096,
+          0.8852883942821848,
+          0.9999999999999999
+        ]
+      ],
+      "min_pairwise": 0.7955266122847526,
+      "negative_control": false,
+      "passed": true
+    },
+    "aquamarine_underwater": {
+      "floor": 0.12,
+      "matrix": [
+        [
+          1.0,
+          0.9339794566607247,
+          0.9208844434350708,
+          0.9497383736564532,
+          0.960365280680219,
+          0.9637643039245294,
+          0.9067022106600955,
+          0.958895397191676
+        ],
+        [
+          0.9339794566607247,
+          1.0,
+          0.859199140935534,
+          0.9269924875784045,
+          0.9505174013729543,
+          0.9151359471567415,
+          0.935948909344559,
+          0.9085440766427302
+        ],
+        [
+          0.9208844434350708,
+          0.859199140935534,
+          0.9999999999999996,
+          0.9261718122621071,
+          0.916846057669193,
+          0.901693114939351,
+          0.8168530657562214,
+          0.9096773347426728
+        ],
+        [
+          0.9497383736564532,
+          0.9269924875784045,
+          0.9261718122621071,
+          1.0,
+          0.9619080783153069,
+          0.9502951957994302,
+          0.8805428358066454,
+          0.9309773879064162
+        ],
+        [
+          0.960365280680219,
+          0.9505174013729543,
+          0.916846057669193,
+          0.9619080783153069,
+          0.9999999999999992,
+          0.9446327640266156,
+          0.9063369186848672,
+          0.9506915944362526
+        ],
+        [
+          0.9637643039245294,
+          0.9151359471567415,
+          0.901693114939351,
+          0.9502951957994302,
+          0.9446327640266156,
+          1.0,
+          0.8901793055030416,
+          0.9480594544625536
+        ],
+        [
+          0.9067022106600955,
+          0.935948909344559,
+          0.8168530657562214,
+          0.8805428358066454,
+          0.9063369186848672,
+          0.8901793055030416,
+          0.9999999999999998,
+          0.8603172576707867
+        ],
+        [
+          0.958895397191676,
+          0.9085440766427302,
+          0.9096773347426728,
+          0.9309773879064162,
+          0.9506915944362526,
+          0.9480594544625536,
+          0.8603172576707867,
+          1.0
+        ]
+      ],
+      "min_pairwise": 0.8168530657562214,
+      "negative_control": false,
+      "passed": true
+    },
+    "brown_bear_river": {
+      "floor": 0.12,
+      "matrix": [
+        [
+          0.9999999999999999,
+          0.790065632605317,
+          0.7879512567639047,
+          0.8096092669680989,
+          0.8825283287632466,
+          0.817602202022261,
+          0.7933083727244277,
+          0.8537484582623882
+        ],
+        [
+          0.790065632605317,
+          1.0000000000000002,
+          0.9539008538319567,
+          0.9776744807619977,
+          0.8462092400075234,
+          0.9394735344737966,
+          0.9664730220525637,
+          0.9018625734136977
+        ],
+        [
+          0.7879512567639047,
+          0.9539008538319567,
+          1.0,
+          0.9613820592420319,
+          0.8573629557345798,
+          0.926008445872561,
+          0.9646744441993298,
+          0.8964062859900433
+        ],
+        [
+          0.8096092669680989,
+          0.9776744807619977,
+          0.9613820592420319,
+          0.9999999999999992,
+          0.8531209039089339,
+          0.9405332494367058,
+          0.9635831525087721,
+          0.9115349749049844
+        ],
+        [
+          0.8825283287632466,
+          0.8462092400075234,
+          0.8573629557345798,
+          0.8531209039089339,
+          1.0,
+          0.8893463710252858,
+          0.8585966375056164,
+          0.8747539901679326
+        ],
+        [
+          0.817602202022261,
+          0.9394735344737966,
+          0.926008445872561,
+          0.9405332494367058,
+          0.8893463710252858,
+          0.9999999999999992,
+          0.9529601472004243,
+          0.9237118550236416
+        ],
+        [
+          0.7933083727244277,
+          0.9664730220525637,
+          0.9646744441993298,
+          0.9635831525087721,
+          0.8585966375056164,
+          0.9529601472004243,
+          0.9999999999999999,
+          0.8993371111086497
+        ],
+        [
+          0.8537484582623882,
+          0.9018625734136977,
+          0.8964062859900433,
+          0.9115349749049844,
+          0.8747539901679326,
+          0.9237118550236416,
+          0.8993371111086497,
+          1.0000000000000004
+        ]
+      ],
+      "min_pairwise": 0.7879512567639047,
+      "negative_control": false,
+      "passed": true
+    },
+    "cozy_red_room": {
+      "floor": 0.12,
+      "matrix": [
+        [
+          1.0000000000000007,
+          0.9756160216730292,
+          0.9483436772705782,
+          0.9593345612167694,
+          0.9441102502431494,
+          0.9456749815343695,
+          0.9757709357802307,
+          0.9456693823517341
+        ],
+        [
+          0.9756160216730292,
+          1.0,
+          0.9503975855117548,
+          0.9585790441415801,
+          0.945709130504,
+          0.9308065163924578,
+          0.9775989335569922,
+          0.9621638132127649
+        ],
+        [
+          0.9483436772705782,
+          0.9503975855117548,
+          0.9999999999999998,
+          0.9561067705297523,
+          0.9083795741691252,
+          0.9145441947044731,
+          0.9682261432235375,
+          0.9598433757966043
+        ],
+        [
+          0.9593345612167694,
+          0.9585790441415801,
+          0.9561067705297523,
+          0.9999999999999997,
+          0.9246942920373111,
+          0.9241583425230179,
+          0.9762624753997438,
+          0.9427048465454482
+        ],
+        [
+          0.9441102502431494,
+          0.945709130504,
+          0.9083795741691252,
+          0.9246942920373111,
+          1.0,
+          0.9541509856823416,
+          0.9446879063413236,
+          0.9095964221959562
+        ],
+        [
+          0.9456749815343695,
+          0.9308065163924578,
+          0.9145441947044731,
+          0.9241583425230179,
+          0.9541509856823416,
+          1.0,
+          0.9369862543408112,
+          0.9160942578069012
+        ],
+        [
+          0.9757709357802307,
+          0.9775989335569922,
+          0.9682261432235375,
+          0.9762624753997438,
+          0.9446879063413236,
+          0.9369862543408112,
+          1.0000000000000002,
+          0.959223685128374
+        ],
+        [
+          0.9456693823517341,
+          0.9621638132127649,
+          0.9598433757966043,
+          0.9427048465454482,
+          0.9095964221959562,
+          0.9160942578069012,
+          0.959223685128374,
+          0.9999999999999993
+        ]
+      ],
+      "min_pairwise": 0.9083795741691252,
+      "negative_control": false,
+      "passed": true
+    },
+    "frying_egg_closeup": {
+      "floor": 0.12,
+      "matrix": [
+        [
+          1.0,
+          0.9020778475482325,
+          0.8388899070857623,
+          0.9013602863178042,
+          0.8578810332011177,
+          0.8782633291429411,
+          0.8385258816272226
+        ],
+        [
+          0.9020778475482325,
+          1.0000000000000004,
+          0.8909683629131246,
+          0.9584866664453178,
+          0.8979594350983202,
+          0.9285411131852015,
+          0.8570288888812352
+        ],
+        [
+          0.8388899070857623,
+          0.8909683629131246,
+          0.9999999999999996,
+          0.9061436164190659,
+          0.9157685204899851,
+          0.9342993625974898,
+          0.902095340700557
+        ],
+        [
+          0.9013602863178042,
+          0.9584866664453178,
+          0.9061436164190659,
+          0.9999999999999993,
+          0.9191149268971303,
+          0.9241373496877967,
+          0.8758053214535199
+        ],
+        [
+          0.8578810332011177,
+          0.8979594350983202,
+          0.9157685204899851,
+          0.9191149268971303,
+          0.9999999999999997,
+          0.9157713829084231,
+          0.8634824202797564
+        ],
+        [
+          0.8782633291429411,
+          0.9285411131852015,
+          0.9342993625974898,
+          0.9241373496877967,
+          0.9157713829084231,
+          0.9999999999999994,
+          0.8760111708595613
+        ],
+        [
+          0.8385258816272226,
+          0.8570288888812352,
+          0.902095340700557,
+          0.8758053214535199,
+          0.8634824202797564,
+          0.8760111708595613,
+          0.9999999999999994
+        ]
+      ],
+      "min_pairwise": 0.8385258816272226,
+      "negative_control": false,
+      "passed": true
+    },
+    "frying_egg_same_event": {
+      "floor": 0.12,
+      "matrix": [
+        [
+          1.0,
+          0.7548020035078462,
+          0.77643021035236,
+          0.8396255089728915,
+          0.8173126901610719,
+          0.8759036423177611
+        ],
+        [
+          0.7548020035078462,
+          0.9999999999999996,
+          0.7841997157195555,
+          0.817574896522361,
+          0.8708318556315339,
+          0.8057840060931445
+        ],
+        [
+          0.77643021035236,
+          0.7841997157195555,
+          1.0000000000000002,
+          0.7917920174931408,
+          0.8427206621430487,
+          0.8297757296569575
+        ],
+        [
+          0.8396255089728915,
+          0.817574896522361,
+          0.7917920174931408,
+          0.9999999999999998,
+          0.8769486588599936,
+          0.8728386859958155
+        ],
+        [
+          0.8173126901610719,
+          0.8708318556315339,
+          0.8427206621430487,
+          0.8769486588599936,
+          0.9999999999999998,
+          0.8947935292165838
+        ],
+        [
+          0.8759036423177611,
+          0.8057840060931445,
+          0.8297757296569575,
+          0.8728386859958155,
+          0.8947935292165838,
+          1.0000000000000002
+        ]
+      ],
+      "min_pairwise": 0.7548020035078462,
+      "negative_control": false,
+      "passed": true
+    },
+    "indoor_tender_moment": {
+      "floor": 0.12,
+      "matrix": [
+        [
+          0.9999999999999998,
+          0.9308900548072738,
+          0.8904036298817544,
+          0.9165605395975595,
+          0.9177005125339348,
+          0.9080138723044815
+        ],
+        [
+          0.9308900548072738,
+          0.9999999999999998,
+          0.8716518503245727,
+          0.9075368376957301,
+          0.9330949669154989,
+          0.9243441859409934
+        ],
+        [
+          0.8904036298817544,
+          0.8716518503245727,
+          1.0000000000000004,
+          0.8976941278518538,
+          0.8709983556833423,
+          0.8745243300940123
+        ],
+        [
+          0.9165605395975595,
+          0.9075368376957301,
+          0.8976941278518538,
+          1.0000000000000002,
+          0.9340570786243648,
+          0.8957159716055375
+        ],
+        [
+          0.9177005125339348,
+          0.9330949669154989,
+          0.8709983556833423,
+          0.9340570786243648,
+          1.0,
+          0.9089378370095624
+        ],
+        [
+          0.9080138723044815,
+          0.9243441859409934,
+          0.8745243300940123,
+          0.8957159716055375,
+          0.9089378370095624,
+          1.0
+        ]
+      ],
+      "min_pairwise": 0.8709983556833423,
+      "negative_control": false,
+      "passed": true
+    },
+    "sandy_beach_driftwood": {
+      "floor": 0.12,
+      "matrix": [
+        [
+          1.0000000000000004,
+          0.8965002801551374,
+          0.8136444744263294,
+          0.9065837517671225,
+          0.8669969385477971,
+          0.7882758939427464,
+          0.8750441143223455,
+          0.8995333570113089
+        ],
+        [
+          0.8965002801551374,
+          0.9999999999999998,
+          0.8929476105024718,
+          0.9540815658147447,
+          0.8812719942130554,
+          0.8643786566242715,
+          0.9344617828149622,
+          0.9588797019020905
+        ],
+        [
+          0.8136444744263294,
+          0.8929476105024718,
+          0.9999999999999996,
+          0.8750555817848886,
+          0.8177947361828294,
+          0.848624300396353,
+          0.8849278411854951,
+          0.9011110504390603
+        ],
+        [
+          0.9065837517671225,
+          0.9540815658147447,
+          0.8750555817848886,
+          1.0,
+          0.901065168471661,
+          0.8769525749914252,
+          0.9355336623350125,
+          0.9717980313034735
+        ],
+        [
+          0.8669969385477971,
+          0.8812719942130554,
+          0.8177947361828294,
+          0.901065168471661,
+          0.9999999999999998,
+          0.8847628256913913,
+          0.8999130103321449,
+          0.9096406729549169
+        ],
+        [
+          0.7882758939427464,
+          0.8643786566242715,
+          0.848624300396353,
+          0.8769525749914252,
+          0.8847628256913913,
+          1.0000000000000004,
+          0.9236317214612106,
+          0.8998670508381035
+        ],
+        [
+          0.8750441143223455,
+          0.9344617828149622,
+          0.8849278411854951,
+          0.9355336623350125,
+          0.8999130103321449,
+          0.9236317214612106,
+          1.0000000000000002,
+          0.9633350219375872
+        ],
+        [
+          0.8995333570113089,
+          0.9588797019020905,
+          0.9011110504390603,
+          0.9717980313034735,
+          0.9096406729549169,
+          0.8998670508381035,
+          0.9633350219375872,
+          0.9999999999999996
+        ]
+      ],
+      "min_pairwise": 0.7882758939427464,
+      "negative_control": false,
+      "passed": true
+    },
+    "shimmering_puzzle_surface": {
+      "floor": 0.12,
+      "matrix": [
+        [
+          1.0,
+          0.8313789729756749,
+          0.8085633830431473,
+          0.848226677727246,
+          0.8069270405589424,
+          0.8717213675728506
+        ],
+        [
+          0.8313789729756749,
+          1.0000000000000009,
+          0.9134815545879572,
+          0.9681491626141492,
+          0.9581727673956177,
+          0.9386550052601752
+        ],
+        [
+          0.8085633830431473,
+          0.9134815545879572,
+          0.9999999999999997,
+          0.9205489554817814,
+          0.915793122561632,
+          0.8848491352893335
+        ],
+        [
+          0.848226677727246,
+          0.9681491626141492,
+          0.9205489554817814,
+          0.9999999999999999,
+          0.9646010986010394,
+          0.9369576460603841
+        ],
+        [
+          0.8069270405589424,
+          0.9581727673956177,
+          0.915793122561632,
+          0.9646010986010394,
+          1.0,
+          0.9376233535110396
+        ],
+        [
+          0.8717213675728506,
+          0.9386550052601752,
+          0.8848491352893335,
+          0.9369576460603841,
+          0.9376233535110396,
+          1.0
+        ]
+      ],
+      "min_pairwise": 0.8069270405589424,
+      "negative_control": true,
+      "passed": true
+    },
+    "skateboarder_high_motion": {
+      "floor": 0.12,
+      "matrix": [
+        [
+          1.0,
+          0.8741254533277274,
+          0.8806125983720546,
+          0.8563131717635452,
+          0.8113810099628482,
+          0.880976064575675
+        ],
+        [
+          0.8741254533277274,
+          0.9999999999999999,
+          0.8575199757116649,
+          0.8792743713216671,
+          0.7960083992336959,
+          0.8384281713730786
+        ],
+        [
+          0.8806125983720546,
+          0.8575199757116649,
+          1.0000000000000009,
+          0.805521449838106,
+          0.7872898453389755,
+          0.8414707562237052
+        ],
+        [
+          0.8563131717635452,
+          0.8792743713216671,
+          0.805521449838106,
+          1.0,
+          0.8526413007899729,
+          0.8437340789564267
+        ],
+        [
+          0.8113810099628482,
+          0.7960083992336959,
+          0.7872898453389755,
+          0.8526413007899729,
+          0.9999999999999992,
+          0.7911365684969349
+        ],
+        [
+          0.880976064575675,
+          0.8384281713730786,
+          0.8414707562237052,
+          0.8437340789564267,
+          0.7911365684969349,
+          1.0000000000000002
+        ]
+      ],
+      "min_pairwise": 0.7872898453389755,
+      "negative_control": false,
+      "passed": true
+    },
+    "sunlit_balcony_tour": {
+      "floor": 0.12,
+      "matrix": [
+        [
+          1.0,
+          0.8092134689099204,
+          0.8018266158014808,
+          0.8238195173320971,
+          0.8299318508848914,
+          0.8595771207903924
+        ],
+        [
+          0.8092134689099204,
+          0.9999999999999996,
+          0.8015636147599536,
+          0.8245541305527571,
+          0.8020696761357073,
+          0.8398186113716863
+        ],
+        [
+          0.8018266158014808,
+          0.8015636147599536,
+          1.0000000000000004,
+          0.8839326064649152,
+          0.7840743404581407,
+          0.8453080045284787
+        ],
+        [
+          0.8238195173320971,
+          0.8245541305527571,
+          0.8839326064649152,
+          0.9999999999999996,
+          0.7830060894699169,
+          0.8531539130661885
+        ],
+        [
+          0.8299318508848914,
+          0.8020696761357073,
+          0.7840743404581407,
+          0.7830060894699169,
+          0.9999999999999999,
+          0.793062209219814
+        ],
+        [
+          0.8595771207903924,
+          0.8398186113716863,
+          0.8453080045284787,
+          0.8531539130661885,
+          0.793062209219814,
+          1.0000000000000007
+        ]
+      ],
+      "min_pairwise": 0.7830060894699169,
+      "negative_control": false,
+      "passed": true
+    },
+    "vintage_archival_scene": {
+      "floor": 0.12,
+      "matrix": [
+        [
+          1.0000000000000004,
+          0.9493965463404289,
+          0.8923123456556239,
+          0.8790991110638899,
+          0.9333198409918053,
+          0.784964882134905,
+          0.884285329764213
+        ],
+        [
+          0.9493965463404289,
+          1.0000000000000004,
+          0.8959072828161702,
+          0.8344295397962304,
+          0.9270478230126664,
+          0.7725157919241936,
+          0.8667587597512538
+        ],
+        [
+          0.8923123456556239,
+          0.8959072828161702,
+          0.9999999999999996,
+          0.8534705293789632,
+          0.9063038751977079,
+          0.7382521670309947,
+          0.8435512712542945
+        ],
+        [
+          0.8790991110638899,
+          0.8344295397962304,
+          0.8534705293789632,
+          1.0000000000000002,
+          0.8865089120155194,
+          0.7841029330977791,
+          0.8803256008787621
+        ],
+        [
+          0.9333198409918053,
+          0.9270478230126664,
+          0.9063038751977079,
+          0.8865089120155194,
+          1.0000000000000002,
+          0.7389833176595685,
+          0.9241559578034414
+        ],
+        [
+          0.784964882134905,
+          0.7725157919241936,
+          0.7382521670309947,
+          0.7841029330977791,
+          0.7389833176595685,
+          1.0000000000000004,
+          0.7544519274416964
+        ],
+        [
+          0.884285329764213,
+          0.8667587597512538,
+          0.8435512712542945,
+          0.8803256008787621,
+          0.9241559578034414,
+          0.7544519274416964,
+          1.0
+        ]
+      ],
+      "min_pairwise": 0.7382521670309947,
+      "negative_control": false,
+      "passed": true
+    },
+    "warm_indoor_dining": {
+      "floor": 0.12,
+      "matrix": [
+        [
+          1.0,
+          0.9692201717225604,
+          0.9099182125615014,
+          0.9258809222598752,
+          0.8829194706687898,
+          0.9594118160187404,
+          0.8003312777678733,
+          0.8912304074525195
+        ],
+        [
+          0.9692201717225604,
+          1.0,
+          0.9075816107108665,
+          0.919890088852574,
+          0.8610554999373592,
+          0.9680387088309221,
+          0.8489204770231118,
+          0.9131676099764703
+        ],
+        [
+          0.9099182125615014,
+          0.9075816107108665,
+          0.9999999999999996,
+          0.9489757337726121,
+          0.9616980900828254,
+          0.9214595736521453,
+          0.7873415100717345,
+          0.9055812907467482
+        ],
+        [
+          0.9258809222598752,
+          0.919890088852574,
+          0.9489757337726121,
+          0.9999999999999998,
+          0.9270038699247855,
+          0.9465666746996992,
+          0.7814615027265654,
+          0.88947043775568
+        ],
+        [
+          0.8829194706687898,
+          0.8610554999373592,
+          0.9616980900828254,
+          0.9270038699247855,
+          1.0,
+          0.9009801946818902,
+          0.7655792839616888,
+          0.8812670732425358
+        ],
+        [
+          0.9594118160187404,
+          0.9680387088309221,
+          0.9214595736521453,
+          0.9465666746996992,
+          0.9009801946818902,
+          1.0,
+          0.8350421591655064,
+          0.9192386401254444
+        ],
+        [
+          0.8003312777678733,
+          0.8489204770231118,
+          0.7873415100717345,
+          0.7814615027265654,
+          0.7655792839616888,
+          0.8350421591655064,
+          1.0,
+          0.8544318972747906
+        ],
+        [
+          0.8912304074525195,
+          0.9131676099764703,
+          0.9055812907467482,
+          0.88947043775568,
+          0.8812670732425358,
+          0.9192386401254444,
+          0.8544318972747906,
+          1.0000000000000004
+        ]
+      ],
+      "min_pairwise": 0.7655792839616888,
+      "negative_control": false,
+      "passed": true
+    }
+  },
+  "prompt_subset_dir": "videos/round17_20260618/stage_A/prompt_subset",
+  "reauthor_scenes": [],
+  "regime_proof": {
+    "blocked_reason": null,
+    "frames_per_block": 8,
+    "local_attn_size": 32,
+    "passed": true,
+    "planned_blocks": 60,
+    "planned_frames": 480,
+    "scene_regime": {
+      "african_savanna": {
+        "blocked_reason": null,
+        "duration_blocks": 60,
+        "duration_frames": 480,
+        "durations_in_6_12_blocks": true,
+        "num_shots": 8,
+        "passed": true,
+        "shot_durations": [
+          12,
+          12,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ],
+        "shot_pair_separation": {
+          "passed": true,
+          "required_pairs": 14,
+          "separated_pairs": 28,
+          "total_pairs": 28
+        }
+      },
+      "aquamarine_underwater": {
+        "blocked_reason": null,
+        "duration_blocks": 60,
+        "duration_frames": 480,
+        "durations_in_6_12_blocks": true,
+        "num_shots": 8,
+        "passed": true,
+        "shot_durations": [
+          12,
+          12,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ],
+        "shot_pair_separation": {
+          "passed": true,
+          "required_pairs": 14,
+          "separated_pairs": 28,
+          "total_pairs": 28
+        }
+      },
+      "brown_bear_river": {
+        "blocked_reason": null,
+        "duration_blocks": 60,
+        "duration_frames": 480,
+        "durations_in_6_12_blocks": true,
+        "num_shots": 8,
+        "passed": true,
+        "shot_durations": [
+          12,
+          12,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ],
+        "shot_pair_separation": {
+          "passed": true,
+          "required_pairs": 14,
+          "separated_pairs": 28,
+          "total_pairs": 28
+        }
+      },
+      "cozy_red_room": {
+        "blocked_reason": null,
+        "duration_blocks": 60,
+        "duration_frames": 480,
+        "durations_in_6_12_blocks": true,
+        "num_shots": 8,
+        "passed": true,
+        "shot_durations": [
+          12,
+          12,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ],
+        "shot_pair_separation": {
+          "passed": true,
+          "required_pairs": 14,
+          "separated_pairs": 28,
+          "total_pairs": 28
+        }
+      },
+      "frying_egg_closeup": {
+        "blocked_reason": null,
+        "duration_blocks": 60,
+        "duration_frames": 480,
+        "durations_in_6_12_blocks": true,
+        "num_shots": 7,
+        "passed": true,
+        "shot_durations": [
+          12,
+          12,
+          12,
+          6,
+          6,
+          6,
+          6
+        ],
+        "shot_pair_separation": {
+          "passed": true,
+          "required_pairs": 11,
+          "separated_pairs": 21,
+          "total_pairs": 21
+        }
+      },
+      "frying_egg_same_event": {
+        "blocked_reason": null,
+        "duration_blocks": 60,
+        "duration_frames": 480,
+        "durations_in_6_12_blocks": true,
+        "num_shots": 6,
+        "passed": true,
+        "shot_durations": [
+          12,
+          12,
+          12,
+          12,
+          6,
+          6
+        ],
+        "shot_pair_separation": {
+          "passed": true,
+          "required_pairs": 8,
+          "separated_pairs": 15,
+          "total_pairs": 15
+        }
+      },
+      "indoor_tender_moment": {
+        "blocked_reason": null,
+        "duration_blocks": 60,
+        "duration_frames": 480,
+        "durations_in_6_12_blocks": true,
+        "num_shots": 6,
+        "passed": true,
+        "shot_durations": [
+          12,
+          12,
+          12,
+          12,
+          6,
+          6
+        ],
+        "shot_pair_separation": {
+          "passed": true,
+          "required_pairs": 8,
+          "separated_pairs": 15,
+          "total_pairs": 15
+        }
+      },
+      "sandy_beach_driftwood": {
+        "blocked_reason": null,
+        "duration_blocks": 60,
+        "duration_frames": 480,
+        "durations_in_6_12_blocks": true,
+        "num_shots": 8,
+        "passed": true,
+        "shot_durations": [
+          12,
+          12,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ],
+        "shot_pair_separation": {
+          "passed": true,
+          "required_pairs": 14,
+          "separated_pairs": 28,
+          "total_pairs": 28
+        }
+      },
+      "shimmering_puzzle_surface": {
+        "blocked_reason": null,
+        "duration_blocks": 60,
+        "duration_frames": 480,
+        "durations_in_6_12_blocks": true,
+        "num_shots": 6,
+        "passed": true,
+        "shot_durations": [
+          12,
+          12,
+          12,
+          12,
+          6,
+          6
+        ],
+        "shot_pair_separation": {
+          "passed": true,
+          "required_pairs": 8,
+          "separated_pairs": 15,
+          "total_pairs": 15
+        }
+      },
+      "skateboarder_high_motion": {
+        "blocked_reason": null,
+        "duration_blocks": 60,
+        "duration_frames": 480,
+        "durations_in_6_12_blocks": true,
+        "num_shots": 6,
+        "passed": true,
+        "shot_durations": [
+          12,
+          12,
+          12,
+          12,
+          6,
+          6
+        ],
+        "shot_pair_separation": {
+          "passed": true,
+          "required_pairs": 8,
+          "separated_pairs": 15,
+          "total_pairs": 15
+        }
+      },
+      "sunlit_balcony_tour": {
+        "blocked_reason": null,
+        "duration_blocks": 60,
+        "duration_frames": 480,
+        "durations_in_6_12_blocks": true,
+        "num_shots": 6,
+        "passed": true,
+        "shot_durations": [
+          12,
+          12,
+          12,
+          12,
+          6,
+          6
+        ],
+        "shot_pair_separation": {
+          "passed": true,
+          "required_pairs": 8,
+          "separated_pairs": 15,
+          "total_pairs": 15
+        }
+      },
+      "vintage_archival_scene": {
+        "blocked_reason": null,
+        "duration_blocks": 60,
+        "duration_frames": 480,
+        "durations_in_6_12_blocks": true,
+        "num_shots": 7,
+        "passed": true,
+        "shot_durations": [
+          12,
+          12,
+          12,
+          6,
+          6,
+          6,
+          6
+        ],
+        "shot_pair_separation": {
+          "passed": true,
+          "required_pairs": 11,
+          "separated_pairs": 21,
+          "total_pairs": 21
+        }
+      },
+      "warm_indoor_dining": {
+        "blocked_reason": null,
+        "duration_blocks": 60,
+        "duration_frames": 480,
+        "durations_in_6_12_blocks": true,
+        "num_shots": 8,
+        "passed": true,
+        "shot_durations": [
+          12,
+          12,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ],
+        "shot_pair_separation": {
+          "passed": true,
+          "required_pairs": 14,
+          "separated_pairs": 28,
+          "total_pairs": 28
+        }
+      }
+    }
+  },
+  "render_attempted": true,
+  "scorer_coverage": {
+    "adherence_clip": {
+      "loaded": true,
+      "requested": true
+    },
+    "background_clip": {
+      "loaded": true,
+      "requested": true
+    },
+    "dynamic_degree": {
+      "loaded": true,
+      "requested": "raft"
+    },
+    "prompt_lint_clip_text": {
+      "loaded": true,
+      "requested": true
+    },
+    "subject_dino": {
+      "loaded": true,
+      "requested": true
+    }
+  },
+  "selector": "long_multishot frame-level KV-RAG strategy",
+  "strategy_stage": "A",
+  "wall_clock_sec": 315.552,
+  "winner": null
+}
