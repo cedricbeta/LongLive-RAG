@@ -1,0 +1,22 @@
+{
+  "video_path": "",
+  "relative_path": "bearded_watchmaker_workshop/1.mp4",
+  "filename": "1.mp4",
+  "caption": "Shot 1 cuts to a tight close-up of the watchmaker's face. The tungsten lamp rakes across his silver-gray beard and thick dark eyebrows, the small mole on his left cheekbone is clearly visible, and a jeweler's loupe is clipped to his round brass-rimmed glasses as his eyes track a tiny gear he lifts with tweezers.",
+  "title": "Shot 1",
+  "block_indices": [
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23
+  ],
+  "num_blocks": 12
+}
