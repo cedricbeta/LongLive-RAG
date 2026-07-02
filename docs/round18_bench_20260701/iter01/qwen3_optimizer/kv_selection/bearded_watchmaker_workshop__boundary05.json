@@ -1,0 +1,304 @@
+{
+  "cache_fingerprint": "dd1c8858064f9933b88c9dba102e007f0c35c52fd0760e36251a39510bd04c41",
+  "image_hashes": {
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot00_frame00_idx0000.png": "a1ff4228727f679661b62733305301247fc0f5ae76669edea0e5b478be942a4a",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot00_frame01_idx0014.png": "aa96b10ffc6628629ca3725ad0c023ad241ff294f07b5fb124814159708375c7",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot00_frame03_idx0041.png": "cc6cf267bd5521e6f5532ce6440c8a0c9b95e350387309ca472e8a42829b7d6b",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot00_frame04_idx0054.png": "d648ddd8e17e895554e7bf9f61ccd82a93662138ce4ca75ab4e9ffd8138e60cf",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot00_frame06_idx0081.png": "678f3b80129d7166824847e8ab50f7aa844c42902b26b03ccbe407359d422676",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot00_frame07_idx0095.png": "aa03b33be63ab84824c9da3720bd30a9bae58663a4a1a294bf68e327bcf815ea",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot01_frame01_idx0110.png": "d35f3701f131c0ce12d95fdf9b57119b23e6ea0d33f17b6615f9c9bd10047b29",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot01_frame02_idx0123.png": "2cdaa8366ad9ea1345159670eebab435e04ff02f2df15b85d6999100fd22d601",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot01_frame04_idx0150.png": "93cc0fd846af51d28bd13d3524867e0eaf4b13924582d1fd1cb8d0513989e328",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot01_frame05_idx0164.png": "90d278a5fbd983c89ffc2b1b750a2f6d4e5cba5f2435146982c929624d79151a",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot01_frame07_idx0191.png": "e69219426f1675a48eebb0954dcfb8197c41c0b5faa12eb9491a567b3a9e7275",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot02_frame00_idx0192.png": "3eb5b0056d1a8bfd3a636b3b3c221e4577d76ce4fdac6bbe97dad7075b46bd32",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot02_frame02_idx0205.png": "080fd33c28a61bc656487910deec0248c770f0ce60bea5313855da2f280659cb",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot02_frame03_idx0212.png": "e0f229cc2051cf2197135ea8b7a91b036bc0f30b0cc2f1f2a7be67d21934847a",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot02_frame05_idx0226.png": "80d94ca11efdc65c9831b940963a7e831601fd29d1d18a30afe3bb4a16a11a96",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot02_frame06_idx0232.png": "9338f28d401c00117984945ef2621f32fc42597f17bfcf8d075f9079c952ebf3",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot03_frame00_idx0240.png": "f69123527302bc10510cb4e16da53c3ff31e2f9973ba46cc129cbd2a90afd1d6",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot03_frame01_idx0247.png": "77b98b2320adbf87a14a7e242142e8d454aba1cb2a007cf96857d9204dd3064d",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot03_frame03_idx0260.png": "04dea8d0540e769a81ae44d82e83dd8c0e0e3ef7037c427ad3c7000752a8cc6a",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot03_frame04_idx0267.png": "aac3b2de38f02bbf373700cc8997b0767d00e5c73fe9c4318d93aa7e22185259",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot03_frame06_idx0280.png": "2d9a0a74bbdfd0587539af7bc997f4df4f65c68180d72386ffce99184d9c256a",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot03_frame07_idx0287.png": "863ee984701eca45e8af494234ff4e26c84b2e1584cf9b98ecf7c4304a218ab2",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot04_frame01_idx0295.png": "929c5384e9a5c94bb6fcc49dc2a5fb46ff7b4cf5debf9d27901ffb16c14e1e03",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot04_frame02_idx0301.png": "97ab28469c823d48f78f12c40d6026ea4d723a761e4dc0983c256e8185efb471",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot05_frame00_idx0336.png": "baadfb5b11b19524427b7ce53753e4c9e69324c61e5fa80cd25c013b24897366",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot05_frame01_idx0352.png": "a828be709c30813d82ede209bc07ffe1dabbb97b9e70765befa02b59bf5f33fe"
+  },
+  "image_paths": [
+    "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot05_frame00_idx0336.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot05_frame01_idx0352.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot00_frame00_idx0000.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot00_frame01_idx0014.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot00_frame03_idx0041.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot00_frame04_idx0054.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot00_frame06_idx0081.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot00_frame07_idx0095.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot01_frame01_idx0110.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot01_frame02_idx0123.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot01_frame04_idx0150.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot01_frame05_idx0164.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot01_frame07_idx0191.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot02_frame00_idx0192.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot02_frame02_idx0205.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot02_frame03_idx0212.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot02_frame05_idx0226.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot02_frame06_idx0232.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot03_frame00_idx0240.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot03_frame01_idx0247.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot03_frame03_idx0260.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot03_frame04_idx0267.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot03_frame06_idx0280.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot03_frame07_idx0287.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot04_frame01_idx0295.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot04_frame02_idx0301.png"
+  ],
+  "parse_attempts": [],
+  "parsed": {
+    "rationale": "These frames provide clear, unoccluded views of the watchmaker's face, beard, glasses, and attire, matching the invariant description. Frame 192 shows a medium shot with full facial features and clothing. Frames 205 and 212 offer close-ups of the face and glasses, confirming the brass-rimmed spectacles and beard. Frame 226 shows a clear view of the subject's face and upper body, including the vest and apron, against the consistent workshop background. These frames best anchor the subject and scene identity for the cut into shot 5.",
+    "selected_frame_indices": [
+      192,
+      205,
+      212,
+      226
+    ],
+    "skip": false
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are the LOCAL Qwen3-VL KV-anchor selector.\nTask: pick which PAST decoded frames get re-injected into the KV cache at the cut into shot 5,\nso the subject and scene identity stay consistent across the cut.\nScene: bearded_watchmaker_workshop\nAuthored invariant: The same elderly watchmaker persists across every shot: neatly trimmed silver-gray beard, thick dark eyebrows, round brass-rimmed glasses, a small dark mole on the left cheekbone, deep-green wool vest over a cream shirt, and a brown leather apron. The same cluttered wooden workbench, warm tungsten desk lamp, and shelves of antique clocks persist despite legitimate camera, framing, and action changes.\nEntering shot 5 caption: Shot 5 cuts to an extreme close-up of the watch movement on the felt pad. The watchmaker's fingers guide fine tweezers to seat a tiny brass gear among the coils and jewels, the cream shirt cuff and the apron edge steady against the bench while the tungsten light picks out every scratch on the bench surface.\n\nQUERY images (start of shot 5, what the transition must stay consistent with):\n- image Q0: decoded frame 336\n- image Q1: decoded frame 352\n\nCANDIDATE anchor images (past frames outside the live attention window):\n- image C0: decoded frame 0\n- image C1: decoded frame 14\n- image C2: decoded frame 41\n- image C3: decoded frame 54\n- image C4: decoded frame 81\n- image C5: decoded frame 95\n- image C6: decoded frame 110\n- image C7: decoded frame 123\n- image C8: decoded frame 150\n- image C9: decoded frame 164\n- image C10: decoded frame 191\n- image C11: decoded frame 192\n- image C12: decoded frame 205\n- image C13: decoded frame 212\n- image C14: decoded frame 226\n- image C15: decoded frame 232\n- image C16: decoded frame 240\n- image C17: decoded frame 247\n- image C18: decoded frame 260\n- image C19: decoded frame 267\n- image C20: decoded frame 280\n- image C21: decoded frame 287\n- image C22: decoded frame 295\n- image C23: decoded frame 301\n\nChoose up to 4 candidate frames whose CONTENT best pins the subject identity\n(face/clothing/markings) and scene layout for this specific cut.\nJudge by what the images show, not by position in the video: an early frame is NOT\nautomatically better. Prefer frames with a clear, unoccluded view of the subject as it\nshould appear entering this shot. Skip only if no candidate shows the relevant subject.\nReturn strict JSON: {\"selected_frame_indices\": [..], \"skip\": false, \"rationale\": \"content-based reason naming what the chosen frames show\"}\nValid frame indices: [0, 14, 41, 54, 81, 95, 110, 123, 150, 164, 191, 192, 205, 212, 226, 232, 240, 247, 260, 267, 280, 287, 295, 301]",
+            "type": "text"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "response_format": {
+      "json_schema": {
+        "name": "decision",
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "rationale": {
+              "type": "string"
+            },
+            "selected_frame_indices": {
+              "items": {
+                "type": "integer"
+              },
+              "type": "array"
+            },
+            "skip": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "selected_frame_indices",
+            "skip",
+            "rationale"
+          ],
+          "type": "object"
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"selected_frame_indices\": [192, 205, 212, 226],\n  \"skip\": false,\n  \"rationale\": \"These frames provide clear, unoccluded views of the watchmaker's face, beard, glasses, and attire, matching the invariant description. Frame 192 shows a medium shot with full facial features and clothing. Frames 205 and 212 offer close-ups of the face and glasses, confirming the brass-rimmed spectacles and beard. Frame 226 shows a clear view of the subject's face and upper body, including the vest and apron, against the consistent workshop background. These frames best anchor the subject and scene identity for the cut into shot 5.\"\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1782975184,
+    "id": "14d3ee756e884e6192c29fdb3775cadd",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 163,
+      "prompt_tokens": 23744,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 23907
+    }
+  },
+  "schema_enforced": true,
+  "wall_clock_seconds": 19.431228399276733
+}

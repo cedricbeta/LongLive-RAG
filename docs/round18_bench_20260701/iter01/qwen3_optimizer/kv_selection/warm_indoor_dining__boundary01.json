@@ -1,0 +1,152 @@
+{
+  "cache_fingerprint": "9b34363ac099e257196a8b3635f98f44b85fea960a45180b556892fb5701ce86",
+  "image_hashes": {
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot00_frame00_idx0000.png": "10ef2dc9d437886d412b0babeb8ede77cb9e1797156b3c2c954e91f2df94ec89",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot00_frame01_idx0014.png": "442bc5531e6e5d3c791da06d84e0ae07f1b71c8f4e29c277e43bf7a812aa78c3",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot00_frame02_idx0027.png": "58ea693c5fcfd7bc2f062f8b1ae5e2d712f116b5f924348424dedf9e0718c5e5",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot00_frame03_idx0041.png": "073140919403c7c40c783e9238f620b905a17de484441d449eaf9cedf1a712e1",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot00_frame04_idx0054.png": "033fe46c8d24e7a281985697c9a9305036139656c7276ef572baeda269bfbcfe",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot01_frame00_idx0096.png": "8de4532051dbd8a1f06491b8171286860a152c3e862cebdb631571ca5b852088",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot01_frame01_idx0128.png": "c1d50894021c31e9ea80db786f7d0296bc7ba2d6ea65f87ec6c9cc31aff50c7d"
+  },
+  "image_paths": [
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot01_frame00_idx0096.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot01_frame01_idx0128.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot00_frame00_idx0000.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot00_frame01_idx0014.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot00_frame02_idx0027.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot00_frame03_idx0041.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot00_frame04_idx0054.png"
+  ],
+  "parse_attempts": [],
+  "parsed": {
+    "rationale": "These frames establish the core subject identity and scene layout: the dark wooden table, the blue-and-white porcelain dishes, and the arrangement of food items including the central plate of marinated meat, the bowl of noodles, the small bowls of garnishes, and the orange-handled utensils. Frame 0 provides a clear, unoccluded wide view of the entire setup. Frame 14 shows the same composition with slightly different camera angle and lighting. Frame 27 captures the scene with the same objects and layout, confirming continuity. Frame 41 shows the same table setup with the addition of a hand wearing a glove, which is part of the scene's ongoing action. All four frames consistently show the key objects and environment that must remain consistent across the cut.",
+    "selected_frame_indices": [
+      0,
+      14,
+      27,
+      41
+    ],
+    "skip": false
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are the LOCAL Qwen3-VL KV-anchor selector.\nTask: pick which PAST decoded frames get re-injected into the KV cache at the cut into shot 1,\nso the subject and scene identity stay consistent across the cut.\nScene: warm_indoor_dining\nAuthored invariant: The same continuous warm indoor dining scene persists across every shot, with the same central subject or objects, the same environment, and coherent event continuity despite legitimate camera, framing, and action changes.\nEntering shot 1 caption: The video presents a warm, inviting culinary scene, bathed in soft, ambient indoor lighting that enhances the rich textures and vibrant colors of the food. The color tone leans toward earthy browns and deep blues, with the blue-and-white porcelain dishes adding a traditional, elegant contrast against the dark wooden table. The atmosphere is cozy and intimate, evoking a rustic restaurant or home dining setting, with a focus on the sensory appeal of the meal. The style is realistic and detailed, with a shallow depth of field that draws attention to the foreground while gently blurring the background elements.\nThe scene is set indoors, likely a dining room or eatery, with wooden furniture and a warm, muted backdrop. The table is dark wood with visible grain, suggesting a natural, handcrafted aesthetic. The environment feels tranquil and relaxed, with no visible windows or outdoor elements, and the lighting suggests late afternoon or evening, casting a soft glow over the meal. A gray thermos and wooden pipes or decorative elements are faintly visible in the background, reinforcing the rustic, traditional ambiance.\n\nNo characters are visible in the video, so no descriptions of gender, age, attire, or expressions are applicable. The focus remains entirely on the food.\n\nThe key objects include: a large blue-and-white porcelain bowl in the foreground, filled with a steaming, aromatic broth topped with chopped green onions, chili oil, and sesame seeds, suggesting a spicy, savory dish. To its left, a matching plate holds neatly arranged slices of marinated meat garnished with herbs and nuts. To the right, another plate features golden, crispy fried dumplings or fritters. Between them, two small bowls hold dipping sauces \u2014 one with red chili oil and the other with fresh greens. A white porcelain spoon with a blue floral pattern rests near the bowl, and orange-handled tongs lie beside it. All objects are arranged neatly on the wooden table, with the bowl as the central focal point.\n\nThe camera begins with a medium shot, slowly panning downward and zooming in slightly to emphasize the bowl\u2019s steaming contents and the vibrant garnishes. The movement is smooth and deliberate, enhancing the appetizing presentation. The shallow depth of field ensures the bowl remains sharp while softly blurring the surrounding dishes, guiding the viewer\u2019s attention to the main dish. The shot composition is static in terms of character movement, but the camera\u2019s subtle motion creates a dynamic, immersive experience, as if inviting the viewer to lean in and savor the meal. The steam gently rises, adding a sense of warmth and immediacy. The overall narrative is one of indulgence and sensory delight, centered on the artistry and appeal of the food.\n\nQUERY images (start of shot 1, what the transition must stay consistent with):\n- image Q0: decoded frame 96\n- image Q1: decoded frame 128\n\nCANDIDATE anchor images (past frames outside the live attention window):\n- image C0: decoded frame 0\n- image C1: decoded frame 14\n- image C2: decoded frame 27\n- image C3: decoded frame 41\n- image C4: decoded frame 54\n\nChoose up to 4 candidate frames whose CONTENT best pins the subject identity\n(face/clothing/markings) and scene layout for this specific cut.\nJudge by what the images show, not by position in the video: an early frame is NOT\nautomatically better. Prefer frames with a clear, unoccluded view of the subject as it\nshould appear entering this shot. Skip only if no candidate shows the relevant subject.\nReturn strict JSON: {\"selected_frame_indices\": [..], \"skip\": false, \"rationale\": \"content-based reason naming what the chosen frames show\"}\nValid frame indices: [0, 14, 27, 41, 54]",
+            "type": "text"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "response_format": {
+      "json_schema": {
+        "name": "decision",
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "rationale": {
+              "type": "string"
+            },
+            "selected_frame_indices": {
+              "items": {
+                "type": "integer"
+              },
+              "type": "array"
+            },
+            "skip": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "selected_frame_indices",
+            "skip",
+            "rationale"
+          ],
+          "type": "object"
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"selected_frame_indices\": [0, 14, 27, 41],\n  \"skip\": false,\n  \"rationale\": \"These frames establish the core subject identity and scene layout: the dark wooden table, the blue-and-white porcelain dishes, and the arrangement of food items including the central plate of marinated meat, the bowl of noodles, the small bowls of garnishes, and the orange-handled utensils. Frame 0 provides a clear, unoccluded wide view of the entire setup. Frame 14 shows the same composition with slightly different camera angle and lighting. Frame 27 captures the scene with the same objects and layout, confirming continuity. Frame 41 shows the same table setup with the addition of a hand wearing a glove, which is part of the scene's ongoing action. All four frames consistently show the key objects and environment that must remain consistent across the cut.\"\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1782976163,
+    "id": "cabaada593d14a42815982dd1bf59ca5",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 191,
+      "prompt_tokens": 7079,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 7270
+    }
+  },
+  "schema_enforced": true,
+  "wall_clock_seconds": 10.622012853622437
+}

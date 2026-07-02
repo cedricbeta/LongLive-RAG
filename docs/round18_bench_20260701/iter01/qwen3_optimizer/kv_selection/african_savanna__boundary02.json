@@ -1,0 +1,214 @@
+{
+  "cache_fingerprint": "255bfa10710b643c2953f36e90176700439c4158ce34128093a7e2e7f2cb7b54",
+  "image_hashes": {
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/african_savanna/shot00_frame00_idx0000.png": "43cb725a14b23bce9df3ce5828c888f092157d5011a8c89c62399a7ff15f5e27",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/african_savanna/shot00_frame01_idx0014.png": "446ea0e833e987ef4f34b163b5bc2ce07a92abfbf6cbea3857be9eecadaca9d6",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/african_savanna/shot00_frame02_idx0027.png": "a17bea3adc80e285e9acf348719bb350874ce37a7b7522215ca3e8cf71b17a95",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/african_savanna/shot00_frame03_idx0041.png": "4f40ba0bb6203434d78be52b31b7c4d454c63d48829ac8d9ca490417dd18393a",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/african_savanna/shot00_frame04_idx0054.png": "dabeea6819bfce45375d0d1e007d38f255312e385d4f249f1f40af0dd234d56b",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/african_savanna/shot00_frame05_idx0068.png": "7f0aaaab624d0970d0c586c0adde26ff04e11023c003bc956ca4323755ea8e4d",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/african_savanna/shot00_frame06_idx0081.png": "d84554e8b75cef77f37d92039df355720d12d96decbd6da11eb82ac4127fa1c1",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/african_savanna/shot00_frame07_idx0095.png": "6053689e81ffac03b07a8374e0ccd589de28501440bf5cb1545a285e9fa9aacb",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/african_savanna/shot01_frame00_idx0096.png": "abe85b589debce569f90a13aa0de8381e83cd2d2747af72a478e979daf8ccc0f",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/african_savanna/shot01_frame01_idx0110.png": "d774a0cb7ef379ce8ce260bc6d067d7b2b13543ed371ab088147237bd5c7e4d5",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/african_savanna/shot01_frame02_idx0123.png": "1bfcc7ab238734c54f8af6d1af6b7cd37f7f9c90af46708c1bfabe2de17118ed",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/african_savanna/shot01_frame03_idx0137.png": "08838bf8d6edf02581256dff24b5e51b91e1a8cb52b07e3338b83225d935c4b1",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/african_savanna/shot01_frame04_idx0150.png": "0439a5a1fb3b24900cf9af374bca5b8efb590c9c62d34a48d0d20b6ba9c4f139",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot02_frame00_idx0192.png": "052512365984242106b36a7be198ad7512e61991427f6a9b319a39b7de512aff",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot02_frame01_idx0208.png": "b48757041d4b409a4866b34b495a407d66cbd0cde213326ee8709572faa2d74e"
+  },
+  "image_paths": [
+    "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot02_frame00_idx0192.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot02_frame01_idx0208.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/african_savanna/shot00_frame00_idx0000.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/african_savanna/shot00_frame01_idx0014.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/african_savanna/shot00_frame02_idx0027.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/african_savanna/shot00_frame03_idx0041.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/african_savanna/shot00_frame04_idx0054.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/african_savanna/shot00_frame05_idx0068.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/african_savanna/shot00_frame06_idx0081.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/african_savanna/shot00_frame07_idx0095.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/african_savanna/shot01_frame00_idx0096.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/african_savanna/shot01_frame01_idx0110.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/african_savanna/shot01_frame02_idx0123.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/african_savanna/shot01_frame03_idx0137.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/african_savanna/shot01_frame04_idx0150.png"
+  ],
+  "parse_attempts": [],
+  "parsed": {
+    "rationale": "Frame 137 and 150 show the elephant in a clear, unoccluded side profile as it walks across the savanna, with its prominent tusks and body shape visible. These frames capture the subject's identity and movement pattern that will continue into shot 2, ensuring continuity with the entering shot. The scene layout with acacia trees and golden grass is also consistent with the described environment.",
+    "selected_frame_indices": [
+      137,
+      150
+    ],
+    "skip": false
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are the LOCAL Qwen3-VL KV-anchor selector.\nTask: pick which PAST decoded frames get re-injected into the KV cache at the cut into shot 2,\nso the subject and scene identity stay consistent across the cut.\nScene: african_savanna\nAuthored invariant: The same African savanna remains visible with golden grass, acacia trees, distant hills, warm daylight, and the same group of large savanna animals.\nEntering shot 2 caption: The video showcases a serene, natural African savanna landscape under a partly cloudy sky, with soft, diffused daylight illuminating the scene. The color tone is warm and earthy \u2014 golden yellows of the grass, deep browns of the elephant\u2019s skin, and muted greens of scattered shrubs \u2014 contrasted against the purplish-gray tones of distant hills and the pale, cloud-streaked sky. The atmosphere is tranquil and majestic, evoking a sense of untouched wilderness. The style is realistic, documentary-like, with natural lighting and a cinematic composition emphasizing scale and wildlife immersion.\nThe setting is entirely outdoor, in a vast, open savanna environment. The terrain is dry grassland dotted with acacia trees and low shrubs. In the background, rolling hills and mountain ridges stretch across the horizon, partially veiled by haze, suggesting either early morning or late afternoon. The weather appears calm, with no visible rain or wind, though subtle movement in the grass indicates a gentle breeze.\n\nThe central subject is a single African elephant, an adult male (bull) with prominent, curved tusks and thick, wrinkled gray skin. The elephant is seen in a medium shot from 0:00 to 0:04, initially positioned under a large acacia tree, its trunk extended toward the ground or tree branches. It remains mostly stationary, occasionally shifting weight or swaying slightly, suggesting calm grazing or foraging behavior. The elephant\u2019s posture is grounded and deliberate, its ears occasionally twitching or flapping slightly in response to ambient sound or breeze.\n\nThe acacia tree, with its wide, flat canopy and dark, gnarled branches, dominates the midground, providing shade. The tree\u2019s branches partially obscure the elephant\u2019s upper body, enhancing the sense of depth. The grass is dry and golden, swaying subtly in the breeze, while the distant hills are bathed in soft, ambient light, creating a layered, textured background. The camera remains steady, slowly zooming in slightly from 0:00 to 0:03, transitioning from a medium shot to a tighter medium close-up, maintaining eye-level framing that centers the elephant. The depth of field is deep, keeping both the foreground elephant and background hills in focus, emphasizing the vastness of the environment.\n\nThere are no other characters or animals visible. The elephant\u2019s slow, deliberate movements and the stillness of the landscape create a peaceful, contemplative narrative \u2014 a moment of quiet coexistence between wildlife and nature. The video\u2019s tone is observational and reverent, capturing the majesty of the African wilderness without human interference.\n\nQUERY images (start of shot 2, what the transition must stay consistent with):\n- image Q0: decoded frame 192\n- image Q1: decoded frame 208\n\nCANDIDATE anchor images (past frames outside the live attention window):\n- image C0: decoded frame 0\n- image C1: decoded frame 14\n- image C2: decoded frame 27\n- image C3: decoded frame 41\n- image C4: decoded frame 54\n- image C5: decoded frame 68\n- image C6: decoded frame 81\n- image C7: decoded frame 95\n- image C8: decoded frame 96\n- image C9: decoded frame 110\n- image C10: decoded frame 123\n- image C11: decoded frame 137\n- image C12: decoded frame 150\n\nChoose up to 4 candidate frames whose CONTENT best pins the subject identity\n(face/clothing/markings) and scene layout for this specific cut.\nJudge by what the images show, not by position in the video: an early frame is NOT\nautomatically better. Prefer frames with a clear, unoccluded view of the subject as it\nshould appear entering this shot. Skip only if no candidate shows the relevant subject.\nReturn strict JSON: {\"selected_frame_indices\": [..], \"skip\": false, \"rationale\": \"content-based reason naming what the chosen frames show\"}\nValid frame indices: [0, 14, 27, 41, 54, 68, 81, 95, 96, 110, 123, 137, 150]",
+            "type": "text"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "response_format": {
+      "json_schema": {
+        "name": "decision",
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "rationale": {
+              "type": "string"
+            },
+            "selected_frame_indices": {
+              "items": {
+                "type": "integer"
+              },
+              "type": "array"
+            },
+            "skip": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "selected_frame_indices",
+            "skip",
+            "rationale"
+          ],
+          "type": "object"
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"selected_frame_indices\": [137, 150],\n  \"skip\": false,\n  \"rationale\": \"Frame 137 and 150 show the elephant in a clear, unoccluded side profile as it walks across the savanna, with its prominent tusks and body shape visible. These frames capture the subject's identity and movement pattern that will continue into shot 2, ensuring continuity with the entering shot. The scene layout with acacia trees and golden grass is also consistent with the described environment.\"\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1782974778,
+    "id": "ac4aa22a88cb4a559e6dd6e6b05d81bc",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 114,
+      "prompt_tokens": 14248,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 14362
+    }
+  },
+  "schema_enforced": true,
+  "wall_clock_seconds": 13.007089853286743
+}

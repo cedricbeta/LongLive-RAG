@@ -1,0 +1,151 @@
+{
+  "cache_fingerprint": "d7f6a2958dfff72c86bb700a17a42323c46134acc36bcf414edf2c9063c33a58",
+  "image_hashes": {
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot00_frame00_idx0000.png": "0cb95f1d486909881d7613ecb674af903ef005a1a3df9b174580a694ca50cd4a",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot00_frame01_idx0014.png": "43b929cf8335f4f318a3c911e7d2b830ccad7533583a5fb0bc9d7dacdfde4a42",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot00_frame02_idx0027.png": "f0e634132ecd58577a374fd7c99754ac5ad93aa26a43ef58f67b56a5a22e7bb8",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot00_frame03_idx0041.png": "96db99445d9e034e644966fa60de8129b95ff924a4a55427935a38b43c32c80b",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot00_frame04_idx0054.png": "fae8908889f8ebe4e541d34c43d3cc7102f7d76eb8badac9a889e7d0238e3dc0",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot01_frame00_idx0096.png": "0c1d961e8b0e3f7b20d2ddd28a233fed36396ca29db19f95b05ed147b5b5c2b1",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot01_frame01_idx0128.png": "e0121d3101a18063dfe19012871ab2ae74d309f1ab3caa7de9eb8ddf741afecb"
+  },
+  "image_paths": [
+    "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot01_frame00_idx0096.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot01_frame01_idx0128.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot00_frame00_idx0000.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot00_frame01_idx0014.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot00_frame02_idx0027.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot00_frame03_idx0041.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot00_frame04_idx0054.png"
+  ],
+  "parse_attempts": [],
+  "parsed": {
+    "rationale": "Frames 27, 41, and 54 provide clear, unoccluded close-up views of the bear's head and upper torso as it is submerged in the river, showing consistent wet fur texture, ear shape, and facial markings. These frames best pin the subject identity and scene layout (river environment with water ripples) for continuity into shot 1, which begins with the bear exiting the water. Frame 0 is too distant and lacks clear subject detail for effective anchoring.",
+    "selected_frame_indices": [
+      27,
+      41,
+      54
+    ],
+    "skip": false
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are the LOCAL Qwen3-VL KV-anchor selector.\nTask: pick which PAST decoded frames get re-injected into the KV cache at the cut into shot 1,\nso the subject and scene identity stay consistent across the cut.\nScene: brown_bear_river\nAuthored invariant: The same large brown bear remains in the same shallow river and forest-bank habitat with mud, stones, grass, and dense green vegetation.\nEntering shot 1 caption: The video features a natural, outdoor environment with a cool, earthy color tone dominated by muted browns, greens, and grays. The lighting is soft and diffused, suggesting an overcast or cloudy day, with no harsh shadows. The atmosphere is serene and wild, capturing the raw beauty of a wilderness setting. The style is realistic and documentary-like, with a steady, observational camera that follows the subject without intrusive manipulation.\nThe scene unfolds at the edge of a shallow, calm river bordered by a sandy and muddy bank. In the background, dense green vegetation and trees line the riverbank, indicating a forested or semi-wilderness area. The river\u2019s surface ripples gently, reflecting the subdued light, while the surrounding terrain is dotted with scattered twigs and patches of grass. The environment appears tranquil, with no signs of human presence or urban influence.\n\nThe video\u2019s sole subject is a large brown bear, viewed from behind as it wades through the water and exits onto the riverbank. The bear\u2019s fur is thick and wet, glistening with droplets as it moves. It is a mature adult, with a robust, muscular build, and its back is rounded and broad. The bear\u2019s head is slightly lowered as it navigates the shallows, and its powerful legs kick up splashes as it steps forward. Its ears are perked, indicating alertness. The bear's movement is deliberate and unhurried, suggesting a purposeful exit from the water \u2014 perhaps after foraging or cooling off. As it reaches the bank, it continues walking away from the camera, its body gradually disappearing into the vegetation.\n\nThe camera follows the bear in a medium shot, maintaining a consistent distance, allowing the viewer to observe its movements in context. The focal length remains steady, with a shallow depth of field that keeps the bear in sharp focus while softly blurring the background. The shooting angle is slightly elevated, capturing the bear\u2019s rear and the surrounding landscape. The camera pans subtly to keep the bear centered as it moves, enhancing the sense of immersion in the natural environment.\n\nThe bear\u2019s exit from the water is the central narrative, emphasizing its strength, adaptability, and connection to its habitat. There is no interaction with other animals or humans \u2014 the scene is solitary and peaceful. The movement is slow and steady, with the water\u2019s gentle ripples and the bear\u2019s deliberate steps creating a rhythmic, almost meditative quality. The video captures a moment of quiet wilderness, highlighting the bear\u2019s grace and the untouched beauty of its surroundings.\n\nQUERY images (start of shot 1, what the transition must stay consistent with):\n- image Q0: decoded frame 96\n- image Q1: decoded frame 128\n\nCANDIDATE anchor images (past frames outside the live attention window):\n- image C0: decoded frame 0\n- image C1: decoded frame 14\n- image C2: decoded frame 27\n- image C3: decoded frame 41\n- image C4: decoded frame 54\n\nChoose up to 4 candidate frames whose CONTENT best pins the subject identity\n(face/clothing/markings) and scene layout for this specific cut.\nJudge by what the images show, not by position in the video: an early frame is NOT\nautomatically better. Prefer frames with a clear, unoccluded view of the subject as it\nshould appear entering this shot. Skip only if no candidate shows the relevant subject.\nReturn strict JSON: {\"selected_frame_indices\": [..], \"skip\": false, \"rationale\": \"content-based reason naming what the chosen frames show\"}\nValid frame indices: [0, 14, 27, 41, 54]",
+            "type": "text"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "response_format": {
+      "json_schema": {
+        "name": "decision",
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "rationale": {
+              "type": "string"
+            },
+            "selected_frame_indices": {
+              "items": {
+                "type": "integer"
+              },
+              "type": "array"
+            },
+            "skip": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "selected_frame_indices",
+            "skip",
+            "rationale"
+          ],
+          "type": "object"
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"selected_frame_indices\": [27, 41, 54],\n  \"skip\": false,\n  \"rationale\": \"Frames 27, 41, and 54 provide clear, unoccluded close-up views of the bear's head and upper torso as it is submerged in the river, showing consistent wet fur texture, ear shape, and facial markings. These frames best pin the subject identity and scene layout (river environment with water ripples) for continuity into shot 1, which begins with the bear exiting the water. Frame 0 is too distant and lacks clear subject detail for effective anchoring.\"\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1782975286,
+    "id": "da616c210f97412ab64a1b8b8798010e",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 134,
+      "prompt_tokens": 7042,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 7176
+    }
+  },
+  "schema_enforced": true,
+  "wall_clock_seconds": 8.385239362716675
+}

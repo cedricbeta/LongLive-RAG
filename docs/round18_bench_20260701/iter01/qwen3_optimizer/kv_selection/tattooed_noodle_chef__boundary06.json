@@ -1,0 +1,304 @@
+{
+  "cache_fingerprint": "e852e83c33a34db75c45e38490ffc83324f3bf7ccb30a25c2e9d0671c22ea733",
+  "image_hashes": {
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot00_frame00_idx0000.png": "c8bdf50396b2aa5c11c1c4fd6d22ec5dacd13f43b957ff3adc5f101ed50d00aa",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot00_frame02_idx0027.png": "11fde55171bed4fd094e82124ca4e9689c1095d77bf512156c368310e5d3b4ec",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot00_frame04_idx0054.png": "f25e906256397acb593d50679ad8e247b7fc0aa1d6a790f8e59491977abd98f2",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot00_frame05_idx0068.png": "ae002938ff36e7d0bb5cd42fdaa52b5c7944a160b556d383c5677a6a44e30782",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot00_frame07_idx0095.png": "d18343177de6c5157e093d8cb16faf646911168225c5890043cc7e2b3ee711aa",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot01_frame01_idx0110.png": "d229545742b5760516d7272f51715093c7e83677e2829c2864c024414dafb710",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot01_frame03_idx0137.png": "08570477462c44bb3732478d841eb3dd1c1f40c91bffef9563e88e440877365c",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot01_frame05_idx0164.png": "1b3bd5e27ee6f9830d5b8fbaf0ff76ae45735dba1de7caa5d543e4b15deafdc5",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot01_frame07_idx0191.png": "2dd81202df411ffdea0e60dd53a6cf74ce250e4eb715816e37751d08f722a3bf",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot02_frame00_idx0192.png": "5f25f75d5e94708a7fa3e4677081c2760f817a214e74be9c22bb3864524cf39b",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot02_frame02_idx0205.png": "88e02d6f07498ef5cf6d27500ed91fd8b9187fdeb0926592c6e84ea9e1b331f2",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot02_frame04_idx0219.png": "425a84a0d374641c56f7c02633c58a9c0512f099793430e33039176beab0d296",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot02_frame06_idx0232.png": "b21746493689174ba5e7dd335d5ad39d015eb24420c1ae5831865a7dbe8041af",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot03_frame00_idx0240.png": "816e8a667ba3ff3af5da6ea3fbd3f722157ca7eb3d4af109e18ac3d42a03747c",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot03_frame02_idx0253.png": "a486eb8b40b35a117413420ed88ee8fd3e480c8595d6dbd7650b49f50a376c9a",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot03_frame03_idx0260.png": "6a41fee5c04e8503414592865e59e5c28a8ebcfea1bab7e29dfa2e567874b59c",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot03_frame05_idx0274.png": "2a698d5fe85f3e3e293c27750d0bb84a69e760bd1d676c505c0532e883669707",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot03_frame07_idx0287.png": "d18022394d54da389ded7708eb5915a001485b8031b3d9eab488b239ac7655e8",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot04_frame01_idx0295.png": "e95d4da4b9bbb20e8d75918ada0d8cb53819a91190a77a8c7cb5acf124fce3c0",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot04_frame03_idx0308.png": "f13020ed71fd6fd727ae454997d2c6a8aab7aee4cf0534d53d4abd023be062fc",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot04_frame05_idx0322.png": "23b84316e9840e72eb787f3093761ab4f0b1fefb4d1476c414a1c5b309a4fe5e",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot04_frame06_idx0328.png": "59d4341fe2bedb56c9df0fe39e749dc9a0b58700d0cbf64015bcb0c13cb6dfdc",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot05_frame00_idx0336.png": "4db83369c76f8775e47a4760255fabc6f52d86339716a946fc86793362ba03ab",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot05_frame02_idx0349.png": "a919802b5c02436ce3017ee7ad7d0adbf73daf0dc88d0c69581d90f8ac735ccf",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot06_frame00_idx0384.png": "cb6f59718be7603d16963a830cf13aa6749d9cfd3f6f482fa9a9734b2cd35054",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot06_frame01_idx0400.png": "3e9e45d78defe2d31d1f3152359d01fd41997055e504822e085eb01b0964511b"
+  },
+  "image_paths": [
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot06_frame00_idx0384.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot06_frame01_idx0400.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot00_frame00_idx0000.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot00_frame02_idx0027.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot00_frame04_idx0054.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot00_frame05_idx0068.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot00_frame07_idx0095.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot01_frame01_idx0110.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot01_frame03_idx0137.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot01_frame05_idx0164.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot01_frame07_idx0191.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot02_frame00_idx0192.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot02_frame02_idx0205.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot02_frame04_idx0219.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot02_frame06_idx0232.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot03_frame00_idx0240.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot03_frame02_idx0253.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot03_frame03_idx0260.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot03_frame05_idx0274.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot03_frame07_idx0287.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot04_frame01_idx0295.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot04_frame03_idx0308.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot04_frame05_idx0322.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot04_frame06_idx0328.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot05_frame00_idx0336.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot05_frame02_idx0349.png"
+  ],
+  "parse_attempts": [],
+  "parsed": {
+    "rationale": "These frames provide clear, unoccluded views of the chef's key identifying features: shaved head, red bandana, silver hoop earring, and black dragon tattoo on the right forearm, all visible against the consistent night-market noodle stall background with hanging red lanterns and stainless counter. Frame 192 shows the chef in profile with full attire visible. Frames 205 and 219 show close-ups of the tattoo and earring. Frame 232 shows the chef from the side with the full outfit and background elements clearly visible, matching the shot 6 context.",
+    "selected_frame_indices": [
+      192,
+      205,
+      219,
+      232
+    ],
+    "skip": false
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are the LOCAL Qwen3-VL KV-anchor selector.\nTask: pick which PAST decoded frames get re-injected into the KV cache at the cut into shot 6,\nso the subject and scene identity stay consistent across the cut.\nScene: tattooed_noodle_chef\nAuthored invariant: The same chef persists across every shot: shaved head, black dragon tattoo on the right forearm, small silver hoop earring in the left ear, red bandana around the neck, white T-shirt under a navy apron. The same night-market noodle stall persists, with its steel wok station, rising steam, hanging red lanterns, and stainless counter, despite legitimate camera, framing, and action changes.\nEntering shot 6 caption: Shot 6 frames a medium shot at counter height. The chef assembles the bowl, layering noodles, sliced pork, and scallions, his silver hoop earring and red bandana catching the lantern light as he wipes the bowl rim with a cloth tucked in his navy apron.\n\nQUERY images (start of shot 6, what the transition must stay consistent with):\n- image Q0: decoded frame 384\n- image Q1: decoded frame 400\n\nCANDIDATE anchor images (past frames outside the live attention window):\n- image C0: decoded frame 0\n- image C1: decoded frame 27\n- image C2: decoded frame 54\n- image C3: decoded frame 68\n- image C4: decoded frame 95\n- image C5: decoded frame 110\n- image C6: decoded frame 137\n- image C7: decoded frame 164\n- image C8: decoded frame 191\n- image C9: decoded frame 192\n- image C10: decoded frame 205\n- image C11: decoded frame 219\n- image C12: decoded frame 232\n- image C13: decoded frame 240\n- image C14: decoded frame 253\n- image C15: decoded frame 260\n- image C16: decoded frame 274\n- image C17: decoded frame 287\n- image C18: decoded frame 295\n- image C19: decoded frame 308\n- image C20: decoded frame 322\n- image C21: decoded frame 328\n- image C22: decoded frame 336\n- image C23: decoded frame 349\n\nChoose up to 4 candidate frames whose CONTENT best pins the subject identity\n(face/clothing/markings) and scene layout for this specific cut.\nJudge by what the images show, not by position in the video: an early frame is NOT\nautomatically better. Prefer frames with a clear, unoccluded view of the subject as it\nshould appear entering this shot. Skip only if no candidate shows the relevant subject.\nReturn strict JSON: {\"selected_frame_indices\": [..], \"skip\": false, \"rationale\": \"content-based reason naming what the chosen frames show\"}\nValid frame indices: [0, 27, 54, 68, 95, 110, 137, 164, 191, 192, 205, 219, 232, 240, 253, 260, 274, 287, 295, 308, 322, 328, 336, 349]",
+            "type": "text"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "response_format": {
+      "json_schema": {
+        "name": "decision",
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "rationale": {
+              "type": "string"
+            },
+            "selected_frame_indices": {
+              "items": {
+                "type": "integer"
+              },
+              "type": "array"
+            },
+            "skip": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "selected_frame_indices",
+            "skip",
+            "rationale"
+          ],
+          "type": "object"
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"selected_frame_indices\": [192, 205, 219, 232],\n  \"skip\": false,\n  \"rationale\": \"These frames provide clear, unoccluded views of the chef's key identifying features: shaved head, red bandana, silver hoop earring, and black dragon tattoo on the right forearm, all visible against the consistent night-market noodle stall background with hanging red lanterns and stainless counter. Frame 192 shows the chef in profile with full attire visible. Frames 205 and 219 show close-ups of the tattoo and earring. Frame 232 shows the chef from the side with the full outfit and background elements clearly visible, matching the shot 6 context.\"\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1782975885,
+    "id": "8ffad499da6448e180c5669423cd2909",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 162,
+      "prompt_tokens": 23738,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 23900
+    }
+  },
+  "schema_enforced": true,
+  "wall_clock_seconds": 21.02420687675476
+}

@@ -1,0 +1,462 @@
+{
+  "cache_fingerprint": "9cdfd4c53db64ec2bf6be72c0246bf5698c673215cb8d76fbf42d84c679e9a55",
+  "image_hashes": {
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot00_frame00_idx0000.png": "10ef2dc9d437886d412b0babeb8ede77cb9e1797156b3c2c954e91f2df94ec89",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot00_frame01_idx0032.png": "807f8cd046746be6a28d4d1810b975a27211b135ef8d9b19e42df752761bbacd",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot00_frame02_idx0063.png": "e04fe8cf41b437dd6067c7636c9acc544752a9ad871ddfda277de1238b01e751",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot00_frame03_idx0095.png": "01c0c4d4989abe0fe75ade17e2129deda3555f1a0bedce5f2a5d50111c18879f",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot01_frame00_idx0096.png": "8de4532051dbd8a1f06491b8171286860a152c3e862cebdb631571ca5b852088",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot01_frame01_idx0128.png": "c1d50894021c31e9ea80db786f7d0296bc7ba2d6ea65f87ec6c9cc31aff50c7d",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot01_frame02_idx0159.png": "6d159f621b7c6fa6fec06e84be6eb80e73882abfbc66bd24d3a0af5532689e8d",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot01_frame03_idx0191.png": "13fbaf2bfa0f3ed7a149c789485e719f595520ae3a2af298d43a4802174f6f81",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot02_frame00_idx0192.png": "4ef7d1ea0cfc94c8377c51f32933703760bcbb2fb3974944f667d9a21e98e4d9",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot02_frame01_idx0208.png": "00b58ca88d15eb8d085bf334aa8463329391711b3e522fb8c539f07586e15b1b",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot02_frame02_idx0223.png": "38b584f7e0aa7994b458e9df54beb4b938476e7c0b31d5744d059a3b88fa5d0d",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot02_frame03_idx0239.png": "57014e5d5e55452db92726523c7e1a825c92136a1d48f80e49839a05e05e2af3",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot03_frame00_idx0240.png": "a3c61319d2ccd366dba3100919d2858343ea27035b2a4996dc01e84b471ebf3b",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot03_frame01_idx0256.png": "cdeddb58c137490724963e20201baff90fc45ede807438cbcc453bd27d2fd4bb",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot03_frame02_idx0271.png": "a6bec3619e9dfd402aae87f4098e6e4afca7a492737791cac1b6ae7021577303",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot03_frame03_idx0287.png": "faecdf86041c8bdaf1d668cd66723d5e206ba93e3d3fa030730c487cc76e4c45",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot04_frame00_idx0288.png": "efce4449cd0231cf56f993a4bdad12d9606c7cac16e353647cb8d14052d52181",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot04_frame01_idx0304.png": "629915adbc5a67e2a6218574781c8d97d0b56f8182f57bd0dd81cd51c138b499",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot04_frame02_idx0319.png": "809b19e560e1de4753927041e67fa86f9cc53bbd45c5e268a6c353e980815390",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot04_frame03_idx0335.png": "ced7644f101c18a02f6757a06fbad62de5cc8f946d8df1bccfecd75fdaa605b1",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot05_frame00_idx0336.png": "6aa9dbd399b7b48793340d49c3f99d9063d48fabdcb99eba6b3e3da14573046f",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot05_frame01_idx0352.png": "92552e6b730b78ed349439c696494c6d7e175a9b10ebe91eba8777e2bccde18f",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot05_frame02_idx0367.png": "50e8209d0a5d72f68a90065a5eb3cff048754310d91d7a112ec22075eecbbf29",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot05_frame03_idx0383.png": "874992ed70f3938afba383e1aad8fa1af9f9054f98ac2e9d3cb8dda4f43479f7",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot06_frame00_idx0384.png": "2752ae442984b5eb014f476a4a4ecf0ee8cccb9fcc81b23d9e6ff9651975141e",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot06_frame01_idx0400.png": "a101831caea9eb44f8ac7da6233da9f7abdf1a07123450e23dd25dcd200aea80",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot06_frame02_idx0415.png": "038320eaa1108ffba3cf4a177ee866455e0e1c14c5fde2f455f48e58c46f83ad",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot06_frame03_idx0431.png": "fd84427650a73e57245099a1700fc5e2559a24e51a8c985b5e5e102d32c3941d",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot07_frame00_idx0432.png": "b48c5bc6093a5407e1318ad4352295bea90fc6ec24725e94507f13e6e9028d7e",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot07_frame01_idx0448.png": "3df62851ef6e6e3ceb024a57a2b951479a3c15ba912bca00f869b795ded13b77",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot07_frame02_idx0463.png": "41ea310be6ca201d43ef62957e613ddeb3eb32ea435634c697f3b0cf6f39640c",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot07_frame03_idx0479.png": "3eebee5b60acd1e1667aa39c0840e386ad6485f902d0e836085afd9352db43ec"
+  },
+  "image_paths": [
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot00_frame00_idx0000.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot00_frame01_idx0032.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot00_frame02_idx0063.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot00_frame03_idx0095.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot01_frame00_idx0096.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot01_frame01_idx0128.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot01_frame02_idx0159.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot01_frame03_idx0191.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot02_frame00_idx0192.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot02_frame01_idx0208.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot02_frame02_idx0223.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot02_frame03_idx0239.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot03_frame00_idx0240.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot03_frame01_idx0256.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot03_frame02_idx0271.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot03_frame03_idx0287.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot04_frame00_idx0288.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot04_frame01_idx0304.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot04_frame02_idx0319.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot04_frame03_idx0335.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot05_frame00_idx0336.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot05_frame01_idx0352.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot05_frame02_idx0367.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot05_frame03_idx0383.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot06_frame00_idx0384.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot06_frame01_idx0400.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot06_frame02_idx0415.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot06_frame03_idx0431.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot07_frame00_idx0432.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot07_frame01_idx0448.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot07_frame02_idx0463.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot07_frame03_idx0479.png"
+  ],
+  "parse_attempts": [],
+  "parsed": {
+    "global_invariant_additions": [
+      "The scene remains a continuous warm indoor dining setting with the same dark-stained wooden table, blue-and-white ceramic tableware, and orange-handled utensils throughout all shots."
+    ],
+    "kv_anchor_plan": [],
+    "per_shot_additions": [
+      {
+        "rationale": "Reasserts the consistent table setup and utensils from SHOT 0 to anchor all subsequent shots.",
+        "shot_index": 0,
+        "text": "The scene is set at a dark-stained wooden table with blue-and-white ceramic bowls and plates, and orange-handled scissors and tongs visible on the right side."
+      },
+      {
+        "rationale": "Reaffirms the table and utensil setup from SHOT 0 to maintain continuity despite camera movement.",
+        "shot_index": 1,
+        "text": "The scene remains indoors at the same dark-stained wooden table, with blue-and-white ceramic dishes and orange-handled utensils visible in the background."
+      },
+      {
+        "rationale": "Reinforces the table and utensil setup from SHOT 0 to ensure continuity with the ongoing meal presentation.",
+        "shot_index": 2,
+        "text": "The scene is set at the same dark-stained wooden table with blue-and-white ceramic bowls and orange-handled utensils, visible in the background."
+      },
+      {
+        "rationale": "Reasserts the table and utensil setup from SHOT 0 to maintain consistency with the ongoing meal presentation.",
+        "shot_index": 3,
+        "text": "The scene remains indoors at the same dark-stained wooden table with blue-and-white ceramic plates and orange-handled utensils visible in the background."
+      },
+      {
+        "rationale": "Reaffirms the table and utensil setup from SHOT 0 to ensure continuity with the ongoing meal presentation.",
+        "shot_index": 4,
+        "text": "The scene is set at the same dark-stained wooden table with blue-and-white ceramic tableware and orange-handled utensils visible on the right side."
+      },
+      {
+        "rationale": "Reinforces the table and utensil setup from SHOT 0 to maintain continuity with the ongoing meal presentation.",
+        "shot_index": 5,
+        "text": "The scene remains indoors at the same dark-stained wooden table with blue-and-white ceramic bowls and orange-handled utensils visible in the background."
+      },
+      {
+        "rationale": "Reasserts the table and utensil setup from SHOT 0 to maintain consistency with the ongoing meal presentation.",
+        "shot_index": 6,
+        "text": "The scene is set at the same dark-stained wooden table with blue-and-white ceramic plates and orange-handled utensils visible on the right side."
+      },
+      {
+        "rationale": "Reaffirms the table and utensil setup from SHOT 0 to ensure continuity with the ongoing meal presentation.",
+        "shot_index": 7,
+        "text": "The scene remains indoors at the same dark-stained wooden table with blue-and-white ceramic bowls and orange-handled utensils visible in the background."
+      }
+    ],
+    "stop_rule": "one bounded refinement round",
+    "which_cut_broke": {
+      "cut_index": null,
+      "how": "No cut breaks cross-shot consistency; all shots maintain the same warm indoor dining scene with consistent objects and environment."
+    }
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are the LOCAL Qwen3-VL optimizer, not the held-out judge.\nDiagnose which shot cut breaks cross-shot consistency and propose constrained fixes.\nReturn strict JSON only with this shape:\n{\n  \"which_cut_broke\": {\"cut_index\": integer_or_null, \"how\": \"short reason\"},\n  \"global_invariant_additions\": [\"additive invariant text\", ...],\n  \"per_shot_additions\": [{\"shot_index\": 0, \"text\": \"additive invariant text\", \"rationale\": \"why\"}, ...],\n  \"kv_anchor_plan\": [],\n  \"stop_rule\": \"one bounded refinement round\"\n}\nRules: ADD subject/scene invariants only. Do not delete or weaken per-shot camera/action.\nInvariant additions must RESTATE or SHARPEN the authored global invariant below.\nIf the rendered video contradicts that invariant (wrong clothing/color/object), that is a\ndefect to FIX: re-assert the authored invariant. NEVER codify the rendered appearance when\nit conflicts with the authored invariant.\nDo not collapse shots into near-identical text.\nKV anchors are chosen in a separate per-boundary pass; return an empty kv_anchor_plan.\nScene: warm_indoor_dining\nGlobal invariant: The same continuous warm indoor dining scene persists across every shot, with the same central subject or objects, the same environment, and coherent event continuity despite legitimate camera, framing, and action changes.\nSHOT 0: frames=[0, 32, 63, 95]; caption=The video presents a warm, inviting indoor dining scene, bathed in soft, ambient lighting that enhances the rich, earthy tones of the wooden table and ceramic dishes. The color palette is dominated by deep browns, creamy whites, and vibrant accents of red and green from the food, creating a cozy, rustic aesthetic. The atmosphere feels intimate and homely, as if captured in a traditional East Asian restaurant or home kitchen. The camera remains stationary, offering a medium shot with a shallow depth of field that gently blurs the background while keeping the foreground sharply focused on the table and the action.\n\nThe scene is set indoors, likely during late afternoon or early evening, given the warm, diffused lighting. The background reveals wooden chairs with curved backs and a few decorative ceramic cups with blue floral patterns, suggesting a cultural or regional dining setting. The table is dark-stained wood, polished to a smooth sheen, with visible grain patterns adding texture. Three small, blue-and-white patterned bowls sit in front of larger plates: one holds golden-brown fried food, another contains bright green herbs, and the third holds a red, spicy-looking condiment. A plate of sliced meat, garnished with chopped green onions and peanuts, is placed in the foreground. A pair of orange-handled scissors and metal tongs lie beside a spoon and chopsticks, suggesting preparation or serving activity.\n\nA person\u2019s hand, wearing a transparent plastic glove, enters from the right side of the frame. The hand moves deliberately toward the plate of meat, gently adjusting its position or adding garnish. The hand\u2019s motion is slow and careful, indicating attention to presentation. The glove suggests hygiene or food safety protocol. The person\u2019s arm is partially visible, but no further details about their appearance or clothing are discernible. The hand\u2019s movement is the only dynamic element; the rest of the scene remains static. The camera maintains a consistent eye-level angle, capturing the action as if the viewer is seated at the table. The overall style is documentary-like, emphasizing realism and detail, with a focus on the sensory appeal of the food and the careful, ritualistic presentation. The narrative is centered on the final touches of a meal, evoking anticipation and appreciation for culinary artistry.\nSHOT 1: frames=[96, 128, 159, 191]; caption=The video presents a warm, inviting culinary scene, bathed in soft, ambient indoor lighting that enhances the rich textures and vibrant colors of the food. The color tone leans toward earthy browns and deep blues, with the blue-and-white porcelain dishes adding a traditional, elegant contrast against the dark wooden table. The atmosphere is cozy and intimate, evoking a rustic restaurant or home dining setting, with a focus on the sensory appeal of the meal. The style is realistic and detailed, with a shallow depth of field that draws attention to the foreground while gently blurring the background elements.\nThe scene is set indoors, likely a dining room or eatery, with wooden furniture and a warm, muted backdrop. The table is dark wood with visible grain, suggesting a natural, handcrafted aesthetic. The environment feels tranquil and relaxed, with no visible windows or outdoor elements, and the lighting suggests late afternoon or evening, casting a soft glow over the meal. A gray thermos and wooden pipes or decorative elements are faintly visible in the background, reinforcing the rustic, traditional ambiance.\n\nNo characters are visible in the video, so no descriptions of gender, age, attire, or expressions are applicable. The focus remains entirely on the food.\n\nThe key objects include: a large blue-and-white porcelain bowl in the foreground, filled with a steaming, aromatic broth topped with chopped green onions, chili oil, and sesame seeds, suggesting a spicy, savory dish. To its left, a matching plate holds neatly arranged slices of marinated meat garnished with herbs and nuts. To the right, another plate features golden, crispy fried dumplings or fritters. Between them, two small bowls hold dipping sauces \u2014 one with red chili oil and the other with fresh greens. A white porcelain spoon with a blue floral pattern rests near the bowl, and orange-handled tongs lie beside it. All objects are arranged neatly on the wooden table, with the bowl as the central focal point.\n\nThe camera begins with a medium shot, slowly panning downward and zooming in slightly to emphasize the bowl\u2019s steaming contents and the vibrant garnishes. The movement is smooth and deliberate, enhancing the appetizing presentation. The shallow depth of field ensures the bowl remains sharp while softly blurring the surrounding dishes, guiding the viewer\u2019s attention to the main dish. The shot composition is static in terms of character movement, but the camera\u2019s subtle motion creates a dynamic, immersive experience, as if inviting the viewer to lean in and savor the meal. The steam gently rises, adding a sense of warmth and immediacy. The overall narrative is one of indulgence and sensory delight, centered on the artistry and appeal of the food.\nSHOT 2: frames=[192, 208, 223, 239]; caption=The video features a warm, inviting color tone with a rich, reddish-brown broth, accented by vibrant green scallions and golden sesame seeds, creating a visually appetizing palette. The lighting is soft and natural, likely from indoor ambient sources, casting gentle reflections on the glossy surface of the noodles and broth. The atmosphere is cozy and intimate, suggesting a restaurant or home dining setting with a focus on traditional, comforting cuisine. The style is realistic and detailed, capturing the textures and spices of the dish with clarity and depth.\nThe scene is set indoors, likely in a traditional Chinese restaurant, with wooden tables and warm-toned decor visible in the background. The time of day appears to be daytime, with artificial lighting enhancing the ambiance. Surrounding dishes, including a plate of fried food and a small bowl of garnish, are visible in the background, slightly out of focus, reinforcing the dining context. The environment suggests a casual, communal meal, with no visible landmarks or outdoor elements.\n\nNo human characters are visible in the video. The focus remains entirely on the food and the act of eating. The main object is a large, ornate blue-and-white ceramic bowl filled with a spicy noodle dish. The noodles are wide, translucent, and glossy, coated in a rich, oily broth speckled with chili oil, scallions, and sesame seeds. The bowl\u2019s rim features intricate blue floral patterns, adding cultural and aesthetic depth. In the foreground, a pair of black chopsticks lifts a portion of noodles, showcasing their elasticity and texture. The camera follows the chopsticks as they lift the noodles upward, slowly moving from the bowl to the center of the frame, allowing the viewer to appreciate the dish\u2019s vibrant colors and glossy surface. The camera angle is slightly tilted upward, emphasizing the noodles\u2019 texture and the sauce clinging to them. The movement is slow and deliberate, enhancing the sensory appeal of the dish. The depth of field is shallow, keeping the noodles and chopsticks in sharp focus while softly blurring the background elements. The shot is a close-up, capturing the intricate details of the food and the subtle interplay of light and texture, creating a mouthwatering visual experience. No natural elements or external movements are present, focusing solely on the culinary presentation.\nSHOT 3: frames=[240, 256, 271, 287]; caption=The video features a warm, inviting color tone dominated by rich browns, deep reds, and vibrant greens, creating a mouthwatering, appetizing atmosphere. The lighting is soft and diffused, likely from indoor ambient sources, enhancing the glossy sheen of the sauce and the textures of the ingredients. The style is highly cinematic and intimate, employing shallow depth of field to focus sharply on the food while gently blurring the background, emphasizing the dish\u2019s visual appeal. The camera moves smoothly upward, transitioning from a close-up of the bowl to a vertical elevation of the meat, enhancing the sensory experience.\nThe scene is set indoors, likely in a cozy, traditional Asian restaurant, with blurred blue-and-white ceramic plates and warm wooden surfaces visible in the background. The environment suggests a casual dining ambiance, possibly during late afternoon or evening, with no visible windows or natural light, implying an interior setting. The background includes faint hints of other dishes and tableware, reinforcing the restaurant context without distracting from the main subject.\n\nNo human characters appear in the video; the focus remains entirely on the food. The main object is a stack of thinly sliced beef, glistening with a savory, reddish-brown sauce, garnished with chopped green onions and sesame seeds. The beef is tender and layered, appearing perfectly marinated, and held aloft by black chopsticks that enter the frame from the top right. The chopsticks are made of smooth, polished material, likely lacquered wood or plastic, and are positioned to elevate the meat vertically, showcasing its texture and sauce coating. The beef slices are arranged in a cascading stack, with each slice slightly overlapping the other, revealing the marbling and tenderness.\n\nThe camera begins with a close-up shot, capturing the details of the sauce and garnishes, then slowly tilts upward as the chopsticks lift the beef stack, emphasizing its height and the glistening sauce. The movement is slow and deliberate, allowing viewers to appreciate the texture and color. The camera remains steady, with a telephoto lens that maintains sharp focus on the beef while softly blurring the background, creating a cinematic, almost luxurious presentation. The shot is a medium close-up that transitions into a close-up as the beef rises, highlighting the sauce\u2019s viscosity and the beef\u2019s tenderness. The overall narrative is one of indulgence and sensory delight, inviting viewers to imagine the flavor and texture of the dish.\nSHOT 4: frames=[288, 304, 319, 335]; caption=The video features a rich, warm-toned color palette dominated by deep reds and earthy browns from the broth, contrasted with the pale yellow of the noodles and the vibrant green of chopped scallions. The lighting is soft and ambient, suggesting an indoor dining environment with warm, diffused illumination that enhances the glossy sheen of the broth and the texture of the noodles. The atmosphere is cozy and inviting, evoking a sense of comfort and indulgence, with a slight haze of steam rising subtly from the hot dish. The style is intimate and cinematic, employing shallow depth of field to draw attention to the food while softly blurring the background elements.\nThe setting is clearly indoors, likely a traditional or modern Chinese restaurant, with wooden table surfaces and blue-and-white ceramic tableware visible in the background. The environment suggests a casual dining experience, possibly during evening hours, given the warm, dim lighting. The background is softly out of focus, revealing hints of other dishes and table settings, but no specific landmarks or external weather conditions are discernible.\n\nNo human characters are visible in the video. The focus remains entirely on the food and the action of eating. The main subjects are the noodles, broth, meat, and garnishes. The noodles are wide, flat, and translucent, glistening with sauce and speckled with red chili flakes and green scallions. The broth is a deep reddish-brown, rich and oily, with visible bits of meat and vegetables. A large piece of tender, dark-brown braised meat, likely beef or lamb, is nestled among the noodles. The noodles are lifted with black chopsticks, indicating an active interaction with the meal.\n\nThe camera begins with a medium close-up of the bowl, slowly zooming in as the chopsticks lift a portion of noodles and meat. The movement is slow and deliberate, emphasizing the texture and richness of the dish. The noodles dangle slightly, glistening with broth, while the meat clings to the chopsticks. The camera follows the upward motion, maintaining focus on the lifted portion as it moves out of the bowl. The depth of field remains shallow, keeping the noodles and meat in sharp focus while the bowl and background remain softly blurred. The shot transitions from a medium close-up to a close-up, capturing the intricate details of the noodles\u2019 texture and the sauce\u2019s viscosity. The angle is slightly elevated, as if from the perspective of someone seated at the table, enhancing the immersive experience of the meal. There is no wind or natural movement, but the subtle motion of the noodles and broth evokes a sense of warmth and satisfaction. The video\u2019s narrative centers on the sensory indulgence of the dish, inviting viewers to imagine the taste and aroma of the meal.\nSHOT 5: frames=[336, 352, 367, 383]; caption=The video presents a warm, inviting culinary experience with a rich, vibrant color tone dominated by deep reds, golden yellows, and crisp greens. The lighting is warm and ambient, suggesting an indoor dining setting with soft, diffused illumination that enhances the glossy sheen of sauces and the texture of food. The atmosphere is cozy and appetizing, evoking a sense of comfort and indulgence. The style is realistic and intimate, with a focus on sensory detail and texture, captured through close-up shots that emphasize the mouthwatering appeal of the dishes.\nThe scenes unfold indoors, likely in a traditional or casual restaurant with wooden tables and classic blue-and-white ceramic tableware. The background is softly blurred, ensuring the viewer\u2019s attention remains on the food. The time of day is ambiguous but suggests evening dining, given the warm lighting and intimate setting. No weather conditions are visible, as the setting is entirely indoors.\n\nNo human characters appear in the video. The focus remains exclusively on the food and the act of eating. The first shot (0:00) features a close-up of a bowl of noodle soup, with thick, translucent noodles lifted by chopsticks. The broth is rich and red, flecked with green scallions and chili flakes. The second shot (0:01-0:03) shifts to a dish of golden-brown fried chicken pieces coated in glossy sauce, accompanied by bright orange carrot sticks. Chopsticks gently press and lift a piece of chicken, showcasing its crisp exterior and sticky glaze.\n\nKey objects include: a blue-and-white patterned ceramic bowl (foreground, 0:00), noodles (translucent, thick, wet, lifted by chopsticks), broth (red, oily, speckled with herbs), scallions (green, chopped, floating), and a second bowl (0:01-0:03) containing chicken (golden, crispy, sauced), carrots (bright orange, sliced), and sauce (thick, amber, glistening). The camera remains static in both shots, employing close-up framing to capture intricate textures and details. Depth of field is shallow, blurring the background to isolate the food. The shooting angle is eye-level, enhancing the viewer\u2019s sense of participation in the meal.\n\nThe main movement is slow and deliberate: chopsticks lift noodles and chicken, emphasizing texture and sauce adherence. The camera stays fixed, allowing the viewer to savor each detail without distraction. The overall narrative is sensory and indulgent, inviting viewers to imagine the taste and aroma of the food through visual cues. The video\u2019s purpose is to stimulate appetite and celebrate culinary artistry through meticulous close-ups and warm, inviting aesthetics.\nSHOT 6: frames=[384, 400, 415, 431]; caption=The video presents a close-up, appetizing shot of a traditional Chinese cold beef dish, likely \u201cSliced Beef with Chili Oil and Peanuts,\u201d served on a white ceramic plate with blue floral patterns along the rim. The scene is warmly lit, likely indoors under artificial lighting with a soft, golden hue that enhances the glossy, savory appearance of the dish. The atmosphere is inviting and mouthwatering, emphasizing the dish\u2019s rich textures and vibrant garnishes. The camera remains static throughout, employing a shallow depth of field to keep the foreground sharply in focus while gently blurring the background, allowing the viewer to concentrate on the food\u2019s intricate details.\nThe dish consists of thinly sliced beef arranged neatly on the plate, its surface glistening with a dark, oily sauce that hints at chili and soy-based seasoning. Scattered across the beef are roasted peanuts, finely chopped green onions, and minced garlic, adding contrasting textures and colors. The peanuts are light brown and glossy, while the green onions provide a fresh, bright green contrast. The sauce appears thick and glossy, pooling slightly between the slices, indicating a well-seasoned marinade.\n\nA pair of black chopsticks enters the frame from above, delicately grasping a slice of beef along with a few peanuts and green onions. The chopsticks move slowly and deliberately, lifting the slice upward in a gentle arc, revealing the tender, juicy interior of the beef. The motion is smooth and controlled, suggesting care and appreciation for the dish. The camera remains fixed, maintaining a close-up shot that captures the texture of the beef\u2019s surface and the vibrant garnishes clinging to it.\n\nNo characters or people are visible in the video \u2014 the focus remains solely on the food and the act of lifting a portion with chopsticks. The environment is entirely implied through the plate\u2019s design and the lighting, suggesting a dining setting, perhaps a restaurant or home kitchen. The time of day is not discernible, but the warm lighting suggests evening or indoor dining ambiance. The video\u2019s style is realistic and culinary-focused, designed to evoke sensory pleasure and stimulate appetite. The shot is a medium close-up, with a shallow depth of field that isolates the food, creating an intimate, almost tactile experience for the viewer. The movement is slow and deliberate, emphasizing the dish\u2019s visual appeal and the ritual of eating.\nSHOT 7: frames=[432, 448, 463, 479]; caption=The video presents a rich, appetizing close-up of a savory noodle dish, likely a Chinese-style cold or hot noodle salad, with a glossy, dark sauce coating the ingredients. The color tone is warm and inviting, dominated by golden yellows and deep browns of the sauce, contrasted with the vibrant green of chopped scallions and the pale beige of cashews. Lighting is soft and diffused, likely indoor ambient light, enhancing the glistening texture of the sauce and creating a cozy, intimate atmosphere. The style is cinematic and mouthwatering, with a shallow depth of field that keeps the foreground sharply in focus while softly blurring the background, drawing attention to the mouthful being lifted.\nThe scene is set indoors, likely at a restaurant or home dining table, as suggested by the blurred background showing additional dishes and a wooden table surface. The environment feels casual and warm, with no visible windows or outdoor elements, implying a cozy evening setting. The background contains hints of other small bowls\u2014possibly pickled vegetables or condiments\u2014suggesting a multi-dish meal.\n\nNo human characters are visible; the focus remains entirely on the food. The primary action is a pair of black chopsticks lifting a generous portion of the noodle dish, showcasing its texture and ingredients: thin, translucent noodles, dark sauce clumps, chopped green scallions, and scattered cashews. The chopsticks move slowly and deliberately from the plate upward, emphasizing the dish\u2019s appeal. The camera remains steady, employing a close-up shot that follows the chopsticks\u2019 movement slightly, maintaining a shallow depth of field to blur the background. The shot transitions from a medium close-up to an extreme close-up as the noodles are lifted, capturing the glistening sauce and the intricate mix of textures. The movement is slow and deliberate, enhancing the sensory allure of the dish. The overall narrative is one of indulgence and culinary artistry, inviting the viewer to savor the visual feast. No natural elements or weather are present, and the atmosphere remains entirely focused on the dish\u2019s tempting presentation.",
+            "type": "text"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "response_format": {
+      "json_schema": {
+        "name": "decision",
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "global_invariant_additions": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "kv_anchor_plan": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "boundary_shot_index": {
+                    "type": "integer"
+                  },
+                  "decoded_frame_indices": {
+                    "items": {
+                      "type": "integer"
+                    },
+                    "type": "array"
+                  },
+                  "rationale": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "boundary_shot_index",
+                  "decoded_frame_indices",
+                  "rationale"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "per_shot_additions": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "rationale": {
+                    "type": "string"
+                  },
+                  "shot_index": {
+                    "type": "integer"
+                  },
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "shot_index",
+                  "text",
+                  "rationale"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "stop_rule": {
+              "type": "string"
+            },
+            "which_cut_broke": {
+              "additionalProperties": false,
+              "properties": {
+                "cut_index": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "how": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "cut_index",
+                "how"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "which_cut_broke",
+            "global_invariant_additions",
+            "per_shot_additions",
+            "kv_anchor_plan",
+            "stop_rule"
+          ],
+          "type": "object"
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"which_cut_broke\": {\n    \"cut_index\": null,\n    \"how\": \"No cut breaks cross-shot consistency; all shots maintain the same warm indoor dining scene with consistent objects and environment.\"\n  },\n  \"global_invariant_additions\": [\n    \"The scene remains a continuous warm indoor dining setting with the same dark-stained wooden table, blue-and-white ceramic tableware, and orange-handled utensils throughout all shots.\"\n  ],\n  \"per_shot_additions\": [\n    {\n      \"shot_index\": 0,\n      \"text\": \"The scene is set at a dark-stained wooden table with blue-and-white ceramic bowls and plates, and orange-handled scissors and tongs visible on the right side.\",\n      \"rationale\": \"Reasserts the consistent table setup and utensils from SHOT 0 to anchor all subsequent shots.\"\n    },\n    {\n      \"shot_index\": 1,\n      \"text\": \"The scene remains indoors at the same dark-stained wooden table, with blue-and-white ceramic dishes and orange-handled utensils visible in the background.\",\n      \"rationale\": \"Reaffirms the table and utensil setup from SHOT 0 to maintain continuity despite camera movement.\"\n    },\n    {\n      \"shot_index\": 2,\n      \"text\": \"The scene is set at the same dark-stained wooden table with blue-and-white ceramic bowls and orange-handled utensils, visible in the background.\",\n      \"rationale\": \"Reinforces the table and utensil setup from SHOT 0 to ensure continuity with the ongoing meal presentation.\"\n    },\n    {\n      \"shot_index\": 3,\n      \"text\": \"The scene remains indoors at the same dark-stained wooden table with blue-and-white ceramic plates and orange-handled utensils visible in the background.\",\n      \"rationale\": \"Reasserts the table and utensil setup from SHOT 0 to maintain consistency with the ongoing meal presentation.\"\n    },\n    {\n      \"shot_index\": 4,\n      \"text\": \"The scene is set at the same dark-stained wooden table with blue-and-white ceramic tableware and orange-handled utensils visible on the right side.\",\n      \"rationale\": \"Reaffirms the table and utensil setup from SHOT 0 to ensure continuity with the ongoing meal presentation.\"\n    },\n    {\n      \"shot_index\": 5,\n      \"text\": \"The scene remains indoors at the same dark-stained wooden table with blue-and-white ceramic bowls and orange-handled utensils visible in the background.\",\n      \"rationale\": \"Reinforces the table and utensil setup from SHOT 0 to maintain continuity with the ongoing meal presentation.\"\n    },\n    {\n      \"shot_index\": 6,\n      \"text\": \"The scene is set at the same dark-stained wooden table with blue-and-white ceramic plates and orange-handled utensils visible on the right side.\",\n      \"rationale\": \"Reasserts the table and utensil setup from SHOT 0 to maintain consistency with the ongoing meal presentation.\"\n    },\n    {\n      \"shot_index\": 7,\n      \"text\": \"The scene remains indoors at the same dark-stained wooden table with blue-and-white ceramic bowls and orange-handled utensils visible in the background.\",\n      \"rationale\": \"Reaffirms the table and utensil setup from SHOT 0 to ensure continuity with the ongoing meal presentation.\"\n    }\n  ],\n  \"kv_anchor_plan\": [],\n  \"stop_rule\": \"one bounded refinement round\"\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1782976137,
+    "id": "aef4693ed3814f829d0ebb9472847e48",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 729,
+      "prompt_tokens": 32669,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 33398
+    }
+  },
+  "schema_enforced": true,
+  "wall_clock_seconds": 50.162466287612915
+}

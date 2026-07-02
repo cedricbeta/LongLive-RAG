@@ -1,0 +1,121 @@
+{
+  "cache_fingerprint": "fca8d24a06b5179c68a3d0e141f26f9bf6d29e97fd20bda298083eae1bf16d6a",
+  "image_hashes": {},
+  "image_paths": [],
+  "parse_attempts": [],
+  "parsed": {
+    "verdicts": [
+      {
+        "index": 0,
+        "reason": "Consistent with the authored invariant that the same continuous aquamarine underwater scene persists across every shot. This addition sharpens the requirement by explicitly forbidding surface/sky transitions, which aligns with the 'underwater multishot' and 'serene underwater scene' description.",
+        "target": "global",
+        "text": "The scene remains continuously underwater throughout all shots, with no transitions to surface or sky views.",
+        "verdict": "keep"
+      }
+    ]
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are an independent REVIEWER of proposed prompt edits (not their author).\nThe authored invariants below are the ground truth of what the video MUST show.\nScene: aquamarine_underwater\nAuthored global caption: One continuous aquamarine underwater multishot scene. The same central subject, setting, material identity, lighting family, and event continuity should carry across all camera cuts. Source caption evidence: The video presents a serene underwater scene bathed in a cool, aquamarine-blue tone, with natural daylight filtering through the water\u2019s surface, creating a soft, diffused illumination. The atmosphere is tranquil and...\nAuthored invariant: The same continuous aquamarine underwater scene persists across every shot, with the same central subject or objects, the same environment, and coherent event continuity despite legitimate camera, framing, and action changes.\n\nProposed additions:\n- [global #0] The scene remains continuously underwater throughout all shots, with no transitions to surface or sky views.\n- [per_shot #0 shot=2] The scene is entirely underwater, with no surface or sky views visible.\n\nFor EACH addition return a verdict:\n- keep: consistent with the authored invariants (may sharpen them).\n- rewrite: contradicts an authored invariant (e.g. different clothing/color/object than\n  authored) or drifts toward what a flawed render showed; provide `text` restating the\n  AUTHORED invariant for that aspect instead.\n- drop: unrelated to invariants, collapses shot diversity, or is unsalvageable.\nFor keep/drop verdicts set `text` to the original addition text unchanged.\nReturn strict JSON: {\"verdicts\": [{\"index\": 0, \"target\": \"global\"|\"per_shot\",\n\"verdict\": \"keep\"|\"drop\"|\"rewrite\", \"text\": \"...\", \"reason\": \"...\"}]}\nCover every addition exactly once.",
+            "type": "text"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "response_format": {
+      "json_schema": {
+        "name": "decision",
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "verdicts": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "index": {
+                    "type": "integer"
+                  },
+                  "reason": {
+                    "type": "string"
+                  },
+                  "target": {
+                    "enum": [
+                      "global",
+                      "per_shot"
+                    ],
+                    "type": "string"
+                  },
+                  "text": {
+                    "type": "string"
+                  },
+                  "verdict": {
+                    "enum": [
+                      "keep",
+                      "drop",
+                      "rewrite"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "index",
+                  "target",
+                  "verdict",
+                  "text",
+                  "reason"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "verdicts"
+          ],
+          "type": "object"
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"verdicts\": [\n    {\n      \"index\": 0,\n      \"target\": \"global\",\n      \"verdict\": \"keep\",\n      \"text\": \"The scene remains continuously underwater throughout all shots, with no transitions to surface or sky views.\",\n      \"reason\": \"Consistent with the authored invariant that the same continuous aquamarine underwater scene persists across every shot. This addition sharpens the requirement by explicitly forbidding surface/sky transitions, which aligns with the 'underwater multishot' and 'serene underwater scene' description.\"\n    }\n  ]\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1782974932,
+    "id": "97b48b99be9448c9bd9705fada097e01",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 122,
+      "prompt_tokens": 389,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 511
+    }
+  },
+  "schema_enforced": true,
+  "wall_clock_seconds": 3.6272172927856445
+}

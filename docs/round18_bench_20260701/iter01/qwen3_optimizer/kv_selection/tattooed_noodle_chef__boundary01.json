@@ -1,0 +1,150 @@
+{
+  "cache_fingerprint": "f7b5232c525a5c48bb05487c7ce0f79f4cb56172d21ed8a7d85286ba952e33b3",
+  "image_hashes": {
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot00_frame00_idx0000.png": "c8bdf50396b2aa5c11c1c4fd6d22ec5dacd13f43b957ff3adc5f101ed50d00aa",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot00_frame01_idx0014.png": "7cfd1471060906bf1cad53e03e97362625c84c4a71dcc1537c9d80497d9fdff2",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot00_frame02_idx0027.png": "11fde55171bed4fd094e82124ca4e9689c1095d77bf512156c368310e5d3b4ec",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot00_frame03_idx0041.png": "b401dd0b29568d2521b1345cd679d90159fd5cadfd9bf6eebb9ff549665e3b4e",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot00_frame04_idx0054.png": "f25e906256397acb593d50679ad8e247b7fc0aa1d6a790f8e59491977abd98f2",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot01_frame00_idx0096.png": "9f38195cca732c3d5e36a42e260a85f8d3c96daa139c76acf348d1b32bc9e759",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot01_frame01_idx0128.png": "013314cd7648b60af3384d3df9d9e2ab74fa2f2b2906b37b7532d6c87162325c"
+  },
+  "image_paths": [
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot01_frame00_idx0096.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot01_frame01_idx0128.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot00_frame00_idx0000.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot00_frame01_idx0014.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot00_frame02_idx0027.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot00_frame03_idx0041.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/tattooed_noodle_chef/shot00_frame04_idx0054.png"
+  ],
+  "parse_attempts": [],
+  "parsed": {
+    "rationale": "Frame 27 shows a clear, unoccluded medium shot of the chef from the side, displaying his shaved head, red bandana, silver hoop earring, white T-shirt, and navy apron, along with the steel wok station and hanging red lanterns. Frame 41 provides a similar clear view, showing the same attire and tattoos, confirming the subject and scene identity. These frames best pin the subject's appearance and environment for continuity into the close-up shot.",
+    "selected_frame_indices": [
+      27,
+      41
+    ],
+    "skip": false
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are the LOCAL Qwen3-VL KV-anchor selector.\nTask: pick which PAST decoded frames get re-injected into the KV cache at the cut into shot 1,\nso the subject and scene identity stay consistent across the cut.\nScene: tattooed_noodle_chef\nAuthored invariant: The same chef persists across every shot: shaved head, black dragon tattoo on the right forearm, small silver hoop earring in the left ear, red bandana around the neck, white T-shirt under a navy apron. The same night-market noodle stall persists, with its steel wok station, rising steam, hanging red lanterns, and stainless counter, despite legitimate camera, framing, and action changes.\nEntering shot 1 caption: Shot 1 cuts to a close-up of the chef's face. Orange flame light flickers across his shaved head and the silver hoop earring in his left ear, the red bandana knotted at his throat, as his eyes narrow in concentration through the drifting steam of the wok.\n\nQUERY images (start of shot 1, what the transition must stay consistent with):\n- image Q0: decoded frame 96\n- image Q1: decoded frame 128\n\nCANDIDATE anchor images (past frames outside the live attention window):\n- image C0: decoded frame 0\n- image C1: decoded frame 14\n- image C2: decoded frame 27\n- image C3: decoded frame 41\n- image C4: decoded frame 54\n\nChoose up to 4 candidate frames whose CONTENT best pins the subject identity\n(face/clothing/markings) and scene layout for this specific cut.\nJudge by what the images show, not by position in the video: an early frame is NOT\nautomatically better. Prefer frames with a clear, unoccluded view of the subject as it\nshould appear entering this shot. Skip only if no candidate shows the relevant subject.\nReturn strict JSON: {\"selected_frame_indices\": [..], \"skip\": false, \"rationale\": \"content-based reason naming what the chosen frames show\"}\nValid frame indices: [0, 14, 27, 41, 54]",
+            "type": "text"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "response_format": {
+      "json_schema": {
+        "name": "decision",
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "rationale": {
+              "type": "string"
+            },
+            "selected_frame_indices": {
+              "items": {
+                "type": "integer"
+              },
+              "type": "array"
+            },
+            "skip": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "selected_frame_indices",
+            "skip",
+            "rationale"
+          ],
+          "type": "object"
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"selected_frame_indices\": [27, 41],\n  \"skip\": false,\n  \"rationale\": \"Frame 27 shows a clear, unoccluded medium shot of the chef from the side, displaying his shaved head, red bandana, silver hoop earring, white T-shirt, and navy apron, along with the steel wok station and hanging red lanterns. Frame 41 provides a similar clear view, showing the same attire and tattoos, confirming the subject and scene identity. These frames best pin the subject's appearance and environment for continuity into the close-up shot.\"\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1782975784,
+    "id": "cd884ea1be2643be9b4e4fc8ff70c696",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 127,
+      "prompt_tokens": 6642,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 6769
+    }
+  },
+  "schema_enforced": true,
+  "wall_clock_seconds": 5.139425992965698
+}

@@ -1,0 +1,171 @@
+{
+  "captions": [
+    "Shot 0 opens in a medium view of a small watch-repair workshop. An elderly watchmaker with a neatly trimmed silver-gray beard, thick dark eyebrows, round brass-rimmed glasses, and a small dark mole on his left cheekbone sits at a cluttered wooden bench under a warm tungsten desk lamp. He wears a deep-green wool vest over a cream shirt and a brown leather apron, and he leans toward an open pocket watch resting on a felt pad while shelves of antique clocks fill the wall behind him.",
+    "Shot 1 cuts to a tight close-up of the watchmaker's face. The tungsten lamp rakes across his silver-gray beard and thick dark eyebrows, the small mole on his left cheekbone is clearly visible, and a jeweler's loupe is clipped to his round brass-rimmed glasses as his eyes track a tiny gear he lifts with tweezers.",
+    "Shot 2 switches to an overhead view looking straight down at the wooden bench. The watchmaker's weathered hands arrange screwdrivers, a felt pad, brass gears, and the open pocket watch, while the edge of his brown leather apron and deep-green vest sleeve enter the frame under the warm lamp light.",
+    "Shot 3 moves to a side profile at bench height. The bearded watchmaker slowly winds the pocket watch crown between thumb and forefinger, his round glasses catching a glint from the tungsten lamp while ticking wall clocks hang softly blurred behind his silver-gray beard and cream shirt collar.",
+    "Shot 4 pulls back to a wide view of the workshop. The watchmaker in his deep-green vest and brown apron remains seated at the pool of warm lamp light, surrounded by wooden shelves crowded with antique clocks, hanging pendulums, and labeled drawers of parts stretching into the dim edges of the room.",
+    "Shot 5 cuts to an extreme close-up of the watch movement on the felt pad. The watchmaker's fingers guide fine tweezers to seat a tiny brass gear among the coils and jewels, the cream shirt cuff and the apron edge steady against the bench while the tungsten light picks out every scratch on the bench surface.",
+    "Shot 6 frames the scene over the watchmaker's shoulder from behind. Past his silver-gray hair and the strap of his brown leather apron, the open pocket watch sits centered in the lamp light, and his reflection with round brass-rimmed glasses appears faintly in a glass-front clock cabinet across the bench. Maintain invariant: The watchmaker wears round brass-rimmed glasses, not black-rimmed ones.",
+    "Shot 7 finishes in a steady medium view. The elderly watchmaker with the silver-gray beard, thick dark eyebrows, and mole on his left cheekbone lifts the reassembled pocket watch to his ear, listens, and gives a small satisfied smile as he sets it down on the felt pad under the warm tungsten lamp."
+  ],
+  "client": {
+    "auth": "reused Codex login through codex CLI; no token file extraction",
+    "codex_bin": "/home/chendong/.nvm/versions/node/v22.17.0/bin/codex",
+    "command": "codex exec --output-schema ... --image ...",
+    "last_command": {
+      "argv_redacted": [
+        "/home/chendong/.nvm/versions/node/v22.17.0/bin/codex",
+        "exec",
+        "-C",
+        "/home/chendong/video-gen/LongLive-RAG",
+        "--sandbox",
+        "read-only",
+        "--ephemeral",
+        "--output-schema",
+        "docs/round18_bench_20260701/iter01/closed_judge/judge_transcripts/codex_judge_schema.json",
+        "--output-last-message",
+        "docs/round18_bench_20260701/iter01/closed_judge/judge_transcripts/codex_bearded_watchmaker_workshop_both_last_message.json",
+        "--model",
+        "gpt-5.5",
+        "--image",
+        "<image-path>",
+        "--image",
+        "<image-path>",
+        "--image",
+        "<image-path>",
+        "--image",
+        "<image-path>",
+        "--image",
+        "<image-path>",
+        "--image",
+        "<image-path>",
+        "--image",
+        "<image-path>",
+        "--image",
+        "<image-path>",
+        "-"
+      ],
+      "output_path": "docs/round18_bench_20260701/iter01/closed_judge/judge_transcripts/codex_bearded_watchmaker_workshop_both_last_message.json",
+      "returncode": 0,
+      "schema_path": "docs/round18_bench_20260701/iter01/closed_judge/judge_transcripts/codex_judge_schema.json",
+      "stderr_prefix": "Reading prompt from stdin...\nOpenAI Codex v0.142.0\n--------\nworkdir: /home/chendong/video-gen/LongLive-RAG\nmodel: gpt-5.5\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: xhigh\nreasoning summaries: none\nsession id: 019f24a8-ad27-7b31-ab31-6a63d97266b7\n--------\nuser\nYou are a held-out video consistency judge.\n\nYou will see 1-3 decoded frames per shot, in temporal shot order unless the\nfixture explicitly says it is a shuffled-order probe. Judge only perceptual\ncross-shot consistency:\n- subject_identity_preserved: whether the same central subject/object continues\n  across shot cuts.\n- background_coherent: whether the same scene/place/event persists.\n- per_shot_adherence: whether each shot still follows its own caption.\n- inter_shot_diversity: whether the shots preserve legitimate requested camera,\n  action, composition, and scene variation instead of collapsing toward the same\n  looking shot.\n- motion_continuity: whether the sampled sequence shows plausible motion/cha"
+    },
+    "model": "gpt-5.5",
+    "provider": "codex_exec_oauth"
+  },
+  "fixture": "bearded_watchmaker_workshop_both",
+  "frames_shown": [
+    [
+      "docs/round18_bench_20260701/iter01/judge_frames/bearded_watchmaker_workshop/both/shot00_frame00_idx0000.png"
+    ],
+    [
+      "docs/round18_bench_20260701/iter01/judge_frames/bearded_watchmaker_workshop/both/shot01_frame00_idx0096.png"
+    ],
+    [
+      "docs/round18_bench_20260701/iter01/judge_frames/bearded_watchmaker_workshop/both/shot02_frame00_idx0192.png"
+    ],
+    [
+      "docs/round18_bench_20260701/iter01/judge_frames/bearded_watchmaker_workshop/both/shot03_frame00_idx0240.png"
+    ],
+    [
+      "docs/round18_bench_20260701/iter01/judge_frames/bearded_watchmaker_workshop/both/shot04_frame00_idx0288.png"
+    ],
+    [
+      "docs/round18_bench_20260701/iter01/judge_frames/bearded_watchmaker_workshop/both/shot05_frame00_idx0336.png"
+    ],
+    [
+      "docs/round18_bench_20260701/iter01/judge_frames/bearded_watchmaker_workshop/both/shot06_frame00_idx0384.png"
+    ],
+    [
+      "docs/round18_bench_20260701/iter01/judge_frames/bearded_watchmaker_workshop/both/shot07_frame00_idx0432.png"
+    ]
+  ],
+  "from_cache": false,
+  "prompt_hash": "f87e753df8b1be1d7138a3e18f82290afe148c54ca32441af9f3658d49ec3e63",
+  "provider": "codex",
+  "usage": {
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "total_tokens": 0
+  },
+  "verdict": {
+    "background_coherent": {
+      "rationale": "The warm wooden watch-repair workshop with desk lamp, bench tools, felt pad, and shelves of antique clocks remains recognizable across the sequence. Shot 4 introduces a double-exposure artifact that hurts spatial coherence.",
+      "score": 0.82,
+      "verdict": "high"
+    },
+    "cheat_flags": {
+      "copy_cheat": false,
+      "freeze_cheat": false,
+      "position_bias_suspected": false,
+      "prompt_collapse": false,
+      "rationale": "No copied-frame or frozen-sequence behavior is evident; the main issue is shot-specific hallucination/ghosting rather than reduced diversity."
+    },
+    "inter_shot_diversity": {
+      "rationale": "The sequence uses legitimate medium, close-up, overhead, side profile, wide, extreme macro, over-shoulder, and final medium views without collapsing to a repeated composition.",
+      "score": 0.9,
+      "verdict": "healthy"
+    },
+    "motion_continuity": {
+      "rationale": "The shots imply a plausible repair progression from inspection to close work, winding, macro assembly, and listening, though several sampled frames only partially show the stated actions.",
+      "score": 0.76,
+      "verdict": "active"
+    },
+    "overall_consistency_score": 0.76,
+    "per_shot_adherence": [
+      {
+        "issue": "Strong match to medium workshop setup; mole is not clearly discernible.",
+        "score": 0.92,
+        "shot_index": 0
+      },
+      {
+        "issue": "Tight face close-up fits, but the clipped loupe and lifted gear with tweezers are not clearly shown, and the mole is not clear.",
+        "score": 0.68,
+        "shot_index": 1
+      },
+      {
+        "issue": "Overhead bench, hands, tools, felt pad, and open watch match; angle is slightly oblique.",
+        "score": 0.86,
+        "shot_index": 2
+      },
+      {
+        "issue": "Side profile, lamp glint, clocks, and winding gesture mostly match.",
+        "score": 0.86,
+        "shot_index": 3
+      },
+      {
+        "issue": "Wide workshop view is present, but heavy ghosted overlay/subject duplication breaks the requested clean wide view.",
+        "score": 0.48,
+        "shot_index": 4
+      },
+      {
+        "issue": "Extreme close-up of movement and tweezers matches well, though body/clothing cues are mostly absent.",
+        "score": 0.86,
+        "shot_index": 5
+      },
+      {
+        "issue": "Over-shoulder rear view matches partly, but the open pocket watch is not centered in lamp light and the reflection with brass-rimmed glasses is not clearly visible.",
+        "score": 0.58,
+        "shot_index": 6
+      },
+      {
+        "issue": "Medium view and same watchmaker match, but he appears touching his ear rather than lifting the pocket watch to it or setting it down.",
+        "score": 0.66,
+        "shot_index": 7
+      }
+    ],
+    "subject_identity_preserved": {
+      "rationale": "The elderly silver-gray bearded watchmaker with brass round glasses, green vest/cream shirt/brown apron largely persists. Identity weakens in object-only close-ups and shot 4's ghosted overlay, but no clear replacement subject appears.",
+      "score": 0.78,
+      "verdict": "high"
+    },
+    "which_cut_broke": {
+      "confidence": 0.72,
+      "cut_index": 3,
+      "how": "The transition from shot 3 to shot 4 most clearly breaks visual coherence because shot 4 contains a conspicuous ghosted double exposure of the prior profile/hand over the wide workshop view."
+    }
+  },
+  "video_hash": "ec4109e13a2dbb944cf81c18494d69b50d83b02f2a53d7a56614d9278cbdd4b9",
+  "wall_clock_seconds": 29.50176429748535
+}

@@ -1,0 +1,278 @@
+{
+  "cache_fingerprint": "8a5bcb44b3c194da423312f897beb360451cb48de208681968c17654e9fd55ac",
+  "image_hashes": {
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot00_frame00_idx0000.png": "33549ff649953f68aac15d8da6e36ee20473247124f7ff4012b38f88189e7ac1",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot00_frame01_idx0014.png": "5ebd77249762030146e012868d2c0bdd5f80f60ba439b03e8f942cb1d9c9f641",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot00_frame02_idx0027.png": "5ecc3494f9722db7dbe86171d8e20456f4a1732cd5d25a7ff0c75db3cd571271",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot00_frame03_idx0041.png": "4626222a3498c1d3172a585ea70caf1214bc6658b9026de99031782344a3d4fa",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot00_frame04_idx0054.png": "dc765e240304b2d9810b7a4ad92da9ba1593848cf337a1aea0947699f8f54784",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot00_frame05_idx0068.png": "e1c192454805a385eadd25670d3817a5663cb5e3d6585a59ba164658e96f1669",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot00_frame06_idx0081.png": "964471120d65f6ed5e8e42f7b446836dcab4214208a03278fc15cbe6498a17be",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot00_frame07_idx0095.png": "efcdb711570a9ff90b79357d4066b163c597fbd189b5b707e57023123d9383cb",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot01_frame00_idx0096.png": "1f94e585a2897168e3dff09df93e51eb367bdf846772670b5cb94cde2535549a",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot01_frame01_idx0110.png": "9e5a9abe19e6f611be02db29c19a4939f692e640a2d09a1cae2cddf50f33764b",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot01_frame02_idx0123.png": "02cd77c2cbdcff813249e6bd0037ae550aa7c0e881ebf5facbceacb50eabd76b",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot01_frame03_idx0137.png": "008aba26a6fc4e3e90059108ea74c87670e06d9b59549a15839b55aaab3c99b3",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot01_frame04_idx0150.png": "6e3ed538c9cc6fb7f1820d8644c869f965e9c1fe521b71da939e3148319ce32a",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot01_frame05_idx0164.png": "8cdf0fac5aa8aeaede1cbb72c288476e563c349ce401774342044370afe20e1c",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot01_frame06_idx0177.png": "447a5be6c6501438a5a8a7016395e052f67816df47d818c715616ff0ae454dd6",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot01_frame07_idx0191.png": "573aa392416b1a9e8c6c733b5a49e8187542e5e067e3d97cf054bc64a5efe163",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot02_frame00_idx0192.png": "2f728cdfd8bae83ea1adaa6b40073d49708aee96e4822d3201bda786ba9114c1",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot02_frame01_idx0206.png": "94b0e3269588f949394044436fddc685523669e6f7bc98ebbb67612d3f4d60fa",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot02_frame02_idx0219.png": "535b57687d2f746664805848254e3bcf09aea3c0bfe0f559eef2e9aaa9c1bbab",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot02_frame03_idx0233.png": "da885d8482319807e66430edf9d775fd918425cdd198b78e22b821a80990f351",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot02_frame04_idx0246.png": "313bb443e47ea16899c99b366aa8dd076d2e74a5ddefbe3c659fd74d3c29ac0a",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot03_frame00_idx0288.png": "9133802601c0c05742fc700dd4f21ea0cf3a61edc0c90fafc41def3902e22952",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot03_frame01_idx0320.png": "8b2006347ca8b0bf0567ede56f2f4aa7dae765588b18d076698c71602e767abf"
+  },
+  "image_paths": [
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot03_frame00_idx0288.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot03_frame01_idx0320.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot00_frame00_idx0000.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot00_frame01_idx0014.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot00_frame02_idx0027.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot00_frame03_idx0041.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot00_frame04_idx0054.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot00_frame05_idx0068.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot00_frame06_idx0081.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot00_frame07_idx0095.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot01_frame00_idx0096.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot01_frame01_idx0110.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot01_frame02_idx0123.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot01_frame03_idx0137.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot01_frame04_idx0150.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot01_frame05_idx0164.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot01_frame06_idx0177.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot01_frame07_idx0191.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot02_frame00_idx0192.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot02_frame01_idx0206.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot02_frame02_idx0219.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot02_frame03_idx0233.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot02_frame04_idx0246.png"
+  ],
+  "parse_attempts": [],
+  "parsed": {
+    "rationale": "The query images Q0 (frame 288) and Q1 (frame 320) are the start of shot 3 and show the exact scene: the woman sleeping on her side on a bed with a striped headboard, and the man standing by the window buttoning his white shirt. These frames are the most relevant for maintaining subject and scene identity continuity, as they directly depict the visual context and character appearances that must be preserved across the cut. No other candidate frames provide a clearer or more direct match to the visual content of the entering shot.",
+    "selected_frame_indices": [
+      288,
+      320
+    ],
+    "skip": false
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are the LOCAL Qwen3-VL KV-anchor selector.\nTask: pick which PAST decoded frames get re-injected into the KV cache at the cut into shot 3,\nso the subject and scene identity stay consistent across the cut.\nScene: indoor_tender_moment\nAuthored invariant: The same continuous indoor tender moment scene persists across every shot, with the same central subject or objects, the same environment, and coherent event continuity despite legitimate camera, framing, and action changes.\nEntering shot 3 caption: The video opens with a warm, soft-lit indoor scene, bathed in a gentle, golden-toned ambiance that suggests early morning or late afternoon. The lighting is diffused, casting subtle shadows and creating a tranquil, intimate atmosphere. The camera begins with a close-up of a woman sleeping peacefully on her side, her head resting on a dark gray pillow. She has shoulder-length auburn hair, and her face is relaxed, eyes closed, with a serene expression. She\u2019s covered by a white duvet, and her bare shoulders are visible, suggesting she\u2019s wearing a light-colored tank top or camisole. The bed features a striped beige-and-white headboard, and a second pillow with a matching pattern lies behind her.\nAs the camera pans right, it reveals more of the room \u2014 beige curtains partially drawn, allowing soft daylight to filter through sheer white drapes behind them. A modern wall-mounted lamp with a cylindrical white shade is visible beside the bed, contributing to the room\u2019s calm aesthetic. The camera then shifts focus to a man standing near the window, now in a medium shot. He appears to be in his late 30s to early 40s, with short, neatly styled brown hair and a calm, focused expression. He\u2019s wearing a white, long-sleeved button-up shirt, unbuttoned at the top, revealing a light chest of hair. His hands are actively buttoning his shirt as he moves slightly, adjusting his posture. A silver ring is visible on his left ring finger, and a watch rests on his left wrist. He stands slightly angled to the camera, as if preparing to leave the room or step into the day.\n\nThe room\u2019s decor is minimalist and modern, with neutral tones and clean lines. The camera remains steady, capturing the quiet, routine moment \u2014 the woman sleeping and the man preparing for the day \u2014 with a shallow depth of field that keeps the focus on the characters while softly blurring the background. The mood is calm, domestic, and introspective, with a subtle narrative of morning rituals and quiet intimacy. The camera\u2019s movement is smooth and deliberate, enhancing the sense of stillness and transition from rest to activity. There\u2019s no external motion except for the man\u2019s slow, methodical buttoning, reinforcing the serene, unhurried pace of the scene. The overall style is cinematic and realistic, with a focus on emotional subtlety and environmental harmony.\n\nQUERY images (start of shot 3, what the transition must stay consistent with):\n- image Q0: decoded frame 288\n- image Q1: decoded frame 320\n\nCANDIDATE anchor images (past frames outside the live attention window):\n- image C0: decoded frame 0\n- image C1: decoded frame 14\n- image C2: decoded frame 27\n- image C3: decoded frame 41\n- image C4: decoded frame 54\n- image C5: decoded frame 68\n- image C6: decoded frame 81\n- image C7: decoded frame 95\n- image C8: decoded frame 96\n- image C9: decoded frame 110\n- image C10: decoded frame 123\n- image C11: decoded frame 137\n- image C12: decoded frame 150\n- image C13: decoded frame 164\n- image C14: decoded frame 177\n- image C15: decoded frame 191\n- image C16: decoded frame 192\n- image C17: decoded frame 206\n- image C18: decoded frame 219\n- image C19: decoded frame 233\n- image C20: decoded frame 246\n\nChoose up to 4 candidate frames whose CONTENT best pins the subject identity\n(face/clothing/markings) and scene layout for this specific cut.\nJudge by what the images show, not by position in the video: an early frame is NOT\nautomatically better. Prefer frames with a clear, unoccluded view of the subject as it\nshould appear entering this shot. Skip only if no candidate shows the relevant subject.\nReturn strict JSON: {\"selected_frame_indices\": [..], \"skip\": false, \"rationale\": \"content-based reason naming what the chosen frames show\"}\nValid frame indices: [0, 14, 27, 41, 54, 68, 81, 95, 96, 110, 123, 137, 150, 164, 177, 191, 192, 206, 219, 233, 246]",
+            "type": "text"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "response_format": {
+      "json_schema": {
+        "name": "decision",
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "rationale": {
+              "type": "string"
+            },
+            "selected_frame_indices": {
+              "items": {
+                "type": "integer"
+              },
+              "type": "array"
+            },
+            "skip": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "selected_frame_indices",
+            "skip",
+            "rationale"
+          ],
+          "type": "object"
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"selected_frame_indices\": [288, 320],\n  \"skip\": false,\n  \"rationale\": \"The query images Q0 (frame 288) and Q1 (frame 320) are the start of shot 3 and show the exact scene: the woman sleeping on her side on a bed with a striped headboard, and the man standing by the window buttoning his white shirt. These frames are the most relevant for maintaining subject and scene identity continuity, as they directly depict the visual context and character appearances that must be preserved across the cut. No other candidate frames provide a clearer or more direct match to the visual content of the entering shot.\"\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1782975509,
+    "id": "44c1384ff7ad4c6dafc03cfd86c54787",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 146,
+      "prompt_tokens": 21418,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 21564
+    }
+  },
+  "schema_enforced": true,
+  "wall_clock_seconds": 21.556549072265625
+}

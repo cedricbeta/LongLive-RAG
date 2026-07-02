@@ -1,0 +1,303 @@
+{
+  "cache_fingerprint": "11c0f7085a362a047689950e7ee7cb4bbedd31189298dbd53f39130854330605",
+  "image_hashes": {
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot00_frame00_idx0000.png": "ff3204d6fbbd6a2613627662a49c28a80fd2a29da058c22812f62a7c4ec49098",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot00_frame02_idx0027.png": "b08658e203daad361bc3f6abbd4148b96920d0e2b885d398110d588c549793bc",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot00_frame04_idx0054.png": "806c30461ba12a90f87f73ee54467de4283e81678f2bb3c58b8860a27dac41d6",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot00_frame07_idx0095.png": "e8d9d76e9b83e2d19d3f8b1b4a292c4c4aad6d51f1883393f6774cd12a5b16a3",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot01_frame01_idx0110.png": "7cebfa68424412a26bdc4f635a9fd45aa2998760388d8792bcc8029427b43a1e",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot01_frame03_idx0137.png": "5b5b5510daa44aee23cc1795ff9b1dbb0158667061f8c22a8dd48ce9111b5e2e",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot01_frame05_idx0164.png": "e67cf543443dc62fa979abf02e87f3f6151a76b1d88f2cdcf227f725a56fc548",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot01_frame07_idx0191.png": "e6f64271001d8dd145faf188ff56489a8d65eeaf48ff5a6b8bb0a60f8a73b6e4",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot02_frame01_idx0199.png": "dcdeba6056247e29bae964443c610f81ce404900437891a45f542b99e04a6fbc",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot02_frame04_idx0219.png": "6c619871b0f2baa802375e6557b7f4da69be5dbf102e1ebad6dcb119a82cbf72",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot02_frame06_idx0232.png": "8e1dd4ce53262e5698b0c4318674df4b055e5a565b450f926c7f2f0f2cb937d7",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot03_frame00_idx0240.png": "2f34702ac98dd6b823612a0faff1cc944b3dd046040af944df8c700b44f776df",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot03_frame02_idx0253.png": "0a3a7ecac2a4fa2adb6c9e56232e97ea6f6a5c88a18e40e8573067eb441eb0c5",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot03_frame04_idx0267.png": "168caeafbb24bb7298fb5ffe6d9947368185a3922216c65a03d4144178a7e734",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot03_frame06_idx0280.png": "8b8142a1f13370bfdb9bfddffb84fa6bfa21e1fa0336dd286bf2417e3d174a1f",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot04_frame01_idx0295.png": "0ca7915001a1f3d7671e9fe78bd2d6725d112d169fce15acc82c48ee047671b6",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot04_frame03_idx0308.png": "5188173c36f83ee23c5fe6cc47590ae98c1909c0d11f256b6a7a030a97f98a97",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot04_frame05_idx0322.png": "1b312d5cb43a731a965a6d405f146e06d33f7d46014ecd9ef8233a5fc1fa07cf",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot04_frame07_idx0335.png": "c22a7ec741055ad2e35bfa121181614ffe761333b776a8f8ca1d50c4c62c6c71",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot05_frame01_idx0343.png": "b45db386afa200b52c595e6348247761c25bb639ddeabe5debc787c53d5ff5ab",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot05_frame03_idx0356.png": "0b2752196b39ef8877db183f1ec35fd2c12524b66b3263c3de87d42bf6a55a8e",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot05_frame06_idx0376.png": "f1c69635e54fdfb8c6da870247cb72801aa5ed4b9ba6c97a5f70f01d2f7e3e2a",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot06_frame00_idx0384.png": "09b038b7f01e885c9efb286680b047877eaa5f0b1ebe9571dfa1d7c8e635a5a9",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot06_frame02_idx0397.png": "1b0ce3b8ed8f967f3438ea685040b8f9fc6d96c7e2e2c2bfbfc455c36b1a9902",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot07_frame00_idx0432.png": "e250e9bf9d1c5521373cd5f7852058643adef4e6396286eeb3ffced81768f29b",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot07_frame01_idx0448.png": "d41ce3c25623f207a99c9cd7cdc1254e39ec35876fc71c80779cfb5ba0c48e7a"
+  },
+  "image_paths": [
+    "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot07_frame00_idx0432.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot07_frame01_idx0448.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot00_frame00_idx0000.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot00_frame02_idx0027.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot00_frame04_idx0054.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot00_frame07_idx0095.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot01_frame01_idx0110.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot01_frame03_idx0137.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot01_frame05_idx0164.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot01_frame07_idx0191.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot02_frame01_idx0199.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot02_frame04_idx0219.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot02_frame06_idx0232.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot03_frame00_idx0240.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot03_frame02_idx0253.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot03_frame04_idx0267.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot03_frame06_idx0280.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot04_frame01_idx0295.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot04_frame03_idx0308.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot04_frame05_idx0322.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot04_frame07_idx0335.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot05_frame01_idx0343.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot05_frame03_idx0356.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot05_frame06_idx0376.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot06_frame00_idx0384.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot06_frame02_idx0397.png"
+  ],
+  "parse_attempts": [],
+  "parsed": {
+    "rationale": "These frames show the subject dolphin in clear, unoccluded close-up, displaying its distinctive light grayish-white body with darker spots, sleek form, and synchronized movement with the second dolphin. This content directly matches the subject identity and scene layout described for shot 7, ensuring continuity.",
+    "selected_frame_indices": [
+      376,
+      384,
+      397
+    ],
+    "skip": false
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are the LOCAL Qwen3-VL KV-anchor selector.\nTask: pick which PAST decoded frames get re-injected into the KV cache at the cut into shot 7,\nso the subject and scene identity stay consistent across the cut.\nScene: aquamarine_underwater\nAuthored invariant: The same continuous aquamarine underwater scene persists across every shot, with the same central subject or objects, the same environment, and coherent event continuity despite legitimate camera, framing, and action changes.\nEntering shot 7 caption: The video presents a serene underwater scene with a cool, deep blue tone, illuminated by natural daylight filtering from the surface, creating a soft, ethereal glow. The water\u2019s surface ripples gently above, reflecting fragmented sunlight and adding a dynamic texture to the upper frame. The atmosphere is tranquil and immersive, evoking a sense of calm wonder and natural beauty. The style is realistic and documentary-like, capturing marine life in its unspoiled habitat with a clear, crisp visual quality.\nThe setting is entirely underwater, in what appears to be a tropical or subtropical oceanic environment, with no visible land, structures, or artificial elements. The water is clear and transparent, allowing visibility of the ocean floor in the distance, though it remains blurred and indistinct. The scene is bathed in bright, diffused sunlight, suggesting midday or early afternoon conditions. There are no clouds or weather disruptions visible from the surface, implying a calm, sunny day.\n\nTwo dolphins are the central characters. The first dolphin appears in the foreground, slightly larger and closer to the camera, with a light grayish-white body speckled with darker spots. Its sleek, streamlined form glides effortlessly through the water. Its eyes are dark and alert, and its dorsal fin and pectoral fins are visible as it moves with grace. The second dolphin, slightly smaller and positioned slightly behind, mirrors the first\u2019s movements, maintaining a synchronized trajectory. Both appear healthy and active, exhibiting natural, fluid motion.\n\nThe dolphins are engaged in a playful or exploratory interaction. The first dolphin, in a close-up shot at 0:02, opens its mouth to reveal a small, white object\u2014possibly a fish or a piece of bait\u2014held delicately between its teeth. The second dolphin swims alongside, occasionally gliding past the first, suggesting a social or cooperative behavior. Their movements are smooth and coordinated, with slight undulations of their bodies and fins, propelling them forward with minimal effort. The camera follows them in a steady, side-on tracking shot, maintaining a medium to close-up framing that keeps both dolphins in focus while allowing the surrounding water to provide context.\n\nThe focal length is wide enough to capture the dolphins\u2019 full bodies and their environment, with a shallow depth of field that blurs the distant background slightly, emphasizing the subjects. The camera remains at a low angle, slightly below water level, enhancing the immersive perspective. The dolphins\u2019 movements are slow and deliberate, with no abrupt changes in direction, creating a peaceful and harmonious visual rhythm. The gentle movement of water ripples and light reflections adds a subtle, dynamic texture to the otherwise tranquil scene. There is no human presence or artificial interference, reinforcing the natural, untouched setting. The video\u2019s narrative is observational and documentary, celebrating the grace and intelligence of marine life in its natural habitat.\n\nQUERY images (start of shot 7, what the transition must stay consistent with):\n- image Q0: decoded frame 432\n- image Q1: decoded frame 448\n\nCANDIDATE anchor images (past frames outside the live attention window):\n- image C0: decoded frame 0\n- image C1: decoded frame 27\n- image C2: decoded frame 54\n- image C3: decoded frame 95\n- image C4: decoded frame 110\n- image C5: decoded frame 137\n- image C6: decoded frame 164\n- image C7: decoded frame 191\n- image C8: decoded frame 199\n- image C9: decoded frame 219\n- image C10: decoded frame 232\n- image C11: decoded frame 240\n- image C12: decoded frame 253\n- image C13: decoded frame 267\n- image C14: decoded frame 280\n- image C15: decoded frame 295\n- image C16: decoded frame 308\n- image C17: decoded frame 322\n- image C18: decoded frame 335\n- image C19: decoded frame 343\n- image C20: decoded frame 356\n- image C21: decoded frame 376\n- image C22: decoded frame 384\n- image C23: decoded frame 397\n\nChoose up to 4 candidate frames whose CONTENT best pins the subject identity\n(face/clothing/markings) and scene layout for this specific cut.\nJudge by what the images show, not by position in the video: an early frame is NOT\nautomatically better. Prefer frames with a clear, unoccluded view of the subject as it\nshould appear entering this shot. Skip only if no candidate shows the relevant subject.\nReturn strict JSON: {\"selected_frame_indices\": [..], \"skip\": false, \"rationale\": \"content-based reason naming what the chosen frames show\"}\nValid frame indices: [0, 27, 54, 95, 110, 137, 164, 191, 199, 219, 232, 240, 253, 267, 280, 295, 308, 322, 335, 343, 356, 376, 384, 397]",
+            "type": "text"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "response_format": {
+      "json_schema": {
+        "name": "decision",
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "rationale": {
+              "type": "string"
+            },
+            "selected_frame_indices": {
+              "items": {
+                "type": "integer"
+              },
+              "type": "array"
+            },
+            "skip": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "selected_frame_indices",
+            "skip",
+            "rationale"
+          ],
+          "type": "object"
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"selected_frame_indices\": [376, 384, 397],\n  \"skip\": false,\n  \"rationale\": \"These frames show the subject dolphin in clear, unoccluded close-up, displaying its distinctive light grayish-white body with darker spots, sleek form, and synchronized movement with the second dolphin. This content directly matches the subject identity and scene layout described for shot 7, ensuring continuity.\"\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1782975058,
+    "id": "bbcce87341524518820acfb963027f81",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 93,
+      "prompt_tokens": 24209,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 24302
+    }
+  },
+  "schema_enforced": true,
+  "wall_clock_seconds": 19.353992462158203
+}

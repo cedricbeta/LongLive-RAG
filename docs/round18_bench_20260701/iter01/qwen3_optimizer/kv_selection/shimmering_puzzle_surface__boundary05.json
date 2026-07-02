@@ -1,0 +1,304 @@
+{
+  "cache_fingerprint": "4f71561ae036f3bf4d9ea956967f1e8859cc8beb5c419844357b117acce583aa",
+  "image_hashes": {
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot00_frame00_idx0000.png": "da0d7ff5be5c212e9e72c0aa0adac3fa64be56701508d249074297a2bc3a04ba",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot00_frame01_idx0014.png": "9f71736d690e0e6c4715e4d86629fe51f7d530e28730ddb4eaa6a8b51487dbfb",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot00_frame03_idx0041.png": "c8478950c705858a8a0affd878e22940f1ad905b9e874a0bef9f6cb95a39cfd5",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot00_frame04_idx0054.png": "8a182675e719d092b72186e8c8116ca0cd5207cf402f1fc921c51849bac772b9",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot00_frame06_idx0081.png": "c2744eb7e66d4d7f05c11b33255137d8079d753d3f553c3eb212356615cbbaf3",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot00_frame07_idx0095.png": "430bcff9974fd95394d8bc8dbc81f927aeba2b07fd23cd862eab2bff8f3106db",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot01_frame01_idx0110.png": "2a48aa87482142fe87e518795d465551a8dd84ab000497c36d9891db2b40933a",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot01_frame02_idx0123.png": "8882f79986641a2bcae9d8a5e7916419567ecdc3a39767f0c4bbc28e37fdfe61",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot01_frame04_idx0150.png": "b4af26aafa93d40d882f1601eb12fc6bb10a28488f74f3ca8688006e8b1fd41d",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot01_frame05_idx0164.png": "33e22bb984480b61a33f71c738369f9cbb11c5f499ad6660b83a29e3d460e909",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot01_frame07_idx0191.png": "6fedbe7c7daf845d0ce62ba6fc4d9f6913dfe67e05cbeb4d5553ff29d8a199a8",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot02_frame00_idx0192.png": "ba6363c933fd7ef6a2244c0ed4b2f002ce66e6b4409e739b61bbcfd91b392071",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot02_frame02_idx0219.png": "9836bd005e2e3533b558d5f125b1da90a1df593d001be98912e16844abf30e82",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot02_frame03_idx0233.png": "256b7a9e9f5df31ee545600191f67862068c58275c1d738ce13ded27a41736aa",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot02_frame05_idx0260.png": "f281a72b0b4e89c62296dc70d1b24abfb6f66400d5e5795f299273606888e870",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot02_frame06_idx0273.png": "e14d0fda08e9f138fec905c11b3e6b44451efac7c7a9188dff5eed11de06c8f8",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot03_frame00_idx0288.png": "8741349ea534514d4398f19206e8630def3fd7212c56b119f8b6af7a7ed6c472",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot03_frame01_idx0302.png": "0554723970a78a58844d03cbc5f966f171fe98da8e2a57392fda289b1fbee8a2",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot03_frame03_idx0329.png": "cd10ab7ac35c47aae8930fa42495aed3b8133993cfc7323ab9f21bf66a651636",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot03_frame04_idx0342.png": "1622387b4c4a5de4dc40d246b5d0e664dbdcd23b73a0db3e6ac5b3055de8da22",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot03_frame06_idx0369.png": "4713f71c9cdfae17d036d44b784824a1e05371fe1671b9d6c36204b7db78b814",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot03_frame07_idx0383.png": "3e49449ba39c525a64b7b5324c37bf5c1c51e44be78f65d022070faa63b3a69d",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot04_frame01_idx0391.png": "f34e5106d77eb408add20ae88258496e48b22060f950eb3bf81886ae1cace1b5",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot04_frame02_idx0397.png": "d2b00adb2ba10f1870d420f031ed191a3402636e7dd04e6723d760692190d7fa",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/shimmering_puzzle_surface/shot05_frame00_idx0432.png": "1cfdfe732ecc53179e24334eade805e3bd98e6a1d2b4587df2ba3a18e6a947c9",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/shimmering_puzzle_surface/shot05_frame01_idx0448.png": "a93d603eba6a644dec073c0da055ee442a034828d669c527794ae00e823ff6ff"
+  },
+  "image_paths": [
+    "docs/round18_bench_20260701/iter01/optimizer_frames/shimmering_puzzle_surface/shot05_frame00_idx0432.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/shimmering_puzzle_surface/shot05_frame01_idx0448.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot00_frame00_idx0000.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot00_frame01_idx0014.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot00_frame03_idx0041.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot00_frame04_idx0054.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot00_frame06_idx0081.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot00_frame07_idx0095.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot01_frame01_idx0110.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot01_frame02_idx0123.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot01_frame04_idx0150.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot01_frame05_idx0164.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot01_frame07_idx0191.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot02_frame00_idx0192.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot02_frame02_idx0219.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot02_frame03_idx0233.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot02_frame05_idx0260.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot02_frame06_idx0273.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot03_frame00_idx0288.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot03_frame01_idx0302.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot03_frame03_idx0329.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot03_frame04_idx0342.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot03_frame06_idx0369.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot03_frame07_idx0383.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot04_frame01_idx0391.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot04_frame02_idx0397.png"
+  ],
+  "parse_attempts": [],
+  "parsed": {
+    "rationale": "These frames provide clear, unoccluded views of the key subject, the young man in the Santa hat, in his distinctive red suit with white trim, green belt, and red hat. Frame 192 shows him walking confidently with a clear view of his full outfit. Frame 219 and 233 show him from a side angle, confirming his consistent attire and posture. Frame 260 offers a frontal view, reinforcing the subject's identity and the festive scene layout with decorated trees and paved ground. These frames best pin the subject identity and scene layout for the cut into shot 5.",
+    "selected_frame_indices": [
+      192,
+      219,
+      233,
+      260
+    ],
+    "skip": false
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are the LOCAL Qwen3-VL KV-anchor selector.\nTask: pick which PAST decoded frames get re-injected into the KV cache at the cut into shot 5,\nso the subject and scene identity stay consistent across the cut.\nScene: shimmering_puzzle_surface\nAuthored invariant: The same coherent shimmering puzzle surface remains on the same reflective tabletop with stable interlocking pieces and consistent highlights.\nEntering shot 5 caption: The video opens with a festive, digitally animated scene set in a vibrant, urban Christmas environment. The color tone is warm and saturated, dominated by rich greens, reds, and golds, evoking the cheerfulness of the holiday season. Lighting is bright and even, suggesting a sunny daytime setting, with soft shadows indicating natural daylight. The atmosphere is lively and celebratory, enhanced by the presence of decorated trees and holiday decorations. The style is cartoonish and three-dimensional, with smooth, stylized character movements and exaggerated expressions typical of animated family-friendly content.\nThe scene is outdoors, set on a paved street or plaza lined with large, decorated Christmas trees adorned with colorful ornaments, string lights, and golden garlands. In the background, blurred urban architecture and a hot air balloon hint at a festive public space, possibly a town square or mall courtyard. The weather appears clear and pleasant, with no signs of rain or fog.\n\nThree characters are visible. The first appears at 0:00, a man in his 40s with short dark hair, wearing a gray sweater with red and white patterns and dark pants. He walks briskly, his expression neutral. Behind him, a young boy, around 6-8 years old, with short black hair and a yellow shirt, walks with a determined look. The third character, a young man in his 20s, appears at 0:01, wearing a red Santa hat, a red vest over a green shirt, and dark pants. He smiles confidently, exuding a festive and joyful demeanor.\n\nThe camera follows the trio from behind, gradually shifting to a side-view as they walk forward. The camera movement is smooth and steady, maintaining a medium shot that captures the full figures of the characters and the surrounding environment. The main movement is forward progression, with the characters walking in a line, the young man in the Santa hat slightly ahead. The trees flank the pathway on both sides, framing the scene, while the background remains slightly out of focus, emphasizing the characters\u2019 movement.\n\nThe narrative is playful and lighthearted, suggesting a holiday adventure or quest. The characters\u2019 expressions and attire suggest they are part of a festive celebration or perhaps on a mission to find something special during the holidays. The camera\u2019s eye-level shot and shallow depth of field keep the characters sharp while softly blurring the background, enhancing the focus on their journey. The overall mood is joyful, family-oriented, and festive, perfectly capturing the spirit of the season.\n\nQUERY images (start of shot 5, what the transition must stay consistent with):\n- image Q0: decoded frame 432\n- image Q1: decoded frame 448\n\nCANDIDATE anchor images (past frames outside the live attention window):\n- image C0: decoded frame 0\n- image C1: decoded frame 14\n- image C2: decoded frame 41\n- image C3: decoded frame 54\n- image C4: decoded frame 81\n- image C5: decoded frame 95\n- image C6: decoded frame 110\n- image C7: decoded frame 123\n- image C8: decoded frame 150\n- image C9: decoded frame 164\n- image C10: decoded frame 191\n- image C11: decoded frame 192\n- image C12: decoded frame 219\n- image C13: decoded frame 233\n- image C14: decoded frame 260\n- image C15: decoded frame 273\n- image C16: decoded frame 288\n- image C17: decoded frame 302\n- image C18: decoded frame 329\n- image C19: decoded frame 342\n- image C20: decoded frame 369\n- image C21: decoded frame 383\n- image C22: decoded frame 391\n- image C23: decoded frame 397\n\nChoose up to 4 candidate frames whose CONTENT best pins the subject identity\n(face/clothing/markings) and scene layout for this specific cut.\nJudge by what the images show, not by position in the video: an early frame is NOT\nautomatically better. Prefer frames with a clear, unoccluded view of the subject as it\nshould appear entering this shot. Skip only if no candidate shows the relevant subject.\nReturn strict JSON: {\"selected_frame_indices\": [..], \"skip\": false, \"rationale\": \"content-based reason naming what the chosen frames show\"}\nValid frame indices: [0, 14, 41, 54, 81, 95, 110, 123, 150, 164, 191, 192, 219, 233, 260, 273, 288, 302, 329, 342, 369, 383, 391, 397]",
+            "type": "text"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "response_format": {
+      "json_schema": {
+        "name": "decision",
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "rationale": {
+              "type": "string"
+            },
+            "selected_frame_indices": {
+              "items": {
+                "type": "integer"
+              },
+              "type": "array"
+            },
+            "skip": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "selected_frame_indices",
+            "skip",
+            "rationale"
+          ],
+          "type": "object"
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"selected_frame_indices\": [192, 219, 233, 260],\n  \"skip\": false,\n  \"rationale\": \"These frames provide clear, unoccluded views of the key subject, the young man in the Santa hat, in his distinctive red suit with white trim, green belt, and red hat. Frame 192 shows him walking confidently with a clear view of his full outfit. Frame 219 and 233 show him from a side angle, confirming his consistent attire and posture. Frame 260 offers a frontal view, reinforcing the subject's identity and the festive scene layout with decorated trees and paved ground. These frames best pin the subject identity and scene layout for the cut into shot 5.\"\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1782976423,
+    "id": "8b04cf7f4fc24311bdf5c6dce871cf73",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 166,
+      "prompt_tokens": 24125,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 24291
+    }
+  },
+  "schema_enforced": true,
+  "wall_clock_seconds": 21.44987964630127
+}

@@ -1,0 +1,12 @@
+{
+  "baseline_seed": 0,
+  "kv_anchor_cap": 4,
+  "kv_candidate_frames_per_shot": 8,
+  "kv_max_candidates_per_boundary": 24,
+  "kv_selection_mode": "per_boundary",
+  "optimizer_frames_per_shot": 4,
+  "optimizer_video_dir": null,
+  "optimizer_video_prefix": null,
+  "prompt_review": "on",
+  "qwen_model": "Qwen/Qwen3-VL-8B-Instruct"
+}

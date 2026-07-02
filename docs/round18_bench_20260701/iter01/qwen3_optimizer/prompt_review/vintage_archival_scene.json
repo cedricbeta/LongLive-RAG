@@ -1,0 +1,163 @@
+{
+  "cache_fingerprint": "ed36fb2d2f6a29d39539b9317214323ee22cce48c8b5abb6c7ca6253053429a5",
+  "image_hashes": {},
+  "image_paths": [],
+  "parse_attempts": [],
+  "parsed": {
+    "verdicts": [
+      {
+        "index": 0,
+        "reason": "Consistent with authored invariant: 'The same continuous vintage archival scene scene persists across every shot, with the same central subject or objects, the same environment, and coherent event continuity despite legitimate camera, framing, and action changes.' The proposed text sharpens the invariant without contradiction.",
+        "target": "global",
+        "text": "The scene must maintain the same central subject or objects (e.g., the olive-drab helicopter and its crew) and environment (military airfield/deck) across every shot.",
+        "verdict": "keep"
+      },
+      {
+        "index": 1,
+        "reason": "Consistent with authored invariant: The same central subject, setting, material identity, and event continuity must carry across all camera cuts. The proposed shot-specific detail (shirtless and uniformed men) is a valid specification of the central subjects and does not contradict the global continuity requirement.",
+        "target": "per_shot",
+        "text": "The scene is an outdoor military airfield or ship deck with the same olive-drab helicopter and two men (shirtless and uniformed) as central subjects.",
+        "verdict": "keep"
+      },
+      {
+        "index": 2,
+        "reason": "Consistent with authored invariant: The same environment and central subjects must persist. Repetition across shots is allowed and reinforces continuity; no contradiction.",
+        "target": "per_shot",
+        "text": "The scene remains an outdoor military airfield or ship deck with the same olive-drab helicopter and two men (shirtless and uniformed) as central subjects.",
+        "verdict": "keep"
+      },
+      {
+        "index": 3,
+        "reason": "Consistent with authored invariant: The same central subject and environment must persist. The phrasing 'must include' and 'must remain' reinforces continuity without contradiction.",
+        "target": "per_shot",
+        "text": "The scene must include the same olive-drab helicopter and its crew as central subjects, and the environment must remain the military airfield or ship deck.",
+        "verdict": "keep"
+      },
+      {
+        "index": 4,
+        "reason": "Consistent with authored invariant: The same environment and central subjects must persist. This is a redundant but harmless reinforcement of continuity.",
+        "target": "per_shot",
+        "text": "The scene is an outdoor military airfield or ship deck with the same olive-drab helicopter and its crew as central subjects.",
+        "verdict": "keep"
+      },
+      {
+        "index": 5,
+        "reason": "Consistent with authored invariant: The same environment and central subjects must persist. No contradiction; repetition across shots is acceptable.",
+        "target": "per_shot",
+        "text": "The scene is an outdoor military airfield or ship deck with the same olive-drab helicopter and its crew as central subjects.",
+        "verdict": "keep"
+      },
+      {
+        "index": 6,
+        "reason": "Consistent with authored invariant: The same environment and central subjects must persist. No contradiction; repetition across shots is acceptable.",
+        "target": "per_shot",
+        "text": "The scene is an outdoor military airfield or ship deck with the same olive-drab helicopter and its crew as central subjects.",
+        "verdict": "keep"
+      }
+    ]
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are an independent REVIEWER of proposed prompt edits (not their author).\nThe authored invariants below are the ground truth of what the video MUST show.\nScene: vintage_archival_scene\nAuthored global caption: One continuous vintage archival scene multishot scene. The same central subject, setting, material identity, lighting family, and event continuity should carry across all camera cuts. Source caption evidence: The video exhibits a muted, desaturated color tone with a grainy, vintage aesthetic, suggesting archival footage from the mid-20th century. The lighting is diffused and natural, likely from an overcast sky, casting so...\nAuthored invariant: The same continuous vintage archival scene scene persists across every shot, with the same central subject or objects, the same environment, and coherent event continuity despite legitimate camera, framing, and action changes.\n\nProposed additions:\n- [global #0] The scene must maintain the same central subject or objects (e.g., the olive-drab helicopter and its crew) and environment (military airfield/deck) across every shot.\n- [per_shot #0 shot=0] The scene is an outdoor military airfield or ship deck with the same olive-drab helicopter and two men (shirtless and uniformed) as central subjects.\n- [per_shot #1 shot=1] The scene remains an outdoor military airfield or ship deck with the same olive-drab helicopter and two men (shirtless and uniformed) as central subjects.\n- [per_shot #2 shot=2] The scene must include the same olive-drab helicopter and its crew as central subjects, and the environment must remain the military airfield or ship deck.\n- [per_shot #3 shot=3] The scene is an outdoor military airfield or ship deck with the same olive-drab helicopter and its crew as central subjects.\n- [per_shot #4 shot=4] The scene is an outdoor military airfield or ship deck with the same olive-drab helicopter and its crew as central subjects.\n- [per_shot #5 shot=5] The scene is an outdoor military airfield or ship deck with the same olive-drab helicopter and its crew as central subjects.\n- [per_shot #6 shot=6] The scene is an outdoor military airfield or ship deck with the same olive-drab helicopter and its crew as central subjects.\n\nFor EACH addition return a verdict:\n- keep: consistent with the authored invariants (may sharpen them).\n- rewrite: contradicts an authored invariant (e.g. different clothing/color/object than\n  authored) or drifts toward what a flawed render showed; provide `text` restating the\n  AUTHORED invariant for that aspect instead.\n- drop: unrelated to invariants, collapses shot diversity, or is unsalvageable.\nFor keep/drop verdicts set `text` to the original addition text unchanged.\nReturn strict JSON: {\"verdicts\": [{\"index\": 0, \"target\": \"global\"|\"per_shot\",\n\"verdict\": \"keep\"|\"drop\"|\"rewrite\", \"text\": \"...\", \"reason\": \"...\"}]}\nCover every addition exactly once.",
+            "type": "text"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "response_format": {
+      "json_schema": {
+        "name": "decision",
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "verdicts": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "index": {
+                    "type": "integer"
+                  },
+                  "reason": {
+                    "type": "string"
+                  },
+                  "target": {
+                    "enum": [
+                      "global",
+                      "per_shot"
+                    ],
+                    "type": "string"
+                  },
+                  "text": {
+                    "type": "string"
+                  },
+                  "verdict": {
+                    "enum": [
+                      "keep",
+                      "drop",
+                      "rewrite"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "index",
+                  "target",
+                  "verdict",
+                  "text",
+                  "reason"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "verdicts"
+          ],
+          "type": "object"
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"verdicts\": [\n    {\n      \"index\": 0,\n      \"target\": \"global\",\n      \"verdict\": \"keep\",\n      \"text\": \"The scene must maintain the same central subject or objects (e.g., the olive-drab helicopter and its crew) and environment (military airfield/deck) across every shot.\",\n      \"reason\": \"Consistent with authored invariant: 'The same continuous vintage archival scene scene persists across every shot, with the same central subject or objects, the same environment, and coherent event continuity despite legitimate camera, framing, and action changes.' The proposed text sharpens the invariant without contradiction.\"\n    },\n    {\n      \"index\": 1,\n      \"target\": \"per_shot\",\n      \"verdict\": \"keep\",\n      \"text\": \"The scene is an outdoor military airfield or ship deck with the same olive-drab helicopter and two men (shirtless and uniformed) as central subjects.\",\n      \"reason\": \"Consistent with authored invariant: The same central subject, setting, material identity, and event continuity must carry across all camera cuts. The proposed shot-specific detail (shirtless and uniformed men) is a valid specification of the central subjects and does not contradict the global continuity requirement.\"\n    },\n    {\n      \"index\": 2,\n      \"target\": \"per_shot\",\n      \"verdict\": \"keep\",\n      \"text\": \"The scene remains an outdoor military airfield or ship deck with the same olive-drab helicopter and two men (shirtless and uniformed) as central subjects.\",\n      \"reason\": \"Consistent with authored invariant: The same environment and central subjects must persist. Repetition across shots is allowed and reinforces continuity; no contradiction.\"\n    },\n    {\n      \"index\": 3,\n      \"target\": \"per_shot\",\n      \"verdict\": \"keep\",\n      \"text\": \"The scene must include the same olive-drab helicopter and its crew as central subjects, and the environment must remain the military airfield or ship deck.\",\n      \"reason\": \"Consistent with authored invariant: The same central subject and environment must persist. The phrasing 'must include' and 'must remain' reinforces continuity without contradiction.\"\n    },\n    {\n      \"index\": 4,\n      \"target\": \"per_shot\",\n      \"verdict\": \"keep\",\n      \"text\": \"The scene is an outdoor military airfield or ship deck with the same olive-drab helicopter and its crew as central subjects.\",\n      \"reason\": \"Consistent with authored invariant: The same environment and central subjects must persist. This is a redundant but harmless reinforcement of continuity.\"\n    },\n    {\n      \"index\": 5,\n      \"target\": \"per_shot\",\n      \"verdict\": \"keep\",\n      \"text\": \"The scene is an outdoor military airfield or ship deck with the same olive-drab helicopter and its crew as central subjects.\",\n      \"reason\": \"Consistent with authored invariant: The same environment and central subjects must persist. No contradiction; repetition across shots is acceptable.\"\n    },\n    {\n      \"index\": 6,\n      \"target\": \"per_shot\",\n      \"verdict\": \"keep\",\n      \"text\": \"The scene is an outdoor military airfield or ship deck with the same olive-drab helicopter and its crew as central subjects.\",\n      \"reason\": \"Consistent with authored invariant: The same environment and central subjects must persist. No contradiction; repetition across shots is acceptable.\"\n    }\n  ]\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1782975971,
+    "id": "0de7675f871b4939942303e7feba63bc",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 721,
+      "prompt_tokens": 650,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 1371
+    }
+  },
+  "schema_enforced": true,
+  "wall_clock_seconds": 15.447949409484863
+}

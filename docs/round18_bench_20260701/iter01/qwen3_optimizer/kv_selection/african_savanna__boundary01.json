@@ -1,0 +1,151 @@
+{
+  "cache_fingerprint": "f7b699727116dba3b6f5b213d2f015f834de48f2de7a6fffa345f8c382595515",
+  "image_hashes": {
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/african_savanna/shot00_frame00_idx0000.png": "43cb725a14b23bce9df3ce5828c888f092157d5011a8c89c62399a7ff15f5e27",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/african_savanna/shot00_frame01_idx0014.png": "446ea0e833e987ef4f34b163b5bc2ce07a92abfbf6cbea3857be9eecadaca9d6",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/african_savanna/shot00_frame02_idx0027.png": "a17bea3adc80e285e9acf348719bb350874ce37a7b7522215ca3e8cf71b17a95",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/african_savanna/shot00_frame03_idx0041.png": "4f40ba0bb6203434d78be52b31b7c4d454c63d48829ac8d9ca490417dd18393a",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/african_savanna/shot00_frame04_idx0054.png": "dabeea6819bfce45375d0d1e007d38f255312e385d4f249f1f40af0dd234d56b",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot01_frame00_idx0096.png": "abe85b589debce569f90a13aa0de8381e83cd2d2747af72a478e979daf8ccc0f",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot01_frame01_idx0128.png": "b7e9d7f8ab81744dea6012250be66d214f4bce3e9b9a207ef1b1b33d402de13a"
+  },
+  "image_paths": [
+    "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot01_frame00_idx0096.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot01_frame01_idx0128.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/african_savanna/shot00_frame00_idx0000.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/african_savanna/shot00_frame01_idx0014.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/african_savanna/shot00_frame02_idx0027.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/african_savanna/shot00_frame03_idx0041.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/african_savanna/shot00_frame04_idx0054.png"
+  ],
+  "parse_attempts": [],
+  "parsed": {
+    "rationale": "Frame 27 shows the filmmaker in his green shirt and curly hair, clearly visible from the side, with the camera rig and safari vehicle frame in context. Frame 41 provides a clear, unoccluded view of the elephant walking through the savanna, showing its full body and tusks against the acacia trees. Frame 54 continues to show the elephant moving, maintaining the same scene layout and subject identity. These frames best pin the subject (filmmaker and elephant) and scene (savanna, acacia trees, vehicle frame) for continuity across the cut.",
+    "selected_frame_indices": [
+      27,
+      41,
+      54
+    ],
+    "skip": false
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are the LOCAL Qwen3-VL KV-anchor selector.\nTask: pick which PAST decoded frames get re-injected into the KV cache at the cut into shot 1,\nso the subject and scene identity stay consistent across the cut.\nScene: african_savanna\nAuthored invariant: The same African savanna remains visible with golden grass, acacia trees, distant hills, warm daylight, and the same group of large savanna animals.\nEntering shot 1 caption: The video presents a warm, golden-hued tone under natural daylight, with soft, diffused sunlight filtering through a partly cloudy sky, casting gentle shadows across the savanna. The atmosphere is tranquil and immersive, evoking a sense of quiet observation and awe. The style is documentary realism, with a handheld or mounted camera capturing intimate, observational moments from within a safari vehicle. The camera\u2019s perspective is slightly elevated, offering a wide, immersive view of the landscape while keeping the subject in frame.\nThe scene is set outdoors in a vast, arid African savanna during midday, characterized by dry, golden-brown grasses and scattered acacia trees. In the distance, rolling hills fade into the horizon under a sky streaked with soft pink and white clouds. A lone elephant, dark gray and massive, stands beneath the canopy of a solitary acacia tree, grazing or resting. Its silhouette contrasts against the bright backdrop, emphasizing the wild, untouched nature of the environment.\n\nInside the safari vehicle, a single male filmmaker, mid-50s to 60s, with curly, salt-and-pepper hair and a weathered face, is focused on capturing the scene. He wears a green, short-sleeved shirt and appears deeply engaged in his craft. His posture is upright, leaning slightly forward as he adjusts the camera. His expression is one of concentration, eyes fixed on the monitor or the distant elephant.\n\nIn the foreground, a professional-grade video camera mounted on a stabilizing rig is prominently visible. It features a large telephoto lens, a small LCD monitor, and various controls, indicating high-end wildlife filmmaking equipment. The camera is positioned to the right of the filmmaker, angled outward to frame the elephant. The vehicle\u2019s frame and canvas roof are visible, adding context to the setting.\n\nAs the video progresses, the filmmaker subtly adjusts the camera\u2019s position, tilting it slightly to better frame the elephant. The camera\u2019s monitor reflects the scene, showing the elephant\u2019s silhouette against the tree. The elephant remains largely stationary, occasionally shifting its weight or lifting its trunk. The wind gently rustles the grass and leaves, adding subtle motion to the otherwise still scene.\n\nThe shot is a medium close-up, maintaining focus on the filmmaker while still including the expansive background. The depth of field is shallow, blurring the background slightly to emphasize the subject and his equipment. The camera remains steady, suggesting a tripod or stabilizer, with minimal movement, allowing viewers to absorb the serene interaction between human observer and wild animal. The overall narrative is one of quiet reverence for nature, capturing the majesty of wildlife through the lens of a dedicated filmmaker.\n\nQUERY images (start of shot 1, what the transition must stay consistent with):\n- image Q0: decoded frame 96\n- image Q1: decoded frame 128\n\nCANDIDATE anchor images (past frames outside the live attention window):\n- image C0: decoded frame 0\n- image C1: decoded frame 14\n- image C2: decoded frame 27\n- image C3: decoded frame 41\n- image C4: decoded frame 54\n\nChoose up to 4 candidate frames whose CONTENT best pins the subject identity\n(face/clothing/markings) and scene layout for this specific cut.\nJudge by what the images show, not by position in the video: an early frame is NOT\nautomatically better. Prefer frames with a clear, unoccluded view of the subject as it\nshould appear entering this shot. Skip only if no candidate shows the relevant subject.\nReturn strict JSON: {\"selected_frame_indices\": [..], \"skip\": false, \"rationale\": \"content-based reason naming what the chosen frames show\"}\nValid frame indices: [0, 14, 27, 41, 54]",
+            "type": "text"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "response_format": {
+      "json_schema": {
+        "name": "decision",
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "rationale": {
+              "type": "string"
+            },
+            "selected_frame_indices": {
+              "items": {
+                "type": "integer"
+              },
+              "type": "array"
+            },
+            "skip": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "selected_frame_indices",
+            "skip",
+            "rationale"
+          ],
+          "type": "object"
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"selected_frame_indices\": [27, 41, 54],\n  \"skip\": false,\n  \"rationale\": \"Frame 27 shows the filmmaker in his green shirt and curly hair, clearly visible from the side, with the camera rig and safari vehicle frame in context. Frame 41 provides a clear, unoccluded view of the elephant walking through the savanna, showing its full body and tusks against the acacia trees. Frame 54 continues to show the elephant moving, maintaining the same scene layout and subject identity. These frames best pin the subject (filmmaker and elephant) and scene (savanna, acacia trees, vehicle frame) for continuity across the cut.\"\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1782974765,
+    "id": "64744dbda12b4814a1fbd0e29db29647",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 151,
+      "prompt_tokens": 7064,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 7215
+    }
+  },
+  "schema_enforced": true,
+  "wall_clock_seconds": 7.730604648590088
+}

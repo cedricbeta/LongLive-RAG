@@ -1,0 +1,128 @@
+{
+  "cache_fingerprint": "2462c9b842474a6830baaebe2bcc02bc0958b76b41c38207ca3739cf7147081f",
+  "image_hashes": {},
+  "image_paths": [],
+  "parse_attempts": [],
+  "parsed": {
+    "verdicts": [
+      {
+        "index": 0,
+        "reason": "The authored invariant does not specify any human subject, clothing, or identity. Introducing a 'single woman' with specific attire (dark hair, olive-green hat, black bikini top, white bikini bottoms) contradicts the neutral, object-focused description of the scene. The invariant must remain focused on the driftwood, sand, rocks, and environmental continuity.",
+        "target": "global",
+        "text": "The same continuous sandy beach driftwood scene persists across every shot, with the same central subject or objects, the same environment, and coherent event continuity despite legitimate camera, framing, and action changes.",
+        "verdict": "rewrite"
+      },
+      {
+        "index": 1,
+        "reason": "This addition introduces a human subject and specific clothing details not present in the authored invariant. The invariant requires the scene to remain focused on driftwood, sand, and environmental continuity without anchoring to a person. This addition contradicts the authored scope and risks introducing narrative or identity elements not part of the original ground truth.",
+        "target": "per_shot",
+        "text": "The hand is the woman\u2019s, identifiable by her consistent olive-green hat and black bikini top visible in surrounding frames.",
+        "verdict": "rewrite"
+      }
+    ]
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are an independent REVIEWER of proposed prompt edits (not their author).\nThe authored invariants below are the ground truth of what the video MUST show.\nScene: sandy_beach_driftwood\nAuthored global caption: One continuous sandy beach driftwood multishot scene. The same central subject, setting, material identity, lighting family, and event continuity should carry across all camera cuts. Source caption evidence: The video opens with a close-up shot of a sandy beach scene, where weathered driftwood and scattered rocks form a natural arrangement. The sand is pale and textured, with visible footprints and debris, illuminated by...\nAuthored invariant: The same continuous sandy beach driftwood scene persists across every shot, with the same central subject or objects, the same environment, and coherent event continuity despite legitimate camera, framing, and action changes.\n\nProposed additions:\n- [global #0] The central subject is a single woman, consistently depicted with dark hair, olive-green hat, black bikini top, and white bikini bottoms, maintaining visual continuity across all shots.\n- [per_shot #0 shot=5] The hand is the woman\u2019s, identifiable by her consistent olive-green hat and black bikini top visible in surrounding frames.\n\nFor EACH addition return a verdict:\n- keep: consistent with the authored invariants (may sharpen them).\n- rewrite: contradicts an authored invariant (e.g. different clothing/color/object than\n  authored) or drifts toward what a flawed render showed; provide `text` restating the\n  AUTHORED invariant for that aspect instead.\n- drop: unrelated to invariants, collapses shot diversity, or is unsalvageable.\nFor keep/drop verdicts set `text` to the original addition text unchanged.\nReturn strict JSON: {\"verdicts\": [{\"index\": 0, \"target\": \"global\"|\"per_shot\",\n\"verdict\": \"keep\"|\"drop\"|\"rewrite\", \"text\": \"...\", \"reason\": \"...\"}]}\nCover every addition exactly once.",
+            "type": "text"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "response_format": {
+      "json_schema": {
+        "name": "decision",
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "verdicts": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "index": {
+                    "type": "integer"
+                  },
+                  "reason": {
+                    "type": "string"
+                  },
+                  "target": {
+                    "enum": [
+                      "global",
+                      "per_shot"
+                    ],
+                    "type": "string"
+                  },
+                  "text": {
+                    "type": "string"
+                  },
+                  "verdict": {
+                    "enum": [
+                      "keep",
+                      "drop",
+                      "rewrite"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "index",
+                  "target",
+                  "verdict",
+                  "text",
+                  "reason"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "verdicts"
+          ],
+          "type": "object"
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"verdicts\": [\n    {\n      \"index\": 0,\n      \"target\": \"global\",\n      \"verdict\": \"rewrite\",\n      \"text\": \"The same continuous sandy beach driftwood scene persists across every shot, with the same central subject or objects, the same environment, and coherent event continuity despite legitimate camera, framing, and action changes.\",\n      \"reason\": \"The authored invariant does not specify any human subject, clothing, or identity. Introducing a 'single woman' with specific attire (dark hair, olive-green hat, black bikini top, white bikini bottoms) contradicts the neutral, object-focused description of the scene. The invariant must remain focused on the driftwood, sand, rocks, and environmental continuity.\"\n    },\n    {\n      \"index\": 1,\n      \"target\": \"per_shot\",\n      \"verdict\": \"rewrite\",\n      \"text\": \"The hand is the woman\u2019s, identifiable by her consistent olive-green hat and black bikini top visible in surrounding frames.\",\n      \"reason\": \"This addition introduces a human subject and specific clothing details not present in the authored invariant. The invariant requires the scene to remain focused on driftwood, sand, and environmental continuity without anchoring to a person. This addition contradicts the authored scope and risks introducing narrative or identity elements not part of the original ground truth.\"\n    }\n  ]\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1782975601,
+    "id": "e1531ed7a0be4640adb7476e43b23823",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 281,
+      "prompt_tokens": 416,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 697
+    }
+  },
+  "schema_enforced": true,
+  "wall_clock_seconds": 7.984032392501831
+}

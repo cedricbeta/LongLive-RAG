@@ -1,0 +1,427 @@
+{
+  "cache_fingerprint": "cb0079d30290fea703253cc03105286b83755b7fc9570463f6d4c369a8b38676",
+  "image_hashes": {
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot00_frame00_idx0000.png": "c8bdf50396b2aa5c11c1c4fd6d22ec5dacd13f43b957ff3adc5f101ed50d00aa",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot00_frame01_idx0032.png": "380e02d9901a8ff6a625e6297e300ef00687f286aeb68285b809a9aba048a126",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot00_frame02_idx0063.png": "6cefe1b2fb0b02cffa10aac3d1fe1a937121ad197527d91203b7fff6ddc474e5",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot00_frame03_idx0095.png": "d18343177de6c5157e093d8cb16faf646911168225c5890043cc7e2b3ee711aa",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot01_frame00_idx0096.png": "9f38195cca732c3d5e36a42e260a85f8d3c96daa139c76acf348d1b32bc9e759",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot01_frame01_idx0128.png": "013314cd7648b60af3384d3df9d9e2ab74fa2f2b2906b37b7532d6c87162325c",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot01_frame02_idx0159.png": "7869c07cf8fb049526b7c7007792a13c71da4bedecd4553a78188d2748642f28",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot01_frame03_idx0191.png": "2dd81202df411ffdea0e60dd53a6cf74ce250e4eb715816e37751d08f722a3bf",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot02_frame00_idx0192.png": "5f25f75d5e94708a7fa3e4677081c2760f817a214e74be9c22bb3864524cf39b",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot02_frame01_idx0208.png": "37c9d682058a015e75b0aee5e4f862516d9bdc5f7c5aba44f59a460ffddcd5b0",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot02_frame02_idx0223.png": "85ac12e186a1f1a7dc4c011aded1eed0e79319d16c71052f20e07e931d4f797c",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot02_frame03_idx0239.png": "7a976b1afbc670b7770c7bcce4ac98130bcc66caf906d2c6e17e561ded49c84b",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot03_frame00_idx0240.png": "816e8a667ba3ff3af5da6ea3fbd3f722157ca7eb3d4af109e18ac3d42a03747c",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot03_frame01_idx0256.png": "30f3620e9e50e3394cfeae50109b2f2adfe1d6616027ec9d45d1b1401c0bb312",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot03_frame02_idx0271.png": "0304444a8b47245ece7140e56681ab1ba2c32fa2fc86c25521623f80ac911784",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot03_frame03_idx0287.png": "d18022394d54da389ded7708eb5915a001485b8031b3d9eab488b239ac7655e8",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot04_frame00_idx0288.png": "1ff62cbbcfced82fe350b68b73770df92f047d0b05440207ace2a300579803a3",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot04_frame01_idx0304.png": "885bf9fe6501163cc551dea0fa4b134e00e9d6a734679e3c4b827cffacc44458",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot04_frame02_idx0319.png": "2a5391620be853672daee94130d23a637d960985205698c4cd992c7194fb921c",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot04_frame03_idx0335.png": "3337420cf06005d982286d3559befa5ac4da9bf456d89801409dba64165c9210",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot05_frame00_idx0336.png": "4db83369c76f8775e47a4760255fabc6f52d86339716a946fc86793362ba03ab",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot05_frame01_idx0352.png": "1b7e096a64828b6556049b8064bcbacd50cd78ff3c7ff19a4152cd5ee84ab53b",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot05_frame02_idx0367.png": "061e06e04573eaf776f80f534475b1338128c6eec4965d0049d7057b459a0fb1",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot05_frame03_idx0383.png": "fd0e97c8090d5c5e9e0df5ff3346a383d94eec7294cef838e550206313fa5920",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot06_frame00_idx0384.png": "cb6f59718be7603d16963a830cf13aa6749d9cfd3f6f482fa9a9734b2cd35054",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot06_frame01_idx0400.png": "3e9e45d78defe2d31d1f3152359d01fd41997055e504822e085eb01b0964511b",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot06_frame02_idx0415.png": "ae1ca336ee38115c6b9269f6145488ed0671fd02e967711fbc4c050d0bde6c8c",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot06_frame03_idx0431.png": "353783bf7b49424c73565a1dc5663d0df97c98337f8239cc4161884ff6ed6f3c",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot07_frame00_idx0432.png": "1a5c0a8d80f0b02c925358cddd0e517abe39da8a3f2e37def2d6a93f0098a359",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot07_frame01_idx0448.png": "78c3b8d5550c9f917fcf68a326af934ad76ce2fefa3a9708bc93f1e14013d869",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot07_frame02_idx0463.png": "fe5b95f63c27170c7ba14f75bfa09e012be7ae9b68dfa20635fb3415724e4d7f",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot07_frame03_idx0479.png": "3a614eec10e8743064d0fdd8f83b07cf14666ff18077d3e61b32f37a4f277af7"
+  },
+  "image_paths": [
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot00_frame00_idx0000.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot00_frame01_idx0032.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot00_frame02_idx0063.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot00_frame03_idx0095.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot01_frame00_idx0096.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot01_frame01_idx0128.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot01_frame02_idx0159.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot01_frame03_idx0191.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot02_frame00_idx0192.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot02_frame01_idx0208.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot02_frame02_idx0223.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot02_frame03_idx0239.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot03_frame00_idx0240.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot03_frame01_idx0256.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot03_frame02_idx0271.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot03_frame03_idx0287.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot04_frame00_idx0288.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot04_frame01_idx0304.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot04_frame02_idx0319.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot04_frame03_idx0335.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot05_frame00_idx0336.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot05_frame01_idx0352.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot05_frame02_idx0367.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot05_frame03_idx0383.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot06_frame00_idx0384.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot06_frame01_idx0400.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot06_frame02_idx0415.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot06_frame03_idx0431.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot07_frame00_idx0432.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot07_frame01_idx0448.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot07_frame02_idx0463.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot07_frame03_idx0479.png"
+  ],
+  "parse_attempts": [],
+  "parsed": {
+    "global_invariant_additions": [
+      "The red bandana is consistently tied around the chef's neck, never worn as a headband."
+    ],
+    "kv_anchor_plan": [],
+    "per_shot_additions": [
+      {
+        "rationale": "The rendered video shows the bandana as a headband, which contradicts the global invariant. This must be corrected to maintain consistency.",
+        "shot_index": 5,
+        "text": "The red bandana remains tied around the chef's neck, not as a headband."
+      }
+    ],
+    "stop_rule": "one bounded refinement round",
+    "which_cut_broke": {
+      "cut_index": 5,
+      "how": "Chef's red bandana is now tied as a headband, violating the global invariant of it being around the neck."
+    }
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are the LOCAL Qwen3-VL optimizer, not the held-out judge.\nDiagnose which shot cut breaks cross-shot consistency and propose constrained fixes.\nReturn strict JSON only with this shape:\n{\n  \"which_cut_broke\": {\"cut_index\": integer_or_null, \"how\": \"short reason\"},\n  \"global_invariant_additions\": [\"additive invariant text\", ...],\n  \"per_shot_additions\": [{\"shot_index\": 0, \"text\": \"additive invariant text\", \"rationale\": \"why\"}, ...],\n  \"kv_anchor_plan\": [],\n  \"stop_rule\": \"one bounded refinement round\"\n}\nRules: ADD subject/scene invariants only. Do not delete or weaken per-shot camera/action.\nInvariant additions must RESTATE or SHARPEN the authored global invariant below.\nIf the rendered video contradicts that invariant (wrong clothing/color/object), that is a\ndefect to FIX: re-assert the authored invariant. NEVER codify the rendered appearance when\nit conflicts with the authored invariant.\nDo not collapse shots into near-identical text.\nKV anchors are chosen in a separate per-boundary pass; return an empty kv_anchor_plan.\nScene: tattooed_noodle_chef\nGlobal invariant: The same chef persists across every shot: shaved head, black dragon tattoo on the right forearm, small silver hoop earring in the left ear, red bandana around the neck, white T-shirt under a navy apron. The same night-market noodle stall persists, with its steel wok station, rising steam, hanging red lanterns, and stainless counter, despite legitimate camera, framing, and action changes.\nSHOT 0: frames=[0, 32, 63, 95]; caption=Shot 0 opens in a medium view of a night-market noodle stall. A chef with a shaved head, a black dragon tattoo covering his right forearm, a small silver hoop earring in his left ear, and a red bandana tied around his neck stands at a flaming wok station, wearing a white T-shirt under a navy apron while steam rises past hanging red lanterns and a stainless counter.\nSHOT 1: frames=[96, 128, 159, 191]; caption=Shot 1 cuts to a close-up of the chef's face. Orange flame light flickers across his shaved head and the silver hoop earring in his left ear, the red bandana knotted at his throat, as his eyes narrow in concentration through the drifting steam of the wok.\nSHOT 2: frames=[192, 208, 223, 239]; caption=Shot 2 switches to an overhead angle directly above the wok. Yellow noodles leap in an arc as the chef tosses the steel wok, his dragon-tattooed right forearm flexing at the frame's edge while oil shimmers and scallions scatter across the black steel under the red lantern glow.\nSHOT 3: frames=[240, 256, 271, 287]; caption=Shot 3 moves to a side view along the stall counter. The chef pulls and folds a rope of fresh dough between his hands, the navy apron dusted with flour, the black dragon tattoo rippling on his right forearm with each stretch while red lanterns sway gently above the stainless counter.\nSHOT 4: frames=[288, 304, 319, 335]; caption=Shot 4 pulls back to a wide view of the stall from across the market lane. The shaved-headed chef in the navy apron works at the glowing wok station framed by strings of red lanterns, clouds of steam, stacked bowls on the stainless counter, and the blurred motion of passersby at the frame edges.\nSHOT 5: frames=[336, 352, 367, 383]; caption=Shot 5 cuts to a tight close-up of the chef's right forearm. The black dragon tattoo coils from wrist to elbow as his hand ladles dark broth from a steel pot into a white bowl, steam curling up past the navy apron strap and the edge of the red bandana.\nSHOT 6: frames=[384, 400, 415, 431]; caption=Shot 6 frames a medium shot at counter height. The chef assembles the bowl, layering noodles, sliced pork, and scallions, his silver hoop earring and red bandana catching the lantern light as he wipes the bowl rim with a cloth tucked in his navy apron.\nSHOT 7: frames=[432, 448, 463, 479]; caption=Shot 7 finishes in a steady medium view from the customer side of the counter. The chef with the shaved head, dragon-tattooed forearm, and red bandana sets the finished noodle bowl on the stainless counter, looks up, and gives a quick nod as steam and red lantern light fill the stall behind him.",
+            "type": "text"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "response_format": {
+      "json_schema": {
+        "name": "decision",
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "global_invariant_additions": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "kv_anchor_plan": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "boundary_shot_index": {
+                    "type": "integer"
+                  },
+                  "decoded_frame_indices": {
+                    "items": {
+                      "type": "integer"
+                    },
+                    "type": "array"
+                  },
+                  "rationale": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "boundary_shot_index",
+                  "decoded_frame_indices",
+                  "rationale"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "per_shot_additions": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "rationale": {
+                    "type": "string"
+                  },
+                  "shot_index": {
+                    "type": "integer"
+                  },
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "shot_index",
+                  "text",
+                  "rationale"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "stop_rule": {
+              "type": "string"
+            },
+            "which_cut_broke": {
+              "additionalProperties": false,
+              "properties": {
+                "cut_index": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "how": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "cut_index",
+                "how"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "which_cut_broke",
+            "global_invariant_additions",
+            "per_shot_additions",
+            "kv_anchor_plan",
+            "stop_rule"
+          ],
+          "type": "object"
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"which_cut_broke\": {\n    \"cut_index\": 5,\n    \"how\": \"Chef's red bandana is now tied as a headband, violating the global invariant of it being around the neck.\"\n  },\n  \"global_invariant_additions\": [\n    \"The red bandana is consistently tied around the chef's neck, never worn as a headband.\"\n  ],\n  \"per_shot_additions\": [\n    {\n      \"shot_index\": 5,\n      \"text\": \"The red bandana remains tied around the chef's neck, not as a headband.\",\n      \"rationale\": \"The rendered video shows the bandana as a headband, which contradicts the global invariant. This must be corrected to maintain consistency.\"\n    }\n  ],\n  \"kv_anchor_plan\": [],\n  \"stop_rule\": \"one bounded refinement round\"\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1782975775,
+    "id": "44b0bb2e800e41d496fbbfad2625a678",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 179,
+      "prompt_tokens": 29294,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 29473
+    }
+  },
+  "schema_enforced": true,
+  "wall_clock_seconds": 31.940704345703125
+}

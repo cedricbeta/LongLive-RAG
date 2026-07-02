@@ -1,0 +1,152 @@
+{
+  "cache_fingerprint": "1c8b0a03d1d9e72eca77a84bb811cc16a57231cc2a8ba41d4970d650068c4d81",
+  "image_hashes": {
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot00_frame00_idx0000.png": "6f5285f5cdbb0d5e4efc44a35010c8bdd777b162f237f9c6a12598b4d3b519f4",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot00_frame01_idx0014.png": "1d192d2277d0b67f9338383220e80853adc08fbf4f780a49790c5727eaad3fb0",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot00_frame02_idx0027.png": "15a6c2a793311989a7dff930471f3119fbea9ec75b091276d50ac14718fc0ba9",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot00_frame03_idx0041.png": "9e2d7a16062652ff14f701f919cca4d692226514aba735169c5e8b1f585fb14d",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot00_frame04_idx0054.png": "5033eee2b6576a22989130787cd029fbd417de24948efe4c7f49da62e54a13bd",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot01_frame00_idx0096.png": "9304cf0dc33d6d358fe0c5dcdb7e265ece0470f3a1abde8961c33dcd4a90e15d",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot01_frame01_idx0128.png": "20f868e736dba6e2cd2760f4dd40d721b2e1032881fb2c923b25ccb3ce537c20"
+  },
+  "image_paths": [
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot01_frame00_idx0096.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot01_frame01_idx0128.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot00_frame00_idx0000.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot00_frame01_idx0014.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot00_frame02_idx0027.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot00_frame03_idx0041.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot00_frame04_idx0054.png"
+  ],
+  "parse_attempts": [],
+  "parsed": {
+    "rationale": "Frame 0 shows the woman in full view, clearly displaying her black bikini top, white bikini bottoms, olive-green wide-brimmed hat, and blonde braided hair, establishing her full subject identity. Frame 14 shows her from a side angle, still clearly identifiable by her attire and hair, and the beach environment is visible. Frame 27 shows her walking past driftwood, confirming her presence and outfit continuity. Frame 41 shows her from behind, again confirming her clothing and the consistent beach setting with driftwood and ocean. These frames collectively provide unambiguous, unoccluded views of the subject and scene layout necessary for continuity.",
+    "selected_frame_indices": [
+      0,
+      14,
+      27,
+      41
+    ],
+    "skip": false
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are the LOCAL Qwen3-VL KV-anchor selector.\nTask: pick which PAST decoded frames get re-injected into the KV cache at the cut into shot 1,\nso the subject and scene identity stay consistent across the cut.\nScene: sandy_beach_driftwood\nAuthored invariant: The same continuous sandy beach driftwood scene persists across every shot, with the same central subject or objects, the same environment, and coherent event continuity despite legitimate camera, framing, and action changes.\nEntering shot 1 caption: The video unfolds in a sun-drenched, natural beach environment under clear blue skies, casting sharp, high-contrast shadows across the scene. The color tone is warm and golden, enhanced by natural daylight\u2014likely midday\u2014with a crisp, vivid realism that emphasizes the texture of sand, rocks, and sea. The atmosphere is serene yet adventurous, with a sense of solitude and connection to nature. The style is documentary-like, capturing candid moments with dynamic camera movement and natural framing.\nThe setting is an outdoor, rugged coastline with fine white sand, scattered driftwood, and smooth, weathered rocks. In the background, distant mountains and calm blue water stretch under a cloudless sky. The environment feels untouched and wild, with no signs of urbanization. The lighting suggests bright, direct sunlight, enhancing the vividness of colors and casting elongated shadows from the characters and objects.\n\nThe only visible character is a woman, appearing in the first frame (0:00) and again at 0:03. She is likely in her late 20s to early 30s, with fair skin and long, blonde braided hair. She wears a black bikini top and white bikini bottoms, complemented by a wide-brimmed olive-green hat and a delicate gold necklace. Her expression is relaxed and cheerful, with a warm smile directed at the camera. She appears to be a traveler or outdoor enthusiast, possibly engaged in beachside fishing or exploration.\n\nAt 0:01, the camera tilts down to a close-up of a freshly caught fish\u2014its scales glistening with moisture, its mouth agape, and fins slightly frayed\u2014resting on a gray stone. The fish\u2019s reddish-orange hue contrasts with the pale sand. At 0:02, the camera pans up to show the woman\u2019s feet and the fish, emphasizing the casual, hands-on nature of her activity. At 0:03, the camera returns to a medium shot of the woman, who turns toward the camera with a playful, proud smile, her body angled slightly away from the lens. She gestures casually with her hands, as if presenting her catch or explaining her activity.\n\nThe camera movement is fluid and handheld, shifting from a low-angle shot of the fish to a medium shot of the woman, then panning to reveal the surrounding driftwood and rocks. The focus remains sharp throughout, with a shallow depth of field that blurs the background slightly, drawing attention to the subject and her immediate environment. The video\u2019s narrative is observational and personal, capturing a moment of quiet triumph in nature. The woman\u2019s movements are slow and deliberate, reinforcing the tranquil, meditative mood of the scene. There is no visible wind or other natural elements in motion, but the sunlight\u2019s shifting shadows suggest the passage of time. The overall tone is joyful and immersive, inviting viewers into a moment of simple, natural beauty.\n\nQUERY images (start of shot 1, what the transition must stay consistent with):\n- image Q0: decoded frame 96\n- image Q1: decoded frame 128\n\nCANDIDATE anchor images (past frames outside the live attention window):\n- image C0: decoded frame 0\n- image C1: decoded frame 14\n- image C2: decoded frame 27\n- image C3: decoded frame 41\n- image C4: decoded frame 54\n\nChoose up to 4 candidate frames whose CONTENT best pins the subject identity\n(face/clothing/markings) and scene layout for this specific cut.\nJudge by what the images show, not by position in the video: an early frame is NOT\nautomatically better. Prefer frames with a clear, unoccluded view of the subject as it\nshould appear entering this shot. Skip only if no candidate shows the relevant subject.\nReturn strict JSON: {\"selected_frame_indices\": [..], \"skip\": false, \"rationale\": \"content-based reason naming what the chosen frames show\"}\nValid frame indices: [0, 14, 27, 41, 54]",
+            "type": "text"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "response_format": {
+      "json_schema": {
+        "name": "decision",
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "rationale": {
+              "type": "string"
+            },
+            "selected_frame_indices": {
+              "items": {
+                "type": "integer"
+              },
+              "type": "array"
+            },
+            "skip": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "selected_frame_indices",
+            "skip",
+            "rationale"
+          ],
+          "type": "object"
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"selected_frame_indices\": [0, 14, 27, 41],\n  \"skip\": false,\n  \"rationale\": \"Frame 0 shows the woman in full view, clearly displaying her black bikini top, white bikini bottoms, olive-green wide-brimmed hat, and blonde braided hair, establishing her full subject identity. Frame 14 shows her from a side angle, still clearly identifiable by her attire and hair, and the beach environment is visible. Frame 27 shows her walking past driftwood, confirming her presence and outfit continuity. Frame 41 shows her from behind, again confirming her clothing and the consistent beach setting with driftwood and ocean. These frames collectively provide unambiguous, unoccluded views of the subject and scene layout necessary for continuity.\"\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1782975610,
+    "id": "01faa5bdf3ee4bedaf41acf035443529",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 167,
+      "prompt_tokens": 7129,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 7296
+    }
+  },
+  "schema_enforced": true,
+  "wall_clock_seconds": 8.394939661026001
+}

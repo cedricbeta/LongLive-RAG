@@ -1,0 +1,150 @@
+{
+  "cache_fingerprint": "d91932e3e616a319d803d4e0154574b72845a0755191aefeae4260611ecda1e8",
+  "image_hashes": {
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot00_frame00_idx0000.png": "a1ff4228727f679661b62733305301247fc0f5ae76669edea0e5b478be942a4a",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot00_frame01_idx0014.png": "aa96b10ffc6628629ca3725ad0c023ad241ff294f07b5fb124814159708375c7",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot00_frame02_idx0027.png": "719cba28f46309544b0a7f1bd10d716fcdeca3ed6664c7dcc137fc4d1accce0c",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot00_frame03_idx0041.png": "cc6cf267bd5521e6f5532ce6440c8a0c9b95e350387309ca472e8a42829b7d6b",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot00_frame04_idx0054.png": "d648ddd8e17e895554e7bf9f61ccd82a93662138ce4ca75ab4e9ffd8138e60cf",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot01_frame00_idx0096.png": "60f5de2270d9de74f07a83ad5067d0bbfb34bff1d7f1e0aa74eda93d8f3d9c36",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot01_frame01_idx0128.png": "f24788fa57a0f7c6c8c2ed422451aba9f15d2b31ed9b9b8cd7d9463945bb3f2a"
+  },
+  "image_paths": [
+    "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot01_frame00_idx0096.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot01_frame01_idx0128.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot00_frame00_idx0000.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot00_frame01_idx0014.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot00_frame02_idx0027.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot00_frame03_idx0041.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/bearded_watchmaker_workshop/shot00_frame04_idx0054.png"
+  ],
+  "parse_attempts": [],
+  "parsed": {
+    "rationale": "Frame 27 shows a clear, unoccluded medium shot of the watchmaker's full face and upper torso, displaying his silver-gray beard, round brass-rimmed glasses, and the small mole on his left cheekbone. Frame 41 provides a similar medium shot, confirming the same attire (deep-green wool vest over cream shirt, brown leather apron) and the cluttered workshop background with the tungsten lamp and shelves of antique clocks. Both frames are ideal anchors as they capture the subject's full identity and scene layout before the cut to the tight close-up.",
+    "selected_frame_indices": [
+      27,
+      41
+    ],
+    "skip": false
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are the LOCAL Qwen3-VL KV-anchor selector.\nTask: pick which PAST decoded frames get re-injected into the KV cache at the cut into shot 1,\nso the subject and scene identity stay consistent across the cut.\nScene: bearded_watchmaker_workshop\nAuthored invariant: The same elderly watchmaker persists across every shot: neatly trimmed silver-gray beard, thick dark eyebrows, round brass-rimmed glasses, a small dark mole on the left cheekbone, deep-green wool vest over a cream shirt, and a brown leather apron. The same cluttered wooden workbench, warm tungsten desk lamp, and shelves of antique clocks persist despite legitimate camera, framing, and action changes.\nEntering shot 1 caption: Shot 1 cuts to a tight close-up of the watchmaker's face. The tungsten lamp rakes across his silver-gray beard and thick dark eyebrows, the small mole on his left cheekbone is clearly visible, and a jeweler's loupe is clipped to his round brass-rimmed glasses as his eyes track a tiny gear he lifts with tweezers.\n\nQUERY images (start of shot 1, what the transition must stay consistent with):\n- image Q0: decoded frame 96\n- image Q1: decoded frame 128\n\nCANDIDATE anchor images (past frames outside the live attention window):\n- image C0: decoded frame 0\n- image C1: decoded frame 14\n- image C2: decoded frame 27\n- image C3: decoded frame 41\n- image C4: decoded frame 54\n\nChoose up to 4 candidate frames whose CONTENT best pins the subject identity\n(face/clothing/markings) and scene layout for this specific cut.\nJudge by what the images show, not by position in the video: an early frame is NOT\nautomatically better. Prefer frames with a clear, unoccluded view of the subject as it\nshould appear entering this shot. Skip only if no candidate shows the relevant subject.\nReturn strict JSON: {\"selected_frame_indices\": [..], \"skip\": false, \"rationale\": \"content-based reason naming what the chosen frames show\"}\nValid frame indices: [0, 14, 27, 41, 54]",
+            "type": "text"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "response_format": {
+      "json_schema": {
+        "name": "decision",
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "rationale": {
+              "type": "string"
+            },
+            "selected_frame_indices": {
+              "items": {
+                "type": "integer"
+              },
+              "type": "array"
+            },
+            "skip": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "selected_frame_indices",
+            "skip",
+            "rationale"
+          ],
+          "type": "object"
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"selected_frame_indices\": [27, 41],\n  \"skip\": false,\n  \"rationale\": \"Frame 27 shows a clear, unoccluded medium shot of the watchmaker's full face and upper torso, displaying his silver-gray beard, round brass-rimmed glasses, and the small mole on his left cheekbone. Frame 41 provides a similar medium shot, confirming the same attire (deep-green wool vest over cream shirt, brown leather apron) and the cluttered workshop background with the tungsten lamp and shelves of antique clocks. Both frames are ideal anchors as they capture the subject's full identity and scene layout before the cut to the tight close-up.\"\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1782975104,
+    "id": "ff83a4abd89c406d940eb4c0b7b7d5ba",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 146,
+      "prompt_tokens": 6658,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 6804
+    }
+  },
+  "schema_enforced": true,
+  "wall_clock_seconds": 5.481403350830078
+}

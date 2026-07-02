@@ -1,0 +1,150 @@
+{
+  "cache_fingerprint": "f3296c6f8d8ca166d328bb895235acfdb79d645fddbf9795c73797050743aade",
+  "image_hashes": {
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot00_frame00_idx0000.png": "da0d7ff5be5c212e9e72c0aa0adac3fa64be56701508d249074297a2bc3a04ba",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot00_frame01_idx0014.png": "9f71736d690e0e6c4715e4d86629fe51f7d530e28730ddb4eaa6a8b51487dbfb",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot00_frame02_idx0027.png": "1352d4002a14501a3882fcbd627e5b24a6d5d69bb94bce301df9891db157ac88",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot00_frame03_idx0041.png": "c8478950c705858a8a0affd878e22940f1ad905b9e874a0bef9f6cb95a39cfd5",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot00_frame04_idx0054.png": "8a182675e719d092b72186e8c8116ca0cd5207cf402f1fc921c51849bac772b9",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/shimmering_puzzle_surface/shot01_frame00_idx0096.png": "6b2cf21c51693ab9e31e4fbb47b68beeef49eb5809a601b93159f421c03c0688",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/shimmering_puzzle_surface/shot01_frame01_idx0128.png": "378ec8a44a17c5d739b9c5fecb737fcd4a0616d946333c077dbd18a2cdefef76"
+  },
+  "image_paths": [
+    "docs/round18_bench_20260701/iter01/optimizer_frames/shimmering_puzzle_surface/shot01_frame00_idx0096.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/shimmering_puzzle_surface/shot01_frame01_idx0128.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot00_frame00_idx0000.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot00_frame01_idx0014.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot00_frame02_idx0027.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot00_frame03_idx0041.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot00_frame04_idx0054.png"
+  ],
+  "parse_attempts": [],
+  "parsed": {
+    "rationale": "Frame 41 and 54 show Santa Claus in a clear, unoccluded medium shot, fully visible in his red suit with white fur trim, green belt with yellow buckle, and red hat with white pom-pom. His facial features (white beard, thick eyebrows, downturned mouth) are clearly visible, matching the description of his weary, concerned expression. The background consistently shows the festive Christmas trees with ornaments and tinsel, and the gray floor with scattered green puzzle pieces, establishing the scene layout. These frames best pin the subject identity and scene continuity for the cut into shot 1.",
+    "selected_frame_indices": [
+      41,
+      54
+    ],
+    "skip": false
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are the LOCAL Qwen3-VL KV-anchor selector.\nTask: pick which PAST decoded frames get re-injected into the KV cache at the cut into shot 1,\nso the subject and scene identity stay consistent across the cut.\nScene: shimmering_puzzle_surface\nAuthored invariant: The same coherent shimmering puzzle surface remains on the same reflective tabletop with stable interlocking pieces and consistent highlights.\nEntering shot 1 caption: The video features a festive, cartoonish 3D animation with a warm, holiday-themed color tone dominated by reds, greens, and golds. The lighting is soft and diffused, evoking a cozy indoor atmosphere, likely during the daytime, as no shadows suggest harsh sunlight or nighttime. The style is playful and exaggerated, typical of animated holiday specials, with a shallow depth of field that keeps the focus on the central character while slightly blurring the background.\nThe scene is set indoors, likely a festive workshop or living room, decorated with multiple Christmas trees adorned with colorful ornaments, candy canes, and twinkling lights. The trees are positioned behind the character, framing the background, and their vibrant decorations contrast with the muted gray floor. The environment suggests a cheerful, cluttered holiday setting, with no visible windows or natural elements.\n\nThe central character is a stylized Santa Claus, depicted as a middle-aged male with a long white beard and a jovial yet slightly weary expression. He wears a traditional red suit with white fur trim, a matching hat with a white pom-pom, and a green belt. His facial features are exaggerated, with thick eyebrows and a slightly downturned mouth, suggesting concern or fatigue. He is holding a black cordless phone to his ear, indicating he is engaged in a conversation. His body language conveys mild frustration or exhaustion, as he occasionally rubs his temples or leans back slightly, suggesting stress or overwork.\n\nIn the first shot, Santa is seen falling backward on the floor, possibly after tripping or being startled. The camera then quickly cuts to a close-up as he sits up, gripping the phone with both hands. His eyes dart around nervously, and his brow furrows in concentration or worry. The camera remains steady, maintaining a medium close-up shot focused on his face and upper torso, allowing viewers to observe his changing expressions. The background remains slightly out of focus, emphasizing his emotional state. The scene progresses with Santa\u2019s movements being slow and deliberate, reflecting his fatigue, while the phone remains a constant focal point, underscoring the importance of the call. The overall narrative suggests a humorous or dramatic moment where Santa is overwhelmed by holiday responsibilities, possibly dealing with a difficult phone call from an impatient child or a stressed elf. The animation style enhances this tone with exaggerated facial movements and expressive gestures, creating a lighthearted yet relatable holiday scenario.\n\nQUERY images (start of shot 1, what the transition must stay consistent with):\n- image Q0: decoded frame 96\n- image Q1: decoded frame 128\n\nCANDIDATE anchor images (past frames outside the live attention window):\n- image C0: decoded frame 0\n- image C1: decoded frame 14\n- image C2: decoded frame 27\n- image C3: decoded frame 41\n- image C4: decoded frame 54\n\nChoose up to 4 candidate frames whose CONTENT best pins the subject identity\n(face/clothing/markings) and scene layout for this specific cut.\nJudge by what the images show, not by position in the video: an early frame is NOT\nautomatically better. Prefer frames with a clear, unoccluded view of the subject as it\nshould appear entering this shot. Skip only if no candidate shows the relevant subject.\nReturn strict JSON: {\"selected_frame_indices\": [..], \"skip\": false, \"rationale\": \"content-based reason naming what the chosen frames show\"}\nValid frame indices: [0, 14, 27, 41, 54]",
+            "type": "text"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "response_format": {
+      "json_schema": {
+        "name": "decision",
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "rationale": {
+              "type": "string"
+            },
+            "selected_frame_indices": {
+              "items": {
+                "type": "integer"
+              },
+              "type": "array"
+            },
+            "skip": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "selected_frame_indices",
+            "skip",
+            "rationale"
+          ],
+          "type": "object"
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"selected_frame_indices\": [41, 54],\n  \"skip\": false,\n  \"rationale\": \"Frame 41 and 54 show Santa Claus in a clear, unoccluded medium shot, fully visible in his red suit with white fur trim, green belt with yellow buckle, and red hat with white pom-pom. His facial features (white beard, thick eyebrows, downturned mouth) are clearly visible, matching the description of his weary, concerned expression. The background consistently shows the festive Christmas trees with ornaments and tinsel, and the gray floor with scattered green puzzle pieces, establishing the scene layout. These frames best pin the subject identity and scene continuity for the cut into shot 1.\"\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1782976346,
+    "id": "1ae99631f9874277ad5af7c2c74d3ca7",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 152,
+      "prompt_tokens": 7009,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 7161
+    }
+  },
+  "schema_enforced": true,
+  "wall_clock_seconds": 9.393315076828003
+}

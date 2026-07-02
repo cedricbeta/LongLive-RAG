@@ -1,0 +1,388 @@
+{
+  "cache_fingerprint": "554c3d4eaf63c7756a66dc3c5d9fa6aae9aaf1e1c0597ecb94bc50d61542aa96",
+  "image_hashes": {
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot00_frame00_idx0000.png": "33549ff649953f68aac15d8da6e36ee20473247124f7ff4012b38f88189e7ac1",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot00_frame01_idx0032.png": "604702b1829c9a5fd75f1d1c68d0117e6e9f23985a18974a9d42f17f29b9cc1a",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot00_frame02_idx0063.png": "a318a3fe6a159b61ca5fc8e2ca1b77d0b80ac959aed67bb23e2c4465f8408777",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot00_frame03_idx0095.png": "efcdb711570a9ff90b79357d4066b163c597fbd189b5b707e57023123d9383cb",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot01_frame00_idx0096.png": "1f94e585a2897168e3dff09df93e51eb367bdf846772670b5cb94cde2535549a",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot01_frame01_idx0128.png": "282426c727a2ceb35d85184988806c556a6a4d378cc96d5408aa7b7f3d374588",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot01_frame02_idx0159.png": "09d0f9f6f66cb1ac52fa55a39639b4b04a0a1204393a0b1f5fc56fe80abd2988",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot01_frame03_idx0191.png": "573aa392416b1a9e8c6c733b5a49e8187542e5e067e3d97cf054bc64a5efe163",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot02_frame00_idx0192.png": "2f728cdfd8bae83ea1adaa6b40073d49708aee96e4822d3201bda786ba9114c1",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot02_frame01_idx0224.png": "c58b2d4081be296c9e1bf26facb0a1b34ed62ca45f815e0755ca87aa5775adf0",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot02_frame02_idx0255.png": "c1c1e192561e8c39257571e3e8cba94992c91eb58231f9d0442ca702bef6e3a5",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot02_frame03_idx0287.png": "c6caf72c7f9a37e3bed8a9abc116daf1fd9fde7d0f2de0c2bc1bc8c3cfc1f6d7",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot03_frame00_idx0288.png": "9133802601c0c05742fc700dd4f21ea0cf3a61edc0c90fafc41def3902e22952",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot03_frame01_idx0320.png": "8b2006347ca8b0bf0567ede56f2f4aa7dae765588b18d076698c71602e767abf",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot03_frame02_idx0351.png": "595a2578e81614b5d5ce8de0c99dbbc258072886d74c6f78535c2df75d757aa7",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot03_frame03_idx0383.png": "07152b1c3dc4b33a46edff49e31c7d63f614c46f0ce5546a5f6c8f2b51a2c235",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot04_frame00_idx0384.png": "ea544b8c74ad870a6a6451f1a474d8312a1a554d94f5f4e7772f97e7c4ec5455",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot04_frame01_idx0400.png": "3168355d9dc02f2ffe17e0a897af981c990e6de1071af4c6b073172f034356d4",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot04_frame02_idx0415.png": "48a0592a268732bc0598349767b16d6af6bcb37219aca6378e9604d087f39832",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot04_frame03_idx0431.png": "5b236b447b7eb2704dc007525057097eeaa254af3efb273db988a08b3a8502a2",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot05_frame00_idx0432.png": "5bb4b7c4093481e094e1df81161596de6a006a3e5176b808b61fd265bef0a751",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot05_frame01_idx0448.png": "99ed46398cedfb01976bc876e1f1194d365cba0d30d92879213c694a0d0c4bf7",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot05_frame02_idx0463.png": "2e58e26a70f318c1498a1380b7669a1696bc43fe5dffcdd11e2b210942065a35",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot05_frame03_idx0479.png": "49fb427479d3e1e8dfa07b458adb07652a8d5755b683b45b95f3d0fab5218566"
+  },
+  "image_paths": [
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot00_frame00_idx0000.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot00_frame01_idx0032.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot00_frame02_idx0063.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot00_frame03_idx0095.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot01_frame00_idx0096.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot01_frame01_idx0128.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot01_frame02_idx0159.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot01_frame03_idx0191.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot02_frame00_idx0192.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot02_frame01_idx0224.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot02_frame02_idx0255.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot02_frame03_idx0287.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot03_frame00_idx0288.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot03_frame01_idx0320.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot03_frame02_idx0351.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot03_frame03_idx0383.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot04_frame00_idx0384.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot04_frame01_idx0400.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot04_frame02_idx0415.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot04_frame03_idx0431.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot05_frame00_idx0432.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot05_frame01_idx0448.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot05_frame02_idx0463.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot05_frame03_idx0479.png"
+  ],
+  "parse_attempts": [],
+  "parsed": {
+    "global_invariant_additions": [
+      "The scene remains a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues."
+    ],
+    "kv_anchor_plan": [],
+    "per_shot_additions": [
+      {
+        "rationale": "Establishes the invariant to counteract any perceived temporal or environmental shifts in later shots.",
+        "shot_index": 0,
+        "text": "The scene is a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues."
+      },
+      {
+        "rationale": "Reinforces the invariant to maintain continuity despite changing background elements.",
+        "shot_index": 1,
+        "text": "The scene is a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues."
+      },
+      {
+        "rationale": "Reinforces the invariant to maintain continuity despite changing background elements.",
+        "shot_index": 2,
+        "text": "The scene is a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues."
+      },
+      {
+        "rationale": "Reinforces the invariant to maintain continuity despite changing background elements.",
+        "shot_index": 3,
+        "text": "The scene is a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues."
+      },
+      {
+        "rationale": "Reinforces the invariant to maintain continuity despite changing background elements.",
+        "shot_index": 4,
+        "text": "The scene is a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues."
+      },
+      {
+        "rationale": "Reinforces the invariant to maintain continuity despite changing background elements.",
+        "shot_index": 5,
+        "text": "The scene is a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues."
+      }
+    ],
+    "stop_rule": "one bounded refinement round",
+    "which_cut_broke": {
+      "cut_index": 3,
+      "how": "Scene shifts from intimate bedroom to morning routine with different lighting and attire, breaking continuity of the same tender moment."
+    }
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are the LOCAL Qwen3-VL optimizer, not the held-out judge.\nDiagnose which shot cut breaks cross-shot consistency and propose constrained fixes.\nReturn strict JSON only with this shape:\n{\n  \"which_cut_broke\": {\"cut_index\": integer_or_null, \"how\": \"short reason\"},\n  \"global_invariant_additions\": [\"additive invariant text\", ...],\n  \"per_shot_additions\": [{\"shot_index\": 0, \"text\": \"additive invariant text\", \"rationale\": \"why\"}, ...],\n  \"kv_anchor_plan\": [],\n  \"stop_rule\": \"one bounded refinement round\"\n}\nRules: ADD subject/scene invariants only. Do not delete or weaken per-shot camera/action.\nInvariant additions must RESTATE or SHARPEN the authored global invariant below.\nIf the rendered video contradicts that invariant (wrong clothing/color/object), that is a\ndefect to FIX: re-assert the authored invariant. NEVER codify the rendered appearance when\nit conflicts with the authored invariant.\nDo not collapse shots into near-identical text.\nKV anchors are chosen in a separate per-boundary pass; return an empty kv_anchor_plan.\nScene: indoor_tender_moment\nGlobal invariant: The same continuous indoor tender moment scene persists across every shot, with the same central subject or objects, the same environment, and coherent event continuity despite legitimate camera, framing, and action changes.\nSHOT 0: frames=[0, 32, 63, 95]; caption=The video clip presents a tender, emotionally charged moment between two individuals in an indoor urban setting, bathed in warm, golden-hour lighting that enhances the intimate atmosphere. The color tone is soft and muted, with a slight sepia-like warmth that suggests a cinematic, emotionally resonant style. The lighting is diffused, likely from large windows, creating gentle shadows and highlighting the characters\u2019 faces and clothing textures. The camera employs a shallow depth of field, keeping the subjects in sharp focus while softly blurring the background, which consists of a cityscape visible through a large window \u2014 suggesting a high-rise apartment or office. Buildings with muted tones and occasional warm lights hint at late afternoon or early evening, with no visible weather effects.\n\nTwo characters are present: a man and a woman. The woman, appearing in her late 30s to early 40s, has shoulder-length, wavy auburn hair and fair skin. Her expression is tender and contemplative, with slightly parted lips and eyes gazing downward, conveying vulnerability or quiet emotion. She wears a light beige or cream-colored blouse, suggesting a professional or semi-formal setting. The man, seen from behind, is dressed in a gray suit with a white collared shirt, indicating a formal or business context. His short, neatly trimmed brown hair and posture suggest he is leaning into the woman, offering comfort or solace.\n\nThe scene is tightly framed in a medium close-up, focusing on the woman\u2019s face and the man\u2019s shoulder. As the clip progresses, the woman slowly turns her head slightly toward the man, her eyes briefly closing as if savoring the moment or absorbing comfort. Her subtle movements are slow and deliberate, emphasizing emotional depth. The man remains still, his back turned to the camera, reinforcing the intimate, private nature of the interaction.\n\nThe camera remains static, maintaining an eye-level angle that captures the emotional intimacy from a neutral, observational perspective. There is minimal movement, allowing the viewer to absorb the stillness and the quiet tension of the moment. The shallow depth of field ensures that the background cityscape remains out of focus, enhancing the sense of isolation and intimacy between the two. The overall atmosphere is subdued and introspective, suggesting a moment of emotional connection, support, or reconciliation. The lighting, composition, and pacing all converge to convey a narrative of quiet vulnerability and human connection in an urban environment.\nSHOT 1: frames=[96, 128, 159, 191]; caption=The video is shot in a warm, muted color tone, dominated by soft beige and brown hues, suggesting an intimate, emotionally charged atmosphere. The lighting is soft and diffused, likely from interior sources, casting gentle shadows and enhancing the romantic and tender mood. The style is cinematic, with a shallow depth of field that keeps the focus tightly on the couple while softly blurring the background. The camera employs a medium close-up shot, maintaining eye-level framing to emphasize the emotional connection between the characters.\nThe scene takes place indoors, likely in a modern, upscale setting such as a gallery or private residence, as indicated by the abstract artwork visible on the wall behind them. The environment is minimalistic, with neutral-toned walls and subtle architectural details, reinforcing the intimacy of the moment. The time of day is ambiguous but appears to be evening or late afternoon, given the warm, subdued lighting.\n\nTwo characters are present: a man and a woman. The man appears middle-aged, with short, neatly styled brown hair and a clean-shaven face. He is dressed in a dark gray suit with a white shirt and black tie, suggesting a formal or professional context. The woman, also middle-aged, has shoulder-length wavy auburn hair and is wearing a light-colored blouse. Her expression is tender and emotive, conveying affection and vulnerability.\n\nThe man initiates the interaction by leaning down to kiss the woman\u2019s neck, then gently cradles her face with one hand while the other rests on her shoulder. His movements are slow and deliberate, indicating deep affection. The woman tilts her head back slightly, closing her eyes in response, and smiles softly. Their faces are close, almost touching, as they share an intimate moment. The camera remains steady, capturing their interaction from a slightly elevated angle, enhancing the emotional intensity.\n\nThe background artwork remains out of focus, ensuring the viewer\u2019s attention remains on the couple. The overall narrative is one of emotional intimacy and connection, conveyed through subtle gestures and expressions. The camera\u2019s shallow depth of field and close framing amplify the personal, private nature of the moment, suggesting a pivotal emotional exchange between the two characters. The movement is minimal but meaningful, with slow, deliberate motions that underscore the tenderness and significance of their interaction.\nSHOT 2: frames=[192, 224, 255, 287]; caption=The video unfolds in a warmly lit, intimate indoor setting, likely a hotel room, exuding a soft, golden hue that suggests evening or nighttime. The lighting is gentle and ambient, casting a romantic and tender atmosphere. The style is cinematic, with a shallow depth of field that keeps focus tightly on the characters while softly blurring the background. The camera work is fluid, moving subtly to follow the emotional progression of the scene.\nThe scene begins with a close-up of a man and woman embracing tenderly. The man, in his late 30s to early 40s, has short, neatly styled brown hair and wears a sharp gray suit with a white shirt and black tie. His expression is affectionate and gentle. The woman, also in her late 30s, has shoulder-length wavy auburn hair and is dressed in a soft beige blouse. She leans into him, her eyes closed, conveying vulnerability and intimacy. Their foreheads touch as they share a loving moment, then they kiss passionately, her arms wrapping around his neck while his hands cradle her waist. The camera pans slightly to follow their movement as they turn toward the bed, maintaining close framing.\n\nAs the couple moves toward the bed, the camera widens slightly to reveal the room\u2019s details: a neatly made bed with white linens, striped pillows, and a dark headboard. A black suit jacket and a small brown handbag lie on the bed\u2019s edge, indicating recent arrival or a hurried transition. The man gently lowers the woman onto the bed, where she lies down, her head resting on a pillow. The camera then zooms in for a close-up of her face as she settles into sleep, her expression serene and peaceful, eyes gently closed. The man\u2019s presence is implied but not shown, preserving the intimate, quiet moment. The scene ends with her calm, undisturbed slumber, suggesting exhaustion or emotional release after their passionate encounter. The camera remains steady, emphasizing the stillness and tranquility of the moment.\n\nThe atmosphere is one of romantic tenderness, transitioning from passionate intimacy to quiet repose. The composition, lighting, and camera movement all serve to enhance the emotional depth and private nature of the moment, creating a visually and emotionally rich experience.\nSHOT 3: frames=[288, 320, 351, 383]; caption=The video opens with a warm, soft-lit indoor scene, bathed in a gentle, golden-toned ambiance that suggests early morning or late afternoon. The lighting is diffused, casting subtle shadows and creating a tranquil, intimate atmosphere. The camera begins with a close-up of a woman sleeping peacefully on her side, her head resting on a dark gray pillow. She has shoulder-length auburn hair, and her face is relaxed, eyes closed, with a serene expression. She\u2019s covered by a white duvet, and her bare shoulders are visible, suggesting she\u2019s wearing a light-colored tank top or camisole. The bed features a striped beige-and-white headboard, and a second pillow with a matching pattern lies behind her.\nAs the camera pans right, it reveals more of the room \u2014 beige curtains partially drawn, allowing soft daylight to filter through sheer white drapes behind them. A modern wall-mounted lamp with a cylindrical white shade is visible beside the bed, contributing to the room\u2019s calm aesthetic. The camera then shifts focus to a man standing near the window, now in a medium shot. He appears to be in his late 30s to early 40s, with short, neatly styled brown hair and a calm, focused expression. He\u2019s wearing a white, long-sleeved button-up shirt, unbuttoned at the top, revealing a light chest of hair. His hands are actively buttoning his shirt as he moves slightly, adjusting his posture. A silver ring is visible on his left ring finger, and a watch rests on his left wrist. He stands slightly angled to the camera, as if preparing to leave the room or step into the day.\n\nThe room\u2019s decor is minimalist and modern, with neutral tones and clean lines. The camera remains steady, capturing the quiet, routine moment \u2014 the woman sleeping and the man preparing for the day \u2014 with a shallow depth of field that keeps the focus on the characters while softly blurring the background. The mood is calm, domestic, and introspective, with a subtle narrative of morning rituals and quiet intimacy. The camera\u2019s movement is smooth and deliberate, enhancing the sense of stillness and transition from rest to activity. There\u2019s no external motion except for the man\u2019s slow, methodical buttoning, reinforcing the serene, unhurried pace of the scene. The overall style is cinematic and realistic, with a focus on emotional subtlety and environmental harmony.\nSHOT 4: frames=[384, 400, 415, 431]; caption=The video is bathed in warm, golden-hour lighting, casting a soft, diffused glow that suggests late afternoon or early evening. The atmosphere is calm, intimate, and slightly introspective, with a muted color palette dominated by beige, cream, and soft whites, enhancing the serene, domestic feel. The style is realistic with a touch of cinematic elegance, employing medium shots and shallow depth of field to focus attention on the subject while gently blurring the background.\nThe scene is set indoors, likely in a modern hotel room or upscale bedroom. Behind the subject are floor-to-ceiling windows draped with sheer white curtains and heavier, taupe-colored drapes on the left. A contemporary wall-mounted lamp with a cylindrical white shade rests beside the window, subtly contributing to the ambient lighting. The environment is minimalistic and uncluttered, emphasizing tranquility.\n\nA single male character, appearing to be in his late 40s to early 50s, is the focal point. He has short, neatly styled brown hair, a clean-shaven face, and a composed, neutral expression. His ethnicity appears Caucasian. He wears a crisp, long-sleeved white button-down shirt, unbuttoned at the collar, revealing a sliver of chest. A simple silver wedding band is visible on his left ring finger. His posture is upright and deliberate.\n\nIn the first shot, he stands centered, buttoning his shirt with both hands, his gaze focused downward. As the video progresses, he begins to walk slowly toward the right side of the frame, maintaining his deliberate pace. His movement is smooth and unhurried, suggesting a quiet transition or preparation for an event. The camera remains stationary, capturing him in a medium shot that frames his torso and upper legs, allowing viewers to observe his actions clearly while keeping the environment contextually present. The depth of field remains shallow, keeping the subject in sharp focus while softly blurring the background curtains and lamp. The overall narrative conveys a sense of quiet readiness or introspection, possibly before a significant moment. There is no interaction with other characters or objects, reinforcing the solitary, contemplative mood. The lighting remains consistent, and no natural elements like wind or rain are present. The composition remains balanced, with the subject\u2019s movement creating subtle dynamism within the otherwise still frame.\nSHOT 5: frames=[432, 448, 463, 479]; caption=The video opens with a warm, slightly golden-hued interior lighting, casting soft shadows across a modern, minimalist living space. The atmosphere is calm and domestic, with neutral beige and white tones dominating the walls and furniture. The scene is indoors, likely a hotel room or upscale apartment, featuring contemporary decor. Natural light appears to filter gently through sheer curtains, suggesting either late afternoon or early evening. The environment is tidy and composed, with a sleek white console table, a flat-screen TV, and a stylish black lamp.\nA single male character, appearing in his late 30s to early 40s, enters the frame from the left. He has short, neatly styled dark hair and wears a crisp white button-down shirt with dark trousers, suggesting a professional or semi-formal setting. His expression is focused, perhaps slightly hurried as he moves. He walks toward the console table, bends forward slightly, and reaches toward the floor near the table\u2019s base. His posture indicates he\u2019s retrieving or adjusting something out of view. The camera remains stationary, capturing a medium shot that frames him from the waist up, allowing full visibility of his movements.\n\nKey objects include the flat-screen TV (black, mounted on a white console), a black cylindrical lamp with a metal base, a white coffee machine, and a few small items like cups and pens on the console. A dark garment lies on a chair in the background, and a door frame is visible to the right. The depth of field is shallow, keeping the man and console table in sharp focus while softly blurring the background elements.\n\nThe camera maintains an eye-level perspective throughout, enhancing the realism and intimacy of the scene. The man\u2019s movement is deliberate, slow, yet purposeful\u2014no frantic motion, but rather a quiet, task-oriented action. There\u2019s no interaction with others, and no external environmental elements like wind or rain are present. The overall narrative suggests routine or preparation, perhaps the man tidying up or retrieving something essential. The tone is understated, cinematic, and grounded in realism, with a focus on the quiet rhythm of daily life.",
+            "type": "text"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "response_format": {
+      "json_schema": {
+        "name": "decision",
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "global_invariant_additions": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "kv_anchor_plan": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "boundary_shot_index": {
+                    "type": "integer"
+                  },
+                  "decoded_frame_indices": {
+                    "items": {
+                      "type": "integer"
+                    },
+                    "type": "array"
+                  },
+                  "rationale": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "boundary_shot_index",
+                  "decoded_frame_indices",
+                  "rationale"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "per_shot_additions": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "rationale": {
+                    "type": "string"
+                  },
+                  "shot_index": {
+                    "type": "integer"
+                  },
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "shot_index",
+                  "text",
+                  "rationale"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "stop_rule": {
+              "type": "string"
+            },
+            "which_cut_broke": {
+              "additionalProperties": false,
+              "properties": {
+                "cut_index": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "how": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "cut_index",
+                "how"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "which_cut_broke",
+            "global_invariant_additions",
+            "per_shot_additions",
+            "kv_anchor_plan",
+            "stop_rule"
+          ],
+          "type": "object"
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"which_cut_broke\": {\n    \"cut_index\": 3,\n    \"how\": \"Scene shifts from intimate bedroom to morning routine with different lighting and attire, breaking continuity of the same tender moment.\"\n  },\n  \"global_invariant_additions\": [\n    \"The scene remains a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues.\"\n  ],\n  \"per_shot_additions\": [\n    {\n      \"shot_index\": 0,\n      \"text\": \"The scene is a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues.\",\n      \"rationale\": \"Establishes the invariant to counteract any perceived temporal or environmental shifts in later shots.\"\n    },\n    {\n      \"shot_index\": 1,\n      \"text\": \"The scene is a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues.\",\n      \"rationale\": \"Reinforces the invariant to maintain continuity despite changing background elements.\"\n    },\n    {\n      \"shot_index\": 2,\n      \"text\": \"The scene is a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues.\",\n      \"rationale\": \"Reinforces the invariant to maintain continuity despite changing background elements.\"\n    },\n    {\n      \"shot_index\": 3,\n      \"text\": \"The scene is a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues.\",\n      \"rationale\": \"Reinforces the invariant to maintain continuity despite changing background elements.\"\n    },\n    {\n      \"shot_index\": 4,\n      \"text\": \"The scene is a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues.\",\n      \"rationale\": \"Reinforces the invariant to maintain continuity despite changing background elements.\"\n    },\n    {\n      \"shot_index\": 5,\n      \"text\": \"The scene is a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues.\",\n      \"rationale\": \"Reinforces the invariant to maintain continuity despite changing background elements.\"\n    }\n  ],\n  \"kv_anchor_plan\": [],\n  \"stop_rule\": \"one bounded refinement round\"\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1782975446,
+    "id": "98198c5e1a644b0f9bcaec10261f6b43",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 526,
+      "prompt_tokens": 24409,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 24935
+    }
+  },
+  "schema_enforced": true,
+  "wall_clock_seconds": 30.130794048309326
+}

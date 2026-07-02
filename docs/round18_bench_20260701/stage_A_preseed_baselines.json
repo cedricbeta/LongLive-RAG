@@ -1,0 +1,7 @@
+{
+  "admission_json_override": "docs/benchmark_hard_multishot/stage_A_drift_audit.json",
+  "policy": "stage-A skipped; using explicit admission_json_override",
+  "requested_seeds": [
+    0
+  ]
+}

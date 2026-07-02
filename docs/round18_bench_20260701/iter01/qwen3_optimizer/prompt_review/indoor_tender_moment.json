@@ -1,0 +1,156 @@
+{
+  "cache_fingerprint": "794228c14ee45604d6990a635387c6e47d040d947e0217a54b0d7bf5ec18dffd",
+  "image_hashes": {},
+  "image_paths": [],
+  "parse_attempts": [],
+  "parsed": {
+    "verdicts": [
+      {
+        "index": 0,
+        "reason": "Consistent with authored invariant: same continuous indoor tender moment scene persists across every shot, with the same central subject or objects, the same environment, and coherent event continuity despite legitimate camera, framing, and action changes. The addition sharpens but does not contradict.",
+        "target": "global",
+        "text": "The scene remains a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues.",
+        "verdict": "keep"
+      },
+      {
+        "index": 1,
+        "reason": "Consistent with authored invariant. Repetition across per_shot entries is acceptable as the invariant applies uniformly to all shots. No contradiction or drift.",
+        "target": "per_shot",
+        "text": "The scene is a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues.",
+        "verdict": "keep"
+      },
+      {
+        "index": 2,
+        "reason": "Consistent with authored invariant. Repetition across per_shot entries is acceptable as the invariant applies uniformly to all shots. No contradiction or drift.",
+        "target": "per_shot",
+        "text": "The scene is a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues.",
+        "verdict": "keep"
+      },
+      {
+        "index": 3,
+        "reason": "Consistent with authored invariant. Repetition across per_shot entries is acceptable as the invariant applies uniformly to all shots. No contradiction or drift.",
+        "target": "per_shot",
+        "text": "The scene is a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues.",
+        "verdict": "keep"
+      },
+      {
+        "index": 4,
+        "reason": "Consistent with authored invariant. Repetition across per_shot entries is acceptable as the invariant applies uniformly to all shots. No contradiction or drift.",
+        "target": "per_shot",
+        "text": "The scene is a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues.",
+        "verdict": "keep"
+      },
+      {
+        "index": 5,
+        "reason": "Consistent with authored invariant. Repetition across per_shot entries is acceptable as the invariant applies uniformly to all shots. No contradiction or drift.",
+        "target": "per_shot",
+        "text": "The scene is a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues.",
+        "verdict": "keep"
+      }
+    ]
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are an independent REVIEWER of proposed prompt edits (not their author).\nThe authored invariants below are the ground truth of what the video MUST show.\nScene: indoor_tender_moment\nAuthored global caption: One continuous indoor tender moment multishot scene. The same central subject, setting, material identity, lighting family, and event continuity should carry across all camera cuts. Source caption evidence: The video clip presents a tender, emotionally charged moment between two individuals in an indoor urban setting, bathed in warm, golden-hour lighting that enhances the intimate atmosphere. The color tone is soft and m...\nAuthored invariant: The same continuous indoor tender moment scene persists across every shot, with the same central subject or objects, the same environment, and coherent event continuity despite legitimate camera, framing, and action changes.\n\nProposed additions:\n- [global #0] The scene remains a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues.\n- [per_shot #0 shot=0] The scene is a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues.\n- [per_shot #1 shot=1] The scene is a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues.\n- [per_shot #2 shot=2] The scene is a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues.\n- [per_shot #3 shot=3] The scene is a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues.\n- [per_shot #4 shot=4] The scene is a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues.\n- [per_shot #5 shot=5] The scene is a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues.\n\nFor EACH addition return a verdict:\n- keep: consistent with the authored invariants (may sharpen them).\n- rewrite: contradicts an authored invariant (e.g. different clothing/color/object than\n  authored) or drifts toward what a flawed render showed; provide `text` restating the\n  AUTHORED invariant for that aspect instead.\n- drop: unrelated to invariants, collapses shot diversity, or is unsalvageable.\nFor keep/drop verdicts set `text` to the original addition text unchanged.\nReturn strict JSON: {\"verdicts\": [{\"index\": 0, \"target\": \"global\"|\"per_shot\",\n\"verdict\": \"keep\"|\"drop\"|\"rewrite\", \"text\": \"...\", \"reason\": \"...\"}]}\nCover every addition exactly once.",
+            "type": "text"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "response_format": {
+      "json_schema": {
+        "name": "decision",
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "verdicts": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "index": {
+                    "type": "integer"
+                  },
+                  "reason": {
+                    "type": "string"
+                  },
+                  "target": {
+                    "enum": [
+                      "global",
+                      "per_shot"
+                    ],
+                    "type": "string"
+                  },
+                  "text": {
+                    "type": "string"
+                  },
+                  "verdict": {
+                    "enum": [
+                      "keep",
+                      "drop",
+                      "rewrite"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "index",
+                  "target",
+                  "verdict",
+                  "text",
+                  "reason"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "verdicts"
+          ],
+          "type": "object"
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"verdicts\": [\n    {\n      \"index\": 0,\n      \"target\": \"global\",\n      \"verdict\": \"keep\",\n      \"text\": \"The scene remains a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues.\",\n      \"reason\": \"Consistent with authored invariant: same continuous indoor tender moment scene persists across every shot, with the same central subject or objects, the same environment, and coherent event continuity despite legitimate camera, framing, and action changes. The addition sharpens but does not contradict.\"\n    },\n    {\n      \"index\": 1,\n      \"target\": \"per_shot\",\n      \"verdict\": \"keep\",\n      \"text\": \"The scene is a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues.\",\n      \"reason\": \"Consistent with authored invariant. Repetition across per_shot entries is acceptable as the invariant applies uniformly to all shots. No contradiction or drift.\"\n    },\n    {\n      \"index\": 2,\n      \"target\": \"per_shot\",\n      \"verdict\": \"keep\",\n      \"text\": \"The scene is a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues.\",\n      \"reason\": \"Consistent with authored invariant. Repetition across per_shot entries is acceptable as the invariant applies uniformly to all shots. No contradiction or drift.\"\n    },\n    {\n      \"index\": 3,\n      \"target\": \"per_shot\",\n      \"verdict\": \"keep\",\n      \"text\": \"The scene is a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues.\",\n      \"reason\": \"Consistent with authored invariant. Repetition across per_shot entries is acceptable as the invariant applies uniformly to all shots. No contradiction or drift.\"\n    },\n    {\n      \"index\": 4,\n      \"target\": \"per_shot\",\n      \"verdict\": \"keep\",\n      \"text\": \"The scene is a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues.\",\n      \"reason\": \"Consistent with authored invariant. Repetition across per_shot entries is acceptable as the invariant applies uniformly to all shots. No contradiction or drift.\"\n    },\n    {\n      \"index\": 5,\n      \"target\": \"per_shot\",\n      \"verdict\": \"keep\",\n      \"text\": \"The scene is a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues.\",\n      \"reason\": \"Consistent with authored invariant. Repetition across per_shot entries is acceptable as the invariant applies uniformly to all shots. No contradiction or drift.\"\n    }\n  ]\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1782975464,
+    "id": "70e749c8cb0b42e3b798c96db6432d25",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 616,
+      "prompt_tokens": 620,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 1236
+    }
+  },
+  "schema_enforced": true,
+  "wall_clock_seconds": 18.63400673866272
+}

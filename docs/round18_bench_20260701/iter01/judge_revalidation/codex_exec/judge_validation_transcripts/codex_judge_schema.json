@@ -1,0 +1,213 @@
+{
+  "type": "object",
+  "properties": {
+    "subject_identity_preserved": {
+      "type": "object",
+      "properties": {
+        "score": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "verdict": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "rationale": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "score",
+        "verdict",
+        "rationale"
+      ],
+      "additionalProperties": false
+    },
+    "background_coherent": {
+      "type": "object",
+      "properties": {
+        "score": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "verdict": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "rationale": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "score",
+        "verdict",
+        "rationale"
+      ],
+      "additionalProperties": false
+    },
+    "per_shot_adherence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "shot_index": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "score": {
+            "type": "number",
+            "minimum": 0.0,
+            "maximum": 1.0
+          },
+          "issue": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "shot_index",
+          "score",
+          "issue"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "inter_shot_diversity": {
+      "type": "object",
+      "properties": {
+        "score": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "verdict": {
+          "type": "string",
+          "enum": [
+            "collapsed",
+            "borderline",
+            "healthy"
+          ]
+        },
+        "rationale": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "score",
+        "verdict",
+        "rationale"
+      ],
+      "additionalProperties": false
+    },
+    "motion_continuity": {
+      "type": "object",
+      "properties": {
+        "score": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "verdict": {
+          "type": "string",
+          "enum": [
+            "frozen",
+            "borderline",
+            "active"
+          ]
+        },
+        "rationale": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "score",
+        "verdict",
+        "rationale"
+      ],
+      "additionalProperties": false
+    },
+    "which_cut_broke": {
+      "type": "object",
+      "properties": {
+        "cut_index": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "how": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "cut_index",
+        "confidence",
+        "how"
+      ],
+      "additionalProperties": false
+    },
+    "cheat_flags": {
+      "type": "object",
+      "properties": {
+        "copy_cheat": {
+          "type": "boolean"
+        },
+        "freeze_cheat": {
+          "type": "boolean"
+        },
+        "prompt_collapse": {
+          "type": "boolean"
+        },
+        "position_bias_suspected": {
+          "type": "boolean"
+        },
+        "rationale": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "copy_cheat",
+        "freeze_cheat",
+        "prompt_collapse",
+        "position_bias_suspected",
+        "rationale"
+      ],
+      "additionalProperties": false
+    },
+    "overall_consistency_score": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0
+    }
+  },
+  "required": [
+    "subject_identity_preserved",
+    "background_coherent",
+    "per_shot_adherence",
+    "inter_shot_diversity",
+    "motion_continuity",
+    "which_cut_broke",
+    "cheat_flags",
+    "overall_consistency_score"
+  ],
+  "additionalProperties": false
+}

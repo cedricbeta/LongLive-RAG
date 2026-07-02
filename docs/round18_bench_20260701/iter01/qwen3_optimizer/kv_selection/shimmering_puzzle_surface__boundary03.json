@@ -1,0 +1,280 @@
+{
+  "cache_fingerprint": "883baae3964d54e81784a13f0d5cf554d9089903f3bc93326be47951f7321fcb",
+  "image_hashes": {
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot00_frame00_idx0000.png": "da0d7ff5be5c212e9e72c0aa0adac3fa64be56701508d249074297a2bc3a04ba",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot00_frame01_idx0014.png": "9f71736d690e0e6c4715e4d86629fe51f7d530e28730ddb4eaa6a8b51487dbfb",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot00_frame02_idx0027.png": "1352d4002a14501a3882fcbd627e5b24a6d5d69bb94bce301df9891db157ac88",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot00_frame03_idx0041.png": "c8478950c705858a8a0affd878e22940f1ad905b9e874a0bef9f6cb95a39cfd5",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot00_frame04_idx0054.png": "8a182675e719d092b72186e8c8116ca0cd5207cf402f1fc921c51849bac772b9",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot00_frame05_idx0068.png": "c32aee78c7cfaec2c94ec59880d0810ca02ecab1225845f7428b56f700819db2",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot00_frame06_idx0081.png": "c2744eb7e66d4d7f05c11b33255137d8079d753d3f553c3eb212356615cbbaf3",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot00_frame07_idx0095.png": "430bcff9974fd95394d8bc8dbc81f927aeba2b07fd23cd862eab2bff8f3106db",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot01_frame00_idx0096.png": "6b2cf21c51693ab9e31e4fbb47b68beeef49eb5809a601b93159f421c03c0688",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot01_frame01_idx0110.png": "2a48aa87482142fe87e518795d465551a8dd84ab000497c36d9891db2b40933a",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot01_frame02_idx0123.png": "8882f79986641a2bcae9d8a5e7916419567ecdc3a39767f0c4bbc28e37fdfe61",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot01_frame03_idx0137.png": "0abb3911c58cd14308fb6bcdfb049d7a005b3b525dc8c1bf2b6d4462fa7ce966",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot01_frame04_idx0150.png": "b4af26aafa93d40d882f1601eb12fc6bb10a28488f74f3ca8688006e8b1fd41d",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot01_frame05_idx0164.png": "33e22bb984480b61a33f71c738369f9cbb11c5f499ad6660b83a29e3d460e909",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot01_frame06_idx0177.png": "630db4e5ed51957e433eca528bfcd8f00a715e47fbe721de83a34eb2505c7d86",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot01_frame07_idx0191.png": "6fedbe7c7daf845d0ce62ba6fc4d9f6913dfe67e05cbeb4d5553ff29d8a199a8",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot02_frame00_idx0192.png": "ba6363c933fd7ef6a2244c0ed4b2f002ce66e6b4409e739b61bbcfd91b392071",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot02_frame01_idx0206.png": "8c941d90fc563431edecee9248e0ea82f90392a84fd335641c84ec7b746ba200",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot02_frame02_idx0219.png": "9836bd005e2e3533b558d5f125b1da90a1df593d001be98912e16844abf30e82",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot02_frame03_idx0233.png": "256b7a9e9f5df31ee545600191f67862068c58275c1d738ce13ded27a41736aa",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot02_frame04_idx0246.png": "9d3885b57c6336e2f954f0ffa2ba6f219d1f5b4fd7d6001569c44151e5c33840",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/shimmering_puzzle_surface/shot03_frame00_idx0288.png": "8741349ea534514d4398f19206e8630def3fd7212c56b119f8b6af7a7ed6c472",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/shimmering_puzzle_surface/shot03_frame01_idx0320.png": "06e7a424c78f01c8ebde8acd048b71a3b2e6bc936d895ac23672b1c084700349"
+  },
+  "image_paths": [
+    "docs/round18_bench_20260701/iter01/optimizer_frames/shimmering_puzzle_surface/shot03_frame00_idx0288.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/shimmering_puzzle_surface/shot03_frame01_idx0320.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot00_frame00_idx0000.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot00_frame01_idx0014.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot00_frame02_idx0027.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot00_frame03_idx0041.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot00_frame04_idx0054.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot00_frame05_idx0068.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot00_frame06_idx0081.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot00_frame07_idx0095.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot01_frame00_idx0096.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot01_frame01_idx0110.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot01_frame02_idx0123.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot01_frame03_idx0137.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot01_frame04_idx0150.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot01_frame05_idx0164.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot01_frame06_idx0177.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot01_frame07_idx0191.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot02_frame00_idx0192.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot02_frame01_idx0206.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot02_frame02_idx0219.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot02_frame03_idx0233.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/shimmering_puzzle_surface/shot02_frame04_idx0246.png"
+  ],
+  "parse_attempts": [],
+  "parsed": {
+    "rationale": "These frames show the Santa Claus figure in clear, unoccluded medium close-up shots, displaying his full costume (red suit, white fur trim, green belt with yellow buckle, red hat with white trim) and facial features (white beard, black eyes, neutral to surprised expression). The background consistently shows the decorated Christmas tree with gold tinsel and red ornaments, and the grey floor with scattered green puzzle pieces, matching the scene layout described in the entering shot 3 caption. These frames best pin the subject identity and scene context for continuity across the cut.",
+    "selected_frame_indices": [
+      192,
+      206,
+      219,
+      233
+    ],
+    "skip": false
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are the LOCAL Qwen3-VL KV-anchor selector.\nTask: pick which PAST decoded frames get re-injected into the KV cache at the cut into shot 3,\nso the subject and scene identity stay consistent across the cut.\nScene: shimmering_puzzle_surface\nAuthored invariant: The same coherent shimmering puzzle surface remains on the same reflective tabletop with stable interlocking pieces and consistent highlights.\nEntering shot 3 caption: The video presents a festive, animated scene with a warm, slightly saturated color tone, dominated by rich reds, greens, and whites, evoking a cheerful holiday atmosphere. Lighting is soft and diffused, suggesting an indoor or artificially lit environment, possibly during evening or nighttime, with no visible natural light sources. The style is cartoonish and stylized, with smooth, rounded character designs and exaggerated expressions typical of 3D animation. The camera remains relatively static, offering a medium close-up of the character, with shallow depth of field blurring the background slightly to emphasize the subject.\nThe scene is set indoors, likely in a decorated room, with a large, festively adorned Christmas tree in the background. The tree is green, adorned with glowing string lights, colorful ornaments, and candy cane decorations, creating a vibrant holiday ambiance. The background is softly blurred, suggesting a cozy, domestic setting, possibly a living room or festive hall.\n\nThe central character is a male animated figure dressed as Santa Claus. He appears middle-aged, with fair skin, dark hair peeking beneath a red Santa hat with a white trim and pom-pom. He wears a traditional red suit with white fur trim and a white scarf. His facial expression is initially neutral but shifts to one of mild surprise or concern as he holds a black telephone receiver to his ear. His eyes widen slightly, and his eyebrows raise, indicating he is reacting to something unexpected or urgent on the other end of the line. His posture is upright, and he stands centered in the frame, facing slightly toward the camera.\n\nIn the first frame, Santa is holding the phone with his right hand, and the camera focuses tightly on his upper body and face. As the video progresses, he begins to turn his head slightly to the left, suggesting he is listening intently or responding. The camera remains steady, maintaining a medium close-up shot that captures his facial micro-expressions and hand movements. The phone is held steady, indicating a conversation rather than an action requiring movement. There is no significant motion in the background; the Christmas tree remains static, reinforcing the focus on Santa\u2019s reaction. The overall mood is one of mild suspense or curiosity, as if he is receiving critical or surprising news during the holiday season. The shot composition is balanced, with Santa occupying the center of the frame, and the blurred Christmas tree providing context without distraction. The depth of field enhances the emotional focus on his reaction, while the warm color palette and soft lighting maintain a festive, albeit slightly tense, atmosphere.\n\nQUERY images (start of shot 3, what the transition must stay consistent with):\n- image Q0: decoded frame 288\n- image Q1: decoded frame 320\n\nCANDIDATE anchor images (past frames outside the live attention window):\n- image C0: decoded frame 0\n- image C1: decoded frame 14\n- image C2: decoded frame 27\n- image C3: decoded frame 41\n- image C4: decoded frame 54\n- image C5: decoded frame 68\n- image C6: decoded frame 81\n- image C7: decoded frame 95\n- image C8: decoded frame 96\n- image C9: decoded frame 110\n- image C10: decoded frame 123\n- image C11: decoded frame 137\n- image C12: decoded frame 150\n- image C13: decoded frame 164\n- image C14: decoded frame 177\n- image C15: decoded frame 191\n- image C16: decoded frame 192\n- image C17: decoded frame 206\n- image C18: decoded frame 219\n- image C19: decoded frame 233\n- image C20: decoded frame 246\n\nChoose up to 4 candidate frames whose CONTENT best pins the subject identity\n(face/clothing/markings) and scene layout for this specific cut.\nJudge by what the images show, not by position in the video: an early frame is NOT\nautomatically better. Prefer frames with a clear, unoccluded view of the subject as it\nshould appear entering this shot. Skip only if no candidate shows the relevant subject.\nReturn strict JSON: {\"selected_frame_indices\": [..], \"skip\": false, \"rationale\": \"content-based reason naming what the chosen frames show\"}\nValid frame indices: [0, 14, 27, 41, 54, 68, 81, 95, 96, 110, 123, 137, 150, 164, 177, 191, 192, 206, 219, 233, 246]",
+            "type": "text"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "response_format": {
+      "json_schema": {
+        "name": "decision",
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "rationale": {
+              "type": "string"
+            },
+            "selected_frame_indices": {
+              "items": {
+                "type": "integer"
+              },
+              "type": "array"
+            },
+            "skip": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "selected_frame_indices",
+            "skip",
+            "rationale"
+          ],
+          "type": "object"
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"selected_frame_indices\": [192, 206, 219, 233],\n  \"skip\": false,\n  \"rationale\": \"These frames show the Santa Claus figure in clear, unoccluded medium close-up shots, displaying his full costume (red suit, white fur trim, green belt with yellow buckle, red hat with white trim) and facial features (white beard, black eyes, neutral to surprised expression). The background consistently shows the decorated Christmas tree with gold tinsel and red ornaments, and the grey floor with scattered green puzzle pieces, matching the scene layout described in the entering shot 3 caption. These frames best pin the subject identity and scene context for continuity across the cut.\"\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1782976380,
+    "id": "17353c14634642cf82df96efe992686b",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 154,
+      "prompt_tokens": 21418,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 21572
+    }
+  },
+  "schema_enforced": true,
+  "wall_clock_seconds": 21.726551294326782
+}

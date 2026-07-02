@@ -1,0 +1,214 @@
+{
+  "cache_fingerprint": "cfdbbf7037498c549afa139a5c314dc04232e813822e705abde4d15fc8a0fadc",
+  "image_hashes": {
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot00_frame00_idx0000.png": "0cb95f1d486909881d7613ecb674af903ef005a1a3df9b174580a694ca50cd4a",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot00_frame01_idx0014.png": "43b929cf8335f4f318a3c911e7d2b830ccad7533583a5fb0bc9d7dacdfde4a42",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot00_frame02_idx0027.png": "f0e634132ecd58577a374fd7c99754ac5ad93aa26a43ef58f67b56a5a22e7bb8",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot00_frame03_idx0041.png": "96db99445d9e034e644966fa60de8129b95ff924a4a55427935a38b43c32c80b",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot00_frame04_idx0054.png": "fae8908889f8ebe4e541d34c43d3cc7102f7d76eb8badac9a889e7d0238e3dc0",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot00_frame05_idx0068.png": "7489b84fda90f1e32fc88d7a4b3264ab7879bb9523571144b3e32a033c26ad1a",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot00_frame06_idx0081.png": "c9c456fd5c3cab65f03886478a7e282165ce32bc98cc0436eb2423765a8de048",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot00_frame07_idx0095.png": "71c16d73d64fba6c8802857786132ff6a15d2657ed6816c054818ef1d9b7f20f",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot01_frame00_idx0096.png": "0c1d961e8b0e3f7b20d2ddd28a233fed36396ca29db19f95b05ed147b5b5c2b1",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot01_frame01_idx0110.png": "002752b4b5e1f421ec6e3f22db1e83206d89bf271fc8a2651b89e021bae2f8e2",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot01_frame02_idx0123.png": "ba86211ac570502f3206f45f32ea37c505ff8eacdc9840bec9635944457582d0",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot01_frame03_idx0137.png": "46413ba73e322e30ae37f1d46c6accd40497e6d241a1137b1c50d58c1b65a13e",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot01_frame04_idx0150.png": "7cce81a2a941f4ff71d85a990cf6fa54626393dc830775624655745cb98219ab",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot02_frame00_idx0192.png": "eaf3d21a1763e5947bf6a1a1adce42f4525d685c7b9170a5851d8400a7e4bcab",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot02_frame01_idx0208.png": "00dcd6e780c89aefff222cf5acd14fa7fbf0f3fae9b92ccdac8a1ede3fcdf7f3"
+  },
+  "image_paths": [
+    "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot02_frame00_idx0192.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot02_frame01_idx0208.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot00_frame00_idx0000.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot00_frame01_idx0014.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot00_frame02_idx0027.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot00_frame03_idx0041.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot00_frame04_idx0054.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot00_frame05_idx0068.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot00_frame06_idx0081.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot00_frame07_idx0095.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot01_frame00_idx0096.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot01_frame01_idx0110.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot01_frame02_idx0123.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot01_frame03_idx0137.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot01_frame04_idx0150.png"
+  ],
+  "parse_attempts": [],
+  "parsed": {
+    "rationale": "Frames 137 and 150 show the brown bear in the river with a clear, unoccluded view of its face and upper body, consistent with the subject identity and scene layout described in the entering shot 2 caption. The bear is shown drinking water, with water dripping from its mouth, and is surrounded by the same shallow river and green vegetation. These frames provide strong visual anchors for maintaining continuity of the subject and environment across the cut.",
+    "selected_frame_indices": [
+      137,
+      150
+    ],
+    "skip": false
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are the LOCAL Qwen3-VL KV-anchor selector.\nTask: pick which PAST decoded frames get re-injected into the KV cache at the cut into shot 2,\nso the subject and scene identity stay consistent across the cut.\nScene: brown_bear_river\nAuthored invariant: The same large brown bear remains in the same shallow river and forest-bank habitat with mud, stones, grass, and dense green vegetation.\nEntering shot 2 caption: The video exhibits a natural, earthy color tone dominated by muted greens, browns, and soft yellows, evoking a tranquil, forested environment. Lighting appears diffused, suggesting an overcast day or dappled sunlight filtering through tree canopies, creating a soft, even illumination without harsh shadows. The atmosphere is serene and immersive, with a shallow depth of field that blurs the background slightly, emphasizing the foreground foliage and the movement of the subject. The style is documentary-like, capturing wildlife in its natural habitat with minimal interference, using a handheld or steady cam approach that subtly tracks the subject\u2019s motion.\nThe scene unfolds outdoors in a lush, dense woodland, likely during late morning or early afternoon, given the even, natural light. Ferns and shrubs with serrated leaves dominate the foreground, while taller greenery and tree trunks form the background. The environment is rich with vegetation, including yellow wildflowers intermingled with ferns, suggesting a temperate forest ecosystem. There are no man-made structures or urban elements, reinforcing the untouched wilderness setting.\n\nA single large brown bear, likely a mature adult, is the central subject. It first appears partially obscured by foliage in the foreground, its thick fur and muscular build visible as it moves from the left to the right edge of the frame. The bear\u2019s movement is deliberate and slow, suggesting it is foraging or exploring. Its head is often lowered, indicating it may be sniffing or searching for food. The bear\u2019s fur appears thick and slightly matted, blending seamlessly with the surrounding earth tones.\n\nThe camera remains relatively static but pans slightly to follow the bear\u2019s movement, maintaining a medium shot that captures its upper body and surroundings. The depth of field keeps the bear in focus while rendering the foreground ferns slightly blurred, enhancing the sense of immersion. The bear\u2019s motion is unhurried and purposeful, with no signs of agitation. There is no interaction with other animals or humans, reinforcing the solitary nature of the creature. The gentle rustling of leaves and subtle swaying of plants suggest a light breeze, adding to the natural ambiance.\n\nThe video\u2019s narrative is observational, aiming to showcase wildlife behavior in its natural habitat. The shot composition, shallow depth of field, and smooth camera tracking create an intimate yet respectful portrayal of the bear\u2019s movement through its environment. The overall tone is calm and reverent, inviting viewers to witness the quiet majesty of nature.\n\nQUERY images (start of shot 2, what the transition must stay consistent with):\n- image Q0: decoded frame 192\n- image Q1: decoded frame 208\n\nCANDIDATE anchor images (past frames outside the live attention window):\n- image C0: decoded frame 0\n- image C1: decoded frame 14\n- image C2: decoded frame 27\n- image C3: decoded frame 41\n- image C4: decoded frame 54\n- image C5: decoded frame 68\n- image C6: decoded frame 81\n- image C7: decoded frame 95\n- image C8: decoded frame 96\n- image C9: decoded frame 110\n- image C10: decoded frame 123\n- image C11: decoded frame 137\n- image C12: decoded frame 150\n\nChoose up to 4 candidate frames whose CONTENT best pins the subject identity\n(face/clothing/markings) and scene layout for this specific cut.\nJudge by what the images show, not by position in the video: an early frame is NOT\nautomatically better. Prefer frames with a clear, unoccluded view of the subject as it\nshould appear entering this shot. Skip only if no candidate shows the relevant subject.\nReturn strict JSON: {\"selected_frame_indices\": [..], \"skip\": false, \"rationale\": \"content-based reason naming what the chosen frames show\"}\nValid frame indices: [0, 14, 27, 41, 54, 68, 81, 95, 96, 110, 123, 137, 150]",
+            "type": "text"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "response_format": {
+      "json_schema": {
+        "name": "decision",
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "rationale": {
+              "type": "string"
+            },
+            "selected_frame_indices": {
+              "items": {
+                "type": "integer"
+              },
+              "type": "array"
+            },
+            "skip": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "selected_frame_indices",
+            "skip",
+            "rationale"
+          ],
+          "type": "object"
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"selected_frame_indices\": [137, 150],\n  \"skip\": false,\n  \"rationale\": \"Frames 137 and 150 show the brown bear in the river with a clear, unoccluded view of its face and upper body, consistent with the subject identity and scene layout described in the entering shot 2 caption. The bear is shown drinking water, with water dripping from its mouth, and is surrounded by the same shallow river and green vegetation. These frames provide strong visual anchors for maintaining continuity of the subject and environment across the cut.\"\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1782975297,
+    "id": "3a0bd8be1dc4480ea96726af18626feb",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 124,
+      "prompt_tokens": 14208,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 14332
+    }
+  },
+  "schema_enforced": true,
+  "wall_clock_seconds": 11.369279861450195
+}

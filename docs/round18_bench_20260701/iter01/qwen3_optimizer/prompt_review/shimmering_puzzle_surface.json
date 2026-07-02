@@ -1,0 +1,163 @@
+{
+  "cache_fingerprint": "33a195b51271788c2a4ac28ddf0229d028979b48140550bdc70cb480c159b5dd",
+  "image_hashes": {},
+  "image_paths": [],
+  "parse_attempts": [],
+  "parsed": {
+    "verdicts": [
+      {
+        "index": 0,
+        "reason": "This addition is consistent with the authored global invariant and merely sharpens it by adding 'throughout the entire video', which strengthens the temporal consistency claim without contradicting the original.",
+        "target": "global",
+        "text": "The shimmering puzzle surface remains on the same reflective tabletop throughout the entire video, with stable interlocking pieces and consistent highlights.",
+        "verdict": "keep"
+      },
+      {
+        "index": 1,
+        "reason": "This per-shot invariant matches the authored global invariant exactly. It is appropriate to enforce the same invariant per shot to ensure consistency across all frames.",
+        "target": "per_shot",
+        "text": "The shimmering puzzle surface remains on the same reflective tabletop with stable interlocking pieces and consistent highlights.",
+        "verdict": "keep"
+      },
+      {
+        "index": 2,
+        "reason": "Identical to per_shot #1; fully consistent with authored invariant. No contradiction or drift.",
+        "target": "per_shot",
+        "text": "The shimmering puzzle surface remains on the same reflective tabletop with stable interlocking pieces and consistent highlights.",
+        "verdict": "keep"
+      },
+      {
+        "index": 3,
+        "reason": "Identical to per_shot #1; fully consistent with authored invariant. No contradiction or drift.",
+        "target": "per_shot",
+        "text": "The shimmering puzzle surface remains on the same reflective tabletop with stable interlocking pieces and consistent highlights.",
+        "verdict": "keep"
+      },
+      {
+        "index": 4,
+        "reason": "Identical to per_shot #1; fully consistent with authored invariant. No contradiction or drift.",
+        "target": "per_shot",
+        "text": "The shimmering puzzle surface remains on the same reflective tabletop with stable interlocking pieces and consistent highlights.",
+        "verdict": "keep"
+      },
+      {
+        "index": 5,
+        "reason": "Identical to per_shot #1; fully consistent with authored invariant. No contradiction or drift.",
+        "target": "per_shot",
+        "text": "The shimmering puzzle surface remains on the same reflective tabletop with stable interlocking pieces and consistent highlights.",
+        "verdict": "keep"
+      },
+      {
+        "index": 6,
+        "reason": "Identical to per_shot #1; fully consistent with authored invariant. No contradiction or drift.",
+        "target": "per_shot",
+        "text": "The shimmering puzzle surface remains on the same reflective tabletop with stable interlocking pieces and consistent highlights.",
+        "verdict": "keep"
+      }
+    ]
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are an independent REVIEWER of proposed prompt edits (not their author).\nThe authored invariants below are the ground truth of what the video MUST show.\nScene: shimmering_puzzle_surface\nAuthored global caption: Negative control: this folder preserves an intentionally conflicting abstract scene. The invariant claims one coherent shimmering puzzle surface with stable interlocking pieces and a consistent reflective tabletop, while shot captions may pull toward incompatible object layouts. A consistency win without adherence loss here is text-override evidence, never a method pass.\nAuthored invariant: The same coherent shimmering puzzle surface remains on the same reflective tabletop with stable interlocking pieces and consistent highlights.\n\nProposed additions:\n- [global #0] The shimmering puzzle surface remains on the same reflective tabletop throughout the entire video, with stable interlocking pieces and consistent highlights.\n- [per_shot #0 shot=0] The shimmering puzzle surface remains on the same reflective tabletop with stable interlocking pieces and consistent highlights.\n- [per_shot #1 shot=1] The shimmering puzzle surface remains on the same reflective tabletop with stable interlocking pieces and consistent highlights.\n- [per_shot #2 shot=2] The shimmering puzzle surface remains on the same reflective tabletop with stable interlocking pieces and consistent highlights.\n- [per_shot #3 shot=3] The shimmering puzzle surface remains on the same reflective tabletop with stable interlocking pieces and consistent highlights.\n- [per_shot #4 shot=4] The shimmering puzzle surface remains on the same reflective tabletop with stable interlocking pieces and consistent highlights.\n- [per_shot #5 shot=5] The shimmering puzzle surface remains on the same reflective tabletop with stable interlocking pieces and consistent highlights.\n\nFor EACH addition return a verdict:\n- keep: consistent with the authored invariants (may sharpen them).\n- rewrite: contradicts an authored invariant (e.g. different clothing/color/object than\n  authored) or drifts toward what a flawed render showed; provide `text` restating the\n  AUTHORED invariant for that aspect instead.\n- drop: unrelated to invariants, collapses shot diversity, or is unsalvageable.\nFor keep/drop verdicts set `text` to the original addition text unchanged.\nReturn strict JSON: {\"verdicts\": [{\"index\": 0, \"target\": \"global\"|\"per_shot\",\n\"verdict\": \"keep\"|\"drop\"|\"rewrite\", \"text\": \"...\", \"reason\": \"...\"}]}\nCover every addition exactly once.",
+            "type": "text"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "response_format": {
+      "json_schema": {
+        "name": "decision",
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "verdicts": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "index": {
+                    "type": "integer"
+                  },
+                  "reason": {
+                    "type": "string"
+                  },
+                  "target": {
+                    "enum": [
+                      "global",
+                      "per_shot"
+                    ],
+                    "type": "string"
+                  },
+                  "text": {
+                    "type": "string"
+                  },
+                  "verdict": {
+                    "enum": [
+                      "keep",
+                      "drop",
+                      "rewrite"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "index",
+                  "target",
+                  "verdict",
+                  "text",
+                  "reason"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "verdicts"
+          ],
+          "type": "object"
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"verdicts\": [\n    {\n      \"index\": 0,\n      \"target\": \"global\",\n      \"verdict\": \"keep\",\n      \"text\": \"The shimmering puzzle surface remains on the same reflective tabletop throughout the entire video, with stable interlocking pieces and consistent highlights.\",\n      \"reason\": \"This addition is consistent with the authored global invariant and merely sharpens it by adding 'throughout the entire video', which strengthens the temporal consistency claim without contradicting the original.\"\n    },\n    {\n      \"index\": 1,\n      \"target\": \"per_shot\",\n      \"verdict\": \"keep\",\n      \"text\": \"The shimmering puzzle surface remains on the same reflective tabletop with stable interlocking pieces and consistent highlights.\",\n      \"reason\": \"This per-shot invariant matches the authored global invariant exactly. It is appropriate to enforce the same invariant per shot to ensure consistency across all frames.\"\n    },\n    {\n      \"index\": 2,\n      \"target\": \"per_shot\",\n      \"verdict\": \"keep\",\n      \"text\": \"The shimmering puzzle surface remains on the same reflective tabletop with stable interlocking pieces and consistent highlights.\",\n      \"reason\": \"Identical to per_shot #1; fully consistent with authored invariant. No contradiction or drift.\"\n    },\n    {\n      \"index\": 3,\n      \"target\": \"per_shot\",\n      \"verdict\": \"keep\",\n      \"text\": \"The shimmering puzzle surface remains on the same reflective tabletop with stable interlocking pieces and consistent highlights.\",\n      \"reason\": \"Identical to per_shot #1; fully consistent with authored invariant. No contradiction or drift.\"\n    },\n    {\n      \"index\": 4,\n      \"target\": \"per_shot\",\n      \"verdict\": \"keep\",\n      \"text\": \"The shimmering puzzle surface remains on the same reflective tabletop with stable interlocking pieces and consistent highlights.\",\n      \"reason\": \"Identical to per_shot #1; fully consistent with authored invariant. No contradiction or drift.\"\n    },\n    {\n      \"index\": 5,\n      \"target\": \"per_shot\",\n      \"verdict\": \"keep\",\n      \"text\": \"The shimmering puzzle surface remains on the same reflective tabletop with stable interlocking pieces and consistent highlights.\",\n      \"reason\": \"Identical to per_shot #1; fully consistent with authored invariant. No contradiction or drift.\"\n    },\n    {\n      \"index\": 6,\n      \"target\": \"per_shot\",\n      \"verdict\": \"keep\",\n      \"text\": \"The shimmering puzzle surface remains on the same reflective tabletop with stable interlocking pieces and consistent highlights.\",\n      \"reason\": \"Identical to per_shot #1; fully consistent with authored invariant. No contradiction or drift.\"\n    }\n  ]\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1782976336,
+    "id": "429a38fbd98d40d2bb708f847d071364",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 573,
+      "prompt_tokens": 514,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 1087
+    }
+  },
+  "schema_enforced": true,
+  "wall_clock_seconds": 13.8528151512146
+}

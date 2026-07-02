@@ -35,6 +35,7 @@ agent/profiles/
 # Heavy round artifacts: keep JSON/MD ledgers in docs/, exclude frame dumps
 docs/**/judge_frames/
 docs/**/optimizer_frames/
+docs/**/kv_candidate_frames/
 docs/**/negative_control_degraded/
 .humanize/
 

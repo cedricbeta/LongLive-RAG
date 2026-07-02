@@ -1,0 +1,303 @@
+{
+  "cache_fingerprint": "db20729dd0bb592f85c5120782f3b01652504e466f0fd2754c0a9cefb9137c3e",
+  "image_hashes": {
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot00_frame00_idx0000.png": "6f5285f5cdbb0d5e4efc44a35010c8bdd777b162f237f9c6a12598b4d3b519f4",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot00_frame01_idx0014.png": "1d192d2277d0b67f9338383220e80853adc08fbf4f780a49790c5727eaad3fb0",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot00_frame03_idx0041.png": "9e2d7a16062652ff14f701f919cca4d692226514aba735169c5e8b1f585fb14d",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot00_frame04_idx0054.png": "5033eee2b6576a22989130787cd029fbd417de24948efe4c7f49da62e54a13bd",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot00_frame06_idx0081.png": "c537d19da62b5cfd33efd3b4edd0ed43d3b40015953ee72f02ac762b9d081d07",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot00_frame07_idx0095.png": "e0a3f331f0174d2a89e60cb71aafaf4e22dbf7a10ec1d5e02d4959de9054a88a",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot01_frame01_idx0110.png": "e617a080317836583369b1c7bb296636ef9d190344af9d8c0e334da85d081f95",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot01_frame02_idx0123.png": "53e2992cc75792103745cb3c73432ce3244ace9a91a9cb5727554ab26407732d",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot01_frame04_idx0150.png": "786de655da7ffded671cffdb89db12056110b0c0b6233fe0fccd222e11ec895a",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot01_frame05_idx0164.png": "210ef2db9330a9a9673f3f4d4a1b140febd21a9348951471172a41e7e18f08b7",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot01_frame07_idx0191.png": "415e1b9bc1bf4064e24e4b53339beac0523f1e741bc62098204a045492ecf090",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot02_frame00_idx0192.png": "5636fa9997cb6b27752df54090eedf7ea95fd781f2dfecf0258e21d627d704b4",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot02_frame02_idx0205.png": "389f41c8f6a52800a42793c7638f46622650bc2ccef7b417cb005da7da3be695",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot02_frame03_idx0212.png": "940f0b30386997e407a09d7638408cb88c749390d6056a05f72962bdcea05994",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot02_frame05_idx0226.png": "800657866a514384d38bff804c8a4a17853aa470c588911562ec001e2056d634",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot02_frame06_idx0232.png": "5f263f1f545fdaf457cb7037fc2de3e8a8c67624fbaf77e81bc8ae8a8f2f1bf0",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot03_frame00_idx0240.png": "ae9bb8d55d2c047e8fc9c45314235949d7b172eabdcc83c3fb19766e9a13e56a",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot03_frame01_idx0247.png": "7854ea53965a141dc96a7add0bc665454ce5bc66d82f43b622ff824c1c2113e2",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot03_frame03_idx0260.png": "a49576b13bb8256589fb990bf2c3bb1b302220c59a4d0858853b879e8566e205",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot03_frame04_idx0267.png": "3cb7a855c209b9e834ed072035eb07975b56887fd49f8564fc3d312b8da465b5",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot03_frame06_idx0280.png": "bdd98ec304bc6e915d580f66134d6e3bd50a9a6b58ebcc24206366bd8be5ae14",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot03_frame07_idx0287.png": "810b7c6e509b9c212a7c4ec2c2dccfbe8d0e6e22df780e6143e885e82527cacb",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot04_frame01_idx0295.png": "ba40d7519fcdb2a5f94426d2dbe414d90160460583900488218a0885f0509f84",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot04_frame02_idx0301.png": "561ca2068bd3a29d0f7bcc014c65374d99c806c1a5af66a64e3e976622ab4dd8",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot05_frame00_idx0336.png": "4d971ed5af95e6e9d57aefe79e4653c81203b78218e706bcb2b45ffb645bd810",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot05_frame01_idx0352.png": "3a52c085b964c44670351f729b0bae1bfd5291c2b1320b26a08cb5e1f9c6e380"
+  },
+  "image_paths": [
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot05_frame00_idx0336.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot05_frame01_idx0352.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot00_frame00_idx0000.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot00_frame01_idx0014.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot00_frame03_idx0041.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot00_frame04_idx0054.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot00_frame06_idx0081.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot00_frame07_idx0095.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot01_frame01_idx0110.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot01_frame02_idx0123.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot01_frame04_idx0150.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot01_frame05_idx0164.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot01_frame07_idx0191.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot02_frame00_idx0192.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot02_frame02_idx0205.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot02_frame03_idx0212.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot02_frame05_idx0226.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot02_frame06_idx0232.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot03_frame00_idx0240.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot03_frame01_idx0247.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot03_frame03_idx0260.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot03_frame04_idx0267.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot03_frame06_idx0280.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot03_frame07_idx0287.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot04_frame01_idx0295.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot04_frame02_idx0301.png"
+  ],
+  "parse_attempts": [],
+  "parsed": {
+    "rationale": "These frames show the subject (a woman in a bikini and green hat) interacting with the environment and the fire pit, establishing the subject's identity and the scene layout. Frame 287 shows her holding a fish near the fire, frame 295 shows her placing the fish on the fire, and frame 301 shows her adjusting the fish in the fire. These frames provide a clear, unoccluded view of the subject and the key scene elements (fire, driftwood, sand) that must remain consistent across the cut.",
+    "selected_frame_indices": [
+      287,
+      295,
+      301
+    ],
+    "skip": false
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are the LOCAL Qwen3-VL KV-anchor selector.\nTask: pick which PAST decoded frames get re-injected into the KV cache at the cut into shot 5,\nso the subject and scene identity stay consistent across the cut.\nScene: sandy_beach_driftwood\nAuthored invariant: The same continuous sandy beach driftwood scene persists across every shot, with the same central subject or objects, the same environment, and coherent event continuity despite legitimate camera, framing, and action changes.\nEntering shot 5 caption: The video features a warm, golden-orange color tone, illuminated by natural sunlight that casts soft, diffused light across the scene. The atmosphere is serene yet primal, evoking a sense of survival and connection to nature. The style is realistic and documentary-like, with a handheld, intimate camera angle that emphasizes the tactile experience of building a fire. The shot is a close-up, shallow depth of field, focusing sharply on the flames and the hand, while the background remains slightly blurred.\nThe scene takes place outdoors on a sandy, possibly beach or desert-like terrain, with dry, weathered driftwood and scattered twigs forming the structure of the fire pit. The fire burns steadily, with flickering orange flames and glowing embers visible through the gaps in the wood. The environment appears arid and sunlit, suggesting midday or early afternoon under clear skies. No artificial structures or urban elements are visible \u2014 only natural elements like sand, driftwood, and sparse vegetation (a red berry briefly appears at the edge of the frame).\n\nA single character \u2014 an adult hand, likely male or gender-neutral \u2014 is visible. The hand is tanned, with visible veins and calluses, suggesting outdoor activity or manual labor. The hand is positioned in the foreground, gently adjusting a piece of driftwood to feed the fire. No face, clothing, or accessories are visible, keeping focus on the action. The hand moves slowly and deliberately, indicating experience and care in fire tending.\n\nKey objects include the fire pit, constructed of interwoven driftwood (light gray, weathered, splintered), and smaller twigs and sand scattered around. The fire itself is the central dynamic element, with flames flickering upward and embers glowing intermittently. The camera remains stationary, maintaining a close-up shot, with the hand entering the frame from the top left and moving downward to adjust the wood.\n\nThe hand\u2019s movement is slow, deliberate, and controlled \u2014 it pushes a piece of wood slightly deeper into the fire, creating a subtle shift in the flame\u2019s pattern. The fire responds with a gentle flicker, and the sand around the pit remains undisturbed except for the hand\u2019s interaction. The camera stays low and close, capturing the texture of the wood and the warmth of the flames, enhancing the immersive, tactile quality of the scene. The natural elements \u2014 the fire, wind (implied by slight wood movement), and sunlight \u2014 are in constant, gentle motion, contrasting with the hand\u2019s steady, purposeful action. The shot is a medium close-up, with a shallow depth of field that keeps the fire and hand in sharp focus while blurring the surrounding sand and background. The angle is slightly tilted downward, emphasizing the intimate, grounded nature of the task.\n\nQUERY images (start of shot 5, what the transition must stay consistent with):\n- image Q0: decoded frame 336\n- image Q1: decoded frame 352\n\nCANDIDATE anchor images (past frames outside the live attention window):\n- image C0: decoded frame 0\n- image C1: decoded frame 14\n- image C2: decoded frame 41\n- image C3: decoded frame 54\n- image C4: decoded frame 81\n- image C5: decoded frame 95\n- image C6: decoded frame 110\n- image C7: decoded frame 123\n- image C8: decoded frame 150\n- image C9: decoded frame 164\n- image C10: decoded frame 191\n- image C11: decoded frame 192\n- image C12: decoded frame 205\n- image C13: decoded frame 212\n- image C14: decoded frame 226\n- image C15: decoded frame 232\n- image C16: decoded frame 240\n- image C17: decoded frame 247\n- image C18: decoded frame 260\n- image C19: decoded frame 267\n- image C20: decoded frame 280\n- image C21: decoded frame 287\n- image C22: decoded frame 295\n- image C23: decoded frame 301\n\nChoose up to 4 candidate frames whose CONTENT best pins the subject identity\n(face/clothing/markings) and scene layout for this specific cut.\nJudge by what the images show, not by position in the video: an early frame is NOT\nautomatically better. Prefer frames with a clear, unoccluded view of the subject as it\nshould appear entering this shot. Skip only if no candidate shows the relevant subject.\nReturn strict JSON: {\"selected_frame_indices\": [..], \"skip\": false, \"rationale\": \"content-based reason naming what the chosen frames show\"}\nValid frame indices: [0, 14, 41, 54, 81, 95, 110, 123, 150, 164, 191, 192, 205, 212, 226, 232, 240, 247, 260, 267, 280, 287, 295, 301]",
+            "type": "text"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "response_format": {
+      "json_schema": {
+        "name": "decision",
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "rationale": {
+              "type": "string"
+            },
+            "selected_frame_indices": {
+              "items": {
+                "type": "integer"
+              },
+              "type": "array"
+            },
+            "skip": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "selected_frame_indices",
+            "skip",
+            "rationale"
+          ],
+          "type": "object"
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"selected_frame_indices\": [287, 295, 301],\n  \"skip\": false,\n  \"rationale\": \"These frames show the subject (a woman in a bikini and green hat) interacting with the environment and the fire pit, establishing the subject's identity and the scene layout. Frame 287 shows her holding a fish near the fire, frame 295 shows her placing the fish on the fire, and frame 301 shows her adjusting the fish in the fire. These frames provide a clear, unoccluded view of the subject and the key scene elements (fire, driftwood, sand) that must remain consistent across the cut.\"\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1782975694,
+    "id": "2bc0dfd9077545b9aaf2dc4dfd0a1d4d",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 147,
+      "prompt_tokens": 24189,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 24336
+    }
+  },
+  "schema_enforced": true,
+  "wall_clock_seconds": 22.23022437095642
+}

@@ -1,0 +1,304 @@
+{
+  "cache_fingerprint": "a2b1e3193b9bdd87a8e093f12e786a8b691e14196786908511ddd02c56166003",
+  "image_hashes": {
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot00_frame00_idx0000.png": "0be4c6c1028c69144b5f66c871f66d62d1a40a49bccfcf3de43fa57db9451c78",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot00_frame02_idx0027.png": "17d64b2cf5ce84dd0525785bf79e5889277c91f26a0358039de4fca03172a597",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot00_frame04_idx0054.png": "27095ddd4c14117029bc259d93e74366677780a9722ef39ab875e3c5a725107e",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot00_frame05_idx0068.png": "ab4caf8491dd9827b1adc293791a5826ec2b17ba668890e85d54c73b273aed6a",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot00_frame07_idx0095.png": "eda07d7596c8d1ed215132b95cfa06c0418ff977878c5b2a77a0805bd5525154",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot01_frame01_idx0110.png": "c543dc7b7ddfc300fc188cfb6077f207299a161c574ab6bf2db616c4a125d9a0",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot01_frame03_idx0137.png": "39145d0f72f711ba95f32e645c3fe94b584008a25739d8130ed8e9f63a56bbdc",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot01_frame05_idx0164.png": "b63f20e93ebd1923fb157698910d47e9a2b3c1e19e6ca8bc96b1b7173dd3a7c3",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot01_frame07_idx0191.png": "d9461f02ad016cc43c0d068a751657c783a75bbac70028208caf7ac153c950c0",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot02_frame00_idx0192.png": "2a8c1fdfb47a885f414de0b034d7d5d4fd004324990546137d19623f315c2e1c",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot02_frame02_idx0219.png": "1ff06ba39575f3597580c21abba0c2d27187a2a7652f891c052b59a505e31c3a",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot02_frame04_idx0246.png": "38556730cc69c3848b3621e4450a8544110f3092fc3df1f34bc46cbfa3582585",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot02_frame06_idx0273.png": "c2307b889c76959396a92a0a7f0456869e9df5e1976881015156105596928880",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot03_frame00_idx0288.png": "5d1c57bd8a998bb74b6b746b5e7c08e81ce6054d6f91e9b903b33e5a0e44eea0",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot03_frame02_idx0301.png": "8de90083d2fa1189873f4af5231364bb6723f747e5a0a2878615f7de07e8c69f",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot03_frame03_idx0308.png": "c131c98d0f5fb6fa4e0bd329e264db1c4bcb96e66fb67f6316a7ac8a9197fbb2",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot03_frame05_idx0322.png": "8d80f2d7cc53629f66525337f7a749cbd2015a09962a69e8c978cd9e44449b91",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot03_frame07_idx0335.png": "d6b726bad6ff388b786b6ae24e705a5b95ea2f620731e93cecd620dae7d3d1a3",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot04_frame01_idx0343.png": "6c182c5b41e3e90bddbb359a259d06e47ff7082621fee9302ce8c2c123c6eed7",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot04_frame03_idx0356.png": "4ea62fc64c729aab67c0f4ff4fa24fe69d509a97c8f8b8a47dea6de50e96c4ed",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot04_frame05_idx0370.png": "e75d07e1204f9a5d8af886482c337bfaa8be4f04a6ccf1faeb532a487e41944a",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot04_frame06_idx0376.png": "de84549a8e034b17a26ce4dc6ba3351bbae4a73dd98e8c780e027f3a6b8a06f5",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot05_frame00_idx0384.png": "09f7c217b06496134616ee140f7c0e2da9d1d2fafb0850af6c05b9117bdade21",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot05_frame02_idx0397.png": "0cff766c7911587ea00366688ed79b7229c2b1f18cc4b82ebf07d8f5f86cfbe0",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot06_frame00_idx0432.png": "c2ab69000d3be185fa0725446fc0c912f6312fa306c26d9a3558f7fbf535419b",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot06_frame01_idx0448.png": "58b9273843c285b7bd8600337d74d1b598db98b15b675ce56d7244a9f85a25f0"
+  },
+  "image_paths": [
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot06_frame00_idx0432.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot06_frame01_idx0448.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot00_frame00_idx0000.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot00_frame02_idx0027.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot00_frame04_idx0054.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot00_frame05_idx0068.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot00_frame07_idx0095.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot01_frame01_idx0110.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot01_frame03_idx0137.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot01_frame05_idx0164.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot01_frame07_idx0191.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot02_frame00_idx0192.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot02_frame02_idx0219.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot02_frame04_idx0246.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot02_frame06_idx0273.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot03_frame00_idx0288.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot03_frame02_idx0301.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot03_frame03_idx0308.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot03_frame05_idx0322.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot03_frame07_idx0335.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot04_frame01_idx0343.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot04_frame03_idx0356.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot04_frame05_idx0370.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot04_frame06_idx0376.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot05_frame00_idx0384.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/vintage_archival_scene/shot05_frame02_idx0397.png"
+  ],
+  "parse_attempts": [],
+  "parsed": {
+    "rationale": "These frames show the military helicopter from multiple clear, unoccluded angles as it is on the ground and preparing for flight, matching the subject identity and scene layout described for shot 6. Frame 308 shows a side profile of the helicopter on the tarmac with a person interacting with it. Frame 322 shows a close-up of the helicopter's side with its door open, revealing interior details. Frame 335 and 343 show the helicopter from a slightly different angle, still on the ground, with clear visibility of its structure and markings, which are critical for maintaining subject continuity across the cut.",
+    "selected_frame_indices": [
+      308,
+      322,
+      335,
+      343
+    ],
+    "skip": false
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are the LOCAL Qwen3-VL KV-anchor selector.\nTask: pick which PAST decoded frames get re-injected into the KV cache at the cut into shot 6,\nso the subject and scene identity stay consistent across the cut.\nScene: vintage_archival_scene\nAuthored invariant: The same continuous vintage archival scene scene persists across every shot, with the same central subject or objects, the same environment, and coherent event continuity despite legitimate camera, framing, and action changes.\nEntering shot 6 caption: The video features a muted, desaturated color tone dominated by shades of gray and green, evoking a foggy or overcast atmosphere. Lighting is diffused and soft, suggesting either early morning or late afternoon under cloudy skies. The style is documentary-like, with handheld or slightly shaky camera work that conveys realism and immediacy. The footage appears to be captured from inside another aircraft, as indicated by the visible edge of a wing or fuselage in later frames.\nThe scene unfolds outdoors over a vast, flat, grassy or marshy terrain, possibly a wetland or agricultural field, with faintly visible patches of darker earth or water. In the distance, low-lying hills or ridges are barely discernible through the haze. The environment feels expansive and somewhat barren, with no significant urban or man-made structures visible. The weather is consistently foggy or misty, reducing visibility and creating a sense of isolation.\n\nThe central subject is a single military-style helicopter, likely a utility or attack model, painted in camouflage or dull gray. Its rotor blades spin rapidly, and its landing gear is extended, suggesting it is either hovering or preparing to land. The helicopter is seen from various angles as it moves slowly across the frame, maintaining a low altitude. The camera pans slightly to follow its movement, creating a sense of motion and purpose. At one point, the helicopter\u2019s exhaust or engine emits a trail of white smoke, indicating it is either accelerating or performing a maneuver. The helicopter eventually exits the frame, replaced by a wider view of the landscape, reinforcing the vastness of the terrain.\n\nNo human characters are visible, and the focus remains entirely on the helicopter and its environment. The camera movement is dynamic, shifting from a side profile of the helicopter to a more distant, overhead perspective as it moves. The helicopter\u2019s movement is steady and controlled, suggesting it is piloted with precision. The video\u2019s narrative tone is observational and atmospheric, emphasizing the isolation of the aircraft in the expansive, misty landscape. The shallow depth of field keeps the helicopter in focus while softly blurring the background, enhancing the sense of scale and motion. The overall mood is somber and contemplative, with a hint of tension implied by the helicopter\u2019s presence and the smoke trail.\n\nQUERY images (start of shot 6, what the transition must stay consistent with):\n- image Q0: decoded frame 432\n- image Q1: decoded frame 448\n\nCANDIDATE anchor images (past frames outside the live attention window):\n- image C0: decoded frame 0\n- image C1: decoded frame 27\n- image C2: decoded frame 54\n- image C3: decoded frame 68\n- image C4: decoded frame 95\n- image C5: decoded frame 110\n- image C6: decoded frame 137\n- image C7: decoded frame 164\n- image C8: decoded frame 191\n- image C9: decoded frame 192\n- image C10: decoded frame 219\n- image C11: decoded frame 246\n- image C12: decoded frame 273\n- image C13: decoded frame 288\n- image C14: decoded frame 301\n- image C15: decoded frame 308\n- image C16: decoded frame 322\n- image C17: decoded frame 335\n- image C18: decoded frame 343\n- image C19: decoded frame 356\n- image C20: decoded frame 370\n- image C21: decoded frame 376\n- image C22: decoded frame 384\n- image C23: decoded frame 397\n\nChoose up to 4 candidate frames whose CONTENT best pins the subject identity\n(face/clothing/markings) and scene layout for this specific cut.\nJudge by what the images show, not by position in the video: an early frame is NOT\nautomatically better. Prefer frames with a clear, unoccluded view of the subject as it\nshould appear entering this shot. Skip only if no candidate shows the relevant subject.\nReturn strict JSON: {\"selected_frame_indices\": [..], \"skip\": false, \"rationale\": \"content-based reason naming what the chosen frames show\"}\nValid frame indices: [0, 27, 54, 68, 95, 110, 137, 164, 191, 192, 219, 246, 273, 288, 301, 308, 322, 335, 343, 356, 370, 376, 384, 397]",
+            "type": "text"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "response_format": {
+      "json_schema": {
+        "name": "decision",
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "rationale": {
+              "type": "string"
+            },
+            "selected_frame_indices": {
+              "items": {
+                "type": "integer"
+              },
+              "type": "array"
+            },
+            "skip": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "selected_frame_indices",
+            "skip",
+            "rationale"
+          ],
+          "type": "object"
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"selected_frame_indices\": [308, 322, 335, 343],\n  \"skip\": false,\n  \"rationale\": \"These frames show the military helicopter from multiple clear, unoccluded angles as it is on the ground and preparing for flight, matching the subject identity and scene layout described for shot 6. Frame 308 shows a side profile of the helicopter on the tarmac with a person interacting with it. Frame 322 shows a close-up of the helicopter's side with its door open, revealing interior details. Frame 335 and 343 show the helicopter from a slightly different angle, still on the ground, with clear visibility of its structure and markings, which are critical for maintaining subject continuity across the cut.\"\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1782976081,
+    "id": "4614f7c0b257491e80aadf8d010b32d7",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 169,
+      "prompt_tokens": 24088,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 24257
+    }
+  },
+  "schema_enforced": true,
+  "wall_clock_seconds": 24.98851490020752
+}

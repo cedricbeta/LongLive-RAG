@@ -1,0 +1,128 @@
+{
+  "cache_fingerprint": "caf2181e471dcba202a7945c505cb7839b0c7d2fd0463524e320f9fa25ee8fe2",
+  "image_hashes": {},
+  "image_paths": [],
+  "parse_attempts": [],
+  "parsed": {
+    "verdicts": [
+      {
+        "index": 0,
+        "reason": "Consistent with the authored invariants, which implicitly require a natural, undisturbed savanna environment. Adding this clarifies the exclusion of human interference without contradicting any invariant.",
+        "target": "global",
+        "text": "The scene remains exclusively natural, with no human characters or artificial equipment visible.",
+        "verdict": "keep"
+      },
+      {
+        "index": 0,
+        "reason": "Consistent with the global invariant and reinforces the natural setting across all shots. Does not contradict authored invariants and enhances clarity without introducing drift.",
+        "target": "per_shot",
+        "text": "The scene remains exclusively natural, with no human characters or artificial equipment visible.",
+        "verdict": "keep"
+      }
+    ]
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are an independent REVIEWER of proposed prompt edits (not their author).\nThe authored invariants below are the ground truth of what the video MUST show.\nScene: african_savanna\nAuthored global caption: One continuous wildlife scene in the same open African savanna under warm daylight. The invariant environment is dry golden grass, scattered acacia trees, distant low hills, and a wide natural horizon. The invariant subject is the same group of large savanna animals moving through the same grassland without changing species or setting.\nAuthored invariant: The same African savanna remains visible with golden grass, acacia trees, distant hills, warm daylight, and the same group of large savanna animals.\n\nProposed additions:\n- [global #0] The scene remains exclusively natural, with no human characters or artificial equipment visible.\n- [per_shot #0 shot=1] The scene remains exclusively natural, with no human characters or artificial equipment visible.\n\nFor EACH addition return a verdict:\n- keep: consistent with the authored invariants (may sharpen them).\n- rewrite: contradicts an authored invariant (e.g. different clothing/color/object than\n  authored) or drifts toward what a flawed render showed; provide `text` restating the\n  AUTHORED invariant for that aspect instead.\n- drop: unrelated to invariants, collapses shot diversity, or is unsalvageable.\nFor keep/drop verdicts set `text` to the original addition text unchanged.\nReturn strict JSON: {\"verdicts\": [{\"index\": 0, \"target\": \"global\"|\"per_shot\",\n\"verdict\": \"keep\"|\"drop\"|\"rewrite\", \"text\": \"...\", \"reason\": \"...\"}]}\nCover every addition exactly once.",
+            "type": "text"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "response_format": {
+      "json_schema": {
+        "name": "decision",
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "verdicts": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "index": {
+                    "type": "integer"
+                  },
+                  "reason": {
+                    "type": "string"
+                  },
+                  "target": {
+                    "enum": [
+                      "global",
+                      "per_shot"
+                    ],
+                    "type": "string"
+                  },
+                  "text": {
+                    "type": "string"
+                  },
+                  "verdict": {
+                    "enum": [
+                      "keep",
+                      "drop",
+                      "rewrite"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "index",
+                  "target",
+                  "verdict",
+                  "text",
+                  "reason"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "verdicts"
+          ],
+          "type": "object"
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"verdicts\": [\n    {\n      \"index\": 0,\n      \"target\": \"global\",\n      \"verdict\": \"keep\",\n      \"text\": \"The scene remains exclusively natural, with no human characters or artificial equipment visible.\",\n      \"reason\": \"Consistent with the authored invariants, which implicitly require a natural, undisturbed savanna environment. Adding this clarifies the exclusion of human interference without contradicting any invariant.\"\n    },\n    {\n      \"index\": 0,\n      \"target\": \"per_shot\",\n      \"verdict\": \"keep\",\n      \"text\": \"The scene remains exclusively natural, with no human characters or artificial equipment visible.\",\n      \"reason\": \"Consistent with the global invariant and reinforces the natural setting across all shots. Does not contradict authored invariants and enhances clarity without introducing drift.\"\n    }\n  ]\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1782974757,
+    "id": "2eda3866b5524066a6dd421c416954d1",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 179,
+      "prompt_tokens": 359,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 538
+    }
+  },
+  "schema_enforced": true,
+  "wall_clock_seconds": 4.4281816482543945
+}

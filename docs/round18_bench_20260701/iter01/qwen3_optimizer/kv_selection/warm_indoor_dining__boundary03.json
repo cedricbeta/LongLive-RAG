@@ -1,0 +1,263 @@
+{
+  "cache_fingerprint": "e5c944b809ae0bca40205127ca536de1dce105215a4e35726e263bbe6b17adea",
+  "image_hashes": {
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot00_frame00_idx0000.png": "10ef2dc9d437886d412b0babeb8ede77cb9e1797156b3c2c954e91f2df94ec89",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot00_frame01_idx0014.png": "442bc5531e6e5d3c791da06d84e0ae07f1b71c8f4e29c277e43bf7a812aa78c3",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot00_frame02_idx0027.png": "58ea693c5fcfd7bc2f062f8b1ae5e2d712f116b5f924348424dedf9e0718c5e5",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot00_frame03_idx0041.png": "073140919403c7c40c783e9238f620b905a17de484441d449eaf9cedf1a712e1",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot00_frame04_idx0054.png": "033fe46c8d24e7a281985697c9a9305036139656c7276ef572baeda269bfbcfe",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot00_frame05_idx0068.png": "32efebd52cfe30689f54762bd366d927dd88dc9ef47eb37153d385415d6615f3",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot00_frame06_idx0081.png": "bd76862ac1be04187a1f0c7ca37a3009bd1cd781e9ad716938fac6a0e2780fa8",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot00_frame07_idx0095.png": "01c0c4d4989abe0fe75ade17e2129deda3555f1a0bedce5f2a5d50111c18879f",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot01_frame00_idx0096.png": "8de4532051dbd8a1f06491b8171286860a152c3e862cebdb631571ca5b852088",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot01_frame01_idx0110.png": "c8410f56f160135fe66351c59470c46f3d5748cad7eefd725d9349e1da836503",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot01_frame02_idx0123.png": "8af802fe933d7c7ab563370dc972cfef9b4361887d7b44fc4a85b06d457ced83",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot01_frame03_idx0137.png": "ac7d4a4c8d6ee31b5bc5a1860e303d613cfcc00878976f0a8ed679d6d9ebe2fc",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot01_frame04_idx0150.png": "b7435228a8deba67bd6e3f1689ba5b8246953ef7b8fc0cae3290992d8add05b5",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot01_frame05_idx0164.png": "b663819977d51eb0dd1f6c71eb289c4f86f14d8d2c4cf8e35e5ace6c02a48d29",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot01_frame06_idx0177.png": "bc1947b8cafca06e65225bf66ac921288fec2333dce98cb06b65c88746e67108",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot01_frame07_idx0191.png": "13fbaf2bfa0f3ed7a149c789485e719f595520ae3a2af298d43a4802174f6f81",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot02_frame00_idx0192.png": "4ef7d1ea0cfc94c8377c51f32933703760bcbb2fb3974944f667d9a21e98e4d9",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot02_frame01_idx0199.png": "044db26bd7ef59560cad178f05b65f7f149ab0037266b1ebd1eab86ced14992c",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot02_frame02_idx0205.png": "673f3b989fb3ef1fd5fa9a503422d3b718d9d35c4e10ab5695d39c9e005596b9",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot03_frame00_idx0240.png": "a3c61319d2ccd366dba3100919d2858343ea27035b2a4996dc01e84b471ebf3b",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot03_frame01_idx0256.png": "cdeddb58c137490724963e20201baff90fc45ede807438cbcc453bd27d2fd4bb"
+  },
+  "image_paths": [
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot03_frame00_idx0240.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot03_frame01_idx0256.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot00_frame00_idx0000.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot00_frame01_idx0014.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot00_frame02_idx0027.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot00_frame03_idx0041.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot00_frame04_idx0054.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot00_frame05_idx0068.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot00_frame06_idx0081.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot00_frame07_idx0095.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot01_frame00_idx0096.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot01_frame01_idx0110.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot01_frame02_idx0123.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot01_frame03_idx0137.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot01_frame04_idx0150.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot01_frame05_idx0164.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot01_frame06_idx0177.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot01_frame07_idx0191.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot02_frame00_idx0192.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot02_frame01_idx0199.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/warm_indoor_dining/shot02_frame02_idx0205.png"
+  ],
+  "parse_attempts": [],
+  "parsed": {
+    "rationale": "These frames show the complete dining setup with the main dish (beef) and surrounding elements (noodles, garnishes, utensils) in a consistent warm indoor setting. Frame 192 shows the full table layout before the beef is lifted. Frames 199 and 205 show the beef being lifted with chopsticks, matching the action and framing described in the shot 3 caption. This provides a clear, unoccluded view of the subject and scene layout that will persist across the cut.",
+    "selected_frame_indices": [
+      192,
+      199,
+      205
+    ],
+    "skip": false
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are the LOCAL Qwen3-VL KV-anchor selector.\nTask: pick which PAST decoded frames get re-injected into the KV cache at the cut into shot 3,\nso the subject and scene identity stay consistent across the cut.\nScene: warm_indoor_dining\nAuthored invariant: The same continuous warm indoor dining scene persists across every shot, with the same central subject or objects, the same environment, and coherent event continuity despite legitimate camera, framing, and action changes.\nEntering shot 3 caption: The video features a warm, inviting color tone dominated by rich browns, deep reds, and vibrant greens, creating a mouthwatering, appetizing atmosphere. The lighting is soft and diffused, likely from indoor ambient sources, enhancing the glossy sheen of the sauce and the textures of the ingredients. The style is highly cinematic and intimate, employing shallow depth of field to focus sharply on the food while gently blurring the background, emphasizing the dish\u2019s visual appeal. The camera moves smoothly upward, transitioning from a close-up of the bowl to a vertical elevation of the meat, enhancing the sensory experience.\nThe scene is set indoors, likely in a cozy, traditional Asian restaurant, with blurred blue-and-white ceramic plates and warm wooden surfaces visible in the background. The environment suggests a casual dining ambiance, possibly during late afternoon or evening, with no visible windows or natural light, implying an interior setting. The background includes faint hints of other dishes and tableware, reinforcing the restaurant context without distracting from the main subject.\n\nNo human characters appear in the video; the focus remains entirely on the food. The main object is a stack of thinly sliced beef, glistening with a savory, reddish-brown sauce, garnished with chopped green onions and sesame seeds. The beef is tender and layered, appearing perfectly marinated, and held aloft by black chopsticks that enter the frame from the top right. The chopsticks are made of smooth, polished material, likely lacquered wood or plastic, and are positioned to elevate the meat vertically, showcasing its texture and sauce coating. The beef slices are arranged in a cascading stack, with each slice slightly overlapping the other, revealing the marbling and tenderness.\n\nThe camera begins with a close-up shot, capturing the details of the sauce and garnishes, then slowly tilts upward as the chopsticks lift the beef stack, emphasizing its height and the glistening sauce. The movement is slow and deliberate, allowing viewers to appreciate the texture and color. The camera remains steady, with a telephoto lens that maintains sharp focus on the beef while softly blurring the background, creating a cinematic, almost luxurious presentation. The shot is a medium close-up that transitions into a close-up as the beef rises, highlighting the sauce\u2019s viscosity and the beef\u2019s tenderness. The overall narrative is one of indulgence and sensory delight, inviting viewers to imagine the flavor and texture of the dish.\n\nQUERY images (start of shot 3, what the transition must stay consistent with):\n- image Q0: decoded frame 240\n- image Q1: decoded frame 256\n\nCANDIDATE anchor images (past frames outside the live attention window):\n- image C0: decoded frame 0\n- image C1: decoded frame 14\n- image C2: decoded frame 27\n- image C3: decoded frame 41\n- image C4: decoded frame 54\n- image C5: decoded frame 68\n- image C6: decoded frame 81\n- image C7: decoded frame 95\n- image C8: decoded frame 96\n- image C9: decoded frame 110\n- image C10: decoded frame 123\n- image C11: decoded frame 137\n- image C12: decoded frame 150\n- image C13: decoded frame 164\n- image C14: decoded frame 177\n- image C15: decoded frame 191\n- image C16: decoded frame 192\n- image C17: decoded frame 199\n- image C18: decoded frame 205\n\nChoose up to 4 candidate frames whose CONTENT best pins the subject identity\n(face/clothing/markings) and scene layout for this specific cut.\nJudge by what the images show, not by position in the video: an early frame is NOT\nautomatically better. Prefer frames with a clear, unoccluded view of the subject as it\nshould appear entering this shot. Skip only if no candidate shows the relevant subject.\nReturn strict JSON: {\"selected_frame_indices\": [..], \"skip\": false, \"rationale\": \"content-based reason naming what the chosen frames show\"}\nValid frame indices: [0, 14, 27, 41, 54, 68, 81, 95, 96, 110, 123, 137, 150, 164, 177, 191, 192, 199, 205]",
+            "type": "text"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "response_format": {
+      "json_schema": {
+        "name": "decision",
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "rationale": {
+              "type": "string"
+            },
+            "selected_frame_indices": {
+              "items": {
+                "type": "integer"
+              },
+              "type": "array"
+            },
+            "skip": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "selected_frame_indices",
+            "skip",
+            "rationale"
+          ],
+          "type": "object"
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"selected_frame_indices\": [192, 199, 205],\n  \"skip\": false,\n  \"rationale\": \"These frames show the complete dining setup with the main dish (beef) and surrounding elements (noodles, garnishes, utensils) in a consistent warm indoor setting. Frame 192 shows the full table layout before the beef is lifted. Frames 199 and 205 show the beef being lifted with chopsticks, matching the action and framing described in the shot 3 caption. This provides a clear, unoccluded view of the subject and scene layout that will persist across the cut.\"\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1782976191,
+    "id": "c2fc260fa10244ed9221424de949b3a5",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 141,
+      "prompt_tokens": 19613,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 19754
+    }
+  },
+  "schema_enforced": true,
+  "wall_clock_seconds": 17.997167587280273
+}

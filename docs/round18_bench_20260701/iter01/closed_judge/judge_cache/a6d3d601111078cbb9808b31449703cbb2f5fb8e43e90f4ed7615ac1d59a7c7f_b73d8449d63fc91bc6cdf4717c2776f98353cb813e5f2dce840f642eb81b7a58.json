@@ -1,0 +1,171 @@
+{
+  "captions": [
+    "Shot 0 opens in a medium view of a night-market noodle stall. A chef with a shaved head, a black dragon tattoo covering his right forearm, a small silver hoop earring in his left ear, and a red bandana tied around his neck stands at a flaming wok station, wearing a white T-shirt under a navy apron while steam rises past hanging red lanterns and a stainless counter.",
+    "Shot 1 cuts to a close-up of the chef's face. Orange flame light flickers across his shaved head and the silver hoop earring in his left ear, the red bandana knotted at his throat, as his eyes narrow in concentration through the drifting steam of the wok.",
+    "Shot 2 switches to an overhead angle directly above the wok. Yellow noodles leap in an arc as the chef tosses the steel wok, his dragon-tattooed right forearm flexing at the frame's edge while oil shimmers and scallions scatter across the black steel under the red lantern glow.",
+    "Shot 3 moves to a side view along the stall counter. The chef pulls and folds a rope of fresh dough between his hands, the navy apron dusted with flour, the black dragon tattoo rippling on his right forearm with each stretch while red lanterns sway gently above the stainless counter.",
+    "Shot 4 pulls back to a wide view of the stall from across the market lane. The shaved-headed chef in the navy apron works at the glowing wok station framed by strings of red lanterns, clouds of steam, stacked bowls on the stainless counter, and the blurred motion of passersby at the frame edges.",
+    "Shot 5 cuts to a tight close-up of the chef's right forearm. The black dragon tattoo coils from wrist to elbow as his hand ladles dark broth from a steel pot into a white bowl, steam curling up past the navy apron strap and the edge of the red bandana. Maintain invariant: The red bandana remains tied around the chef's neck, not as a headband.",
+    "Shot 6 frames a medium shot at counter height. The chef assembles the bowl, layering noodles, sliced pork, and scallions, his silver hoop earring and red bandana catching the lantern light as he wipes the bowl rim with a cloth tucked in his navy apron.",
+    "Shot 7 finishes in a steady medium view from the customer side of the counter. The chef with the shaved head, dragon-tattooed forearm, and red bandana sets the finished noodle bowl on the stainless counter, looks up, and gives a quick nod as steam and red lantern light fill the stall behind him."
+  ],
+  "client": {
+    "auth": "reused Codex login through codex CLI; no token file extraction",
+    "codex_bin": "/home/chendong/.nvm/versions/node/v22.17.0/bin/codex",
+    "command": "codex exec --output-schema ... --image ...",
+    "last_command": {
+      "argv_redacted": [
+        "/home/chendong/.nvm/versions/node/v22.17.0/bin/codex",
+        "exec",
+        "-C",
+        "/home/chendong/video-gen/LongLive-RAG",
+        "--sandbox",
+        "read-only",
+        "--ephemeral",
+        "--output-schema",
+        "docs/round18_bench_20260701/iter01/closed_judge/judge_transcripts/codex_judge_schema.json",
+        "--output-last-message",
+        "docs/round18_bench_20260701/iter01/closed_judge/judge_transcripts/codex_tattooed_noodle_chef_prompt_only_last_message.json",
+        "--model",
+        "gpt-5.5",
+        "--image",
+        "<image-path>",
+        "--image",
+        "<image-path>",
+        "--image",
+        "<image-path>",
+        "--image",
+        "<image-path>",
+        "--image",
+        "<image-path>",
+        "--image",
+        "<image-path>",
+        "--image",
+        "<image-path>",
+        "--image",
+        "<image-path>",
+        "-"
+      ],
+      "output_path": "docs/round18_bench_20260701/iter01/closed_judge/judge_transcripts/codex_tattooed_noodle_chef_prompt_only_last_message.json",
+      "returncode": 0,
+      "schema_path": "docs/round18_bench_20260701/iter01/closed_judge/judge_transcripts/codex_judge_schema.json",
+      "stderr_prefix": "Reading prompt from stdin...\nOpenAI Codex v0.142.0\n--------\nworkdir: /home/chendong/video-gen/LongLive-RAG\nmodel: gpt-5.5\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: xhigh\nreasoning summaries: none\nsession id: 019f24a0-e2b1-7550-99ff-20fd2a2a67a3\n--------\nuser\nYou are a held-out video consistency judge.\n\nYou will see 1-3 decoded frames per shot, in temporal shot order unless the\nfixture explicitly says it is a shuffled-order probe. Judge only perceptual\ncross-shot consistency:\n- subject_identity_preserved: whether the same central subject/object continues\n  across shot cuts.\n- background_coherent: whether the same scene/place/event persists.\n- per_shot_adherence: whether each shot still follows its own caption.\n- inter_shot_diversity: whether the shots preserve legitimate requested camera,\n  action, composition, and scene variation instead of collapsing toward the same\n  looking shot.\n- motion_continuity: whether the sampled sequence shows plausible motion/cha"
+    },
+    "model": "gpt-5.5",
+    "provider": "codex_exec_oauth"
+  },
+  "fixture": "tattooed_noodle_chef_prompt_only",
+  "frames_shown": [
+    [
+      "docs/round18_bench_20260701/iter01/judge_frames/tattooed_noodle_chef/prompt_only/shot00_frame00_idx0000.png"
+    ],
+    [
+      "docs/round18_bench_20260701/iter01/judge_frames/tattooed_noodle_chef/prompt_only/shot01_frame00_idx0096.png"
+    ],
+    [
+      "docs/round18_bench_20260701/iter01/judge_frames/tattooed_noodle_chef/prompt_only/shot02_frame00_idx0192.png"
+    ],
+    [
+      "docs/round18_bench_20260701/iter01/judge_frames/tattooed_noodle_chef/prompt_only/shot03_frame00_idx0240.png"
+    ],
+    [
+      "docs/round18_bench_20260701/iter01/judge_frames/tattooed_noodle_chef/prompt_only/shot04_frame00_idx0288.png"
+    ],
+    [
+      "docs/round18_bench_20260701/iter01/judge_frames/tattooed_noodle_chef/prompt_only/shot05_frame00_idx0336.png"
+    ],
+    [
+      "docs/round18_bench_20260701/iter01/judge_frames/tattooed_noodle_chef/prompt_only/shot06_frame00_idx0384.png"
+    ],
+    [
+      "docs/round18_bench_20260701/iter01/judge_frames/tattooed_noodle_chef/prompt_only/shot07_frame00_idx0432.png"
+    ]
+  ],
+  "from_cache": false,
+  "prompt_hash": "b73d8449d63fc91bc6cdf4717c2776f98353cb813e5f2dce840f642eb81b7a58",
+  "provider": "codex",
+  "usage": {
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "total_tokens": 0
+  },
+  "verdict": {
+    "background_coherent": {
+      "rationale": "The red-lantern night-market noodle stall, stainless counter, wok flames, steam, and reflective metal wall remain visually coherent across the sequence.",
+      "score": 0.86,
+      "verdict": "high"
+    },
+    "cheat_flags": {
+      "copy_cheat": false,
+      "freeze_cheat": false,
+      "position_bias_suspected": false,
+      "prompt_collapse": false,
+      "rationale": "Frames are distinct and action-progressive; the issues are identity/detail drift and missing caption elements, not copied frames or frozen motion."
+    },
+    "inter_shot_diversity": {
+      "rationale": "The shots vary meaningfully across medium view, close-up, wok action, side prep, wide stall, broth close-up, bowl assembly, and serving view without collapsing into repeated compositions.",
+      "score": 0.9,
+      "verdict": "healthy"
+    },
+    "motion_continuity": {
+      "rationale": "The sequence shows plausible progression from cooking at the wok to noodles, broth, assembly, and final serving, with visible flames, steam, pouring, and plating changes.",
+      "score": 0.82,
+      "verdict": "active"
+    },
+    "overall_consistency_score": 0.7,
+    "per_shot_adherence": [
+      {
+        "issue": "Strong match to the medium stall view with shaved chef, earring, neck bandana, apron, flames, steam, lanterns, and counter.",
+        "score": 0.88,
+        "shot_index": 0
+      },
+      {
+        "issue": "Close-up concentration is present, but the red bandana has moved onto the head, conflicting with the caption's throat bandana detail.",
+        "score": 0.68,
+        "shot_index": 1
+      },
+      {
+        "issue": "Wok and airborne yellow noodles match, but the overhead angle is weak, the chef's tattooed forearm is missing, and scallions are not visible.",
+        "score": 0.58,
+        "shot_index": 2
+      },
+      {
+        "issue": "Side counter view and tattooed arm are present, but the action reads more like handling noodles or a cloth than pulling and folding a rope of fresh dough.",
+        "score": 0.55,
+        "shot_index": 3
+      },
+      {
+        "issue": "Wide stall view with lanterns, steam, bowls, and wok station matches, but the shaved-headed chef is not clearly preserved as the main worker.",
+        "score": 0.62,
+        "shot_index": 4
+      },
+      {
+        "issue": "Tight tattooed forearm and broth pouring into a bowl match, but the tattoo design and apron text drift, and the bandana placement is only partly visible.",
+        "score": 0.66,
+        "shot_index": 5
+      },
+      {
+        "issue": "Bowl assembly with noodles, pork, and scallions is clear, but the chef's face, earring, and rim-wiping action are not shown.",
+        "score": 0.67,
+        "shot_index": 6
+      },
+      {
+        "issue": "Finished bowl presentation is clear, but the chef's face, shaved head, nod, and full identity markers are mostly cropped out.",
+        "score": 0.7,
+        "shot_index": 7
+      }
+    ],
+    "subject_identity_preserved": {
+      "rationale": "The chef is generally maintained as a shaved-headed, tattooed cook in a navy apron, but identity details drift: the red neck bandana becomes a headband in shot 1, the chef disappears or becomes indistinct in shots 2 and 4, and the apron/tattoo markings vary.",
+      "score": 0.55,
+      "verdict": "medium"
+    },
+    "which_cut_broke": {
+      "confidence": 0.63,
+      "cut_index": 0,
+      "how": "The clearest identity/detail break is shot 0 to shot 1, where the red bandana changes from tied around the neck to a prominent headband and the chef's appearance shifts."
+    }
+  },
+  "video_hash": "a6d3d601111078cbb9808b31449703cbb2f5fb8e43e90f4ed7615ac1d59a7c7f",
+  "wall_clock_seconds": 29.281008005142212
+}

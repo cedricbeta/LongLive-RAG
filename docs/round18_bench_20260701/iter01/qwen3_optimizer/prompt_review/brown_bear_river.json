@@ -1,0 +1,121 @@
+{
+  "cache_fingerprint": "ef9bc35a73efd216b41e062346f5d8c49433e689d57fd40206c476068f8b2bc8",
+  "image_hashes": {},
+  "image_paths": [],
+  "parse_attempts": [],
+  "parsed": {
+    "verdicts": [
+      {
+        "index": 0,
+        "reason": "Consistent with authored invariant: 'The same large brown bear remains in the same shallow river and forest-bank habitat with mud, stones, grass, and dense green vegetation.' The addition sharpens the requirement by explicitly forbidding digital overlays/artificial elements, which aligns with the naturalism implied by the authored invariant.",
+        "target": "global",
+        "text": "The bear\u2019s environment remains consistently shallow river and forest-bank habitat with mud, stones, grass, and dense green vegetation; no digital overlays or artificial elements are permitted.",
+        "verdict": "keep"
+      }
+    ]
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are an independent REVIEWER of proposed prompt edits (not their author).\nThe authored invariants below are the ground truth of what the video MUST show.\nScene: brown_bear_river\nAuthored global caption: One continuous wilderness scene in the same shallow river and forest bank under natural daylight. The invariant subject is the same large brown bear with thick brown fur moving near the same water, mud, stones, grass, and dense green vegetation.\nAuthored invariant: The same large brown bear remains in the same shallow river and forest-bank habitat with mud, stones, grass, and dense green vegetation.\n\nProposed additions:\n- [global #0] The bear\u2019s environment remains consistently shallow river and forest-bank habitat with mud, stones, grass, and dense green vegetation; no digital overlays or artificial elements are permitted.\n- [per_shot #0 shot=4] The scene must remain naturalistic with no digital overlays, anatomical meshes, or graphical elements; the bear\u2019s face and habitat must be unaltered by artificial visual effects.\n\nFor EACH addition return a verdict:\n- keep: consistent with the authored invariants (may sharpen them).\n- rewrite: contradicts an authored invariant (e.g. different clothing/color/object than\n  authored) or drifts toward what a flawed render showed; provide `text` restating the\n  AUTHORED invariant for that aspect instead.\n- drop: unrelated to invariants, collapses shot diversity, or is unsalvageable.\nFor keep/drop verdicts set `text` to the original addition text unchanged.\nReturn strict JSON: {\"verdicts\": [{\"index\": 0, \"target\": \"global\"|\"per_shot\",\n\"verdict\": \"keep\"|\"drop\"|\"rewrite\", \"text\": \"...\", \"reason\": \"...\"}]}\nCover every addition exactly once.",
+            "type": "text"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "response_format": {
+      "json_schema": {
+        "name": "decision",
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "verdicts": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "index": {
+                    "type": "integer"
+                  },
+                  "reason": {
+                    "type": "string"
+                  },
+                  "target": {
+                    "enum": [
+                      "global",
+                      "per_shot"
+                    ],
+                    "type": "string"
+                  },
+                  "text": {
+                    "type": "string"
+                  },
+                  "verdict": {
+                    "enum": [
+                      "keep",
+                      "drop",
+                      "rewrite"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "index",
+                  "target",
+                  "verdict",
+                  "text",
+                  "reason"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "verdicts"
+          ],
+          "type": "object"
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"verdicts\": [\n    {\n      \"index\": 0,\n      \"target\": \"global\",\n      \"verdict\": \"keep\",\n      \"text\": \"The bear\u2019s environment remains consistently shallow river and forest-bank habitat with mud, stones, grass, and dense green vegetation; no digital overlays or artificial elements are permitted.\",\n      \"reason\": \"Consistent with authored invariant: 'The same large brown bear remains in the same shallow river and forest-bank habitat with mud, stones, grass, and dense green vegetation.' The addition sharpens the requirement by explicitly forbidding digital overlays/artificial elements, which aligns with the naturalism implied by the authored invariant.\"\n    }\n  ]\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1782975278,
+    "id": "7eda4271ca7940c59314b0f6b6a1f68f",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 146,
+      "prompt_tokens": 380,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 526
+    }
+  },
+  "schema_enforced": true,
+  "wall_clock_seconds": 3.9498634338378906
+}

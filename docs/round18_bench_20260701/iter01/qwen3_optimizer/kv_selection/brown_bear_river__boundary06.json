@@ -1,0 +1,303 @@
+{
+  "cache_fingerprint": "d69177393f44fca972e892fb351730761f4323e4e62f7a9f540daf868791bbad",
+  "image_hashes": {
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot00_frame00_idx0000.png": "0cb95f1d486909881d7613ecb674af903ef005a1a3df9b174580a694ca50cd4a",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot00_frame02_idx0027.png": "f0e634132ecd58577a374fd7c99754ac5ad93aa26a43ef58f67b56a5a22e7bb8",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot00_frame04_idx0054.png": "fae8908889f8ebe4e541d34c43d3cc7102f7d76eb8badac9a889e7d0238e3dc0",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot00_frame05_idx0068.png": "7489b84fda90f1e32fc88d7a4b3264ab7879bb9523571144b3e32a033c26ad1a",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot00_frame07_idx0095.png": "71c16d73d64fba6c8802857786132ff6a15d2657ed6816c054818ef1d9b7f20f",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot01_frame01_idx0110.png": "002752b4b5e1f421ec6e3f22db1e83206d89bf271fc8a2651b89e021bae2f8e2",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot01_frame03_idx0137.png": "46413ba73e322e30ae37f1d46c6accd40497e6d241a1137b1c50d58c1b65a13e",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot01_frame05_idx0164.png": "bcb70a4f7a258d81c5aeb7199d33d5131adeb2d76d63b7c132760442db41b54f",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot01_frame07_idx0191.png": "ac8e300a910f472623e62f1ccd4ab5e0bc0fa3bed2218fa0cd0789173d9172a3",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot02_frame00_idx0192.png": "eaf3d21a1763e5947bf6a1a1adce42f4525d685c7b9170a5851d8400a7e4bcab",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot02_frame02_idx0205.png": "5e353f524b6ee6c78c659599511bc0d5d4f8f5de815e671a621413c2bfd71f76",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot02_frame04_idx0219.png": "986427f65c7891b9572233679698599b05ae6376fbed5df5c085f6adf7a47ac4",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot02_frame06_idx0232.png": "6d52f8c6847be5044226856a7a6b3a8cc874072e210bcc1c6fae6b62b9312eeb",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot03_frame00_idx0240.png": "4d10b09fe3e57bf026936b8c9596d1a4532ccf358de313a3de5e429eeb252969",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot03_frame02_idx0253.png": "fb932e0d16ee81cb210e7c0614d65628f51f41d5397a13b26a54767ed2360a02",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot03_frame03_idx0260.png": "2cdb6abcf4bda416b00f81cb6d454fac953e1f2979d19e73a3c1864698edddcb",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot03_frame05_idx0274.png": "4d749418c4ae5260a9d355417dfb2420d3da8d26e1ad15dbb7ed01bf233a84e9",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot03_frame07_idx0287.png": "1d8f978c820df976c165c1b205d51f5961c620fb4cc5ab0f22b8adaa4aae0521",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot04_frame01_idx0295.png": "0bade9a1ba5ee554e9b433ab624186f8ea77802660609c6e7a90894857ac4949",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot04_frame03_idx0308.png": "dee1198b9ad6be10aea09282625853392c7159e119132d3858ee839b93361f8e",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot04_frame05_idx0322.png": "719cd4067752545e51248389f028faff1b63c5e0526fa4f0c4ed76744cec353d",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot04_frame06_idx0328.png": "7934da65548fb1b0dd0cd25c36e757c9adc6dae9fc9a53b590dee771466bc058",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot05_frame00_idx0336.png": "8a03d5516b7f76299891eab315805e07aab7ba2dbd09bd2bd4cad45fb16f5958",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot05_frame02_idx0349.png": "a9b2bd8a881e91ab9e696293a1d5fc20cd81ba8912ca9ab69643b297c95184bf",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot06_frame00_idx0384.png": "2e228909cfd3069a51870d9b59d83ba74e137291261de0866cad83033d5374ac",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot06_frame01_idx0400.png": "9cdce03a932a1918434d6943d31c943597734d2ef2c9a470ea077771dd903672"
+  },
+  "image_paths": [
+    "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot06_frame00_idx0384.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot06_frame01_idx0400.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot00_frame00_idx0000.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot00_frame02_idx0027.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot00_frame04_idx0054.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot00_frame05_idx0068.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot00_frame07_idx0095.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot01_frame01_idx0110.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot01_frame03_idx0137.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot01_frame05_idx0164.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot01_frame07_idx0191.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot02_frame00_idx0192.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot02_frame02_idx0205.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot02_frame04_idx0219.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot02_frame06_idx0232.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot03_frame00_idx0240.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot03_frame02_idx0253.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot03_frame03_idx0260.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot03_frame05_idx0274.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot03_frame07_idx0287.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot04_frame01_idx0295.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot04_frame03_idx0308.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot04_frame05_idx0322.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot04_frame06_idx0328.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot05_frame00_idx0336.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/brown_bear_river/shot05_frame02_idx0349.png"
+  ],
+  "parse_attempts": [],
+  "parsed": {
+    "rationale": "These frames show the bear in clear, unoccluded views of its head and upper body as it moves through the river and forest environment, matching the subject identity and scene layout described in the shot 6 caption. Frame 328 shows the bear's face in a close-up, frame 336 shows the bear's head and shoulders in profile, and frame 349 shows the bear's head and upper body as it moves through the foliage, all providing strong visual anchors for continuity.",
+    "selected_frame_indices": [
+      328,
+      336,
+      349
+    ],
+    "skip": false
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are the LOCAL Qwen3-VL KV-anchor selector.\nTask: pick which PAST decoded frames get re-injected into the KV cache at the cut into shot 6,\nso the subject and scene identity stay consistent across the cut.\nScene: brown_bear_river\nAuthored invariant: The same large brown bear remains in the same shallow river and forest-bank habitat with mud, stones, grass, and dense green vegetation.\nEntering shot 6 caption: The video presents a natural, earthy-toned scene with a muted green and brown color palette, bathed in soft, diffused daylight that suggests an overcast or shaded forest environment. The atmosphere feels tranquil yet slightly wild, with gentle movement in the foliage hinting at a breeze. The style is documentary-like, employing a shallow depth of field that keeps the foreground vegetation in sharp focus while softly blurring the background, creating a sense of immersion in the wild.\nThe setting is entirely outdoors, nestled in a dense, verdant forest. Ferns and small leafy plants dominate the foreground, their fronds delicately swaying as if stirred by a light breeze. The background, though blurred, reveals more trees and underbrush, reinforcing the secluded, untamed nature of the habitat. The time appears to be daytime\u2014perhaps late morning or early afternoon\u2014given the even, natural lighting without harsh shadows.\n\nA large, brown-furred animal, likely a bear, is the central subject. It first appears partially obscured by ferns at 0:00, its massive body moving from left to right across the frame. The bear\u2019s fur is thick and textured, blending subtly with the forest floor. It moves steadily, its motion deliberate and unhurried, suggesting foraging or exploration. The animal\u2019s head is not visible, emphasizing its bulk and the natural camouflage of its surroundings. Its movement is fluid, with its body shifting slightly as it navigates the undergrowth, occasionally brushing against nearby plants.\n\nThe camera remains static throughout, capturing the bear\u2019s passage in a medium shot that emphasizes its scale relative to the environment. The shallow depth of field isolates the bear as it moves through the frame, with the foreground ferns acting as a natural screen. The bear\u2019s path is linear, moving from left to right, gradually exiting the frame by 0:03. No other characters or objects appear, keeping the focus entirely on the animal\u2019s quiet, natural behavior. The scene conveys a sense of harmony between the creature and its habitat, untouched by human presence. The wind\u2019s subtle influence on the foliage adds a gentle, organic rhythm to the visual narrative.\n\nQUERY images (start of shot 6, what the transition must stay consistent with):\n- image Q0: decoded frame 384\n- image Q1: decoded frame 400\n\nCANDIDATE anchor images (past frames outside the live attention window):\n- image C0: decoded frame 0\n- image C1: decoded frame 27\n- image C2: decoded frame 54\n- image C3: decoded frame 68\n- image C4: decoded frame 95\n- image C5: decoded frame 110\n- image C6: decoded frame 137\n- image C7: decoded frame 164\n- image C8: decoded frame 191\n- image C9: decoded frame 192\n- image C10: decoded frame 205\n- image C11: decoded frame 219\n- image C12: decoded frame 232\n- image C13: decoded frame 240\n- image C14: decoded frame 253\n- image C15: decoded frame 260\n- image C16: decoded frame 274\n- image C17: decoded frame 287\n- image C18: decoded frame 295\n- image C19: decoded frame 308\n- image C20: decoded frame 322\n- image C21: decoded frame 328\n- image C22: decoded frame 336\n- image C23: decoded frame 349\n\nChoose up to 4 candidate frames whose CONTENT best pins the subject identity\n(face/clothing/markings) and scene layout for this specific cut.\nJudge by what the images show, not by position in the video: an early frame is NOT\nautomatically better. Prefer frames with a clear, unoccluded view of the subject as it\nshould appear entering this shot. Skip only if no candidate shows the relevant subject.\nReturn strict JSON: {\"selected_frame_indices\": [..], \"skip\": false, \"rationale\": \"content-based reason naming what the chosen frames show\"}\nValid frame indices: [0, 27, 54, 68, 95, 110, 137, 164, 191, 192, 205, 219, 232, 240, 253, 260, 274, 287, 295, 308, 322, 328, 336, 349]",
+            "type": "text"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "response_format": {
+      "json_schema": {
+        "name": "decision",
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "rationale": {
+              "type": "string"
+            },
+            "selected_frame_indices": {
+              "items": {
+                "type": "integer"
+              },
+              "type": "array"
+            },
+            "skip": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "selected_frame_indices",
+            "skip",
+            "rationale"
+          ],
+          "type": "object"
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"selected_frame_indices\": [328, 336, 349],\n  \"skip\": false,\n  \"rationale\": \"These frames show the bear in clear, unoccluded views of its head and upper body as it moves through the river and forest environment, matching the subject identity and scene layout described in the shot 6 caption. Frame 328 shows the bear's face in a close-up, frame 336 shows the bear's head and shoulders in profile, and frame 349 shows the bear's head and upper body as it moves through the foliage, all providing strong visual anchors for continuity.\"\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1782975387,
+    "id": "21df36fb6e7c44f29c70cfc1be769612",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 138,
+      "prompt_tokens": 24061,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 24199
+    }
+  },
+  "schema_enforced": true,
+  "wall_clock_seconds": 24.002365350723267
+}

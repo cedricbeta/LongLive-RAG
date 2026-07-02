@@ -1,0 +1,425 @@
+{
+  "cache_fingerprint": "45b414dee02201662dfd652347e08b99647d4d8fc00a2904656637668451993a",
+  "image_hashes": {
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot00_frame00_idx0000.png": "0be4c6c1028c69144b5f66c871f66d62d1a40a49bccfcf3de43fa57db9451c78",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot00_frame01_idx0032.png": "95778e0fd2aac30bcf281328ca8a9ddef25dfce74c97e665d8461e632419479b",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot00_frame02_idx0063.png": "562438b7f9c9f9af89be57b23f0d300588e4afe6dc8a1b39c481ed20a70fe465",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot00_frame03_idx0095.png": "eda07d7596c8d1ed215132b95cfa06c0418ff977878c5b2a77a0805bd5525154",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot01_frame00_idx0096.png": "7575455436c8ce4fc077fa53dad0b57473ac04b1ac80fc2e552d2de8ab9c5a1e",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot01_frame01_idx0128.png": "f47dbaf9b530c93580c1b1f136278aa1687fa1854fb37646903e5322b7463524",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot01_frame02_idx0159.png": "b25305f57139481bebb5e0fab4fd09a6c388d9f0e329b212bf9e983719d5b790",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot01_frame03_idx0191.png": "d9461f02ad016cc43c0d068a751657c783a75bbac70028208caf7ac153c950c0",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot02_frame00_idx0192.png": "2a8c1fdfb47a885f414de0b034d7d5d4fd004324990546137d19623f315c2e1c",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot02_frame01_idx0224.png": "937cfad739311e2a8bf921de43aa4ea7a1a13a5ee0d905dad2800b5a36ec88b1",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot02_frame02_idx0255.png": "f04aecd9d77ec2c10f086eeb36928a9cc3afb2f15db0ee5c7ac737c8a24d5e77",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot02_frame03_idx0287.png": "6bcb9bfed923d2d8114bfe5a3ad9bf8d9b0f37b373f0a91ea5d7f0b26b366bc7",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot03_frame00_idx0288.png": "5d1c57bd8a998bb74b6b746b5e7c08e81ce6054d6f91e9b903b33e5a0e44eea0",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot03_frame01_idx0304.png": "c5a645053a433b6cd12a6a56ca5be33ee465e91762bd47f3ea7572be17131f81",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot03_frame02_idx0319.png": "ac1a501034653533052e17c2628b7c234926e1886a5998bda473fee09f2fdc17",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot03_frame03_idx0335.png": "d6b726bad6ff388b786b6ae24e705a5b95ea2f620731e93cecd620dae7d3d1a3",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot04_frame00_idx0336.png": "98d209b83743616ff10d2ca999990e439fa68a5276b7997a3e3a2f88573e3054",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot04_frame01_idx0352.png": "9efc73e5ca00258f8e6aa16f080da2807369e3480d7c328357cd89c1ea0d69c8",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot04_frame02_idx0367.png": "525e03f5601e82ada6b4d62b524065c7b52e83211191ed9fda16be7b4ea2d484",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot04_frame03_idx0383.png": "d198705ae782381bfc4a52312dffa8fc92d9cb6415d9c3024d11466fee9a9ab1",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot05_frame00_idx0384.png": "09f7c217b06496134616ee140f7c0e2da9d1d2fafb0850af6c05b9117bdade21",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot05_frame01_idx0400.png": "e989dcf035187e0515f0f9477771d843d8c14ffa4b6d3138e8a5c8d52ba8354a",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot05_frame02_idx0415.png": "3ce73f8a1719565888dd66c070f9319a8d77c6d5bcc77d32e3cca2d202a8d213",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot05_frame03_idx0431.png": "44c291e56f5bc4657b374690a04549f8c08207ba74b090a1ccb58462e05f3253",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot06_frame00_idx0432.png": "c2ab69000d3be185fa0725446fc0c912f6312fa306c26d9a3558f7fbf535419b",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot06_frame01_idx0448.png": "58b9273843c285b7bd8600337d74d1b598db98b15b675ce56d7244a9f85a25f0",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot06_frame02_idx0463.png": "556021d181a3f877bf4647b99dd35910b927f0db5cdd7ca6c2c420ecffc61634",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot06_frame03_idx0479.png": "f40f2bc8a994c13f5cfafaa73ccb8a1308cf998cf6aa1800bcb2e2eedcd38515"
+  },
+  "image_paths": [
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot00_frame00_idx0000.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot00_frame01_idx0032.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot00_frame02_idx0063.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot00_frame03_idx0095.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot01_frame00_idx0096.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot01_frame01_idx0128.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot01_frame02_idx0159.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot01_frame03_idx0191.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot02_frame00_idx0192.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot02_frame01_idx0224.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot02_frame02_idx0255.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot02_frame03_idx0287.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot03_frame00_idx0288.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot03_frame01_idx0304.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot03_frame02_idx0319.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot03_frame03_idx0335.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot04_frame00_idx0336.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot04_frame01_idx0352.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot04_frame02_idx0367.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot04_frame03_idx0383.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot05_frame00_idx0384.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot05_frame01_idx0400.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot05_frame02_idx0415.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot05_frame03_idx0431.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot06_frame00_idx0432.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot06_frame01_idx0448.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot06_frame02_idx0463.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot06_frame03_idx0479.png"
+  ],
+  "parse_attempts": [],
+  "parsed": {
+    "global_invariant_additions": [
+      "The scene must maintain the same central subject or objects (e.g., the olive-drab helicopter and its crew) and environment (military airfield/deck) across every shot."
+    ],
+    "kv_anchor_plan": [],
+    "per_shot_additions": [
+      {
+        "rationale": "Reinforces the core subject and environment to anchor continuity.",
+        "shot_index": 0,
+        "text": "The scene is an outdoor military airfield or ship deck with the same olive-drab helicopter and two men (shirtless and uniformed) as central subjects."
+      },
+      {
+        "rationale": "Reinforces the core subject and environment to anchor continuity.",
+        "shot_index": 1,
+        "text": "The scene remains an outdoor military airfield or ship deck with the same olive-drab helicopter and two men (shirtless and uniformed) as central subjects."
+      },
+      {
+        "rationale": "Corrects the break in continuity by reasserting the authored invariant.",
+        "shot_index": 2,
+        "text": "The scene must include the same olive-drab helicopter and its crew as central subjects, and the environment must remain the military airfield or ship deck."
+      },
+      {
+        "rationale": "Reinforces the core subject and environment to anchor continuity.",
+        "shot_index": 3,
+        "text": "The scene is an outdoor military airfield or ship deck with the same olive-drab helicopter and its crew as central subjects."
+      },
+      {
+        "rationale": "Reinforces the core subject and environment to anchor continuity.",
+        "shot_index": 4,
+        "text": "The scene is an outdoor military airfield or ship deck with the same olive-drab helicopter and its crew as central subjects."
+      },
+      {
+        "rationale": "Reinforces the core subject and environment to anchor continuity.",
+        "shot_index": 5,
+        "text": "The scene is an outdoor military airfield or ship deck with the same olive-drab helicopter and its crew as central subjects."
+      },
+      {
+        "rationale": "Reinforces the core subject and environment to anchor continuity.",
+        "shot_index": 6,
+        "text": "The scene is an outdoor military airfield or ship deck with the same olive-drab helicopter and its crew as central subjects."
+      }
+    ],
+    "stop_rule": "one bounded refinement round",
+    "which_cut_broke": {
+      "cut_index": 2,
+      "how": "Shot 2 breaks continuity by shifting to an isolated mechanical object without the central subject or environment from Shot 1."
+    }
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are the LOCAL Qwen3-VL optimizer, not the held-out judge.\nDiagnose which shot cut breaks cross-shot consistency and propose constrained fixes.\nReturn strict JSON only with this shape:\n{\n  \"which_cut_broke\": {\"cut_index\": integer_or_null, \"how\": \"short reason\"},\n  \"global_invariant_additions\": [\"additive invariant text\", ...],\n  \"per_shot_additions\": [{\"shot_index\": 0, \"text\": \"additive invariant text\", \"rationale\": \"why\"}, ...],\n  \"kv_anchor_plan\": [],\n  \"stop_rule\": \"one bounded refinement round\"\n}\nRules: ADD subject/scene invariants only. Do not delete or weaken per-shot camera/action.\nInvariant additions must RESTATE or SHARPEN the authored global invariant below.\nIf the rendered video contradicts that invariant (wrong clothing/color/object), that is a\ndefect to FIX: re-assert the authored invariant. NEVER codify the rendered appearance when\nit conflicts with the authored invariant.\nDo not collapse shots into near-identical text.\nKV anchors are chosen in a separate per-boundary pass; return an empty kv_anchor_plan.\nScene: vintage_archival_scene\nGlobal invariant: The same continuous vintage archival scene scene persists across every shot, with the same central subject or objects, the same environment, and coherent event continuity despite legitimate camera, framing, and action changes.\nSHOT 0: frames=[0, 32, 63, 95]; caption=The video exhibits a muted, desaturated color tone with a grainy, vintage aesthetic, suggesting archival footage from the mid-20th century. The lighting is diffused and natural, likely from an overcast sky, casting soft shadows and contributing to a subdued, documentary-style atmosphere. The style is candid and observational, with handheld camera work that conveys immediacy and realism, capturing moments without staging.\n\nThe scene unfolds outdoors on what appears to be a military airfield or ship deck, with a large, olive-drab helicopter dominating the frame. The environment is utilitarian and functional, with visible metal structures, cables, and equipment scattered around. The setting is daytime, possibly midday, with no discernible weather effects like rain or fog, though the haze suggests either dust or atmospheric conditions typical of a tropical or arid region.\n\nTwo men are prominently featured. The first appears shirtless, wearing only shorts and a cap, likely a soldier or crew member. He is seen in the foreground, moving toward the helicopter, his posture relaxed yet purposeful. The second man, seen later, is dressed in a military uniform with boots and a cap, climbing out of the helicopter\u2019s open side door. His actions suggest he is either disembarking or assisting with operations. Both appear to be young adult males, of indeterminate ethnicity based on visual cues, with practical hairstyles and minimal accessories.\n\nThe helicopter is metallic and weathered, with exposed wiring and mechanical components. Its rotor blades are visible, indicating readiness or recent use. The camera pans slightly from a low angle, tracking the shirtless man\u2019s movement as he approaches the aircraft, then shifts to follow the uniformed man\u2019s descent from the helicopter. The camera remains handheld, creating a sense of intimacy and immediacy.\n\nThe narrative is documentary in nature, focusing on routine military activity. The movement is slow and deliberate, with no dramatic action \u2014 just the mundane choreography of soldiers preparing or disembarking. There is no dialogue or emotional expression visible, reinforcing the observational tone. The depth of field is shallow, keeping the subjects in focus while blurring the background slightly, emphasizing their actions over the environment. The shot is a medium close-up, allowing viewers to observe details of clothing and expressions while maintaining context of the setting. The low camera angle enhances the sense of immersion, making the viewer feel present on the deck alongside the subjects.\nSHOT 1: frames=[96, 128, 159, 191]; caption=The video presents a grainy, vintage aesthetic with muted, desaturated tones\u2014dominated by browns, grays, and faded greens\u2014suggesting aged film stock. The lighting is dim and artificial, casting soft shadows, likely indoors under overhead fluorescent or incandescent bulbs, contributing to a gritty, industrial atmosphere. The style is documentary-like, with handheld, slightly shaky footage emphasizing realism and immediacy, possibly from archival or behind-the-scenes material.\nThe scene takes place indoors, within the confined, cluttered space of what appears to be a mechanical workshop or engine bay. Large, exposed machinery dominates the background\u2014likely an aircraft engine or heavy industrial equipment\u2014with visible pipes, bolts, and metallic components. The setting is utilitarian, with no decorative elements; the focus is purely functional. The time of day is indeterminate due to artificial lighting, but the environment feels like midday or early evening in a workshop setting. There are no windows or natural light sources visible.\n\nOne shirtless male figure appears centrally, viewed from behind, with dark, short hair and a muscular build. He appears to be in his late 20s to early 30s, likely a mechanic or technician, engaged in physical labor. His skin tone is light, and he wears no visible accessories or clothing except for a watch on his left wrist. His posture is bent forward, arms extended as he works on the machinery, suggesting intense focus.\n\nThe machinery is massive, with cylindrical components and metallic surfaces. A large fan or turbine assembly is visible, with multiple blades and exposed wiring. The engine occupies the background, while the man is positioned in the foreground, partially obscuring the machinery. The camera remains static throughout, providing a medium shot that captures the man\u2019s upper body and the machinery behind him. His movements are slow and deliberate, adjusting or tightening components with his hands. No other characters appear.\n\nThe shot composition is centered on the man\u2019s back, with a shallow depth of field blurring the background machinery slightly, drawing attention to his labor. The camera angle is eye-level, creating a neutral, observational stance. The narrative is documentary and instructional, emphasizing the physicality and precision of mechanical work. The movement is minimal, with the man\u2019s arms moving slowly as he works, reinforcing the deliberate, methodical nature of the task. There is no discernible natural element or environmental change, reinforcing the industrial, controlled setting.\nSHOT 2: frames=[192, 224, 255, 287]; caption=The video presents a close-up, grainy, and slightly overexposed shot of a mechanical device, likely a weather vane or a windmill-like rotor, set against a pale, overcast sky. The color tone is muted and desaturated, with a grayish-white dominance, suggesting either early morning or late afternoon under diffused lighting. The atmosphere feels static and industrial, with no natural vibrancy, evoking a sense of mechanical reliability or operational monotony. The camera remains steady, with slight handheld jitter, focusing on the spinning rotor, which appears to be made of metal\u2014possibly aluminum or steel\u2014with a central vertical pole and two horizontal arms extending outward. The rotor spins slowly, creating a blur effect, suggesting either low wind speed or mechanical inertia. No human characters appear in the video; the sole focus is on the mechanical object. The environment is entirely outdoor, with no discernible landmarks or vegetation, reinforcing the industrial or utilitarian setting. The rotor\u2019s motion is continuous and circular, rotating around its axis, indicating functional operation. The camera angle is eye-level, slightly tilted upward, emphasizing the verticality of the pole and the horizontal motion of the arms. The depth of field is shallow, keeping the rotor in sharp focus while blurring the background sky, enhancing the mechanical subject\u2019s prominence. The overall style is documentary-like, capturing a mundane yet essential mechanical process in a stark, unembellished manner. There is no narrative or emotional context provided, only the mechanical rhythm of the spinning rotor against the monochromatic sky.\nSHOT 3: frames=[288, 304, 319, 335]; caption=The video exhibits a muted, grayish-blue color tone with soft, diffused lighting, suggesting an overcast or foggy day. The atmosphere is calm but carries a sense of operational readiness, with the camera maintaining a steady, aerial perspective that slowly pans rightward, keeping the ship and helicopter as focal points. The style is documentary-like, with a grainy, vintage quality that hints at historical footage.\nThe scene unfolds outdoors on the deck of a large naval vessel, likely an amphibious assault ship or helicopter carrier, docked or moving slowly on calm, gray water. The deck is bustling with activity: several personnel in uniforms are scattered across the surface, some walking purposefully while others appear to be monitoring operations. The ship\u2019s structure includes multiple levels of equipment, railings, and what appears to be a helipad marked with a white circle. A single military helicopter, dark green or gray in color, is the central object. It begins stationary on the helipad, then lifts off slowly, its rotors spinning steadily as it ascends vertically before tilting slightly forward and beginning a smooth transition into forward flight. The camera follows the helicopter\u2019s ascent and lateral movement, capturing its graceful departure from the ship\u2019s deck.\n\nThe helicopter\u2019s movement is the primary action, and its trajectory is clearly tracked as it moves from the center of the frame toward the right, gradually distancing itself from the ship. The personnel on deck remain largely static or move minimally, indicating a controlled environment. The ship\u2019s hull and superstructure are visible in the background, with faint details of antennas, cranes, and other onboard machinery. The water below reflects the muted sky, adding to the serene yet functional atmosphere.\n\nThe shot is a medium-long shot, maintaining a consistent depth of field that keeps both the helicopter and the ship\u2019s deck in focus. The camera angle is slightly elevated, offering a bird\u2019s-eye view that emphasizes the helicopter\u2019s takeoff and the ship\u2019s scale. No close-ups or dramatic camera movements are present, reinforcing the documentary, observational tone. The overall narrative conveys a routine military operation \u2014 possibly a training exercise or deployment \u2014 with precision and calmness. The helicopter\u2019s steady flight and the orderly ship deck suggest professionalism and preparedness, while the foggy weather adds a layer of subdued realism.\nSHOT 4: frames=[336, 352, 367, 383]; caption=The video presents a muted, desaturated color tone with an overcast, grayish-blue hue, suggesting either early morning or late afternoon under cloudy skies. The lighting is soft and diffused, with no harsh shadows, contributing to a somber, atmospheric tone. The style is documentary-like, with handheld or slightly shaky camera work, giving a raw, immersive feel. The footage is grainy, hinting at archival or vintage material, possibly from a military or historical context.\nThe scene is entirely outdoor, set over a vast, uneven landscape of forested terrain interspersed with open fields and winding rivers or streams visible below. The horizon is hazy, with distant hills or mountains faintly visible, reinforcing the sense of scale and remoteness. No urban structures or landmarks are present, emphasizing a natural, possibly rural or wilderness environment. The weather appears calm, with no visible wind or precipitation, and the sky is uniformly overcast.\n\nThe video features multiple helicopters, all military-style, painted in olive drab or gray camouflage. They are seen in formation, flying at varying altitudes and distances from the camera. The first helicopter appears in frame 0:00, flying low over water near a large naval vessel, which is partially visible on the right edge. As the camera pans upward and leftward, additional helicopters enter the frame: one appears at 0:03, another at 0:05, and a third at 0:06, forming a loose V-formation. Their rotors spin steadily, indicating continuous forward motion. No human figures or specific characters are visible inside the helicopters, so no facial expressions, clothing, or ethnicity can be determined.\n\nThe camera begins with a medium shot of a single helicopter near the ship, then transitions to an aerial wide shot that tracks the formation as it moves across the landscape. The camera pans smoothly to the left, following the helicopters\u2019 trajectory, maintaining a consistent eye-level perspective. The depth of field is shallow, keeping the helicopters in focus while the background terrain blurs slightly. The movement is slow and deliberate, emphasizing the helicopters' coordinated flight and the vastness of the terrain below.\n\nThe overall narrative conveys a sense of military operation or reconnaissance, with the helicopters likely engaged in a coordinated mission over a remote area. The absence of visible personnel or specific actions suggests a focus on the machinery and environment rather than individual stories. The video\u2019s steady, methodical pace and muted tones evoke a tone of seriousness and purpose, perhaps hinting at a historical military operation or training exercise.\nSHOT 5: frames=[384, 400, 415, 431]; caption=The video features a dimly lit, grainy interior shot of a helicopter cockpit, viewed from behind a pilot wearing a green military helmet and uniform. The color tone is muted with a vintage greenish-blue hue, evoking a sense of aged archival footage. Natural daylight filters through the cockpit windows, illuminating the scene with soft, diffused light, while the interior remains shadowed, creating a contrast that accentuates the silhouette of the pilot. The atmosphere feels tense and focused, as if capturing a moment during an active flight or mission. The camera remains steady in a medium shot, centered on the pilot\u2019s back and head, with a shallow depth of field that blurs the background slightly.\nThe scene is set outdoors, as evidenced by the cloudy sky visible through the open cockpit windows. The weather appears overcast, with scattered white clouds drifting slowly across a pale blue sky. Outside, another helicopter can be seen flying in the distance, its rotors spinning steadily, suggesting coordinated aerial activity. The environment is clearly airborne, with no ground landmarks visible, reinforcing the impression of mid-flight operations.\n\nThe pilot, the only visible character, appears to be a male adult, likely in his 30s or 40s, based on his posture and build. His uniform is dark, possibly olive drab, with visible insignia or patches that suggest military affiliation. His helmet is standard-issue, with a rounded shape and earpieces, likely for communication. He remains seated throughout, maintaining a steady posture with minimal movement\u2014his head slightly turned as if tracking the approaching helicopter. His facial expression is obscured, but his body language suggests concentration and alertness.\n\nKey objects include the cockpit\u2019s interior structure: metal frames, control panels, and cables hanging from the ceiling. The windows are framed by riveted metal, and a circular porthole is visible on the left side of the frame. The pilot\u2019s seat is a simple, utilitarian design with a headrest. The second helicopter is distant and appears as a small, metallic object against the sky, moving slowly from left to right across the frame, its rotor blades creating a slight blur due to motion. The camera remains fixed, capturing the pilot\u2019s steady gaze and the helicopter\u2019s steady approach, suggesting a moment of coordination or reconnaissance.\n\nThe shot is a medium close-up, with a shallow depth of field that keeps the pilot in sharp focus while blurring the background slightly. The shooting angle is from behind the pilot, at eye level, creating an immersive perspective that places the viewer in the cockpit. The pilot\u2019s stillness contrasts with the slow, deliberate movement of the external helicopter, emphasizing the calm precision of the operation. The overall narrative conveys a sense of military procedure, with the pilot monitoring or preparing for an interaction with the other aircraft.\nSHOT 6: frames=[432, 448, 463, 479]; caption=The video features a muted, desaturated color tone dominated by shades of gray and green, evoking a foggy or overcast atmosphere. Lighting is diffused and soft, suggesting either early morning or late afternoon under cloudy skies. The style is documentary-like, with handheld or slightly shaky camera work that conveys realism and immediacy. The footage appears to be captured from inside another aircraft, as indicated by the visible edge of a wing or fuselage in later frames.\nThe scene unfolds outdoors over a vast, flat, grassy or marshy terrain, possibly a wetland or agricultural field, with faintly visible patches of darker earth or water. In the distance, low-lying hills or ridges are barely discernible through the haze. The environment feels expansive and somewhat barren, with no significant urban or man-made structures visible. The weather is consistently foggy or misty, reducing visibility and creating a sense of isolation.\n\nThe central subject is a single military-style helicopter, likely a utility or attack model, painted in camouflage or dull gray. Its rotor blades spin rapidly, and its landing gear is extended, suggesting it is either hovering or preparing to land. The helicopter is seen from various angles as it moves slowly across the frame, maintaining a low altitude. The camera pans slightly to follow its movement, creating a sense of motion and purpose. At one point, the helicopter\u2019s exhaust or engine emits a trail of white smoke, indicating it is either accelerating or performing a maneuver. The helicopter eventually exits the frame, replaced by a wider view of the landscape, reinforcing the vastness of the terrain.\n\nNo human characters are visible, and the focus remains entirely on the helicopter and its environment. The camera movement is dynamic, shifting from a side profile of the helicopter to a more distant, overhead perspective as it moves. The helicopter\u2019s movement is steady and controlled, suggesting it is piloted with precision. The video\u2019s narrative tone is observational and atmospheric, emphasizing the isolation of the aircraft in the expansive, misty landscape. The shallow depth of field keeps the helicopter in focus while softly blurring the background, enhancing the sense of scale and motion. The overall mood is somber and contemplative, with a hint of tension implied by the helicopter\u2019s presence and the smoke trail.",
+            "type": "text"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "response_format": {
+      "json_schema": {
+        "name": "decision",
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "global_invariant_additions": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "kv_anchor_plan": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "boundary_shot_index": {
+                    "type": "integer"
+                  },
+                  "decoded_frame_indices": {
+                    "items": {
+                      "type": "integer"
+                    },
+                    "type": "array"
+                  },
+                  "rationale": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "boundary_shot_index",
+                  "decoded_frame_indices",
+                  "rationale"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "per_shot_additions": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "rationale": {
+                    "type": "string"
+                  },
+                  "shot_index": {
+                    "type": "integer"
+                  },
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "shot_index",
+                  "text",
+                  "rationale"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "stop_rule": {
+              "type": "string"
+            },
+            "which_cut_broke": {
+              "additionalProperties": false,
+              "properties": {
+                "cut_index": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "how": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "cut_index",
+                "how"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "which_cut_broke",
+            "global_invariant_additions",
+            "per_shot_additions",
+            "kv_anchor_plan",
+            "stop_rule"
+          ],
+          "type": "object"
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"which_cut_broke\": {\n    \"cut_index\": 2,\n    \"how\": \"Shot 2 breaks continuity by shifting to an isolated mechanical object without the central subject or environment from Shot 1.\"\n  },\n  \"global_invariant_additions\": [\n    \"The scene must maintain the same central subject or objects (e.g., the olive-drab helicopter and its crew) and environment (military airfield/deck) across every shot.\"\n  ],\n  \"per_shot_additions\": [\n    {\n      \"shot_index\": 0,\n      \"text\": \"The scene is an outdoor military airfield or ship deck with the same olive-drab helicopter and two men (shirtless and uniformed) as central subjects.\",\n      \"rationale\": \"Reinforces the core subject and environment to anchor continuity.\"\n    },\n    {\n      \"shot_index\": 1,\n      \"text\": \"The scene remains an outdoor military airfield or ship deck with the same olive-drab helicopter and two men (shirtless and uniformed) as central subjects.\",\n      \"rationale\": \"Reinforces the core subject and environment to anchor continuity.\"\n    },\n    {\n      \"shot_index\": 2,\n      \"text\": \"The scene must include the same olive-drab helicopter and its crew as central subjects, and the environment must remain the military airfield or ship deck.\",\n      \"rationale\": \"Corrects the break in continuity by reasserting the authored invariant.\"\n    },\n    {\n      \"shot_index\": 3,\n      \"text\": \"The scene is an outdoor military airfield or ship deck with the same olive-drab helicopter and its crew as central subjects.\",\n      \"rationale\": \"Reinforces the core subject and environment to anchor continuity.\"\n    },\n    {\n      \"shot_index\": 4,\n      \"text\": \"The scene is an outdoor military airfield or ship deck with the same olive-drab helicopter and its crew as central subjects.\",\n      \"rationale\": \"Reinforces the core subject and environment to anchor continuity.\"\n    },\n    {\n      \"shot_index\": 5,\n      \"text\": \"The scene is an outdoor military airfield or ship deck with the same olive-drab helicopter and its crew as central subjects.\",\n      \"rationale\": \"Reinforces the core subject and environment to anchor continuity.\"\n    },\n    {\n      \"shot_index\": 6,\n      \"text\": \"The scene is an outdoor military airfield or ship deck with the same olive-drab helicopter and its crew as central subjects.\",\n      \"rationale\": \"Reinforces the core subject and environment to anchor continuity.\"\n    }\n  ],\n  \"kv_anchor_plan\": [],\n  \"stop_rule\": \"one bounded refinement round\"\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1782975955,
+    "id": "abcb5f97ca0f4304a3b002af123b7b1a",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 568,
+      "prompt_tokens": 28456,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 29024
+    }
+  },
+  "schema_enforced": true,
+  "wall_clock_seconds": 40.53380298614502
+}

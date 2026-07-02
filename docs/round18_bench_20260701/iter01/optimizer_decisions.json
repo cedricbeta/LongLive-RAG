@@ -1,0 +1,4395 @@
+{
+  "african_savanna": {
+    "decision": {
+      "global_invariant_additions": [
+        "The scene remains exclusively natural, with no human characters or artificial equipment visible."
+      ],
+      "kv_anchor_plan": [
+        {
+          "boundary_shot_index": 1,
+          "decoded_frame_indices": [
+            27,
+            41,
+            54
+          ],
+          "rationale": "Frame 27 shows the filmmaker in his green shirt and curly hair, clearly visible from the side, with the camera rig and safari vehicle frame in context. Frame 41 provides a clear, unoccluded view of the elephant walking through the savanna, showing its full body and tusks against the acacia trees. Frame 54 continues to show the elephant moving, maintaining the same scene layout and subject identity. These frames best pin the subject (filmmaker and elephant) and scene (savanna, acacia trees, vehicle frame) for continuity across the cut."
+        },
+        {
+          "boundary_shot_index": 2,
+          "decoded_frame_indices": [
+            137,
+            150
+          ],
+          "rationale": "Frame 137 and 150 show the elephant in a clear, unoccluded side profile as it walks across the savanna, with its prominent tusks and body shape visible. These frames capture the subject's identity and movement pattern that will continue into shot 2, ensuring continuity with the entering shot. The scene layout with acacia trees and golden grass is also consistent with the described environment."
+        },
+        {
+          "boundary_shot_index": 3,
+          "decoded_frame_indices": [
+            199,
+            205
+          ],
+          "rationale": "These frames show the elephant in a full-body, side-profile view as it walks through the savanna, clearly displaying its size, tusks, and the characteristic acacia trees and golden grass in the background. This matches the scene layout and subject identity described in the entering shot 3 caption, ensuring continuity."
+        },
+        {
+          "boundary_shot_index": 4,
+          "decoded_frame_indices": [
+            247,
+            253
+          ],
+          "rationale": "These frames show the elephant in a medium shot from the safari vehicle, clearly displaying its full body, prominent tusks, and textured skin against the savanna backdrop with acacia trees. This matches the subject identity and scene layout described in the entering shot 4 caption, which emphasizes the elephant's presence and the surrounding environment."
+        },
+        {
+          "boundary_shot_index": 5,
+          "decoded_frame_indices": [
+            240,
+            247,
+            260,
+            267
+          ],
+          "rationale": "These frames show the elephant in clear, unoccluded views as it approaches the camera, matching the subject identity (prominent tusks, gray-brown wrinkled skin, large ears) and scene layout (golden grass, acacia trees, distant hills) described in the entering shot 5 caption. Frame 240 shows the elephant in a medium close-up, frame 247 shows it closer with clear facial features, frame 260 shows it walking toward the camera, and frame 267 shows it in a side profile with full body visible, all consistent with the transition into shot 5."
+        },
+        {
+          "boundary_shot_index": 6,
+          "decoded_frame_indices": [
+            328,
+            336,
+            349
+          ],
+          "rationale": "These frames show the elephant from the jeep's perspective, clearly displaying its distinctive features (wrinkled gray skin, large flapping ears, prominent white tusks) and its movement across the savanna. Frame 328 shows the elephant in profile, frame 336 shows it from a side angle, and frame 349 shows it from a frontal view, all consistent with the entering shot's description of the elephant moving steadily toward the horizon and then approaching the jeep. These frames provide the best content-based anchors for maintaining subject and scene identity across the cut."
+        },
+        {
+          "boundary_shot_index": 7,
+          "decoded_frame_indices": [
+            343,
+            356,
+            376,
+            384
+          ],
+          "rationale": "These frames show the elephant in clear, unoccluded views as it approaches the camera, displaying its key identifying features: large ears, prominent white tusks, and wrinkled gray skin. Frame 343 shows the elephant head-on with full facial details. Frame 356 shows a close-up of the elephant's face and tusks. Frame 376 and 384 show the elephant from the side and front, respectively, with clear visibility of its body and movement, all while maintaining the consistent savanna background with acacia trees and golden grass. These frames best pin the subject identity and scene layout for the cut into shot 7."
+        }
+      ],
+      "per_shot_additions": [
+        {
+          "rationale": "Shot 1 introduces a filmmaker and camera equipment, which contradicts the global invariant. This addition reasserts the authored constraint.",
+          "shot_index": 1,
+          "text": "The scene remains exclusively natural, with no human characters or artificial equipment visible."
+        }
+      ],
+      "stop_rule": "one bounded refinement round",
+      "which_cut_broke": {
+        "cut_index": 1,
+        "how": "Introduces human filmmaker and camera equipment, breaking the global invariant of no human presence."
+      }
+    },
+    "frames_shown": [
+      {
+        "end_frame": 96,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot00_frame00_idx0000.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot00_frame01_idx0032.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot00_frame02_idx0063.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot00_frame03_idx0095.png"
+        ],
+        "sampled_frame_indices": [
+          0,
+          32,
+          63,
+          95
+        ],
+        "shot_index": 0,
+        "start_frame": 0
+      },
+      {
+        "end_frame": 192,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot01_frame00_idx0096.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot01_frame01_idx0128.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot01_frame02_idx0159.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot01_frame03_idx0191.png"
+        ],
+        "sampled_frame_indices": [
+          96,
+          128,
+          159,
+          191
+        ],
+        "shot_index": 1,
+        "start_frame": 96
+      },
+      {
+        "end_frame": 240,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot02_frame00_idx0192.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot02_frame01_idx0208.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot02_frame02_idx0223.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot02_frame03_idx0239.png"
+        ],
+        "sampled_frame_indices": [
+          192,
+          208,
+          223,
+          239
+        ],
+        "shot_index": 2,
+        "start_frame": 192
+      },
+      {
+        "end_frame": 288,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot03_frame00_idx0240.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot03_frame01_idx0256.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot03_frame02_idx0271.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot03_frame03_idx0287.png"
+        ],
+        "sampled_frame_indices": [
+          240,
+          256,
+          271,
+          287
+        ],
+        "shot_index": 3,
+        "start_frame": 240
+      },
+      {
+        "end_frame": 336,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot04_frame00_idx0288.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot04_frame01_idx0304.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot04_frame02_idx0319.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot04_frame03_idx0335.png"
+        ],
+        "sampled_frame_indices": [
+          288,
+          304,
+          319,
+          335
+        ],
+        "shot_index": 4,
+        "start_frame": 288
+      },
+      {
+        "end_frame": 384,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot05_frame00_idx0336.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot05_frame01_idx0352.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot05_frame02_idx0367.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot05_frame03_idx0383.png"
+        ],
+        "sampled_frame_indices": [
+          336,
+          352,
+          367,
+          383
+        ],
+        "shot_index": 5,
+        "start_frame": 336
+      },
+      {
+        "end_frame": 432,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot06_frame00_idx0384.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot06_frame01_idx0400.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot06_frame02_idx0415.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot06_frame03_idx0431.png"
+        ],
+        "sampled_frame_indices": [
+          384,
+          400,
+          415,
+          431
+        ],
+        "shot_index": 6,
+        "start_frame": 384
+      },
+      {
+        "end_frame": 480,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot07_frame00_idx0432.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot07_frame01_idx0448.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot07_frame02_idx0463.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/african_savanna/shot07_frame03_idx0479.png"
+        ],
+        "sampled_frame_indices": [
+          432,
+          448,
+          463,
+          479
+        ],
+        "shot_index": 7,
+        "start_frame": 432
+      }
+    ],
+    "kv_candidates": {
+      "1": [
+        0,
+        14,
+        27,
+        41,
+        54
+      ],
+      "2": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150
+      ],
+      "3": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        199,
+        205
+      ],
+      "4": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        199,
+        205,
+        212,
+        219,
+        226,
+        232,
+        239,
+        240,
+        247,
+        253
+      ],
+      "5": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        199,
+        205,
+        212,
+        219,
+        226,
+        232,
+        239,
+        240,
+        247,
+        253,
+        260,
+        267,
+        274,
+        280,
+        287,
+        288,
+        295,
+        301
+      ],
+      "6": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        199,
+        205,
+        212,
+        219,
+        226,
+        232,
+        239,
+        240,
+        247,
+        253,
+        260,
+        267,
+        274,
+        280,
+        287,
+        288,
+        295,
+        301,
+        308,
+        315,
+        322,
+        328,
+        335,
+        336,
+        343,
+        349
+      ],
+      "7": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        199,
+        205,
+        212,
+        219,
+        226,
+        232,
+        239,
+        240,
+        247,
+        253,
+        260,
+        267,
+        274,
+        280,
+        287,
+        288,
+        295,
+        301,
+        308,
+        315,
+        322,
+        328,
+        335,
+        336,
+        343,
+        349,
+        356,
+        363,
+        370,
+        376,
+        383,
+        384,
+        391,
+        397
+      ]
+    },
+    "kv_selection_mode": "per_boundary",
+    "optimizer_watched_video": "videos/benchmark_hard_multishot/stage_A/baseline_seed0/baseline_seed0-rank0-african_savanna-seed0_regular.mp4",
+    "prompt_review": {
+      "applied": [
+        {
+          "index": 0,
+          "reason": "Consistent with the authored invariants, which implicitly require a natural, undisturbed savanna environment. Adding this clarifies the exclusion of human interference without contradicting any invariant.",
+          "target": "global",
+          "verdict": "keep"
+        },
+        {
+          "index": 0,
+          "reason": "Consistent with the global invariant and reinforces the natural setting across all shots. Does not contradict authored invariants and enhances clarity without introducing drift.",
+          "target": "per_shot",
+          "verdict": "keep"
+        }
+      ],
+      "invalid": [],
+      "transcript": "docs/round18_bench_20260701/iter01/qwen3_optimizer/prompt_review/african_savanna.json"
+    },
+    "sanitization_notes": [
+      "boundary 4: thinned 3 candidates to cap 24 (uniform spread kept)",
+      "boundary 5: thinned 11 candidates to cap 24 (uniform spread kept)",
+      "boundary 6: thinned 19 candidates to cap 24 (uniform spread kept)",
+      "boundary 7: thinned 27 candidates to cap 24 (uniform spread kept)"
+    ],
+    "transcript": "docs/round18_bench_20260701/iter01/qwen3_optimizer/transcripts/african_savanna.json"
+  },
+  "aquamarine_underwater": {
+    "decision": {
+      "global_invariant_additions": [
+        "The scene remains continuously underwater throughout all shots, with no transitions to surface or sky views."
+      ],
+      "kv_anchor_plan": [
+        {
+          "boundary_shot_index": 2,
+          "decoded_frame_indices": [
+            137,
+            150
+          ],
+          "rationale": "Frame 137 and 150 provide clear, unoccluded views of the subject: a spotted pufferfish swimming alongside a dolphin. These frames establish the key subject identity (pufferfish with distinct spotted pattern and dolphin with sleek body) and the underwater scene layout (clear water, sandy bottom, consistent lighting). They directly match the visual content of the entering shot 2, ensuring continuity of subject and environment."
+        },
+        {
+          "boundary_shot_index": 4,
+          "decoded_frame_indices": [
+            247,
+            253
+          ],
+          "rationale": "Frame 247 and 253 show the dolphin in clear, unoccluded view with its characteristic pale gray skin and dark spots, consistent with the subject description for shot 4. These frames capture the dolphin mid-movement, maintaining visual continuity with the entering shot's description of the dolphin gliding through the water with a white object in its mouth. The scene layout, including the aquamarine underwater environment and lighting, is also preserved."
+        },
+        {
+          "boundary_shot_index": 5,
+          "decoded_frame_indices": [
+            240,
+            247,
+            260,
+            267
+          ],
+          "rationale": "These frames provide clear, unoccluded views of the central subject (dolphin) with consistent visual markers: smooth grayish-blue skin, large dark eyes, and a curved toothy mouth. Frame 240 shows a close-up of the dolphin's face and the fish in its mouth, matching the shot's description. Frame 247 offers a side profile with clear body markings. Frames 260 and 267 show the dolphin in motion with consistent lighting and environment, reinforcing continuity with the entering shot's description of a calm, deep blue underwater scene with the dolphin as the central focus."
+        },
+        {
+          "boundary_shot_index": 6,
+          "decoded_frame_indices": [
+            328,
+            336,
+            349
+          ],
+          "rationale": "These frames provide clear, unoccluded views of the dolphin's distinctive markings and body shape as it interacts with the environment. Frame 328 shows the dolphin's head and dorsal fin in profile, revealing its grayish-blue skin and streamlined form. Frame 336 offers a side view showing the dolphin's body curvature and tail flukes. Frame 349 presents a close-up of the dolphin's head and upper body, clearly showing its facial features and skin texture. These frames best pin the subject identity and scene layout for the cut into shot 6."
+        },
+        {
+          "boundary_shot_index": 7,
+          "decoded_frame_indices": [
+            376,
+            384,
+            397
+          ],
+          "rationale": "These frames show the subject dolphin in clear, unoccluded close-up, displaying its distinctive light grayish-white body with darker spots, sleek form, and synchronized movement with the second dolphin. This content directly matches the subject identity and scene layout described for shot 7, ensuring continuity."
+        }
+      ],
+      "per_shot_additions": [
+        {
+          "rationale": "SHOT 2 depicts a surface fin and sunset, contradicting the global invariant of continuous underwater setting.",
+          "shot_index": 2,
+          "text": "The scene is entirely underwater, with no surface or sky views visible."
+        }
+      ],
+      "stop_rule": "one bounded refinement round",
+      "which_cut_broke": {
+        "cut_index": 2,
+        "how": "Scene shifts from underwater to surface with sunset, violating continuous underwater setting"
+      }
+    },
+    "frames_shown": [
+      {
+        "end_frame": 96,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot00_frame00_idx0000.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot00_frame01_idx0032.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot00_frame02_idx0063.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot00_frame03_idx0095.png"
+        ],
+        "sampled_frame_indices": [
+          0,
+          32,
+          63,
+          95
+        ],
+        "shot_index": 0,
+        "start_frame": 0
+      },
+      {
+        "end_frame": 192,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot01_frame00_idx0096.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot01_frame01_idx0128.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot01_frame02_idx0159.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot01_frame03_idx0191.png"
+        ],
+        "sampled_frame_indices": [
+          96,
+          128,
+          159,
+          191
+        ],
+        "shot_index": 1,
+        "start_frame": 96
+      },
+      {
+        "end_frame": 240,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot02_frame00_idx0192.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot02_frame01_idx0208.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot02_frame02_idx0223.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot02_frame03_idx0239.png"
+        ],
+        "sampled_frame_indices": [
+          192,
+          208,
+          223,
+          239
+        ],
+        "shot_index": 2,
+        "start_frame": 192
+      },
+      {
+        "end_frame": 288,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot03_frame00_idx0240.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot03_frame01_idx0256.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot03_frame02_idx0271.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot03_frame03_idx0287.png"
+        ],
+        "sampled_frame_indices": [
+          240,
+          256,
+          271,
+          287
+        ],
+        "shot_index": 3,
+        "start_frame": 240
+      },
+      {
+        "end_frame": 336,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot04_frame00_idx0288.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot04_frame01_idx0304.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot04_frame02_idx0319.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot04_frame03_idx0335.png"
+        ],
+        "sampled_frame_indices": [
+          288,
+          304,
+          319,
+          335
+        ],
+        "shot_index": 4,
+        "start_frame": 288
+      },
+      {
+        "end_frame": 384,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot05_frame00_idx0336.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot05_frame01_idx0352.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot05_frame02_idx0367.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot05_frame03_idx0383.png"
+        ],
+        "sampled_frame_indices": [
+          336,
+          352,
+          367,
+          383
+        ],
+        "shot_index": 5,
+        "start_frame": 336
+      },
+      {
+        "end_frame": 432,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot06_frame00_idx0384.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot06_frame01_idx0400.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot06_frame02_idx0415.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot06_frame03_idx0431.png"
+        ],
+        "sampled_frame_indices": [
+          384,
+          400,
+          415,
+          431
+        ],
+        "shot_index": 6,
+        "start_frame": 384
+      },
+      {
+        "end_frame": 480,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot07_frame00_idx0432.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot07_frame01_idx0448.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot07_frame02_idx0463.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot07_frame03_idx0479.png"
+        ],
+        "sampled_frame_indices": [
+          432,
+          448,
+          463,
+          479
+        ],
+        "shot_index": 7,
+        "start_frame": 432
+      }
+    ],
+    "kv_candidates": {
+      "1": [
+        0,
+        14,
+        27,
+        41,
+        54
+      ],
+      "2": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150
+      ],
+      "3": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        199,
+        205
+      ],
+      "4": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        199,
+        205,
+        212,
+        219,
+        226,
+        232,
+        239,
+        240,
+        247,
+        253
+      ],
+      "5": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        199,
+        205,
+        212,
+        219,
+        226,
+        232,
+        239,
+        240,
+        247,
+        253,
+        260,
+        267,
+        274,
+        280,
+        287,
+        288,
+        295,
+        301
+      ],
+      "6": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        199,
+        205,
+        212,
+        219,
+        226,
+        232,
+        239,
+        240,
+        247,
+        253,
+        260,
+        267,
+        274,
+        280,
+        287,
+        288,
+        295,
+        301,
+        308,
+        315,
+        322,
+        328,
+        335,
+        336,
+        343,
+        349
+      ],
+      "7": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        199,
+        205,
+        212,
+        219,
+        226,
+        232,
+        239,
+        240,
+        247,
+        253,
+        260,
+        267,
+        274,
+        280,
+        287,
+        288,
+        295,
+        301,
+        308,
+        315,
+        322,
+        328,
+        335,
+        336,
+        343,
+        349,
+        356,
+        363,
+        370,
+        376,
+        383,
+        384,
+        391,
+        397
+      ]
+    },
+    "kv_selection_mode": "per_boundary",
+    "optimizer_watched_video": "videos/benchmark_hard_multishot/stage_A/baseline_seed0/baseline_seed0-rank0-aquamarine_underwater-seed0_regular.mp4",
+    "prompt_review": {
+      "applied": [
+        {
+          "index": 0,
+          "reason": "Consistent with the authored invariant that the same continuous aquamarine underwater scene persists across every shot. This addition sharpens the requirement by explicitly forbidding surface/sky transitions, which aligns with the 'underwater multishot' and 'serene underwater scene' description.",
+          "target": "global",
+          "verdict": "keep"
+        }
+      ],
+      "invalid": [],
+      "transcript": "docs/round18_bench_20260701/iter01/qwen3_optimizer/prompt_review/aquamarine_underwater.json"
+    },
+    "sanitization_notes": [
+      "boundary 1: optimizer skipped (All candidate frames (0, 14, 27, 41, 54) depict a pufferfish, not the dolphins described as the central subjects. The scene requires continuity of the two dolph)",
+      "boundary 3: optimizer skipped (All candidate frames show either a pufferfish or dolphins, not the whale subject described in the scene. The whale is the sole character and must be pinned for )",
+      "boundary 4: thinned 3 candidates to cap 24 (uniform spread kept)",
+      "boundary 5: thinned 11 candidates to cap 24 (uniform spread kept)",
+      "boundary 6: thinned 19 candidates to cap 24 (uniform spread kept)",
+      "boundary 7: thinned 27 candidates to cap 24 (uniform spread kept)"
+    ],
+    "transcript": "docs/round18_bench_20260701/iter01/qwen3_optimizer/transcripts/aquamarine_underwater.json"
+  },
+  "bearded_watchmaker_workshop": {
+    "decision": {
+      "global_invariant_additions": [
+        "The watchmaker wears round brass-rimmed glasses throughout; no other frame should show black-rimmed glasses."
+      ],
+      "kv_anchor_plan": [
+        {
+          "boundary_shot_index": 1,
+          "decoded_frame_indices": [
+            27,
+            41
+          ],
+          "rationale": "Frame 27 shows a clear, unoccluded medium shot of the watchmaker's full face and upper torso, displaying his silver-gray beard, round brass-rimmed glasses, and the small mole on his left cheekbone. Frame 41 provides a similar medium shot, confirming the same attire (deep-green wool vest over cream shirt, brown leather apron) and the cluttered workshop background with the tungsten lamp and shelves of antique clocks. Both frames are ideal anchors as they capture the subject's full identity and scene layout before the cut to the tight close-up."
+        },
+        {
+          "boundary_shot_index": 2,
+          "decoded_frame_indices": [
+            137,
+            150
+          ],
+          "rationale": "Frame 137 shows a clear, unoccluded medium shot of the watchmaker's face and upper torso, perfectly displaying his silver-gray beard, round brass-rimmed glasses, and the deep-green vest over cream shirt. Frame 150 provides a similar clear view, showing the same facial features and attire, and also includes the brown leather apron and the cluttered workbench with the warm lamp, matching the scene layout for shot 2. These frames best pin the subject identity and scene continuity for the upcoming overhead shot."
+        },
+        {
+          "boundary_shot_index": 3,
+          "decoded_frame_indices": [
+            192,
+            199,
+            205
+          ],
+          "rationale": "Frame 192 shows the subject in a clear frontal view, displaying the full face, round brass-rimmed glasses, silver-gray beard, and the deep-green wool vest over cream shirt with brown leather apron, matching the shot 3 description. Frame 199 provides a close-up of the face and glasses, confirming the subject's identity and the mole on the left cheekbone. Frame 205 shows the subject from a side profile at bench height, matching the camera angle and action of shot 3, with the subject winding the pocket watch crown and the tungsten lamp glinting on the glasses. These frames best pin the subject identity and scene layout for the cut."
+        },
+        {
+          "boundary_shot_index": 4,
+          "decoded_frame_indices": [
+            199,
+            205,
+            212,
+            219
+          ],
+          "rationale": "These frames provide clear, unoccluded views of the watchmaker's face and upper body, showing his silver-gray beard, round brass-rimmed glasses, and the small dark mole on his left cheekbone. They also show his deep-green wool vest over a cream shirt and brown leather apron, along with the cluttered wooden workbench and shelves of antique clocks, which are critical for maintaining scene continuity. These frames are visually consistent with the subject and environment entering shot 4."
+        },
+        {
+          "boundary_shot_index": 5,
+          "decoded_frame_indices": [
+            192,
+            205,
+            212,
+            226
+          ],
+          "rationale": "These frames provide clear, unoccluded views of the watchmaker's face, beard, glasses, and attire, matching the invariant description. Frame 192 shows a medium shot with full facial features and clothing. Frames 205 and 212 offer close-ups of the face and glasses, confirming the brass-rimmed spectacles and beard. Frame 226 shows a clear view of the subject's face and upper body, including the vest and apron, against the consistent workshop background. These frames best anchor the subject and scene identity for the cut into shot 5."
+        },
+        {
+          "boundary_shot_index": 6,
+          "decoded_frame_indices": [
+            328,
+            336,
+            349
+          ],
+          "rationale": "Frame 328 shows a clear frontal view of the watchmaker with his full facial features, including the silver-gray beard, round brass-rimmed glasses, and the small dark mole on the left cheekbone, matching the invariant description. Frame 336 provides a close-up of his face and glasses, confirming the same distinct facial markings and attire. Frame 349 shows him from a side profile, clearly displaying his silver-gray hair, beard, and the brown leather apron, all consistent with the subject identity. These frames collectively provide unambiguous visual anchors for the subject and scene layout as required for the cut into shot 6."
+        },
+        {
+          "boundary_shot_index": 7,
+          "decoded_frame_indices": [
+            376,
+            384,
+            397
+          ],
+          "rationale": "Frame 376 shows a clear, unoccluded medium shot of the watchmaker wearing the full outfit (green vest, cream shirt, brown apron) and glasses, with the mole visible on the left cheekbone. Frame 384 provides a similar medium shot with the same attire and consistent background. Frame 397 offers a clear view of the subject's face and upper body, confirming the silver-gray beard, thick dark eyebrows, and glasses, while also showing the workshop environment with the cluttered workbench and wall clocks. These frames best pin the subject identity and scene layout for the cut into shot 7."
+        }
+      ],
+      "per_shot_additions": [
+        {
+          "rationale": "Shot 6 visually contradicts the global invariant by showing black-rimmed glasses, which must be corrected to maintain consistency.",
+          "shot_index": 6,
+          "text": "The watchmaker wears round brass-rimmed glasses, not black-rimmed ones."
+        }
+      ],
+      "stop_rule": "one bounded refinement round",
+      "which_cut_broke": {
+        "cut_index": 5,
+        "how": "Glasses changed from brass-rimmed to black-rimmed in shot 6"
+      }
+    },
+    "frames_shown": [
+      {
+        "end_frame": 96,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot00_frame00_idx0000.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot00_frame01_idx0032.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot00_frame02_idx0063.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot00_frame03_idx0095.png"
+        ],
+        "sampled_frame_indices": [
+          0,
+          32,
+          63,
+          95
+        ],
+        "shot_index": 0,
+        "start_frame": 0
+      },
+      {
+        "end_frame": 192,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot01_frame00_idx0096.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot01_frame01_idx0128.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot01_frame02_idx0159.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot01_frame03_idx0191.png"
+        ],
+        "sampled_frame_indices": [
+          96,
+          128,
+          159,
+          191
+        ],
+        "shot_index": 1,
+        "start_frame": 96
+      },
+      {
+        "end_frame": 240,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot02_frame00_idx0192.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot02_frame01_idx0208.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot02_frame02_idx0223.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot02_frame03_idx0239.png"
+        ],
+        "sampled_frame_indices": [
+          192,
+          208,
+          223,
+          239
+        ],
+        "shot_index": 2,
+        "start_frame": 192
+      },
+      {
+        "end_frame": 288,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot03_frame00_idx0240.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot03_frame01_idx0256.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot03_frame02_idx0271.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot03_frame03_idx0287.png"
+        ],
+        "sampled_frame_indices": [
+          240,
+          256,
+          271,
+          287
+        ],
+        "shot_index": 3,
+        "start_frame": 240
+      },
+      {
+        "end_frame": 336,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot04_frame00_idx0288.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot04_frame01_idx0304.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot04_frame02_idx0319.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot04_frame03_idx0335.png"
+        ],
+        "sampled_frame_indices": [
+          288,
+          304,
+          319,
+          335
+        ],
+        "shot_index": 4,
+        "start_frame": 288
+      },
+      {
+        "end_frame": 384,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot05_frame00_idx0336.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot05_frame01_idx0352.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot05_frame02_idx0367.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot05_frame03_idx0383.png"
+        ],
+        "sampled_frame_indices": [
+          336,
+          352,
+          367,
+          383
+        ],
+        "shot_index": 5,
+        "start_frame": 336
+      },
+      {
+        "end_frame": 432,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot06_frame00_idx0384.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot06_frame01_idx0400.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot06_frame02_idx0415.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot06_frame03_idx0431.png"
+        ],
+        "sampled_frame_indices": [
+          384,
+          400,
+          415,
+          431
+        ],
+        "shot_index": 6,
+        "start_frame": 384
+      },
+      {
+        "end_frame": 480,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot07_frame00_idx0432.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot07_frame01_idx0448.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot07_frame02_idx0463.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/bearded_watchmaker_workshop/shot07_frame03_idx0479.png"
+        ],
+        "sampled_frame_indices": [
+          432,
+          448,
+          463,
+          479
+        ],
+        "shot_index": 7,
+        "start_frame": 432
+      }
+    ],
+    "kv_candidates": {
+      "1": [
+        0,
+        14,
+        27,
+        41,
+        54
+      ],
+      "2": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150
+      ],
+      "3": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        199,
+        205
+      ],
+      "4": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        199,
+        205,
+        212,
+        219,
+        226,
+        232,
+        239,
+        240,
+        247,
+        253
+      ],
+      "5": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        199,
+        205,
+        212,
+        219,
+        226,
+        232,
+        239,
+        240,
+        247,
+        253,
+        260,
+        267,
+        274,
+        280,
+        287,
+        288,
+        295,
+        301
+      ],
+      "6": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        199,
+        205,
+        212,
+        219,
+        226,
+        232,
+        239,
+        240,
+        247,
+        253,
+        260,
+        267,
+        274,
+        280,
+        287,
+        288,
+        295,
+        301,
+        308,
+        315,
+        322,
+        328,
+        335,
+        336,
+        343,
+        349
+      ],
+      "7": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        199,
+        205,
+        212,
+        219,
+        226,
+        232,
+        239,
+        240,
+        247,
+        253,
+        260,
+        267,
+        274,
+        280,
+        287,
+        288,
+        295,
+        301,
+        308,
+        315,
+        322,
+        328,
+        335,
+        336,
+        343,
+        349,
+        356,
+        363,
+        370,
+        376,
+        383,
+        384,
+        391,
+        397
+      ]
+    },
+    "kv_selection_mode": "per_boundary",
+    "optimizer_watched_video": "videos/benchmark_hard_multishot/stage_A/baseline_seed0/baseline_seed0-rank0-bearded_watchmaker_workshop-seed0_regular.mp4",
+    "prompt_review": {
+      "applied": [
+        {
+          "index": 0,
+          "reason": "Consistent with the authored invariant that the watchmaker wears round brass-rimmed glasses. This addition sharpens the invariant without contradicting it.",
+          "target": "global",
+          "verdict": "keep"
+        }
+      ],
+      "invalid": [],
+      "transcript": "docs/round18_bench_20260701/iter01/qwen3_optimizer/prompt_review/bearded_watchmaker_workshop.json"
+    },
+    "sanitization_notes": [
+      "boundary 4: thinned 3 candidates to cap 24 (uniform spread kept)",
+      "boundary 5: thinned 11 candidates to cap 24 (uniform spread kept)",
+      "boundary 6: thinned 19 candidates to cap 24 (uniform spread kept)",
+      "boundary 7: thinned 27 candidates to cap 24 (uniform spread kept)"
+    ],
+    "transcript": "docs/round18_bench_20260701/iter01/qwen3_optimizer/transcripts/bearded_watchmaker_workshop.json"
+  },
+  "brown_bear_river": {
+    "decision": {
+      "global_invariant_additions": [
+        "The bear\u2019s environment remains consistently shallow river and forest-bank habitat with mud, stones, grass, and dense green vegetation; no digital overlays or artificial elements are permitted."
+      ],
+      "kv_anchor_plan": [
+        {
+          "boundary_shot_index": 1,
+          "decoded_frame_indices": [
+            27,
+            41,
+            54
+          ],
+          "rationale": "Frames 27, 41, and 54 provide clear, unoccluded close-up views of the bear's head and upper torso as it is submerged in the river, showing consistent wet fur texture, ear shape, and facial markings. These frames best pin the subject identity and scene layout (river environment with water ripples) for continuity into shot 1, which begins with the bear exiting the water. Frame 0 is too distant and lacks clear subject detail for effective anchoring."
+        },
+        {
+          "boundary_shot_index": 2,
+          "decoded_frame_indices": [
+            137,
+            150
+          ],
+          "rationale": "Frames 137 and 150 show the brown bear in the river with a clear, unoccluded view of its face and upper body, consistent with the subject identity and scene layout described in the entering shot 2 caption. The bear is shown drinking water, with water dripping from its mouth, and is surrounded by the same shallow river and green vegetation. These frames provide strong visual anchors for maintaining continuity of the subject and environment across the cut."
+        },
+        {
+          "boundary_shot_index": 3,
+          "decoded_frame_indices": [
+            192,
+            199,
+            205
+          ],
+          "rationale": "These frames show the brown bear in the river, with clear, unoccluded views of its face, wet fur, and distinctive markings, matching the subject identity and scene layout described in the entering shot 3 caption. Frame 192 shows the bear's face and upper body in the water, frame 199 shows a side profile with water dripping from its mouth, and frame 205 shows the bear's head and shoulders in the river with vegetation in the background, all consistent with the natural habitat and subject appearance."
+        },
+        {
+          "boundary_shot_index": 4,
+          "decoded_frame_indices": [
+            199,
+            205,
+            212,
+            219
+          ],
+          "rationale": "These frames show the brown bear in the river, with clear, unoccluded views of its face and upper body as it drinks water. The bear's facial features, fur texture, and the surrounding river environment (water, mud, vegetation) are consistent with the entering shot 4's description. Frame 199 shows the bear drinking with water dripping from its mouth, frame 205 shows a frontal view with water dripping, frame 212 shows a side profile with water dripping, and frame 219 shows the bear near the riverbank with water dripping. All four frames provide strong visual anchors for the subject's identity and scene layout."
+        },
+        {
+          "boundary_shot_index": 5,
+          "decoded_frame_indices": [
+            287,
+            295,
+            301
+          ],
+          "rationale": "These frames show the bear in the river environment with clear, unoccluded views of its face and upper body, matching the subject identity and scene layout described for shot 5. Frame 287 shows the bear's face in focus as it drinks, frame 295 shows a clear frontal view of the bear's head and shoulders, and frame 301 shows the bear's face with water dripping from its mouth, all consistent with the shot's content and the bear's ongoing activity."
+        },
+        {
+          "boundary_shot_index": 6,
+          "decoded_frame_indices": [
+            328,
+            336,
+            349
+          ],
+          "rationale": "These frames show the bear in clear, unoccluded views of its head and upper body as it moves through the river and forest environment, matching the subject identity and scene layout described in the shot 6 caption. Frame 328 shows the bear's face in a close-up, frame 336 shows the bear's head and shoulders in profile, and frame 349 shows the bear's head and upper body as it moves through the foliage, all providing strong visual anchors for continuity."
+        },
+        {
+          "boundary_shot_index": 7,
+          "decoded_frame_indices": [
+            137,
+            280,
+            343,
+            397
+          ],
+          "rationale": "Frame 137 shows a clear, unobstructed close-up of the bear's face in water, establishing its distinct facial markings and fur texture. Frame 280 provides a medium shot of the bear standing in the river, showing its full body and the surrounding riverbank vegetation. Frame 343 captures the bear from behind as it walks through dense green foliage, confirming its movement and the forest-bank habitat. Frame 397 offers a clear view of the bear's head and shoulders as it moves through the underbrush, reinforcing the subject's identity and the scene's environmental context."
+        }
+      ],
+      "per_shot_additions": [
+        {
+          "rationale": "Shot 4 introduces digital overlays (bars, borders, 3D mesh) that contradict the global invariant of natural, unaltered wilderness and break cross-shot consistency by introducing artificial elements not present in other shots.",
+          "shot_index": 4,
+          "text": "The scene must remain naturalistic with no digital overlays, anatomical meshes, or graphical elements; the bear\u2019s face and habitat must be unaltered by artificial visual effects."
+        }
+      ],
+      "stop_rule": "one bounded refinement round",
+      "which_cut_broke": {
+        "cut_index": 4,
+        "how": "Introduces digital overlays violating naturalism and habitat continuity"
+      }
+    },
+    "frames_shown": [
+      {
+        "end_frame": 96,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot00_frame00_idx0000.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot00_frame01_idx0032.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot00_frame02_idx0063.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot00_frame03_idx0095.png"
+        ],
+        "sampled_frame_indices": [
+          0,
+          32,
+          63,
+          95
+        ],
+        "shot_index": 0,
+        "start_frame": 0
+      },
+      {
+        "end_frame": 192,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot01_frame00_idx0096.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot01_frame01_idx0128.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot01_frame02_idx0159.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot01_frame03_idx0191.png"
+        ],
+        "sampled_frame_indices": [
+          96,
+          128,
+          159,
+          191
+        ],
+        "shot_index": 1,
+        "start_frame": 96
+      },
+      {
+        "end_frame": 240,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot02_frame00_idx0192.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot02_frame01_idx0208.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot02_frame02_idx0223.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot02_frame03_idx0239.png"
+        ],
+        "sampled_frame_indices": [
+          192,
+          208,
+          223,
+          239
+        ],
+        "shot_index": 2,
+        "start_frame": 192
+      },
+      {
+        "end_frame": 288,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot03_frame00_idx0240.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot03_frame01_idx0256.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot03_frame02_idx0271.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot03_frame03_idx0287.png"
+        ],
+        "sampled_frame_indices": [
+          240,
+          256,
+          271,
+          287
+        ],
+        "shot_index": 3,
+        "start_frame": 240
+      },
+      {
+        "end_frame": 336,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot04_frame00_idx0288.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot04_frame01_idx0304.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot04_frame02_idx0319.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot04_frame03_idx0335.png"
+        ],
+        "sampled_frame_indices": [
+          288,
+          304,
+          319,
+          335
+        ],
+        "shot_index": 4,
+        "start_frame": 288
+      },
+      {
+        "end_frame": 384,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot05_frame00_idx0336.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot05_frame01_idx0352.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot05_frame02_idx0367.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot05_frame03_idx0383.png"
+        ],
+        "sampled_frame_indices": [
+          336,
+          352,
+          367,
+          383
+        ],
+        "shot_index": 5,
+        "start_frame": 336
+      },
+      {
+        "end_frame": 432,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot06_frame00_idx0384.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot06_frame01_idx0400.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot06_frame02_idx0415.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot06_frame03_idx0431.png"
+        ],
+        "sampled_frame_indices": [
+          384,
+          400,
+          415,
+          431
+        ],
+        "shot_index": 6,
+        "start_frame": 384
+      },
+      {
+        "end_frame": 480,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot07_frame00_idx0432.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot07_frame01_idx0448.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot07_frame02_idx0463.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/brown_bear_river/shot07_frame03_idx0479.png"
+        ],
+        "sampled_frame_indices": [
+          432,
+          448,
+          463,
+          479
+        ],
+        "shot_index": 7,
+        "start_frame": 432
+      }
+    ],
+    "kv_candidates": {
+      "1": [
+        0,
+        14,
+        27,
+        41,
+        54
+      ],
+      "2": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150
+      ],
+      "3": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        199,
+        205
+      ],
+      "4": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        199,
+        205,
+        212,
+        219,
+        226,
+        232,
+        239,
+        240,
+        247,
+        253
+      ],
+      "5": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        199,
+        205,
+        212,
+        219,
+        226,
+        232,
+        239,
+        240,
+        247,
+        253,
+        260,
+        267,
+        274,
+        280,
+        287,
+        288,
+        295,
+        301
+      ],
+      "6": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        199,
+        205,
+        212,
+        219,
+        226,
+        232,
+        239,
+        240,
+        247,
+        253,
+        260,
+        267,
+        274,
+        280,
+        287,
+        288,
+        295,
+        301,
+        308,
+        315,
+        322,
+        328,
+        335,
+        336,
+        343,
+        349
+      ],
+      "7": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        199,
+        205,
+        212,
+        219,
+        226,
+        232,
+        239,
+        240,
+        247,
+        253,
+        260,
+        267,
+        274,
+        280,
+        287,
+        288,
+        295,
+        301,
+        308,
+        315,
+        322,
+        328,
+        335,
+        336,
+        343,
+        349,
+        356,
+        363,
+        370,
+        376,
+        383,
+        384,
+        391,
+        397
+      ]
+    },
+    "kv_selection_mode": "per_boundary",
+    "optimizer_watched_video": "videos/benchmark_hard_multishot/stage_A/baseline_seed0/baseline_seed0-rank0-brown_bear_river-seed0_regular.mp4",
+    "prompt_review": {
+      "applied": [
+        {
+          "index": 0,
+          "reason": "Consistent with authored invariant: 'The same large brown bear remains in the same shallow river and forest-bank habitat with mud, stones, grass, and dense green vegetation.' The addition sharpens the requirement by explicitly forbidding digital overlays/artificial elements, which aligns with the naturalism implied by the authored invariant.",
+          "target": "global",
+          "verdict": "keep"
+        }
+      ],
+      "invalid": [],
+      "transcript": "docs/round18_bench_20260701/iter01/qwen3_optimizer/prompt_review/brown_bear_river.json"
+    },
+    "sanitization_notes": [
+      "boundary 4: thinned 3 candidates to cap 24 (uniform spread kept)",
+      "boundary 5: thinned 11 candidates to cap 24 (uniform spread kept)",
+      "boundary 6: thinned 19 candidates to cap 24 (uniform spread kept)",
+      "boundary 7: thinned 27 candidates to cap 24 (uniform spread kept)"
+    ],
+    "transcript": "docs/round18_bench_20260701/iter01/qwen3_optimizer/transcripts/brown_bear_river.json"
+  },
+  "indoor_tender_moment": {
+    "decision": {
+      "global_invariant_additions": [
+        "The scene remains a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues."
+      ],
+      "kv_anchor_plan": [
+        {
+          "boundary_shot_index": 2,
+          "decoded_frame_indices": [
+            137,
+            150
+          ],
+          "rationale": "Frame 137 and 150 show the couple in a clear, unoccluded close-up during an intimate moment, matching the subject identity (man in gray suit, woman in beige blouse) and scene layout (indoor, warm lighting, romantic atmosphere) required for continuity into shot 2. These frames provide the most reliable visual anchors for maintaining subject and scene consistency across the cut."
+        },
+        {
+          "boundary_shot_index": 3,
+          "decoded_frame_indices": [
+            246
+          ],
+          "rationale": "The query images Q0 (frame 288) and Q1 (frame 320) are the start of shot 3 and show the exact scene: the woman sleeping on her side on a bed with a striped headboard, and the man standing by the window buttoning his white shirt. These frames are the most relevant for maintaining subject and scene identity continuity, as they directly depict the visual context and character appearances that must be preserved across the cut. No other candidate frames provide a clearer or more direct match to the visual content of the entering shot."
+        },
+        {
+          "boundary_shot_index": 4,
+          "decoded_frame_indices": [
+            288,
+            315,
+            329,
+            342
+          ],
+          "rationale": "These frames show the male subject in a clear, unoccluded medium shot, centered in the frame, wearing the same white button-down shirt and displaying the silver wedding band on his left ring finger. The background environment, including the window with sheer and taupe drapes and the wall-mounted lamp, is consistently visible and matches the described indoor tender moment scene. This content directly pins the subject identity and scene layout for continuity into shot 4."
+        },
+        {
+          "boundary_shot_index": 5,
+          "decoded_frame_indices": [
+            192,
+            391,
+            397
+          ],
+          "rationale": "Frame 192 shows the male subject in a clear, unoccluded medium shot, wearing the same white button-down shirt and dark trousers as described in the shot 5 caption, entering from the left and approaching the console table. Frame 391 and 397 both show the same subject in the same attire, standing near the bed and window, with the same room layout (striped headboard, wall lamp, sheer curtains) visible, confirming continuity of the indoor tender moment scene. These frames best pin the subject identity and scene layout for the cut into shot 5."
+        }
+      ],
+      "per_shot_additions": [
+        {
+          "rationale": "Establishes the invariant to counteract any perceived temporal or environmental shifts in later shots.",
+          "shot_index": 0,
+          "text": "The scene is a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues."
+        },
+        {
+          "rationale": "Reinforces the invariant to maintain continuity despite changing background elements.",
+          "shot_index": 1,
+          "text": "The scene is a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues."
+        },
+        {
+          "rationale": "Reinforces the invariant to maintain continuity despite changing background elements.",
+          "shot_index": 2,
+          "text": "The scene is a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues."
+        },
+        {
+          "rationale": "Reinforces the invariant to maintain continuity despite changing background elements.",
+          "shot_index": 3,
+          "text": "The scene is a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues."
+        },
+        {
+          "rationale": "Reinforces the invariant to maintain continuity despite changing background elements.",
+          "shot_index": 4,
+          "text": "The scene is a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues."
+        },
+        {
+          "rationale": "Reinforces the invariant to maintain continuity despite changing background elements.",
+          "shot_index": 5,
+          "text": "The scene is a continuous indoor tender moment, with the same central couple, environment, and emotional arc, regardless of camera movement or time-of-day cues."
+        }
+      ],
+      "stop_rule": "one bounded refinement round",
+      "which_cut_broke": {
+        "cut_index": 3,
+        "how": "Scene shifts from intimate bedroom to morning routine with different lighting and attire, breaking continuity of the same tender moment."
+      }
+    },
+    "frames_shown": [
+      {
+        "end_frame": 96,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot00_frame00_idx0000.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot00_frame01_idx0032.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot00_frame02_idx0063.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot00_frame03_idx0095.png"
+        ],
+        "sampled_frame_indices": [
+          0,
+          32,
+          63,
+          95
+        ],
+        "shot_index": 0,
+        "start_frame": 0
+      },
+      {
+        "end_frame": 192,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot01_frame00_idx0096.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot01_frame01_idx0128.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot01_frame02_idx0159.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot01_frame03_idx0191.png"
+        ],
+        "sampled_frame_indices": [
+          96,
+          128,
+          159,
+          191
+        ],
+        "shot_index": 1,
+        "start_frame": 96
+      },
+      {
+        "end_frame": 288,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot02_frame00_idx0192.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot02_frame01_idx0224.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot02_frame02_idx0255.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot02_frame03_idx0287.png"
+        ],
+        "sampled_frame_indices": [
+          192,
+          224,
+          255,
+          287
+        ],
+        "shot_index": 2,
+        "start_frame": 192
+      },
+      {
+        "end_frame": 384,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot03_frame00_idx0288.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot03_frame01_idx0320.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot03_frame02_idx0351.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot03_frame03_idx0383.png"
+        ],
+        "sampled_frame_indices": [
+          288,
+          320,
+          351,
+          383
+        ],
+        "shot_index": 3,
+        "start_frame": 288
+      },
+      {
+        "end_frame": 432,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot04_frame00_idx0384.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot04_frame01_idx0400.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot04_frame02_idx0415.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot04_frame03_idx0431.png"
+        ],
+        "sampled_frame_indices": [
+          384,
+          400,
+          415,
+          431
+        ],
+        "shot_index": 4,
+        "start_frame": 384
+      },
+      {
+        "end_frame": 480,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot05_frame00_idx0432.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot05_frame01_idx0448.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot05_frame02_idx0463.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot05_frame03_idx0479.png"
+        ],
+        "sampled_frame_indices": [
+          432,
+          448,
+          463,
+          479
+        ],
+        "shot_index": 5,
+        "start_frame": 432
+      }
+    ],
+    "kv_candidates": {
+      "1": [
+        0,
+        14,
+        27,
+        41,
+        54
+      ],
+      "2": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150
+      ],
+      "3": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        206,
+        219,
+        233,
+        246
+      ],
+      "4": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        206,
+        219,
+        233,
+        246,
+        260,
+        273,
+        287,
+        288,
+        302,
+        315,
+        329,
+        342
+      ],
+      "5": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        206,
+        219,
+        233,
+        246,
+        260,
+        273,
+        287,
+        288,
+        302,
+        315,
+        329,
+        342,
+        356,
+        369,
+        383,
+        384,
+        391,
+        397
+      ]
+    },
+    "kv_selection_mode": "per_boundary",
+    "optimizer_watched_video": "videos/benchmark_hard_multishot/stage_A/baseline_seed0/baseline_seed0-rank0-indoor_tender_moment-seed0_regular.mp4",
+    "prompt_review": {
+      "applied": [
+        {
+          "index": 0,
+          "reason": "Consistent with authored invariant: same continuous indoor tender moment scene persists across every shot, with the same central subject or objects, the same environment, and coherent event continuity despite legitimate camera, framing, and action changes. The addition sharpens but does not contradict.",
+          "target": "global",
+          "verdict": "keep"
+        },
+        {
+          "index": 1,
+          "reason": "Consistent with authored invariant. Repetition across per_shot entries is acceptable as the invariant applies uniformly to all shots. No contradiction or drift.",
+          "target": "per_shot",
+          "verdict": "keep"
+        },
+        {
+          "index": 2,
+          "reason": "Consistent with authored invariant. Repetition across per_shot entries is acceptable as the invariant applies uniformly to all shots. No contradiction or drift.",
+          "target": "per_shot",
+          "verdict": "keep"
+        },
+        {
+          "index": 3,
+          "reason": "Consistent with authored invariant. Repetition across per_shot entries is acceptable as the invariant applies uniformly to all shots. No contradiction or drift.",
+          "target": "per_shot",
+          "verdict": "keep"
+        },
+        {
+          "index": 4,
+          "reason": "Consistent with authored invariant. Repetition across per_shot entries is acceptable as the invariant applies uniformly to all shots. No contradiction or drift.",
+          "target": "per_shot",
+          "verdict": "keep"
+        },
+        {
+          "index": 5,
+          "reason": "Consistent with authored invariant. Repetition across per_shot entries is acceptable as the invariant applies uniformly to all shots. No contradiction or drift.",
+          "target": "per_shot",
+          "verdict": "keep"
+        }
+      ],
+      "invalid": [],
+      "transcript": "docs/round18_bench_20260701/iter01/qwen3_optimizer/prompt_review/indoor_tender_moment.json"
+    },
+    "sanitization_notes": [
+      "boundary 1: optimizer skipped (None of the candidate frames (0, 14, 27, 41, 54) contain any visible content that matches the subject identity or scene layout described in the entering shot 1 )",
+      "boundary 3: snapped invalid frame 288 to 246",
+      "boundary 3: snapped invalid frame 320 to 246",
+      "boundary 4: thinned 5 candidates to cap 24 (uniform spread kept)",
+      "boundary 5: thinned 11 candidates to cap 24 (uniform spread kept)"
+    ],
+    "transcript": "docs/round18_bench_20260701/iter01/qwen3_optimizer/transcripts/indoor_tender_moment.json"
+  },
+  "sandy_beach_driftwood": {
+    "decision": {
+      "global_invariant_additions": [
+        "The same continuous sandy beach driftwood scene persists across every shot, with the same central subject or objects, the same environment, and coherent event continuity despite legitimate camera, framing, and action changes."
+      ],
+      "kv_anchor_plan": [
+        {
+          "boundary_shot_index": 1,
+          "decoded_frame_indices": [
+            0,
+            14,
+            27,
+            41
+          ],
+          "rationale": "Frame 0 shows the woman in full view, clearly displaying her black bikini top, white bikini bottoms, olive-green wide-brimmed hat, and blonde braided hair, establishing her full subject identity. Frame 14 shows her from a side angle, still clearly identifiable by her attire and hair, and the beach environment is visible. Frame 27 shows her walking past driftwood, confirming her presence and outfit continuity. Frame 41 shows her from behind, again confirming her clothing and the consistent beach setting with driftwood and ocean. These frames collectively provide unambiguous, unoccluded views of the subject and scene layout necessary for continuity."
+        },
+        {
+          "boundary_shot_index": 2,
+          "decoded_frame_indices": [
+            123,
+            137,
+            150
+          ],
+          "rationale": "These frames show the subject (a person in a bikini and wide-brimmed hat) interacting with the fish on the driftwood, matching the visual identity and scene layout described in the shot 2 caption. Frame 123 shows the person bending over the fish, frame 137 shows the person's hands handling the fish, and frame 150 shows the person's face and hair visible as they lean in, all confirming the subject's appearance and the beach environment."
+        },
+        {
+          "boundary_shot_index": 3,
+          "decoded_frame_indices": [
+            0,
+            192,
+            199,
+            205
+          ],
+          "rationale": "Frame 0 provides a clear, unoccluded view of the subject: the woman in her olive-green hat, black bikini, and gold necklace, holding the fish triumphantly. Frame 192 shows her from a side angle as she walks toward the driftwood, clearly identifiable by her hat and bikini. Frame 199 captures her from behind as she walks away, confirming her consistent attire and movement. Frame 205 shows her from a low angle as she approaches the driftwood, again clearly identifiable by her hat and bikini. These frames collectively anchor the subject's identity and the beach environment (driftwood, ocean, sand) for continuity into shot 3."
+        },
+        {
+          "boundary_shot_index": 4,
+          "decoded_frame_indices": [
+            240,
+            247,
+            253
+          ],
+          "rationale": "These frames show the subject (the young woman) in clear, unoccluded views that match the subject identity and scene layout entering shot 4. Frame 240 shows her smiling and holding the fish, clearly displaying her face, green hat, and black bikini top. Frame 247 and 253 show her from a similar angle, confirming consistent attire and environment. These frames best pin the subject's appearance and the beach setting for continuity across the cut."
+        },
+        {
+          "boundary_shot_index": 5,
+          "decoded_frame_indices": [
+            287,
+            295,
+            301
+          ],
+          "rationale": "These frames show the subject (a woman in a bikini and green hat) interacting with the environment and the fire pit, establishing the subject's identity and the scene layout. Frame 287 shows her holding a fish near the fire, frame 295 shows her placing the fish on the fire, and frame 301 shows her adjusting the fish in the fire. These frames provide a clear, unoccluded view of the subject and the key scene elements (fire, driftwood, sand) that must remain consistent across the cut."
+        },
+        {
+          "boundary_shot_index": 6,
+          "decoded_frame_indices": [
+            349,
+            274,
+            260,
+            240
+          ],
+          "rationale": "Frame 349 shows the subject (woman) in a clear, unoccluded close-up wearing the olive-green hat and dark top, actively tending the fire \u2014 matching the subject identity and action in shot 6. Frame 274 shows her in a similar pose with the same attire, reinforcing continuity. Frame 260 captures her face and upper body with the hat and necklace visible, confirming consistent subject identity. Frame 240 shows her hands and the fire setup, aligning with the scene layout and action described in shot 6. These frames collectively provide the strongest content-based anchors for subject and scene continuity."
+        },
+        {
+          "boundary_shot_index": 7,
+          "decoded_frame_indices": [
+            376,
+            384,
+            397
+          ],
+          "rationale": "These frames show the woman in her key attire (green sun hat, bikini) interacting with the campfire and the environment, directly matching the subject identity and scene layout described in the entering shot 7 caption. Frame 376 shows her smiling while holding a fish, frame 384 shows her tending the fire, and frame 397 shows her in the same pose as in the entering shot, confirming continuity of subject and scene."
+        }
+      ],
+      "per_shot_additions": [
+        {
+          "rationale": "The hand\u2019s appearance contradicts the authored invariant; reasserting the woman\u2019s identity preserves continuity.",
+          "shot_index": 5,
+          "text": "The hand is the woman\u2019s, identifiable by her consistent olive-green hat and black bikini top visible in surrounding frames."
+        }
+      ],
+      "stop_rule": "one bounded refinement round",
+      "which_cut_broke": {
+        "cut_index": 5,
+        "how": "Introduces a male hand and gender-neutral attire, contradicting the established female subject."
+      }
+    },
+    "frames_shown": [
+      {
+        "end_frame": 96,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot00_frame00_idx0000.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot00_frame01_idx0032.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot00_frame02_idx0063.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot00_frame03_idx0095.png"
+        ],
+        "sampled_frame_indices": [
+          0,
+          32,
+          63,
+          95
+        ],
+        "shot_index": 0,
+        "start_frame": 0
+      },
+      {
+        "end_frame": 192,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot01_frame00_idx0096.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot01_frame01_idx0128.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot01_frame02_idx0159.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot01_frame03_idx0191.png"
+        ],
+        "sampled_frame_indices": [
+          96,
+          128,
+          159,
+          191
+        ],
+        "shot_index": 1,
+        "start_frame": 96
+      },
+      {
+        "end_frame": 240,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot02_frame00_idx0192.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot02_frame01_idx0208.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot02_frame02_idx0223.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot02_frame03_idx0239.png"
+        ],
+        "sampled_frame_indices": [
+          192,
+          208,
+          223,
+          239
+        ],
+        "shot_index": 2,
+        "start_frame": 192
+      },
+      {
+        "end_frame": 288,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot03_frame00_idx0240.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot03_frame01_idx0256.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot03_frame02_idx0271.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot03_frame03_idx0287.png"
+        ],
+        "sampled_frame_indices": [
+          240,
+          256,
+          271,
+          287
+        ],
+        "shot_index": 3,
+        "start_frame": 240
+      },
+      {
+        "end_frame": 336,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot04_frame00_idx0288.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot04_frame01_idx0304.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot04_frame02_idx0319.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot04_frame03_idx0335.png"
+        ],
+        "sampled_frame_indices": [
+          288,
+          304,
+          319,
+          335
+        ],
+        "shot_index": 4,
+        "start_frame": 288
+      },
+      {
+        "end_frame": 384,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot05_frame00_idx0336.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot05_frame01_idx0352.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot05_frame02_idx0367.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot05_frame03_idx0383.png"
+        ],
+        "sampled_frame_indices": [
+          336,
+          352,
+          367,
+          383
+        ],
+        "shot_index": 5,
+        "start_frame": 336
+      },
+      {
+        "end_frame": 432,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot06_frame00_idx0384.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot06_frame01_idx0400.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot06_frame02_idx0415.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot06_frame03_idx0431.png"
+        ],
+        "sampled_frame_indices": [
+          384,
+          400,
+          415,
+          431
+        ],
+        "shot_index": 6,
+        "start_frame": 384
+      },
+      {
+        "end_frame": 480,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot07_frame00_idx0432.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot07_frame01_idx0448.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot07_frame02_idx0463.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot07_frame03_idx0479.png"
+        ],
+        "sampled_frame_indices": [
+          432,
+          448,
+          463,
+          479
+        ],
+        "shot_index": 7,
+        "start_frame": 432
+      }
+    ],
+    "kv_candidates": {
+      "1": [
+        0,
+        14,
+        27,
+        41,
+        54
+      ],
+      "2": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150
+      ],
+      "3": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        199,
+        205
+      ],
+      "4": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        199,
+        205,
+        212,
+        219,
+        226,
+        232,
+        239,
+        240,
+        247,
+        253
+      ],
+      "5": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        199,
+        205,
+        212,
+        219,
+        226,
+        232,
+        239,
+        240,
+        247,
+        253,
+        260,
+        267,
+        274,
+        280,
+        287,
+        288,
+        295,
+        301
+      ],
+      "6": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        199,
+        205,
+        212,
+        219,
+        226,
+        232,
+        239,
+        240,
+        247,
+        253,
+        260,
+        267,
+        274,
+        280,
+        287,
+        288,
+        295,
+        301,
+        308,
+        315,
+        322,
+        328,
+        335,
+        336,
+        343,
+        349
+      ],
+      "7": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        199,
+        205,
+        212,
+        219,
+        226,
+        232,
+        239,
+        240,
+        247,
+        253,
+        260,
+        267,
+        274,
+        280,
+        287,
+        288,
+        295,
+        301,
+        308,
+        315,
+        322,
+        328,
+        335,
+        336,
+        343,
+        349,
+        356,
+        363,
+        370,
+        376,
+        383,
+        384,
+        391,
+        397
+      ]
+    },
+    "kv_selection_mode": "per_boundary",
+    "optimizer_watched_video": "videos/benchmark_hard_multishot/stage_A/baseline_seed0/baseline_seed0-rank0-sandy_beach_driftwood-seed0_regular.mp4",
+    "prompt_review": {
+      "applied": [
+        {
+          "index": 0,
+          "reason": "The authored invariant does not specify any human subject, clothing, or identity. Introducing a 'single woman' with specific attire (dark hair, olive-green hat, black bikini top, white bikini bottoms) contradicts the neutral, object-focused description of the scene. The invariant must remain focused on the driftwood, sand, rocks, and environmental continuity.",
+          "target": "global",
+          "verdict": "rewrite"
+        }
+      ],
+      "invalid": [
+        {
+          "index": 1,
+          "reason": "This addition introduces a human subject and specific clothing details not present in the authored invariant. The invariant requires the scene to remain focused on driftwood, sand, and environmental continuity without anchoring to a person. This addition contradicts the authored scope and risks introducing narrative or identity elements not part of the original ground truth.",
+          "target": "per_shot",
+          "text": "The hand is the woman\u2019s, identifiable by her consistent olive-green hat and black bikini top visible in surrounding frames.",
+          "verdict": "rewrite"
+        }
+      ],
+      "transcript": "docs/round18_bench_20260701/iter01/qwen3_optimizer/prompt_review/sandy_beach_driftwood.json"
+    },
+    "sanitization_notes": [
+      "boundary 4: thinned 3 candidates to cap 24 (uniform spread kept)",
+      "boundary 5: thinned 11 candidates to cap 24 (uniform spread kept)",
+      "boundary 6: thinned 19 candidates to cap 24 (uniform spread kept)",
+      "boundary 7: thinned 27 candidates to cap 24 (uniform spread kept)"
+    ],
+    "transcript": "docs/round18_bench_20260701/iter01/qwen3_optimizer/transcripts/sandy_beach_driftwood.json"
+  },
+  "shimmering_puzzle_surface": {
+    "decision": {
+      "global_invariant_additions": [
+        "The shimmering puzzle surface remains on the same reflective tabletop throughout the entire video, with stable interlocking pieces and consistent highlights."
+      ],
+      "kv_anchor_plan": [
+        {
+          "boundary_shot_index": 1,
+          "decoded_frame_indices": [
+            41,
+            54
+          ],
+          "rationale": "Frame 41 and 54 show Santa Claus in a clear, unoccluded medium shot, fully visible in his red suit with white fur trim, green belt with yellow buckle, and red hat with white pom-pom. His facial features (white beard, thick eyebrows, downturned mouth) are clearly visible, matching the description of his weary, concerned expression. The background consistently shows the festive Christmas trees with ornaments and tinsel, and the gray floor with scattered green puzzle pieces, establishing the scene layout. These frames best pin the subject identity and scene continuity for the cut into shot 1."
+        },
+        {
+          "boundary_shot_index": 2,
+          "decoded_frame_indices": [
+            110,
+            123,
+            137,
+            150
+          ],
+          "rationale": "These frames show the Santa Claus character in clear, unoccluded medium close-up shots, displaying his full costume (red suit, white trim, green belt with yellow buckle, red hat with white pom-pom) and facial features (white beard, expressive eyes). They capture the character in consistent festive indoor setting with a decorated Christmas tree in the background, matching the scene layout described in the entering shot 2 caption. Frame 110 shows him holding a phone to his ear, frame 123 shows him gesturing while on the phone, and frames 137 and 150 show him in similar poses, all reinforcing the subject identity and scene continuity needed for the cut."
+        },
+        {
+          "boundary_shot_index": 3,
+          "decoded_frame_indices": [
+            192,
+            206,
+            219,
+            233
+          ],
+          "rationale": "These frames show the Santa Claus figure in clear, unoccluded medium close-up shots, displaying his full costume (red suit, white fur trim, green belt with yellow buckle, red hat with white trim) and facial features (white beard, black eyes, neutral to surprised expression). The background consistently shows the decorated Christmas tree with gold tinsel and red ornaments, and the grey floor with scattered green puzzle pieces, matching the scene layout described in the entering shot 3 caption. These frames best pin the subject identity and scene context for continuity across the cut."
+        },
+        {
+          "boundary_shot_index": 4,
+          "decoded_frame_indices": [
+            329,
+            342
+          ],
+          "rationale": "Frame 329 and 342 show Santa Claus in a clear, unoccluded medium shot, fully dressed in his iconic red suit with white trim, black boots, and white beard, positioned under a decorated Christmas tree. This matches the subject identity and scene layout described for shot 4, where Santa is the central character. These frames provide the best visual anchors for maintaining subject and scene consistency across the cut."
+        },
+        {
+          "boundary_shot_index": 5,
+          "decoded_frame_indices": [
+            192,
+            219,
+            233,
+            260
+          ],
+          "rationale": "These frames provide clear, unoccluded views of the key subject, the young man in the Santa hat, in his distinctive red suit with white trim, green belt, and red hat. Frame 192 shows him walking confidently with a clear view of his full outfit. Frame 219 and 233 show him from a side angle, confirming his consistent attire and posture. Frame 260 offers a frontal view, reinforcing the subject's identity and the festive scene layout with decorated trees and paved ground. These frames best pin the subject identity and scene layout for the cut into shot 5."
+        }
+      ],
+      "per_shot_additions": [
+        {
+          "rationale": "Establishes the invariant for the entire video.",
+          "shot_index": 0,
+          "text": "The shimmering puzzle surface remains on the same reflective tabletop with stable interlocking pieces and consistent highlights."
+        },
+        {
+          "rationale": "Reinforces the invariant despite Santa's phone call.",
+          "shot_index": 1,
+          "text": "The shimmering puzzle surface remains on the same reflective tabletop with stable interlocking pieces and consistent highlights."
+        },
+        {
+          "rationale": "Reinforces the invariant despite Santa's gestures.",
+          "shot_index": 2,
+          "text": "The shimmering puzzle surface remains on the same reflective tabletop with stable interlocking pieces and consistent highlights."
+        },
+        {
+          "rationale": "Reinforces the invariant despite Santa's reaction to the phone call.",
+          "shot_index": 3,
+          "text": "The shimmering puzzle surface remains on the same reflective tabletop with stable interlocking pieces and consistent highlights."
+        },
+        {
+          "rationale": "Reinforces the invariant despite the scene shift to the mall.",
+          "shot_index": 4,
+          "text": "The shimmering puzzle surface remains on the same reflective tabletop with stable interlocking pieces and consistent highlights."
+        },
+        {
+          "rationale": "Reinforces the invariant despite the outdoor setting.",
+          "shot_index": 5,
+          "text": "The shimmering puzzle surface remains on the same reflective tabletop with stable interlocking pieces and consistent highlights."
+        }
+      ],
+      "stop_rule": "one bounded refinement round",
+      "which_cut_broke": {
+        "cut_index": 3,
+        "how": "Scene abruptly shifts from indoor puzzle assembly to outdoor mall setting without maintaining the shimmering puzzle surface invariant."
+      }
+    },
+    "frames_shown": [
+      {
+        "end_frame": 96,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/shimmering_puzzle_surface/shot00_frame00_idx0000.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/shimmering_puzzle_surface/shot00_frame01_idx0032.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/shimmering_puzzle_surface/shot00_frame02_idx0063.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/shimmering_puzzle_surface/shot00_frame03_idx0095.png"
+        ],
+        "sampled_frame_indices": [
+          0,
+          32,
+          63,
+          95
+        ],
+        "shot_index": 0,
+        "start_frame": 0
+      },
+      {
+        "end_frame": 192,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/shimmering_puzzle_surface/shot01_frame00_idx0096.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/shimmering_puzzle_surface/shot01_frame01_idx0128.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/shimmering_puzzle_surface/shot01_frame02_idx0159.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/shimmering_puzzle_surface/shot01_frame03_idx0191.png"
+        ],
+        "sampled_frame_indices": [
+          96,
+          128,
+          159,
+          191
+        ],
+        "shot_index": 1,
+        "start_frame": 96
+      },
+      {
+        "end_frame": 288,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/shimmering_puzzle_surface/shot02_frame00_idx0192.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/shimmering_puzzle_surface/shot02_frame01_idx0224.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/shimmering_puzzle_surface/shot02_frame02_idx0255.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/shimmering_puzzle_surface/shot02_frame03_idx0287.png"
+        ],
+        "sampled_frame_indices": [
+          192,
+          224,
+          255,
+          287
+        ],
+        "shot_index": 2,
+        "start_frame": 192
+      },
+      {
+        "end_frame": 384,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/shimmering_puzzle_surface/shot03_frame00_idx0288.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/shimmering_puzzle_surface/shot03_frame01_idx0320.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/shimmering_puzzle_surface/shot03_frame02_idx0351.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/shimmering_puzzle_surface/shot03_frame03_idx0383.png"
+        ],
+        "sampled_frame_indices": [
+          288,
+          320,
+          351,
+          383
+        ],
+        "shot_index": 3,
+        "start_frame": 288
+      },
+      {
+        "end_frame": 432,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/shimmering_puzzle_surface/shot04_frame00_idx0384.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/shimmering_puzzle_surface/shot04_frame01_idx0400.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/shimmering_puzzle_surface/shot04_frame02_idx0415.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/shimmering_puzzle_surface/shot04_frame03_idx0431.png"
+        ],
+        "sampled_frame_indices": [
+          384,
+          400,
+          415,
+          431
+        ],
+        "shot_index": 4,
+        "start_frame": 384
+      },
+      {
+        "end_frame": 480,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/shimmering_puzzle_surface/shot05_frame00_idx0432.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/shimmering_puzzle_surface/shot05_frame01_idx0448.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/shimmering_puzzle_surface/shot05_frame02_idx0463.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/shimmering_puzzle_surface/shot05_frame03_idx0479.png"
+        ],
+        "sampled_frame_indices": [
+          432,
+          448,
+          463,
+          479
+        ],
+        "shot_index": 5,
+        "start_frame": 432
+      }
+    ],
+    "kv_candidates": {
+      "1": [
+        0,
+        14,
+        27,
+        41,
+        54
+      ],
+      "2": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150
+      ],
+      "3": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        206,
+        219,
+        233,
+        246
+      ],
+      "4": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        206,
+        219,
+        233,
+        246,
+        260,
+        273,
+        287,
+        288,
+        302,
+        315,
+        329,
+        342
+      ],
+      "5": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        206,
+        219,
+        233,
+        246,
+        260,
+        273,
+        287,
+        288,
+        302,
+        315,
+        329,
+        342,
+        356,
+        369,
+        383,
+        384,
+        391,
+        397
+      ]
+    },
+    "kv_selection_mode": "per_boundary",
+    "optimizer_watched_video": "videos/benchmark_hard_multishot/stage_A/baseline_seed0/baseline_seed0-rank0-shimmering_puzzle_surface-seed0_regular.mp4",
+    "prompt_review": {
+      "applied": [
+        {
+          "index": 0,
+          "reason": "This addition is consistent with the authored global invariant and merely sharpens it by adding 'throughout the entire video', which strengthens the temporal consistency claim without contradicting the original.",
+          "target": "global",
+          "verdict": "keep"
+        },
+        {
+          "index": 1,
+          "reason": "This per-shot invariant matches the authored global invariant exactly. It is appropriate to enforce the same invariant per shot to ensure consistency across all frames.",
+          "target": "per_shot",
+          "verdict": "keep"
+        },
+        {
+          "index": 2,
+          "reason": "Identical to per_shot #1; fully consistent with authored invariant. No contradiction or drift.",
+          "target": "per_shot",
+          "verdict": "keep"
+        },
+        {
+          "index": 3,
+          "reason": "Identical to per_shot #1; fully consistent with authored invariant. No contradiction or drift.",
+          "target": "per_shot",
+          "verdict": "keep"
+        },
+        {
+          "index": 4,
+          "reason": "Identical to per_shot #1; fully consistent with authored invariant. No contradiction or drift.",
+          "target": "per_shot",
+          "verdict": "keep"
+        },
+        {
+          "index": 5,
+          "reason": "Identical to per_shot #1; fully consistent with authored invariant. No contradiction or drift.",
+          "target": "per_shot",
+          "verdict": "keep"
+        }
+      ],
+      "invalid": [
+        {
+          "index": 6,
+          "reason": "Identical to per_shot #1; fully consistent with authored invariant. No contradiction or drift.",
+          "target": "per_shot",
+          "text": "The shimmering puzzle surface remains on the same reflective tabletop with stable interlocking pieces and consistent highlights.",
+          "verdict": "keep"
+        }
+      ],
+      "transcript": "docs/round18_bench_20260701/iter01/qwen3_optimizer/prompt_review/shimmering_puzzle_surface.json"
+    },
+    "sanitization_notes": [
+      "boundary 4: thinned 5 candidates to cap 24 (uniform spread kept)",
+      "boundary 5: thinned 11 candidates to cap 24 (uniform spread kept)"
+    ],
+    "transcript": "docs/round18_bench_20260701/iter01/qwen3_optimizer/transcripts/shimmering_puzzle_surface.json"
+  },
+  "tattooed_noodle_chef": {
+    "decision": {
+      "global_invariant_additions": [
+        "The red bandana is consistently tied around the chef's neck, never worn as a headband."
+      ],
+      "kv_anchor_plan": [
+        {
+          "boundary_shot_index": 1,
+          "decoded_frame_indices": [
+            27,
+            41
+          ],
+          "rationale": "Frame 27 shows a clear, unoccluded medium shot of the chef from the side, displaying his shaved head, red bandana, silver hoop earring, white T-shirt, and navy apron, along with the steel wok station and hanging red lanterns. Frame 41 provides a similar clear view, showing the same attire and tattoos, confirming the subject and scene identity. These frames best pin the subject's appearance and environment for continuity into the close-up shot."
+        },
+        {
+          "boundary_shot_index": 2,
+          "decoded_frame_indices": [
+            137,
+            150
+          ],
+          "rationale": "Frame 137 and 150 provide clear, unoccluded views of the chef's full upper body and face, showing his shaved head, red bandana, white T-shirt, navy apron, and the black dragon tattoo on his right forearm. These frames are critical for maintaining subject and scene identity during the cut to the overhead wok shot, as they capture the exact visual markers required for continuity."
+        },
+        {
+          "boundary_shot_index": 3,
+          "decoded_frame_indices": [
+            192,
+            199,
+            205
+          ],
+          "rationale": "These frames provide clear, unoccluded views of the chef's full identity and the scene layout as required for shot 3. Frame 192 shows the chef in profile with the red bandana, white T-shirt, navy apron, and black dragon tattoo visible. Frame 199 offers a similar profile view with the same attire and tattoos. Frame 205 shows the chef's face and upper body, confirming the shaved head, silver hoop earring, and consistent red bandana. All three frames capture the subject and scene identity needed to maintain continuity across the cut into shot 3."
+        },
+        {
+          "boundary_shot_index": 4,
+          "decoded_frame_indices": [
+            192,
+            240,
+            247,
+            253
+          ],
+          "rationale": "These frames provide the clearest, unoccluded views of the chef's full identity and the stall layout as required for shot 4. Frame 192 shows the chef in profile with the red bandana, navy apron, and tattoo visible. Frame 240 offers a clear medium shot showing the chef's face, earring, and tattoo. Frame 247 and 253 provide close-up views of the chef's face and upper body, confirming the consistent appearance across the cut. These frames best pin the subject identity and scene layout for continuity."
+        },
+        {
+          "boundary_shot_index": 5,
+          "decoded_frame_indices": [
+            192,
+            205,
+            212,
+            226
+          ],
+          "rationale": "These frames provide clear, unoccluded views of the chef's full upper body and key identifying features: shaved head, red bandana, white T-shirt, navy apron, and the black dragon tattoo on the right forearm. Frame 192 shows the chef in a medium shot with full context of the stall, while frames 205 and 212 offer similar views with the tattoo clearly visible. Frame 226 provides a close-up of the chef's face and upper torso, confirming the silver hoop earring and consistent attire. These frames best anchor the subject identity and scene layout for the upcoming tight close-up of the forearm tattoo."
+        },
+        {
+          "boundary_shot_index": 6,
+          "decoded_frame_indices": [
+            192,
+            205,
+            219,
+            232
+          ],
+          "rationale": "These frames provide clear, unoccluded views of the chef's key identifying features: shaved head, red bandana, silver hoop earring, and black dragon tattoo on the right forearm, all visible against the consistent night-market noodle stall background with hanging red lanterns and stainless counter. Frame 192 shows the chef in profile with full attire visible. Frames 205 and 219 show close-ups of the tattoo and earring. Frame 232 shows the chef from the side with the full outfit and background elements clearly visible, matching the shot 6 context."
+        },
+        {
+          "boundary_shot_index": 7,
+          "decoded_frame_indices": [
+            343,
+            356,
+            376,
+            384
+          ],
+          "rationale": "These frames provide clear, unoccluded views of the chef's key identifying features: shaved head, red bandana, silver hoop earring, and black dragon tattoo on the right forearm, all while showing the consistent night-market noodle stall environment with red lanterns and stainless counter. Frame 343 shows the chef from the side with full visibility of the tattoo and earring. Frame 356 offers a frontal view with the bandana and facial features. Frames 376 and 384 show the chef in action, clearly displaying the tattoo and earring while maintaining the scene context."
+        }
+      ],
+      "per_shot_additions": [
+        {
+          "rationale": "The rendered video shows the bandana as a headband, which contradicts the global invariant. This must be corrected to maintain consistency.",
+          "shot_index": 5,
+          "text": "The red bandana remains tied around the chef's neck, not as a headband."
+        }
+      ],
+      "stop_rule": "one bounded refinement round",
+      "which_cut_broke": {
+        "cut_index": 5,
+        "how": "Chef's red bandana is now tied as a headband, violating the global invariant of it being around the neck."
+      }
+    },
+    "frames_shown": [
+      {
+        "end_frame": 96,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot00_frame00_idx0000.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot00_frame01_idx0032.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot00_frame02_idx0063.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot00_frame03_idx0095.png"
+        ],
+        "sampled_frame_indices": [
+          0,
+          32,
+          63,
+          95
+        ],
+        "shot_index": 0,
+        "start_frame": 0
+      },
+      {
+        "end_frame": 192,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot01_frame00_idx0096.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot01_frame01_idx0128.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot01_frame02_idx0159.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot01_frame03_idx0191.png"
+        ],
+        "sampled_frame_indices": [
+          96,
+          128,
+          159,
+          191
+        ],
+        "shot_index": 1,
+        "start_frame": 96
+      },
+      {
+        "end_frame": 240,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot02_frame00_idx0192.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot02_frame01_idx0208.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot02_frame02_idx0223.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot02_frame03_idx0239.png"
+        ],
+        "sampled_frame_indices": [
+          192,
+          208,
+          223,
+          239
+        ],
+        "shot_index": 2,
+        "start_frame": 192
+      },
+      {
+        "end_frame": 288,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot03_frame00_idx0240.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot03_frame01_idx0256.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot03_frame02_idx0271.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot03_frame03_idx0287.png"
+        ],
+        "sampled_frame_indices": [
+          240,
+          256,
+          271,
+          287
+        ],
+        "shot_index": 3,
+        "start_frame": 240
+      },
+      {
+        "end_frame": 336,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot04_frame00_idx0288.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot04_frame01_idx0304.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot04_frame02_idx0319.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot04_frame03_idx0335.png"
+        ],
+        "sampled_frame_indices": [
+          288,
+          304,
+          319,
+          335
+        ],
+        "shot_index": 4,
+        "start_frame": 288
+      },
+      {
+        "end_frame": 384,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot05_frame00_idx0336.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot05_frame01_idx0352.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot05_frame02_idx0367.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot05_frame03_idx0383.png"
+        ],
+        "sampled_frame_indices": [
+          336,
+          352,
+          367,
+          383
+        ],
+        "shot_index": 5,
+        "start_frame": 336
+      },
+      {
+        "end_frame": 432,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot06_frame00_idx0384.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot06_frame01_idx0400.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot06_frame02_idx0415.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot06_frame03_idx0431.png"
+        ],
+        "sampled_frame_indices": [
+          384,
+          400,
+          415,
+          431
+        ],
+        "shot_index": 6,
+        "start_frame": 384
+      },
+      {
+        "end_frame": 480,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot07_frame00_idx0432.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot07_frame01_idx0448.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot07_frame02_idx0463.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/tattooed_noodle_chef/shot07_frame03_idx0479.png"
+        ],
+        "sampled_frame_indices": [
+          432,
+          448,
+          463,
+          479
+        ],
+        "shot_index": 7,
+        "start_frame": 432
+      }
+    ],
+    "kv_candidates": {
+      "1": [
+        0,
+        14,
+        27,
+        41,
+        54
+      ],
+      "2": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150
+      ],
+      "3": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        199,
+        205
+      ],
+      "4": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        199,
+        205,
+        212,
+        219,
+        226,
+        232,
+        239,
+        240,
+        247,
+        253
+      ],
+      "5": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        199,
+        205,
+        212,
+        219,
+        226,
+        232,
+        239,
+        240,
+        247,
+        253,
+        260,
+        267,
+        274,
+        280,
+        287,
+        288,
+        295,
+        301
+      ],
+      "6": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        199,
+        205,
+        212,
+        219,
+        226,
+        232,
+        239,
+        240,
+        247,
+        253,
+        260,
+        267,
+        274,
+        280,
+        287,
+        288,
+        295,
+        301,
+        308,
+        315,
+        322,
+        328,
+        335,
+        336,
+        343,
+        349
+      ],
+      "7": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        199,
+        205,
+        212,
+        219,
+        226,
+        232,
+        239,
+        240,
+        247,
+        253,
+        260,
+        267,
+        274,
+        280,
+        287,
+        288,
+        295,
+        301,
+        308,
+        315,
+        322,
+        328,
+        335,
+        336,
+        343,
+        349,
+        356,
+        363,
+        370,
+        376,
+        383,
+        384,
+        391,
+        397
+      ]
+    },
+    "kv_selection_mode": "per_boundary",
+    "optimizer_watched_video": "videos/benchmark_hard_multishot/stage_A/baseline_seed0/baseline_seed0-rank0-tattooed_noodle_chef-seed0_regular.mp4",
+    "prompt_review": {
+      "applied": [
+        {
+          "index": 0,
+          "reason": "This addition reinforces and sharpens the authored invariant that the red bandana is tied around the neck. It does not contradict any authored detail and adds clarity without introducing drift.",
+          "target": "global",
+          "verdict": "keep"
+        }
+      ],
+      "invalid": [],
+      "transcript": "docs/round18_bench_20260701/iter01/qwen3_optimizer/prompt_review/tattooed_noodle_chef.json"
+    },
+    "sanitization_notes": [
+      "boundary 4: thinned 3 candidates to cap 24 (uniform spread kept)",
+      "boundary 5: thinned 11 candidates to cap 24 (uniform spread kept)",
+      "boundary 6: thinned 19 candidates to cap 24 (uniform spread kept)",
+      "boundary 7: thinned 27 candidates to cap 24 (uniform spread kept)"
+    ],
+    "transcript": "docs/round18_bench_20260701/iter01/qwen3_optimizer/transcripts/tattooed_noodle_chef.json"
+  },
+  "vintage_archival_scene": {
+    "decision": {
+      "global_invariant_additions": [
+        "The scene must maintain the same central subject or objects (e.g., the olive-drab helicopter and its crew) and environment (military airfield/deck) across every shot."
+      ],
+      "kv_anchor_plan": [
+        {
+          "boundary_shot_index": 3,
+          "decoded_frame_indices": [
+            192,
+            206,
+            219,
+            233
+          ],
+          "rationale": "These frames show the helicopter in its pre-takeoff state with the door open and a shirtless man in yellow shorts interacting with it, matching the subject and scene layout described for shot 3. Frame 192 shows the man approaching the helicopter, 206 shows him entering, 219 shows him inside, and 233 shows the helicopter beginning to rotate its rotor, all consistent with the start of shot 3."
+        },
+        {
+          "boundary_shot_index": 4,
+          "decoded_frame_indices": [
+            0,
+            14,
+            27,
+            41
+          ],
+          "rationale": "These frames show the subject (a specific olive-drab military helicopter) in its static, grounded state on a tarmac, with clear views of its fuselage, open side door, and surrounding environment. This provides a strong visual anchor for the subject identity and scene layout, which must persist across the cut into shot 4. Frame 0 shows the helicopter with a person entering, frame 14 shows the helicopter with a person exiting, frame 27 shows the helicopter with a person inside, and frame 41 shows the helicopter with a person standing beside it. All four frames clearly establish the subject's appearance and context, which is critical for maintaining continuity with the aerial shots in shot 4."
+        },
+        {
+          "boundary_shot_index": 5,
+          "decoded_frame_indices": [
+            288,
+            295,
+            308,
+            315
+          ],
+          "rationale": "These frames show the pilot inside the helicopter cockpit from behind, wearing a green military helmet and uniform, with clear visibility of the cockpit interior, control panels, and the pilot's posture. This matches the subject and scene layout described for shot 5, ensuring continuity of identity and environment."
+        },
+        {
+          "boundary_shot_index": 6,
+          "decoded_frame_indices": [
+            308,
+            322,
+            335,
+            343
+          ],
+          "rationale": "These frames show the military helicopter from multiple clear, unoccluded angles as it is on the ground and preparing for flight, matching the subject identity and scene layout described for shot 6. Frame 308 shows a side profile of the helicopter on the tarmac with a person interacting with it. Frame 322 shows a close-up of the helicopter's side with its door open, revealing interior details. Frame 335 and 343 show the helicopter from a slightly different angle, still on the ground, with clear visibility of its structure and markings, which are critical for maintaining subject continuity across the cut."
+        }
+      ],
+      "per_shot_additions": [
+        {
+          "rationale": "Reinforces the core subject and environment to anchor continuity.",
+          "shot_index": 0,
+          "text": "The scene is an outdoor military airfield or ship deck with the same olive-drab helicopter and two men (shirtless and uniformed) as central subjects."
+        },
+        {
+          "rationale": "Reinforces the core subject and environment to anchor continuity.",
+          "shot_index": 1,
+          "text": "The scene remains an outdoor military airfield or ship deck with the same olive-drab helicopter and two men (shirtless and uniformed) as central subjects."
+        },
+        {
+          "rationale": "Corrects the break in continuity by reasserting the authored invariant.",
+          "shot_index": 2,
+          "text": "The scene must include the same olive-drab helicopter and its crew as central subjects, and the environment must remain the military airfield or ship deck."
+        },
+        {
+          "rationale": "Reinforces the core subject and environment to anchor continuity.",
+          "shot_index": 3,
+          "text": "The scene is an outdoor military airfield or ship deck with the same olive-drab helicopter and its crew as central subjects."
+        },
+        {
+          "rationale": "Reinforces the core subject and environment to anchor continuity.",
+          "shot_index": 4,
+          "text": "The scene is an outdoor military airfield or ship deck with the same olive-drab helicopter and its crew as central subjects."
+        },
+        {
+          "rationale": "Reinforces the core subject and environment to anchor continuity.",
+          "shot_index": 5,
+          "text": "The scene is an outdoor military airfield or ship deck with the same olive-drab helicopter and its crew as central subjects."
+        },
+        {
+          "rationale": "Reinforces the core subject and environment to anchor continuity.",
+          "shot_index": 6,
+          "text": "The scene is an outdoor military airfield or ship deck with the same olive-drab helicopter and its crew as central subjects."
+        }
+      ],
+      "stop_rule": "one bounded refinement round",
+      "which_cut_broke": {
+        "cut_index": 2,
+        "how": "Shot 2 breaks continuity by shifting to an isolated mechanical object without the central subject or environment from Shot 1."
+      }
+    },
+    "frames_shown": [
+      {
+        "end_frame": 96,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot00_frame00_idx0000.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot00_frame01_idx0032.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot00_frame02_idx0063.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot00_frame03_idx0095.png"
+        ],
+        "sampled_frame_indices": [
+          0,
+          32,
+          63,
+          95
+        ],
+        "shot_index": 0,
+        "start_frame": 0
+      },
+      {
+        "end_frame": 192,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot01_frame00_idx0096.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot01_frame01_idx0128.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot01_frame02_idx0159.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot01_frame03_idx0191.png"
+        ],
+        "sampled_frame_indices": [
+          96,
+          128,
+          159,
+          191
+        ],
+        "shot_index": 1,
+        "start_frame": 96
+      },
+      {
+        "end_frame": 288,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot02_frame00_idx0192.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot02_frame01_idx0224.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot02_frame02_idx0255.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot02_frame03_idx0287.png"
+        ],
+        "sampled_frame_indices": [
+          192,
+          224,
+          255,
+          287
+        ],
+        "shot_index": 2,
+        "start_frame": 192
+      },
+      {
+        "end_frame": 336,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot03_frame00_idx0288.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot03_frame01_idx0304.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot03_frame02_idx0319.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot03_frame03_idx0335.png"
+        ],
+        "sampled_frame_indices": [
+          288,
+          304,
+          319,
+          335
+        ],
+        "shot_index": 3,
+        "start_frame": 288
+      },
+      {
+        "end_frame": 384,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot04_frame00_idx0336.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot04_frame01_idx0352.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot04_frame02_idx0367.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot04_frame03_idx0383.png"
+        ],
+        "sampled_frame_indices": [
+          336,
+          352,
+          367,
+          383
+        ],
+        "shot_index": 4,
+        "start_frame": 336
+      },
+      {
+        "end_frame": 432,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot05_frame00_idx0384.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot05_frame01_idx0400.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot05_frame02_idx0415.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot05_frame03_idx0431.png"
+        ],
+        "sampled_frame_indices": [
+          384,
+          400,
+          415,
+          431
+        ],
+        "shot_index": 5,
+        "start_frame": 384
+      },
+      {
+        "end_frame": 480,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot06_frame00_idx0432.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot06_frame01_idx0448.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot06_frame02_idx0463.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/vintage_archival_scene/shot06_frame03_idx0479.png"
+        ],
+        "sampled_frame_indices": [
+          432,
+          448,
+          463,
+          479
+        ],
+        "shot_index": 6,
+        "start_frame": 432
+      }
+    ],
+    "kv_candidates": {
+      "1": [
+        0,
+        14,
+        27,
+        41,
+        54
+      ],
+      "2": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150
+      ],
+      "3": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        206,
+        219,
+        233,
+        246
+      ],
+      "4": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        206,
+        219,
+        233,
+        246,
+        260,
+        273,
+        287,
+        288,
+        295,
+        301
+      ],
+      "5": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        206,
+        219,
+        233,
+        246,
+        260,
+        273,
+        287,
+        288,
+        295,
+        301,
+        308,
+        315,
+        322,
+        328,
+        335,
+        336,
+        343,
+        349
+      ],
+      "6": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        206,
+        219,
+        233,
+        246,
+        260,
+        273,
+        287,
+        288,
+        295,
+        301,
+        308,
+        315,
+        322,
+        328,
+        335,
+        336,
+        343,
+        349,
+        356,
+        363,
+        370,
+        376,
+        383,
+        384,
+        391,
+        397
+      ]
+    },
+    "kv_selection_mode": "per_boundary",
+    "optimizer_watched_video": "videos/benchmark_hard_multishot/stage_A/baseline_seed0/baseline_seed0-rank0-vintage_archival_scene-seed0_regular.mp4",
+    "prompt_review": {
+      "applied": [
+        {
+          "index": 0,
+          "reason": "Consistent with authored invariant: 'The same continuous vintage archival scene scene persists across every shot, with the same central subject or objects, the same environment, and coherent event continuity despite legitimate camera, framing, and action changes.' The proposed text sharpens the invariant without contradiction.",
+          "target": "global",
+          "verdict": "keep"
+        },
+        {
+          "index": 1,
+          "reason": "Consistent with authored invariant: The same central subject, setting, material identity, and event continuity must carry across all camera cuts. The proposed shot-specific detail (shirtless and uniformed men) is a valid specification of the central subjects and does not contradict the global continuity requirement.",
+          "target": "per_shot",
+          "verdict": "keep"
+        },
+        {
+          "index": 2,
+          "reason": "Consistent with authored invariant: The same environment and central subjects must persist. Repetition across shots is allowed and reinforces continuity; no contradiction.",
+          "target": "per_shot",
+          "verdict": "keep"
+        },
+        {
+          "index": 3,
+          "reason": "Consistent with authored invariant: The same central subject and environment must persist. The phrasing 'must include' and 'must remain' reinforces continuity without contradiction.",
+          "target": "per_shot",
+          "verdict": "keep"
+        },
+        {
+          "index": 4,
+          "reason": "Consistent with authored invariant: The same environment and central subjects must persist. This is a redundant but harmless reinforcement of continuity.",
+          "target": "per_shot",
+          "verdict": "keep"
+        },
+        {
+          "index": 5,
+          "reason": "Consistent with authored invariant: The same environment and central subjects must persist. No contradiction; repetition across shots is acceptable.",
+          "target": "per_shot",
+          "verdict": "keep"
+        },
+        {
+          "index": 6,
+          "reason": "Consistent with authored invariant: The same environment and central subjects must persist. No contradiction; repetition across shots is acceptable.",
+          "target": "per_shot",
+          "verdict": "keep"
+        }
+      ],
+      "invalid": [],
+      "transcript": "docs/round18_bench_20260701/iter01/qwen3_optimizer/prompt_review/vintage_archival_scene.json"
+    },
+    "sanitization_notes": [
+      "boundary 1: optimizer skipped (All candidate frames (0, 14, 27, 41, 54) depict a shirtless male figure in a helicopter hangar or tarmac setting, wearing a cap and shorts, which is inconsisten)",
+      "boundary 2: optimizer skipped (The provided candidate frames (0, 14, 27, 41, 54, 68, 81, 95, 96, 110, 123, 137, 150) do not contain any visual content matching the subject or scene described )",
+      "boundary 4: thinned 3 candidates to cap 24 (uniform spread kept)",
+      "boundary 5: thinned 11 candidates to cap 24 (uniform spread kept)",
+      "boundary 6: thinned 19 candidates to cap 24 (uniform spread kept)"
+    ],
+    "transcript": "docs/round18_bench_20260701/iter01/qwen3_optimizer/transcripts/vintage_archival_scene.json"
+  },
+  "warm_indoor_dining": {
+    "decision": {
+      "global_invariant_additions": [
+        "The scene remains a continuous warm indoor dining setting with the same dark-stained wooden table, blue-and-white ceramic tableware, and orange-handled utensils throughout all shots."
+      ],
+      "kv_anchor_plan": [
+        {
+          "boundary_shot_index": 1,
+          "decoded_frame_indices": [
+            0,
+            14,
+            27,
+            41
+          ],
+          "rationale": "These frames establish the core subject identity and scene layout: the dark wooden table, the blue-and-white porcelain dishes, and the arrangement of food items including the central plate of marinated meat, the bowl of noodles, the small bowls of garnishes, and the orange-handled utensils. Frame 0 provides a clear, unoccluded wide view of the entire setup. Frame 14 shows the same composition with slightly different camera angle and lighting. Frame 27 captures the scene with the same objects and layout, confirming continuity. Frame 41 shows the same table setup with the addition of a hand wearing a glove, which is part of the scene's ongoing action. All four frames consistently show the key objects and environment that must remain consistent across the cut."
+        },
+        {
+          "boundary_shot_index": 2,
+          "decoded_frame_indices": [
+            137,
+            150
+          ],
+          "rationale": "Frame 137 and 150 show the complete dining setup with the central blue-and-white ceramic plate, surrounding dishes (noodles, garnishes), and the wooden table with chairs in the background, matching the scene layout described in the entering shot 2 caption. These frames provide a clear, unoccluded view of the subject (the food arrangement) and environment, ensuring continuity across the cut."
+        },
+        {
+          "boundary_shot_index": 3,
+          "decoded_frame_indices": [
+            192,
+            199,
+            205
+          ],
+          "rationale": "These frames show the complete dining setup with the main dish (beef) and surrounding elements (noodles, garnishes, utensils) in a consistent warm indoor setting. Frame 192 shows the full table layout before the beef is lifted. Frames 199 and 205 show the beef being lifted with chopsticks, matching the action and framing described in the shot 3 caption. This provides a clear, unoccluded view of the subject and scene layout that will persist across the cut."
+        },
+        {
+          "boundary_shot_index": 4,
+          "decoded_frame_indices": [
+            192,
+            205,
+            219,
+            239
+          ],
+          "rationale": "These frames show the consistent subject (the dish with noodles, meat, and garnishes) and scene layout (wooden table, blue-and-white ceramic tableware, background chairs) as seen in the entering shot 4. Frame 192 shows the dish from a wide angle with all elements in place. Frames 205 and 219 capture the action of lifting noodles with chopsticks, matching the motion in shot 4. Frame 239 shows a close-up of the dish with the same composition and lighting, reinforcing the subject identity and scene continuity."
+        },
+        {
+          "boundary_shot_index": 5,
+          "decoded_frame_indices": [
+            287,
+            295,
+            301
+          ],
+          "rationale": "These frames show the central subject (the meal) in a wide, stable composition that matches the scene layout described in the entering shot 5 caption. Frame 287 displays the full table setup with the main dish, side bowls, and utensils, establishing the scene's spatial context. Frames 295 and 301 show the same table setup with the main dish being interacted with (noodles being lifted), preserving the subject identity and scene continuity. These frames provide a clear, unoccluded view of the key objects and environment that must persist across the cut."
+        },
+        {
+          "boundary_shot_index": 6,
+          "decoded_frame_indices": [
+            274,
+            287,
+            295,
+            308
+          ],
+          "rationale": "These frames show a clear, unoccluded view of the central subject: a plated dish of sliced beef with chili oil and peanuts, garnished with green onions, on a blue and white ceramic plate. The warm indoor dining environment, including the wooden table and chairs, is consistently visible, establishing the scene layout. These frames capture the dish before the close-up shot, providing a strong visual anchor for continuity."
+        },
+        {
+          "boundary_shot_index": 7,
+          "decoded_frame_indices": [
+            335,
+            343,
+            356,
+            376
+          ],
+          "rationale": "These frames show a clear, unoccluded view of the central subject: the noodle dish in a blue-and-white patterned bowl, with the same wooden dining table, chairs, and side dishes (noodles, scallions, condiments) visible in the background. This matches the scene layout and subject identity described in the shot 7 caption. Frame 335 shows the dish being prepared with a gloved hand, frame 343 shows the dish being garnished, frame 356 shows the dish being lifted with chopsticks, and frame 376 shows a close-up of the dish being lifted, all consistent with the visual continuity required for the cut."
+        }
+      ],
+      "per_shot_additions": [
+        {
+          "rationale": "Reasserts the consistent table setup and utensils from SHOT 0 to anchor all subsequent shots.",
+          "shot_index": 0,
+          "text": "The scene is set at a dark-stained wooden table with blue-and-white ceramic bowls and plates, and orange-handled scissors and tongs visible on the right side."
+        },
+        {
+          "rationale": "Reaffirms the table and utensil setup from SHOT 0 to maintain continuity despite camera movement.",
+          "shot_index": 1,
+          "text": "The scene remains indoors at the same dark-stained wooden table, with blue-and-white ceramic dishes and orange-handled utensils visible in the background."
+        },
+        {
+          "rationale": "Reinforces the table and utensil setup from SHOT 0 to ensure continuity with the ongoing meal presentation.",
+          "shot_index": 2,
+          "text": "The scene is set at the same dark-stained wooden table with blue-and-white ceramic bowls and orange-handled utensils, visible in the background."
+        },
+        {
+          "rationale": "Reasserts the table and utensil setup from SHOT 0 to maintain consistency with the ongoing meal presentation.",
+          "shot_index": 3,
+          "text": "The scene remains indoors at the same dark-stained wooden table with blue-and-white ceramic plates and orange-handled utensils visible in the background."
+        },
+        {
+          "rationale": "Reaffirms the table and utensil setup from SHOT 0 to ensure continuity with the ongoing meal presentation.",
+          "shot_index": 4,
+          "text": "The scene is set at the same dark-stained wooden table with blue-and-white ceramic tableware and orange-handled utensils visible on the right side."
+        },
+        {
+          "rationale": "Reinforces the table and utensil setup from SHOT 0 to maintain continuity with the ongoing meal presentation.",
+          "shot_index": 5,
+          "text": "The scene remains indoors at the same dark-stained wooden table with blue-and-white ceramic bowls and orange-handled utensils visible in the background."
+        },
+        {
+          "rationale": "Reasserts the table and utensil setup from SHOT 0 to maintain consistency with the ongoing meal presentation.",
+          "shot_index": 6,
+          "text": "The scene is set at the same dark-stained wooden table with blue-and-white ceramic plates and orange-handled utensils visible on the right side."
+        },
+        {
+          "rationale": "Reaffirms the table and utensil setup from SHOT 0 to ensure continuity with the ongoing meal presentation.",
+          "shot_index": 7,
+          "text": "The scene remains indoors at the same dark-stained wooden table with blue-and-white ceramic bowls and orange-handled utensils visible in the background."
+        }
+      ],
+      "stop_rule": "one bounded refinement round",
+      "which_cut_broke": {
+        "cut_index": null,
+        "how": "No cut breaks cross-shot consistency; all shots maintain the same warm indoor dining scene with consistent objects and environment."
+      }
+    },
+    "frames_shown": [
+      {
+        "end_frame": 96,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot00_frame00_idx0000.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot00_frame01_idx0032.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot00_frame02_idx0063.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot00_frame03_idx0095.png"
+        ],
+        "sampled_frame_indices": [
+          0,
+          32,
+          63,
+          95
+        ],
+        "shot_index": 0,
+        "start_frame": 0
+      },
+      {
+        "end_frame": 192,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot01_frame00_idx0096.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot01_frame01_idx0128.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot01_frame02_idx0159.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot01_frame03_idx0191.png"
+        ],
+        "sampled_frame_indices": [
+          96,
+          128,
+          159,
+          191
+        ],
+        "shot_index": 1,
+        "start_frame": 96
+      },
+      {
+        "end_frame": 240,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot02_frame00_idx0192.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot02_frame01_idx0208.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot02_frame02_idx0223.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot02_frame03_idx0239.png"
+        ],
+        "sampled_frame_indices": [
+          192,
+          208,
+          223,
+          239
+        ],
+        "shot_index": 2,
+        "start_frame": 192
+      },
+      {
+        "end_frame": 288,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot03_frame00_idx0240.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot03_frame01_idx0256.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot03_frame02_idx0271.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot03_frame03_idx0287.png"
+        ],
+        "sampled_frame_indices": [
+          240,
+          256,
+          271,
+          287
+        ],
+        "shot_index": 3,
+        "start_frame": 240
+      },
+      {
+        "end_frame": 336,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot04_frame00_idx0288.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot04_frame01_idx0304.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot04_frame02_idx0319.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot04_frame03_idx0335.png"
+        ],
+        "sampled_frame_indices": [
+          288,
+          304,
+          319,
+          335
+        ],
+        "shot_index": 4,
+        "start_frame": 288
+      },
+      {
+        "end_frame": 384,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot05_frame00_idx0336.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot05_frame01_idx0352.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot05_frame02_idx0367.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot05_frame03_idx0383.png"
+        ],
+        "sampled_frame_indices": [
+          336,
+          352,
+          367,
+          383
+        ],
+        "shot_index": 5,
+        "start_frame": 336
+      },
+      {
+        "end_frame": 432,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot06_frame00_idx0384.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot06_frame01_idx0400.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot06_frame02_idx0415.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot06_frame03_idx0431.png"
+        ],
+        "sampled_frame_indices": [
+          384,
+          400,
+          415,
+          431
+        ],
+        "shot_index": 6,
+        "start_frame": 384
+      },
+      {
+        "end_frame": 480,
+        "paths": [
+          "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot07_frame00_idx0432.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot07_frame01_idx0448.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot07_frame02_idx0463.png",
+          "docs/round18_bench_20260701/iter01/optimizer_frames/warm_indoor_dining/shot07_frame03_idx0479.png"
+        ],
+        "sampled_frame_indices": [
+          432,
+          448,
+          463,
+          479
+        ],
+        "shot_index": 7,
+        "start_frame": 432
+      }
+    ],
+    "kv_candidates": {
+      "1": [
+        0,
+        14,
+        27,
+        41,
+        54
+      ],
+      "2": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150
+      ],
+      "3": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        199,
+        205
+      ],
+      "4": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        199,
+        205,
+        212,
+        219,
+        226,
+        232,
+        239,
+        240,
+        247,
+        253
+      ],
+      "5": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        199,
+        205,
+        212,
+        219,
+        226,
+        232,
+        239,
+        240,
+        247,
+        253,
+        260,
+        267,
+        274,
+        280,
+        287,
+        288,
+        295,
+        301
+      ],
+      "6": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        199,
+        205,
+        212,
+        219,
+        226,
+        232,
+        239,
+        240,
+        247,
+        253,
+        260,
+        267,
+        274,
+        280,
+        287,
+        288,
+        295,
+        301,
+        308,
+        315,
+        322,
+        328,
+        335,
+        336,
+        343,
+        349
+      ],
+      "7": [
+        0,
+        14,
+        27,
+        41,
+        54,
+        68,
+        81,
+        95,
+        96,
+        110,
+        123,
+        137,
+        150,
+        164,
+        177,
+        191,
+        192,
+        199,
+        205,
+        212,
+        219,
+        226,
+        232,
+        239,
+        240,
+        247,
+        253,
+        260,
+        267,
+        274,
+        280,
+        287,
+        288,
+        295,
+        301,
+        308,
+        315,
+        322,
+        328,
+        335,
+        336,
+        343,
+        349,
+        356,
+        363,
+        370,
+        376,
+        383,
+        384,
+        391,
+        397
+      ]
+    },
+    "kv_selection_mode": "per_boundary",
+    "optimizer_watched_video": "videos/benchmark_hard_multishot/stage_A/baseline_seed0/baseline_seed0-rank0-warm_indoor_dining-seed0_regular.mp4",
+    "prompt_review": {
+      "applied": [
+        {
+          "index": 0,
+          "reason": "Consistent with authored invariant: same central subject, setting, material identity, lighting family, and event continuity across all camera cuts. Adds specific material details without contradicting or collapsing shot diversity.",
+          "target": "global",
+          "verdict": "keep"
+        },
+        {
+          "index": 1,
+          "reason": "Consistent with authored invariant: same environment and central subject. Specific utensil types (scissors and tongs) are plausible and do not contradict the general description of orange-handled utensils.",
+          "target": "per_shot",
+          "verdict": "keep"
+        },
+        {
+          "index": 2,
+          "reason": "Consistent with authored invariant: same setting and continuity. Background placement of utensils is a legitimate framing variation.",
+          "target": "per_shot",
+          "verdict": "keep"
+        },
+        {
+          "index": 3,
+          "reason": "Consistent with authored invariant: same environment and continuity. Background placement is a legitimate camera framing change.",
+          "target": "per_shot",
+          "verdict": "keep"
+        },
+        {
+          "index": 4,
+          "reason": "Consistent with authored invariant: same setting and continuity. Right-side placement is a legitimate framing variation.",
+          "target": "per_shot",
+          "verdict": "keep"
+        },
+        {
+          "index": 5,
+          "reason": "Consistent with authored invariant: same environment and continuity. Background placement is a legitimate framing variation.",
+          "target": "per_shot",
+          "verdict": "keep"
+        },
+        {
+          "index": 6,
+          "reason": "Consistent with authored invariant: same setting and continuity. Specific dish type (plates) and right-side placement are plausible variations within the same material identity.",
+          "target": "per_shot",
+          "verdict": "keep"
+        },
+        {
+          "index": 7,
+          "reason": "Consistent with authored invariant: same environment and continuity. Background placement is a legitimate framing variation.",
+          "target": "per_shot",
+          "verdict": "keep"
+        }
+      ],
+      "invalid": [],
+      "transcript": "docs/round18_bench_20260701/iter01/qwen3_optimizer/prompt_review/warm_indoor_dining.json"
+    },
+    "sanitization_notes": [
+      "boundary 4: thinned 3 candidates to cap 24 (uniform spread kept)",
+      "boundary 5: thinned 11 candidates to cap 24 (uniform spread kept)",
+      "boundary 6: thinned 19 candidates to cap 24 (uniform spread kept)",
+      "boundary 7: thinned 27 candidates to cap 24 (uniform spread kept)"
+    ],
+    "transcript": "docs/round18_bench_20260701/iter01/qwen3_optimizer/transcripts/warm_indoor_dining.json"
+  }
+}

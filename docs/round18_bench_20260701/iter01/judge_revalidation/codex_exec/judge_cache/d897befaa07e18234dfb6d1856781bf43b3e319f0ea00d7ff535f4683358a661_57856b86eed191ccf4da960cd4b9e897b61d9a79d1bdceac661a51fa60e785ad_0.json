@@ -1,0 +1,49 @@
+{
+  "response": {
+    "output_text": "{\"subject_identity_preserved\": {\"score\": 0.12, \"verdict\": \"low\", \"rationale\": \"The central subject changes from a red robot in shot 0 to a blue triangular drone in shots 1 and 2, violating the requested same-subject continuity.\"}, \"background_coherent\": {\"score\": 0.82, \"verdict\": \"high\", \"rationale\": \"The gray studio, slanted floor line, dark wall block, and yellow circle remain broadly consistent across shots despite small layout shifts.\"}, \"per_shot_adherence\": [{\"shot_index\": 0, \"score\": 0.92, \"issue\": \"Matches the caption: a red robot is visible in the gray studio.\"}, {\"shot_index\": 1, \"score\": 0.25, \"issue\": \"The caption asks for the same red robot, but the frame shows a blue drone-like triangle instead.\"}, {\"shot_index\": 2, \"score\": 0.28, \"issue\": \"The caption asks for the red robot still visible, but only the blue triangular subject appears.\"}], \"inter_shot_diversity\": {\"score\": 0.78, \"verdict\": \"healthy\", \"rationale\": \"The shots are not copied or collapsed; framing and subject appearance change, though the key subject change is inconsistent with the captions.\"}, \"motion_continuity\": {\"score\": 0.48, \"verdict\": \"borderline\", \"rationale\": \"There is visible change across shots and an implied movement arrow in shot 1, but continuity is undermined by the subject swap.\"}, \"which_cut_broke\": {\"cut_index\": 0, \"confidence\": 0.97, \"how\": \"The transition from shot 0 to shot 1 replaces the red robot with a blue triangular drone.\"}, \"cheat_flags\": {\"copy_cheat\": false, \"freeze_cheat\": false, \"prompt_collapse\": false, \"position_bias_suspected\": false, \"rationale\": \"No copied-frame or freeze behavior is apparent; the failure is a clear subject substitution after the first cut.\"}, \"overall_consistency_score\": 0.32}",
+    "usage": {
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "total_tokens": 0
+    },
+    "raw_response": {
+      "stdout_prefix": "{\"subject_identity_preserved\":{\"score\":0.12,\"verdict\":\"low\",\"rationale\":\"The central subject changes from a red robot in shot 0 to a blue triangular drone in shots 1 and 2, violating the requested same-subject continuity.\"},\"background_coherent\":{\"score\":0.82,\"verdict\":\"high\",\"rationale\":\"The gray studio, slanted floor line, dark wall block, and yellow circle remain broadly consistent across shots despite small layout shifts.\"},\"per_shot_adherence\":[{\"shot_index\":0,\"score\":0.92,\"issue\":\"Matches the caption: a red robot is visible in the gray studio.\"},{\"shot_index\":1,\"score\":0.25,\"issue\":\"The caption asks for the same red robot, but the frame shows a blue drone-like triangle instead.\"},{\"shot_index\":2,\"score\":0.28,\"issue\":\"The caption asks for the red robot still visible, but only the blue triangular subject appears.\"}],\"inter_shot_diversity\":{\"score\":0.78,\"verdict\":\"healthy\",\"rationale\":\"The shots are not copied or collapsed; framing and subject appearance change, though the key subje",
+      "stderr_prefix": "Reading prompt from stdin...\nOpenAI Codex v0.142.0\n--------\nworkdir: /home/chendong/video-gen/LongLive-RAG\nmodel: gpt-5.5\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: xhigh\nreasoning summaries: none\nsession id: 019f2190-bd82-7661-b83f-647ceae8dead\n--------\nuser\nYou are a held-out video consistency judge.\n\nYou will see 1-3 decoded frames per shot, in temporal shot order unless the\nfixture explicitly says it is a shuffled-order probe. Judge only perceptual\ncross-shot consistency:\n- subject_identity_preserved: whether the same central subject/object continues\n  across shot cuts.\n- background_coherent: whether the same scene/place/event persists.\n- per_shot_adherence: whether each shot still follows its own caption.\n- inter_shot_diversity: whether the shots preserve legitimate requested camera,\n  action, composition, and scene variation instead of collapsing toward the same\n  looking shot.\n- motion_continuity: whether the sampled sequence shows plausible motion/cha"
+    },
+    "client": {
+      "provider": "codex_exec_oauth",
+      "command": "codex exec --output-schema ... --image ...",
+      "auth": "reused Codex login through codex CLI; no token file extraction",
+      "codex_bin": "/home/chendong/.nvm/versions/node/v22.17.0/bin/codex",
+      "model": "gpt-5.5",
+      "last_command": {
+        "argv_redacted": [
+          "/home/chendong/.nvm/versions/node/v22.17.0/bin/codex",
+          "exec",
+          "-C",
+          "/home/chendong/video-gen/LongLive-RAG",
+          "--sandbox",
+          "read-only",
+          "--ephemeral",
+          "--output-schema",
+          "docs/round18_bench_20260701/iter01/judge_revalidation/codex_exec/judge_validation_transcripts/codex_judge_schema.json",
+          "--output-last-message",
+          "docs/round18_bench_20260701/iter01/judge_revalidation/codex_exec/judge_validation_transcripts/codex_subject_swap_last_message.json",
+          "--model",
+          "gpt-5.5",
+          "--image",
+          "<image-path>",
+          "--image",
+          "<image-path>",
+          "--image",
+          "<image-path>",
+          "-"
+        ],
+        "schema_path": "docs/round18_bench_20260701/iter01/judge_revalidation/codex_exec/judge_validation_transcripts/codex_judge_schema.json",
+        "output_path": "docs/round18_bench_20260701/iter01/judge_revalidation/codex_exec/judge_validation_transcripts/codex_subject_swap_last_message.json",
+        "returncode": 0,
+        "stderr_prefix": "Reading prompt from stdin...\nOpenAI Codex v0.142.0\n--------\nworkdir: /home/chendong/video-gen/LongLive-RAG\nmodel: gpt-5.5\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: xhigh\nreasoning summaries: none\nsession id: 019f2190-bd82-7661-b83f-647ceae8dead\n--------\nuser\nYou are a held-out video consistency judge.\n\nYou will see 1-3 decoded frames per shot, in temporal shot order unless the\nfixture explicitly says it is a shuffled-order probe. Judge only perceptual\ncross-shot consistency:\n- subject_identity_preserved: whether the same central subject/object continues\n  across shot cuts.\n- background_coherent: whether the same scene/place/event persists.\n- per_shot_adherence: whether each shot still follows its own caption.\n- inter_shot_diversity: whether the shots preserve legitimate requested camera,\n  action, composition, and scene variation instead of collapsing toward the same\n  looking shot.\n- motion_continuity: whether the sampled sequence shows plausible motion/cha"
+      }
+    }
+  }
+}

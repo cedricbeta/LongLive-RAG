@@ -1,0 +1,304 @@
+{
+  "cache_fingerprint": "528c244bd34870632fd4363255969a7c0b94c99a763cb5cb1a1872d957aa5a64",
+  "image_hashes": {
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot00_frame00_idx0000.png": "33549ff649953f68aac15d8da6e36ee20473247124f7ff4012b38f88189e7ac1",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot00_frame01_idx0014.png": "5ebd77249762030146e012868d2c0bdd5f80f60ba439b03e8f942cb1d9c9f641",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot00_frame02_idx0027.png": "5ecc3494f9722db7dbe86171d8e20456f4a1732cd5d25a7ff0c75db3cd571271",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot00_frame04_idx0054.png": "dc765e240304b2d9810b7a4ad92da9ba1593848cf337a1aea0947699f8f54784",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot00_frame05_idx0068.png": "e1c192454805a385eadd25670d3817a5663cb5e3d6585a59ba164658e96f1669",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot00_frame06_idx0081.png": "964471120d65f6ed5e8e42f7b446836dcab4214208a03278fc15cbe6498a17be",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot00_frame07_idx0095.png": "efcdb711570a9ff90b79357d4066b163c597fbd189b5b707e57023123d9383cb",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot01_frame01_idx0110.png": "9e5a9abe19e6f611be02db29c19a4939f692e640a2d09a1cae2cddf50f33764b",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot01_frame02_idx0123.png": "02cd77c2cbdcff813249e6bd0037ae550aa7c0e881ebf5facbceacb50eabd76b",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot01_frame03_idx0137.png": "008aba26a6fc4e3e90059108ea74c87670e06d9b59549a15839b55aaab3c99b3",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot01_frame04_idx0150.png": "6e3ed538c9cc6fb7f1820d8644c869f965e9c1fe521b71da939e3148319ce32a",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot01_frame05_idx0164.png": "8cdf0fac5aa8aeaede1cbb72c288476e563c349ce401774342044370afe20e1c",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot01_frame07_idx0191.png": "573aa392416b1a9e8c6c733b5a49e8187542e5e067e3d97cf054bc64a5efe163",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot02_frame00_idx0192.png": "2f728cdfd8bae83ea1adaa6b40073d49708aee96e4822d3201bda786ba9114c1",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot02_frame01_idx0206.png": "94b0e3269588f949394044436fddc685523669e6f7bc98ebbb67612d3f4d60fa",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot02_frame02_idx0219.png": "535b57687d2f746664805848254e3bcf09aea3c0bfe0f559eef2e9aaa9c1bbab",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot02_frame03_idx0233.png": "da885d8482319807e66430edf9d775fd918425cdd198b78e22b821a80990f351",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot02_frame05_idx0260.png": "43d508a996276c3f99ab7040507c5088a244f8c6a44de9e2270bf33c29cc86a2",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot02_frame06_idx0273.png": "442496b9d6e0437e35834e0a1276c707676e5515a09937e53d0f56fdd4f16239",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot02_frame07_idx0287.png": "c6caf72c7f9a37e3bed8a9abc116daf1fd9fde7d0f2de0c2bc1bc8c3cfc1f6d7",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot03_frame00_idx0288.png": "9133802601c0c05742fc700dd4f21ea0cf3a61edc0c90fafc41def3902e22952",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot03_frame02_idx0315.png": "3ed50f1c1d04d6b95c3a29ff65c62b4823e7c32158f3e8df8d6770a2382f5a90",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot03_frame03_idx0329.png": "7221a34fe973b1ff91fd0d0f0b79420590e821bcde6d5d9eaa79b7cb5c87ad8e",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot03_frame04_idx0342.png": "82ab01d17051eb80476a7a354fe178cc4e2562c2dddb2837322b5b850b14edc5",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot04_frame00_idx0384.png": "ea544b8c74ad870a6a6451f1a474d8312a1a554d94f5f4e7772f97e7c4ec5455",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot04_frame01_idx0400.png": "3168355d9dc02f2ffe17e0a897af981c990e6de1071af4c6b073172f034356d4"
+  },
+  "image_paths": [
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot04_frame00_idx0384.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/indoor_tender_moment/shot04_frame01_idx0400.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot00_frame00_idx0000.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot00_frame01_idx0014.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot00_frame02_idx0027.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot00_frame04_idx0054.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot00_frame05_idx0068.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot00_frame06_idx0081.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot00_frame07_idx0095.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot01_frame01_idx0110.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot01_frame02_idx0123.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot01_frame03_idx0137.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot01_frame04_idx0150.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot01_frame05_idx0164.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot01_frame07_idx0191.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot02_frame00_idx0192.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot02_frame01_idx0206.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot02_frame02_idx0219.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot02_frame03_idx0233.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot02_frame05_idx0260.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot02_frame06_idx0273.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot02_frame07_idx0287.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot03_frame00_idx0288.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot03_frame02_idx0315.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot03_frame03_idx0329.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/indoor_tender_moment/shot03_frame04_idx0342.png"
+  ],
+  "parse_attempts": [],
+  "parsed": {
+    "rationale": "These frames show the male subject in a clear, unoccluded medium shot, centered in the frame, wearing the same white button-down shirt and displaying the silver wedding band on his left ring finger. The background environment, including the window with sheer and taupe drapes and the wall-mounted lamp, is consistently visible and matches the described indoor tender moment scene. This content directly pins the subject identity and scene layout for continuity into shot 4.",
+    "selected_frame_indices": [
+      288,
+      315,
+      329,
+      342
+    ],
+    "skip": false
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are the LOCAL Qwen3-VL KV-anchor selector.\nTask: pick which PAST decoded frames get re-injected into the KV cache at the cut into shot 4,\nso the subject and scene identity stay consistent across the cut.\nScene: indoor_tender_moment\nAuthored invariant: The same continuous indoor tender moment scene persists across every shot, with the same central subject or objects, the same environment, and coherent event continuity despite legitimate camera, framing, and action changes.\nEntering shot 4 caption: The video is bathed in warm, golden-hour lighting, casting a soft, diffused glow that suggests late afternoon or early evening. The atmosphere is calm, intimate, and slightly introspective, with a muted color palette dominated by beige, cream, and soft whites, enhancing the serene, domestic feel. The style is realistic with a touch of cinematic elegance, employing medium shots and shallow depth of field to focus attention on the subject while gently blurring the background.\nThe scene is set indoors, likely in a modern hotel room or upscale bedroom. Behind the subject are floor-to-ceiling windows draped with sheer white curtains and heavier, taupe-colored drapes on the left. A contemporary wall-mounted lamp with a cylindrical white shade rests beside the window, subtly contributing to the ambient lighting. The environment is minimalistic and uncluttered, emphasizing tranquility.\n\nA single male character, appearing to be in his late 40s to early 50s, is the focal point. He has short, neatly styled brown hair, a clean-shaven face, and a composed, neutral expression. His ethnicity appears Caucasian. He wears a crisp, long-sleeved white button-down shirt, unbuttoned at the collar, revealing a sliver of chest. A simple silver wedding band is visible on his left ring finger. His posture is upright and deliberate.\n\nIn the first shot, he stands centered, buttoning his shirt with both hands, his gaze focused downward. As the video progresses, he begins to walk slowly toward the right side of the frame, maintaining his deliberate pace. His movement is smooth and unhurried, suggesting a quiet transition or preparation for an event. The camera remains stationary, capturing him in a medium shot that frames his torso and upper legs, allowing viewers to observe his actions clearly while keeping the environment contextually present. The depth of field remains shallow, keeping the subject in sharp focus while softly blurring the background curtains and lamp. The overall narrative conveys a sense of quiet readiness or introspection, possibly before a significant moment. There is no interaction with other characters or objects, reinforcing the solitary, contemplative mood. The lighting remains consistent, and no natural elements like wind or rain are present. The composition remains balanced, with the subject\u2019s movement creating subtle dynamism within the otherwise still frame.\n\nQUERY images (start of shot 4, what the transition must stay consistent with):\n- image Q0: decoded frame 384\n- image Q1: decoded frame 400\n\nCANDIDATE anchor images (past frames outside the live attention window):\n- image C0: decoded frame 0\n- image C1: decoded frame 14\n- image C2: decoded frame 27\n- image C3: decoded frame 54\n- image C4: decoded frame 68\n- image C5: decoded frame 81\n- image C6: decoded frame 95\n- image C7: decoded frame 110\n- image C8: decoded frame 123\n- image C9: decoded frame 137\n- image C10: decoded frame 150\n- image C11: decoded frame 164\n- image C12: decoded frame 191\n- image C13: decoded frame 192\n- image C14: decoded frame 206\n- image C15: decoded frame 219\n- image C16: decoded frame 233\n- image C17: decoded frame 260\n- image C18: decoded frame 273\n- image C19: decoded frame 287\n- image C20: decoded frame 288\n- image C21: decoded frame 315\n- image C22: decoded frame 329\n- image C23: decoded frame 342\n\nChoose up to 4 candidate frames whose CONTENT best pins the subject identity\n(face/clothing/markings) and scene layout for this specific cut.\nJudge by what the images show, not by position in the video: an early frame is NOT\nautomatically better. Prefer frames with a clear, unoccluded view of the subject as it\nshould appear entering this shot. Skip only if no candidate shows the relevant subject.\nReturn strict JSON: {\"selected_frame_indices\": [..], \"skip\": false, \"rationale\": \"content-based reason naming what the chosen frames show\"}\nValid frame indices: [0, 14, 27, 54, 68, 81, 95, 110, 123, 137, 150, 164, 191, 192, 206, 219, 233, 260, 273, 287, 288, 315, 329, 342]",
+            "type": "text"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "response_format": {
+      "json_schema": {
+        "name": "decision",
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "rationale": {
+              "type": "string"
+            },
+            "selected_frame_indices": {
+              "items": {
+                "type": "integer"
+              },
+              "type": "array"
+            },
+            "skip": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "selected_frame_indices",
+            "skip",
+            "rationale"
+          ],
+          "type": "object"
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"selected_frame_indices\": [288, 315, 329, 342],\n  \"skip\": false,\n  \"rationale\": \"These frames show the male subject in a clear, unoccluded medium shot, centered in the frame, wearing the same white button-down shirt and displaying the silver wedding band on his left ring finger. The background environment, including the window with sheer and taupe drapes and the wall-mounted lamp, is consistently visible and matches the described indoor tender moment scene. This content directly pins the subject identity and scene layout for continuity into shot 4.\"\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1782975531,
+    "id": "5063bd01a0854498b0de95981fb3b668",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 130,
+      "prompt_tokens": 24098,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 24228
+    }
+  },
+  "schema_enforced": true,
+  "wall_clock_seconds": 21.281197547912598
+}

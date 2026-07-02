@@ -1,0 +1,45 @@
+{
+  "resumed_optimizer_artifacts": true,
+  "runs": {
+    "both": {
+      "config": "videos/round18_bench_20260701/iter01/configs/both_missing.yaml",
+      "full_config": "videos/round18_bench_20260701/iter01/configs/both.yaml",
+      "gpu": 2,
+      "log_path": "docs/round18_bench_20260701/iter01/generation_logs/both.log",
+      "missing_scenes_rendered": [
+        "african_savanna",
+        "aquamarine_underwater",
+        "bearded_watchmaker_workshop",
+        "brown_bear_river",
+        "indoor_tender_moment",
+        "sandy_beach_driftwood"
+      ],
+      "returncode": 0,
+      "wall_clock_seconds": 3249.8752369880676
+    },
+    "kv_only": {
+      "config": "videos/round18_bench_20260701/iter01/configs/kv_only_missing.yaml",
+      "full_config": "videos/round18_bench_20260701/iter01/configs/kv_only.yaml",
+      "gpu": 1,
+      "log_path": "docs/round18_bench_20260701/iter01/generation_logs/kv_only.log",
+      "missing_scenes_rendered": [
+        "sandy_beach_driftwood",
+        "tattooed_noodle_chef",
+        "vintage_archival_scene",
+        "warm_indoor_dining",
+        "shimmering_puzzle_surface"
+      ],
+      "returncode": 0,
+      "wall_clock_seconds": 3321.215117454529
+    },
+    "prompt_only": {
+      "config": "videos/round18_bench_20260701/iter01/configs/prompt_only.yaml",
+      "gpu": null,
+      "log_path": "docs/round18_bench_20260701/iter01/generation_logs/prompt_only.log",
+      "returncode": 0,
+      "reused": true,
+      "wall_clock_seconds": 0.0
+    }
+  },
+  "skipped_generation": false
+}

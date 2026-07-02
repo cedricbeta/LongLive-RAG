@@ -1,0 +1,207 @@
+[
+  {
+    "fps": 24.0,
+    "frames": 480,
+    "labels": {
+      "baseline": "baseline=[REUSED]",
+      "both": "both",
+      "kv_only": "kv_only",
+      "prompt_only": "prompt_only"
+    },
+    "path": "videos/round18_bench_20260701/grid_comparisons/african_savanna_seed0_4up.mp4",
+    "scene": "african_savanna",
+    "shot_cut_boundaries": [
+      96,
+      192,
+      240,
+      288,
+      336,
+      384,
+      432
+    ]
+  },
+  {
+    "fps": 24.0,
+    "frames": 480,
+    "labels": {
+      "baseline": "baseline=[REUSED]",
+      "both": "both",
+      "kv_only": "kv_only",
+      "prompt_only": "prompt_only"
+    },
+    "path": "videos/round18_bench_20260701/grid_comparisons/aquamarine_underwater_seed0_4up.mp4",
+    "scene": "aquamarine_underwater",
+    "shot_cut_boundaries": [
+      96,
+      192,
+      240,
+      288,
+      336,
+      384,
+      432
+    ]
+  },
+  {
+    "fps": 24.0,
+    "frames": 480,
+    "labels": {
+      "baseline": "baseline=[REUSED]",
+      "both": "both",
+      "kv_only": "kv_only",
+      "prompt_only": "prompt_only"
+    },
+    "path": "videos/round18_bench_20260701/grid_comparisons/bearded_watchmaker_workshop_seed0_4up.mp4",
+    "scene": "bearded_watchmaker_workshop",
+    "shot_cut_boundaries": [
+      96,
+      192,
+      240,
+      288,
+      336,
+      384,
+      432
+    ]
+  },
+  {
+    "fps": 24.0,
+    "frames": 480,
+    "labels": {
+      "baseline": "baseline=[REUSED]",
+      "both": "both",
+      "kv_only": "kv_only",
+      "prompt_only": "prompt_only"
+    },
+    "path": "videos/round18_bench_20260701/grid_comparisons/brown_bear_river_seed0_4up.mp4",
+    "scene": "brown_bear_river",
+    "shot_cut_boundaries": [
+      96,
+      192,
+      240,
+      288,
+      336,
+      384,
+      432
+    ]
+  },
+  {
+    "fps": 24.0,
+    "frames": 480,
+    "labels": {
+      "baseline": "baseline=[REUSED]",
+      "both": "both",
+      "kv_only": "kv_only",
+      "prompt_only": "prompt_only"
+    },
+    "path": "videos/round18_bench_20260701/grid_comparisons/indoor_tender_moment_seed0_4up.mp4",
+    "scene": "indoor_tender_moment",
+    "shot_cut_boundaries": [
+      96,
+      192,
+      288,
+      384,
+      432
+    ]
+  },
+  {
+    "fps": 24.0,
+    "frames": 480,
+    "labels": {
+      "baseline": "baseline=[REUSED]",
+      "both": "both",
+      "kv_only": "kv_only",
+      "prompt_only": "prompt_only"
+    },
+    "path": "videos/round18_bench_20260701/grid_comparisons/sandy_beach_driftwood_seed0_4up.mp4",
+    "scene": "sandy_beach_driftwood",
+    "shot_cut_boundaries": [
+      96,
+      192,
+      240,
+      288,
+      336,
+      384,
+      432
+    ]
+  },
+  {
+    "fps": 24.0,
+    "frames": 480,
+    "labels": {
+      "baseline": "baseline=[REUSED]",
+      "both": "both",
+      "kv_only": "kv_only",
+      "prompt_only": "prompt_only"
+    },
+    "path": "videos/round18_bench_20260701/grid_comparisons/tattooed_noodle_chef_seed0_4up.mp4",
+    "scene": "tattooed_noodle_chef",
+    "shot_cut_boundaries": [
+      96,
+      192,
+      240,
+      288,
+      336,
+      384,
+      432
+    ]
+  },
+  {
+    "fps": 24.0,
+    "frames": 480,
+    "labels": {
+      "baseline": "baseline=[REUSED]",
+      "both": "both",
+      "kv_only": "kv_only",
+      "prompt_only": "prompt_only"
+    },
+    "path": "videos/round18_bench_20260701/grid_comparisons/vintage_archival_scene_seed0_4up.mp4",
+    "scene": "vintage_archival_scene",
+    "shot_cut_boundaries": [
+      96,
+      192,
+      288,
+      336,
+      384,
+      432
+    ]
+  },
+  {
+    "fps": 24.0,
+    "frames": 480,
+    "labels": {
+      "baseline": "baseline=[REUSED]",
+      "both": "both",
+      "kv_only": "kv_only",
+      "prompt_only": "prompt_only"
+    },
+    "path": "videos/round18_bench_20260701/grid_comparisons/warm_indoor_dining_seed0_4up.mp4",
+    "scene": "warm_indoor_dining",
+    "shot_cut_boundaries": [
+      96,
+      192,
+      240,
+      288,
+      336,
+      384,
+      432
+    ]
+  },
+  {
+    "fps": 24.0,
+    "frames": 480,
+    "labels": {
+      "baseline": "baseline=[REUSED]",
+      "both": "both",
+      "kv_only": "kv_only",
+      "prompt_only": "prompt_only"
+    },
+    "path": "videos/round18_bench_20260701/grid_comparisons/shimmering_puzzle_surface_seed0_4up.mp4",
+    "scene": "shimmering_puzzle_surface",
+    "shot_cut_boundaries": [
+      96,
+      192,
+      288,
+      384,
+      432
+    ]
+  }
+]

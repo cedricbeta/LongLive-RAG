@@ -1,0 +1,147 @@
+{
+  "cache_fingerprint": "16f1bbf27a09409f5407dd9f38c13b3e799d05bd0890e1c520e165e09f288529",
+  "image_hashes": {
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot00_frame00_idx0000.png": "ff3204d6fbbd6a2613627662a49c28a80fd2a29da058c22812f62a7c4ec49098",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot00_frame01_idx0014.png": "58a998770c280440069ee29ec77e60ca7235bb7017bca51b3a76bcb27feb4680",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot00_frame02_idx0027.png": "b08658e203daad361bc3f6abbd4148b96920d0e2b885d398110d588c549793bc",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot00_frame03_idx0041.png": "dd7b2004821b9e01db4ca914618cf814307cf2343b85b1d7cece36452d8748cd",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot00_frame04_idx0054.png": "806c30461ba12a90f87f73ee54467de4283e81678f2bb3c58b8860a27dac41d6",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot01_frame00_idx0096.png": "59bd927e9772c8e54eb8941bbe45080707968e85fd9d0a1382f389efb85fc213",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot01_frame01_idx0128.png": "6e7060a20ee7bae76b378169093f681d3a0546b583f8eb940b399e32b4b80601"
+  },
+  "image_paths": [
+    "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot01_frame00_idx0096.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/aquamarine_underwater/shot01_frame01_idx0128.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot00_frame00_idx0000.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot00_frame01_idx0014.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot00_frame02_idx0027.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot00_frame03_idx0041.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/aquamarine_underwater/shot00_frame04_idx0054.png"
+  ],
+  "parse_attempts": [],
+  "parsed": {
+    "rationale": "All candidate frames (0, 14, 27, 41, 54) depict a pufferfish, not the dolphins described as the central subjects. The scene requires continuity of the two dolphins, and none of the candidate frames show them clearly or unoccluded. Therefore, no suitable anchor frames are available from the candidates to maintain subject and scene identity.",
+    "selected_frame_indices": [],
+    "skip": true
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are the LOCAL Qwen3-VL KV-anchor selector.\nTask: pick which PAST decoded frames get re-injected into the KV cache at the cut into shot 1,\nso the subject and scene identity stay consistent across the cut.\nScene: aquamarine_underwater\nAuthored invariant: The same continuous aquamarine underwater scene persists across every shot, with the same central subject or objects, the same environment, and coherent event continuity despite legitimate camera, framing, and action changes.\nEntering shot 1 caption: The video features a cool, deep blue underwater color tone, with natural daylight filtering through the water\u2019s surface, creating a soft, diffused illumination that enhances the serene and immersive atmosphere. The lighting subtly shifts as the camera moves, casting gentle highlights on the dolphins\u2019 sleek bodies and creating a tranquil, almost ethereal glow. The style is realistic and naturalistic, capturing the fluid motion of marine life with high clarity and minimal visual distortion.\nThe environment is entirely underwater, set in the open ocean, characterized by clear, azure waters that stretch into the horizon. The scene is bathed in daylight, suggesting midday or early afternoon, with no visible clouds or weather disturbances. The water\u2019s surface is occasionally visible at the top of the frame, shimmering with ripples and sunlight reflections. No artificial structures or urban elements are present\u2014only the natural marine setting with occasional bubbles and particles suspended in the water.\n\nTwo dolphins are the central characters. The first dolphin appears in frame 0:00, viewed from below as it swims upward with its mouth slightly open, revealing a small fish or squid it has caught. The second dolphin enters the frame at 0:03, swimming alongside the first, its streamlined body gliding effortlessly through the water. Both are adult dolphins, with smooth grayish-blue skin, slightly darker on their backs and lighter on their bellies. Their sleek, elongated bodies are accentuated by their dorsal fins and flippers, which propel them with grace. Their expressions are neutral, focused on their surroundings and prey.\n\nThe key objects are the dolphins themselves, whose bodies are made of smooth, wet skin, with streamlined shapes and dynamic motion. Their fins and tails create fluid trails of bubbles and water displacement as they move. The first dolphin is initially in the foreground, swimming upward from the lower frame, while the second dolphin enters from the left and swims diagonally across the frame, eventually passing the first. The camera follows their movements closely, suggesting a handheld or possibly mounted underwater camera. The camera angle shifts slightly from a low-angle shot at 0:00 to a side profile at 0:05, capturing both dolphins\u2019 synchronized movements.\n\nThe main movement forms are fluid and continuous, with the dolphins gliding in a coordinated manner, occasionally turning or adjusting direction. Their motion is smooth and purposeful, with no abrupt changes. The water\u2019s gentle currents and light refraction add to the naturalistic feel, enhancing the realism of the scene. The video\u2019s narrative is observational and documentary, focusing on the dolphins\u2019 natural behavior and interaction with their environment, with no human or artificial interference. The shot composition is primarily medium to close-up, with shallow depth of field that keeps the dolphins sharply in focus while softly blurring the background water. The camera\u2019s movement mimics the dolphins\u2019 motion, creating an immersive experience for the viewer.\n\nQUERY images (start of shot 1, what the transition must stay consistent with):\n- image Q0: decoded frame 96\n- image Q1: decoded frame 128\n\nCANDIDATE anchor images (past frames outside the live attention window):\n- image C0: decoded frame 0\n- image C1: decoded frame 14\n- image C2: decoded frame 27\n- image C3: decoded frame 41\n- image C4: decoded frame 54\n\nChoose up to 4 candidate frames whose CONTENT best pins the subject identity\n(face/clothing/markings) and scene layout for this specific cut.\nJudge by what the images show, not by position in the video: an early frame is NOT\nautomatically better. Prefer frames with a clear, unoccluded view of the subject as it\nshould appear entering this shot. Skip only if no candidate shows the relevant subject.\nReturn strict JSON: {\"selected_frame_indices\": [..], \"skip\": false, \"rationale\": \"content-based reason naming what the chosen frames show\"}\nValid frame indices: [0, 14, 27, 41, 54]",
+            "type": "text"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "response_format": {
+      "json_schema": {
+        "name": "decision",
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "rationale": {
+              "type": "string"
+            },
+            "selected_frame_indices": {
+              "items": {
+                "type": "integer"
+              },
+              "type": "array"
+            },
+            "skip": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "selected_frame_indices",
+            "skip",
+            "rationale"
+          ],
+          "type": "object"
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"selected_frame_indices\": [],\n  \"skip\": true,\n  \"rationale\": \"All candidate frames (0, 14, 27, 41, 54) depict a pufferfish, not the dolphins described as the central subjects. The scene requires continuity of the two dolphins, and none of the candidate frames show them clearly or unoccluded. Therefore, no suitable anchor frames are available from the candidates to maintain subject and scene identity.\"\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1782974938,
+    "id": "19923bb0655247f391e2f8dfc6af5ed1",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 100,
+      "prompt_tokens": 7116,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 7216
+    }
+  },
+  "schema_enforced": true,
+  "wall_clock_seconds": 6.050595998764038
+}

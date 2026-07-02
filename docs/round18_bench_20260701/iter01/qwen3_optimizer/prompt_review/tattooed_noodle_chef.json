@@ -1,0 +1,121 @@
+{
+  "cache_fingerprint": "99f774ed92e2268d0f6bee1c3bc38b79434a11322ef8cec3caff8a0497ebdf08",
+  "image_hashes": {},
+  "image_paths": [],
+  "parse_attempts": [],
+  "parsed": {
+    "verdicts": [
+      {
+        "index": 0,
+        "reason": "This addition reinforces and sharpens the authored invariant that the red bandana is tied around the neck. It does not contradict any authored detail and adds clarity without introducing drift.",
+        "target": "global",
+        "text": "The red bandana is consistently tied around the chef's neck, never worn as a headband.",
+        "verdict": "keep"
+      }
+    ]
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are an independent REVIEWER of proposed prompt edits (not their author).\nThe authored invariants below are the ground truth of what the video MUST show.\nScene: tattooed_noodle_chef\nAuthored global caption: One continuous night-market noodle stall multishot scene. The same central subject, setting, material identity, lighting family, and event continuity should carry across all camera cuts. Source caption evidence: A chef with a shaved head, a black dragon tattoo covering his right forearm, a small silver hoop earring in his left ear, and a red bandana tied around his neck cooks noodles in a steel wok at a steamy night-market stall lit by hanging red lanterns, wearing a white T-shirt under a navy apron.\nAuthored invariant: The same chef persists across every shot: shaved head, black dragon tattoo on the right forearm, small silver hoop earring in the left ear, red bandana around the neck, white T-shirt under a navy apron. The same night-market noodle stall persists, with its steel wok station, rising steam, hanging red lanterns, and stainless counter, despite legitimate camera, framing, and action changes.\n\nProposed additions:\n- [global #0] The red bandana is consistently tied around the chef's neck, never worn as a headband.\n- [per_shot #0 shot=5] The red bandana remains tied around the chef's neck, not as a headband.\n\nFor EACH addition return a verdict:\n- keep: consistent with the authored invariants (may sharpen them).\n- rewrite: contradicts an authored invariant (e.g. different clothing/color/object than\n  authored) or drifts toward what a flawed render showed; provide `text` restating the\n  AUTHORED invariant for that aspect instead.\n- drop: unrelated to invariants, collapses shot diversity, or is unsalvageable.\nFor keep/drop verdicts set `text` to the original addition text unchanged.\nReturn strict JSON: {\"verdicts\": [{\"index\": 0, \"target\": \"global\"|\"per_shot\",\n\"verdict\": \"keep\"|\"drop\"|\"rewrite\", \"text\": \"...\", \"reason\": \"...\"}]}\nCover every addition exactly once.",
+            "type": "text"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "response_format": {
+      "json_schema": {
+        "name": "decision",
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "verdicts": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "index": {
+                    "type": "integer"
+                  },
+                  "reason": {
+                    "type": "string"
+                  },
+                  "target": {
+                    "enum": [
+                      "global",
+                      "per_shot"
+                    ],
+                    "type": "string"
+                  },
+                  "text": {
+                    "type": "string"
+                  },
+                  "verdict": {
+                    "enum": [
+                      "keep",
+                      "drop",
+                      "rewrite"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "index",
+                  "target",
+                  "verdict",
+                  "text",
+                  "reason"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "verdicts"
+          ],
+          "type": "object"
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"verdicts\": [\n    {\n      \"index\": 0,\n      \"target\": \"global\",\n      \"verdict\": \"keep\",\n      \"text\": \"The red bandana is consistently tied around the chef's neck, never worn as a headband.\",\n      \"reason\": \"This addition reinforces and sharpens the authored invariant that the red bandana is tied around the neck. It does not contradict any authored detail and adds clarity without introducing drift.\"\n    }\n  ]\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1782975779,
+    "id": "4dbf1bbb29294a399ff864289b3c652f",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 102,
+      "prompt_tokens": 466,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 568
+    }
+  },
+  "schema_enforced": true,
+  "wall_clock_seconds": 4.074283599853516
+}

@@ -1,0 +1,170 @@
+{
+  "cache_fingerprint": "f411332f1c0da67943cc4deaaf550710fdfc87df5f271f4ce6e6135cc6a37751",
+  "image_hashes": {},
+  "image_paths": [],
+  "parse_attempts": [],
+  "parsed": {
+    "verdicts": [
+      {
+        "index": 0,
+        "reason": "Consistent with authored invariant: same central subject, setting, material identity, lighting family, and event continuity across all camera cuts. Adds specific material details without contradicting or collapsing shot diversity.",
+        "target": "global",
+        "text": "The scene remains a continuous warm indoor dining setting with the same dark-stained wooden table, blue-and-white ceramic tableware, and orange-handled utensils throughout all shots.",
+        "verdict": "keep"
+      },
+      {
+        "index": 1,
+        "reason": "Consistent with authored invariant: same environment and central subject. Specific utensil types (scissors and tongs) are plausible and do not contradict the general description of orange-handled utensils.",
+        "target": "per_shot",
+        "text": "The scene is set at a dark-stained wooden table with blue-and-white ceramic bowls and plates, and orange-handled scissors and tongs visible on the right side.",
+        "verdict": "keep"
+      },
+      {
+        "index": 2,
+        "reason": "Consistent with authored invariant: same setting and continuity. Background placement of utensils is a legitimate framing variation.",
+        "target": "per_shot",
+        "text": "The scene remains indoors at the same dark-stained wooden table, with blue-and-white ceramic dishes and orange-handled utensils visible in the background.",
+        "verdict": "keep"
+      },
+      {
+        "index": 3,
+        "reason": "Consistent with authored invariant: same environment and continuity. Background placement is a legitimate camera framing change.",
+        "target": "per_shot",
+        "text": "The scene is set at the same dark-stained wooden table with blue-and-white ceramic bowls and orange-handled utensils, visible in the background.",
+        "verdict": "keep"
+      },
+      {
+        "index": 4,
+        "reason": "Consistent with authored invariant: same setting and continuity. Right-side placement is a legitimate framing variation.",
+        "target": "per_shot",
+        "text": "The scene remains indoors at the same dark-stained wooden table with blue-and-white ceramic tableware and orange-handled utensils visible on the right side.",
+        "verdict": "keep"
+      },
+      {
+        "index": 5,
+        "reason": "Consistent with authored invariant: same environment and continuity. Background placement is a legitimate framing variation.",
+        "target": "per_shot",
+        "text": "The scene is set at the same dark-stained wooden table with blue-and-white ceramic bowls and orange-handled utensils visible in the background.",
+        "verdict": "keep"
+      },
+      {
+        "index": 6,
+        "reason": "Consistent with authored invariant: same setting and continuity. Specific dish type (plates) and right-side placement are plausible variations within the same material identity.",
+        "target": "per_shot",
+        "text": "The scene is set at the same dark-stained wooden table with blue-and-white ceramic plates and orange-handled utensils visible on the right side.",
+        "verdict": "keep"
+      },
+      {
+        "index": 7,
+        "reason": "Consistent with authored invariant: same environment and continuity. Background placement is a legitimate framing variation.",
+        "target": "per_shot",
+        "text": "The scene remains indoors at the same dark-stained wooden table with blue-and-white ceramic bowls and orange-handled utensils visible in the background.",
+        "verdict": "keep"
+      }
+    ]
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are an independent REVIEWER of proposed prompt edits (not their author).\nThe authored invariants below are the ground truth of what the video MUST show.\nScene: warm_indoor_dining\nAuthored global caption: One continuous warm indoor dining multishot scene. The same central subject, setting, material identity, lighting family, and event continuity should carry across all camera cuts. Source caption evidence: The video presents a warm, inviting indoor dining scene, bathed in soft, ambient lighting that enhances the rich, earthy tones of the wooden table and ceramic dishes. The color palette is dominated by deep browns, cre...\nAuthored invariant: The same continuous warm indoor dining scene persists across every shot, with the same central subject or objects, the same environment, and coherent event continuity despite legitimate camera, framing, and action changes.\n\nProposed additions:\n- [global #0] The scene remains a continuous warm indoor dining setting with the same dark-stained wooden table, blue-and-white ceramic tableware, and orange-handled utensils throughout all shots.\n- [per_shot #0 shot=0] The scene is set at a dark-stained wooden table with blue-and-white ceramic bowls and plates, and orange-handled scissors and tongs visible on the right side.\n- [per_shot #1 shot=1] The scene remains indoors at the same dark-stained wooden table, with blue-and-white ceramic dishes and orange-handled utensils visible in the background.\n- [per_shot #2 shot=2] The scene is set at the same dark-stained wooden table with blue-and-white ceramic bowls and orange-handled utensils, visible in the background.\n- [per_shot #3 shot=3] The scene remains indoors at the same dark-stained wooden table with blue-and-white ceramic plates and orange-handled utensils visible in the background.\n- [per_shot #4 shot=4] The scene is set at the same dark-stained wooden table with blue-and-white ceramic tableware and orange-handled utensils visible on the right side.\n- [per_shot #5 shot=5] The scene remains indoors at the same dark-stained wooden table with blue-and-white ceramic bowls and orange-handled utensils visible in the background.\n- [per_shot #6 shot=6] The scene is set at the same dark-stained wooden table with blue-and-white ceramic plates and orange-handled utensils visible on the right side.\n- [per_shot #7 shot=7] The scene remains indoors at the same dark-stained wooden table with blue-and-white ceramic bowls and orange-handled utensils visible in the background.\n\nFor EACH addition return a verdict:\n- keep: consistent with the authored invariants (may sharpen them).\n- rewrite: contradicts an authored invariant (e.g. different clothing/color/object than\n  authored) or drifts toward what a flawed render showed; provide `text` restating the\n  AUTHORED invariant for that aspect instead.\n- drop: unrelated to invariants, collapses shot diversity, or is unsalvageable.\nFor keep/drop verdicts set `text` to the original addition text unchanged.\nReturn strict JSON: {\"verdicts\": [{\"index\": 0, \"target\": \"global\"|\"per_shot\",\n\"verdict\": \"keep\"|\"drop\"|\"rewrite\", \"text\": \"...\", \"reason\": \"...\"}]}\nCover every addition exactly once.",
+            "type": "text"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "response_format": {
+      "json_schema": {
+        "name": "decision",
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "verdicts": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "index": {
+                    "type": "integer"
+                  },
+                  "reason": {
+                    "type": "string"
+                  },
+                  "target": {
+                    "enum": [
+                      "global",
+                      "per_shot"
+                    ],
+                    "type": "string"
+                  },
+                  "text": {
+                    "type": "string"
+                  },
+                  "verdict": {
+                    "enum": [
+                      "keep",
+                      "drop",
+                      "rewrite"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "index",
+                  "target",
+                  "verdict",
+                  "text",
+                  "reason"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "verdicts"
+          ],
+          "type": "object"
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"verdicts\": [\n    {\n      \"index\": 0,\n      \"target\": \"global\",\n      \"verdict\": \"keep\",\n      \"text\": \"The scene remains a continuous warm indoor dining setting with the same dark-stained wooden table, blue-and-white ceramic tableware, and orange-handled utensils throughout all shots.\",\n      \"reason\": \"Consistent with authored invariant: same central subject, setting, material identity, lighting family, and event continuity across all camera cuts. Adds specific material details without contradicting or collapsing shot diversity.\"\n    },\n    {\n      \"index\": 1,\n      \"target\": \"per_shot\",\n      \"verdict\": \"keep\",\n      \"text\": \"The scene is set at a dark-stained wooden table with blue-and-white ceramic bowls and plates, and orange-handled scissors and tongs visible on the right side.\",\n      \"reason\": \"Consistent with authored invariant: same environment and central subject. Specific utensil types (scissors and tongs) are plausible and do not contradict the general description of orange-handled utensils.\"\n    },\n    {\n      \"index\": 2,\n      \"target\": \"per_shot\",\n      \"verdict\": \"keep\",\n      \"text\": \"The scene remains indoors at the same dark-stained wooden table, with blue-and-white ceramic dishes and orange-handled utensils visible in the background.\",\n      \"reason\": \"Consistent with authored invariant: same setting and continuity. Background placement of utensils is a legitimate framing variation.\"\n    },\n    {\n      \"index\": 3,\n      \"target\": \"per_shot\",\n      \"verdict\": \"keep\",\n      \"text\": \"The scene is set at the same dark-stained wooden table with blue-and-white ceramic bowls and orange-handled utensils, visible in the background.\",\n      \"reason\": \"Consistent with authored invariant: same environment and continuity. Background placement is a legitimate camera framing change.\"\n    },\n    {\n      \"index\": 4,\n      \"target\": \"per_shot\",\n      \"verdict\": \"keep\",\n      \"text\": \"The scene remains indoors at the same dark-stained wooden table with blue-and-white ceramic tableware and orange-handled utensils visible on the right side.\",\n      \"reason\": \"Consistent with authored invariant: same setting and continuity. Right-side placement is a legitimate framing variation.\"\n    },\n    {\n      \"index\": 5,\n      \"target\": \"per_shot\",\n      \"verdict\": \"keep\",\n      \"text\": \"The scene is set at the same dark-stained wooden table with blue-and-white ceramic bowls and orange-handled utensils visible in the background.\",\n      \"reason\": \"Consistent with authored invariant: same environment and continuity. Background placement is a legitimate framing variation.\"\n    },\n    {\n      \"index\": 6,\n      \"target\": \"per_shot\",\n      \"verdict\": \"keep\",\n      \"text\": \"The scene is set at the same dark-stained wooden table with blue-and-white ceramic plates and orange-handled utensils visible on the right side.\",\n      \"reason\": \"Consistent with authored invariant: same setting and continuity. Specific dish type (plates) and right-side placement are plausible variations within the same material identity.\"\n    },\n    {\n      \"index\": 7,\n      \"target\": \"per_shot\",\n      \"verdict\": \"keep\",\n      \"text\": \"The scene remains indoors at the same dark-stained wooden table with blue-and-white ceramic bowls and orange-handled utensils visible in the background.\",\n      \"reason\": \"Consistent with authored invariant: same environment and continuity. Background placement is a legitimate framing variation.\"\n    }\n  ]\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1782976152,
+    "id": "ca95971d3c8a4d7e99349e759c18c0b8",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 762,
+      "prompt_tokens": 705,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 1467
+    }
+  },
+  "schema_enforced": true,
+  "wall_clock_seconds": 14.895662546157837
+}

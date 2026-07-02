@@ -1,0 +1,215 @@
+{
+  "cache_fingerprint": "3005ad7adc80ce28f89d937b1558488686f154a9c3a5d305462929b71d2a9720",
+  "image_hashes": {
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot00_frame00_idx0000.png": "6f5285f5cdbb0d5e4efc44a35010c8bdd777b162f237f9c6a12598b4d3b519f4",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot00_frame01_idx0014.png": "1d192d2277d0b67f9338383220e80853adc08fbf4f780a49790c5727eaad3fb0",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot00_frame02_idx0027.png": "15a6c2a793311989a7dff930471f3119fbea9ec75b091276d50ac14718fc0ba9",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot00_frame03_idx0041.png": "9e2d7a16062652ff14f701f919cca4d692226514aba735169c5e8b1f585fb14d",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot00_frame04_idx0054.png": "5033eee2b6576a22989130787cd029fbd417de24948efe4c7f49da62e54a13bd",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot00_frame05_idx0068.png": "55d1eb7ff993acba1eeee53229a9a6d9444be586e18c33a89158ddb5c1a50496",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot00_frame06_idx0081.png": "c537d19da62b5cfd33efd3b4edd0ed43d3b40015953ee72f02ac762b9d081d07",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot00_frame07_idx0095.png": "e0a3f331f0174d2a89e60cb71aafaf4e22dbf7a10ec1d5e02d4959de9054a88a",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot01_frame00_idx0096.png": "9304cf0dc33d6d358fe0c5dcdb7e265ece0470f3a1abde8961c33dcd4a90e15d",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot01_frame01_idx0110.png": "e617a080317836583369b1c7bb296636ef9d190344af9d8c0e334da85d081f95",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot01_frame02_idx0123.png": "53e2992cc75792103745cb3c73432ce3244ace9a91a9cb5727554ab26407732d",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot01_frame03_idx0137.png": "1b1fe23468bf79d7243a012cb1d4f00b60ca4d773b594e448b28cfb5f4079a61",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot01_frame04_idx0150.png": "786de655da7ffded671cffdb89db12056110b0c0b6233fe0fccd222e11ec895a",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot02_frame00_idx0192.png": "5636fa9997cb6b27752df54090eedf7ea95fd781f2dfecf0258e21d627d704b4",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot02_frame01_idx0208.png": "d2d47e5c4be02101a8bf0a982dc3cbaa568ff020a456dd6013ad30cffcff0d05"
+  },
+  "image_paths": [
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot02_frame00_idx0192.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot02_frame01_idx0208.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot00_frame00_idx0000.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot00_frame01_idx0014.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot00_frame02_idx0027.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot00_frame03_idx0041.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot00_frame04_idx0054.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot00_frame05_idx0068.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot00_frame06_idx0081.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot00_frame07_idx0095.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot01_frame00_idx0096.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot01_frame01_idx0110.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot01_frame02_idx0123.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot01_frame03_idx0137.png",
+    "docs/round18_bench_20260701/iter01/kv_candidate_frames/sandy_beach_driftwood/shot01_frame04_idx0150.png"
+  ],
+  "parse_attempts": [],
+  "parsed": {
+    "rationale": "These frames show the subject (a person in a bikini and wide-brimmed hat) interacting with the fish on the driftwood, matching the visual identity and scene layout described in the shot 2 caption. Frame 123 shows the person bending over the fish, frame 137 shows the person's hands handling the fish, and frame 150 shows the person's face and hair visible as they lean in, all confirming the subject's appearance and the beach environment.",
+    "selected_frame_indices": [
+      123,
+      137,
+      150
+    ],
+    "skip": false
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are the LOCAL Qwen3-VL KV-anchor selector.\nTask: pick which PAST decoded frames get re-injected into the KV cache at the cut into shot 2,\nso the subject and scene identity stay consistent across the cut.\nScene: sandy_beach_driftwood\nAuthored invariant: The same continuous sandy beach driftwood scene persists across every shot, with the same central subject or objects, the same environment, and coherent event continuity despite legitimate camera, framing, and action changes.\nEntering shot 2 caption: The video presents a vivid, sunlit outdoor scene on a sandy beach under clear skies, with natural daylight casting sharp, high-contrast shadows. The color tone is warm and saturated, emphasizing the rich reds and oranges of the fish\u2019s scales, contrasted with the pale sand and the person\u2019s dark clothing. The atmosphere is casual and immersive, evoking the raw, tactile experience of beachside fishing or seafood preparation. The style is documentary-like, with close-up, handheld framing that enhances realism and intimacy.\nThe scene unfolds on a sun-drenched beach, likely midday, with visible sand grains and scattered seawater droplets. A concrete slab or low pier edge is partially visible, where the fish rests. The background includes blurred beach elements\u2014sand, distant water, and faint shadows of equipment\u2014suggesting an active, possibly recreational or commercial fishing environment.\n\nOne person is featured prominently, their hands actively handling a large, freshly caught fish. Though their face is not visible, their arms and hands are clearly visible, suggesting an adult of indeterminate gender, likely mid-30s to 50s. Their hands are calloused, with visible dirt and water, indicating manual labor. They wear dark shorts and a black top, and a silver ring adorns one finger. Their posture is bent over the fish, leaning into the task with focused intent.\n\nThe fish is the central object\u2014large, with reddish-orange scales speckled with white, a yellowish dorsal fin, and a slightly open mouth revealing pinkish flesh. Its body is broad and textured, lying horizontally on the concrete surface. The person\u2019s hands grip the fish\u2019s head and side, rotating it slightly to display its features. The fish\u2019s gills and fins glisten with moisture, and its scales catch the sunlight, creating a shimmering effect.\n\nThe camera remains close-up throughout, focusing sharply on the fish and the person\u2019s hands, creating a shallow depth of field that blurs the background. The shot is slightly tilted downward, capturing the action from a low angle that emphasizes the fish\u2019s size and the person\u2019s interaction with it. There is minimal camera movement\u2014mostly slight handheld adjustments\u2014to maintain focus on the details of the fish\u2019s texture and the person\u2019s handling.\n\nThe motion is slow and deliberate: the hands shift the fish\u2019s orientation, revealing its underside and fins, while the person\u2019s fingers press gently, as if inspecting or preparing it. The fish remains mostly static, but its gills and fins subtly ripple with the touch. No wind or other natural elements are visible, but the glistening scales and water droplets suggest recent contact with seawater.\n\nThe narrative is observational and tactile, focusing on the sensory experience of handling a catch. The shot composition and lighting draw attention to the fish\u2019s vibrant colors and the person\u2019s skilled, methodical actions, evoking themes of nature, labor, and the immediacy of the moment. The framing is intimate, inviting viewers to engage with the details of the fish\u2019s anatomy and the human interaction with it. The overall tone is grounded and authentic, capturing a fleeting, yet significant, moment in the rhythm of coastal life.\n\nQUERY images (start of shot 2, what the transition must stay consistent with):\n- image Q0: decoded frame 192\n- image Q1: decoded frame 208\n\nCANDIDATE anchor images (past frames outside the live attention window):\n- image C0: decoded frame 0\n- image C1: decoded frame 14\n- image C2: decoded frame 27\n- image C3: decoded frame 41\n- image C4: decoded frame 54\n- image C5: decoded frame 68\n- image C6: decoded frame 81\n- image C7: decoded frame 95\n- image C8: decoded frame 96\n- image C9: decoded frame 110\n- image C10: decoded frame 123\n- image C11: decoded frame 137\n- image C12: decoded frame 150\n\nChoose up to 4 candidate frames whose CONTENT best pins the subject identity\n(face/clothing/markings) and scene layout for this specific cut.\nJudge by what the images show, not by position in the video: an early frame is NOT\nautomatically better. Prefer frames with a clear, unoccluded view of the subject as it\nshould appear entering this shot. Skip only if no candidate shows the relevant subject.\nReturn strict JSON: {\"selected_frame_indices\": [..], \"skip\": false, \"rationale\": \"content-based reason naming what the chosen frames show\"}\nValid frame indices: [0, 14, 27, 41, 54, 68, 81, 95, 96, 110, 123, 137, 150]",
+            "type": "text"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "response_format": {
+      "json_schema": {
+        "name": "decision",
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "rationale": {
+              "type": "string"
+            },
+            "selected_frame_indices": {
+              "items": {
+                "type": "integer"
+              },
+              "type": "array"
+            },
+            "skip": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "selected_frame_indices",
+            "skip",
+            "rationale"
+          ],
+          "type": "object"
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"selected_frame_indices\": [123, 137, 150],\n  \"skip\": false,\n  \"rationale\": \"These frames show the subject (a person in a bikini and wide-brimmed hat) interacting with the fish on the driftwood, matching the visual identity and scene layout described in the shot 2 caption. Frame 123 shows the person bending over the fish, frame 137 shows the person's hands handling the fish, and frame 150 shows the person's face and hair visible as they lean in, all confirming the subject's appearance and the beach environment.\"\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1782975622,
+    "id": "d248e85528d1469bba6b509e249d110a",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 135,
+      "prompt_tokens": 14366,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 14501
+    }
+  },
+  "schema_enforced": true,
+  "wall_clock_seconds": 12.113610744476318
+}

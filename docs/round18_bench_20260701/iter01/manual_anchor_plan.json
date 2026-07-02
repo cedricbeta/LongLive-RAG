@@ -1,0 +1,818 @@
+{
+  "aggregation": "per-scene boundary plans; legacy `boundaries` union is fallback only",
+  "anchor_cap": 4,
+  "boundaries": {
+    "1": [
+      {
+        "frame_index": 0
+      },
+      {
+        "frame_index": 14
+      },
+      {
+        "frame_index": 27
+      },
+      {
+        "frame_index": 41
+      }
+    ],
+    "2": [
+      {
+        "frame_index": 110
+      },
+      {
+        "frame_index": 123
+      },
+      {
+        "frame_index": 137
+      },
+      {
+        "frame_index": 150
+      }
+    ],
+    "3": [
+      {
+        "frame_index": 0
+      },
+      {
+        "frame_index": 192
+      },
+      {
+        "frame_index": 199
+      },
+      {
+        "frame_index": 205
+      }
+    ],
+    "4": [
+      {
+        "frame_index": 0
+      },
+      {
+        "frame_index": 14
+      },
+      {
+        "frame_index": 27
+      },
+      {
+        "frame_index": 41
+      }
+    ],
+    "5": [
+      {
+        "frame_index": 192
+      },
+      {
+        "frame_index": 205
+      },
+      {
+        "frame_index": 212
+      },
+      {
+        "frame_index": 219
+      }
+    ],
+    "6": [
+      {
+        "frame_index": 192
+      },
+      {
+        "frame_index": 205
+      },
+      {
+        "frame_index": 219
+      },
+      {
+        "frame_index": 232
+      }
+    ],
+    "7": [
+      {
+        "frame_index": 137
+      },
+      {
+        "frame_index": 280
+      },
+      {
+        "frame_index": 335
+      },
+      {
+        "frame_index": 343
+      }
+    ]
+  },
+  "scenes": {
+    "african_savanna": {
+      "1": [
+        {
+          "frame_index": 27
+        },
+        {
+          "frame_index": 41
+        },
+        {
+          "frame_index": 54
+        }
+      ],
+      "2": [
+        {
+          "frame_index": 137
+        },
+        {
+          "frame_index": 150
+        }
+      ],
+      "3": [
+        {
+          "frame_index": 199
+        },
+        {
+          "frame_index": 205
+        }
+      ],
+      "4": [
+        {
+          "frame_index": 247
+        },
+        {
+          "frame_index": 253
+        }
+      ],
+      "5": [
+        {
+          "frame_index": 240
+        },
+        {
+          "frame_index": 247
+        },
+        {
+          "frame_index": 260
+        },
+        {
+          "frame_index": 267
+        }
+      ],
+      "6": [
+        {
+          "frame_index": 328
+        },
+        {
+          "frame_index": 336
+        },
+        {
+          "frame_index": 349
+        }
+      ],
+      "7": [
+        {
+          "frame_index": 343
+        },
+        {
+          "frame_index": 356
+        },
+        {
+          "frame_index": 376
+        },
+        {
+          "frame_index": 384
+        }
+      ]
+    },
+    "aquamarine_underwater": {
+      "2": [
+        {
+          "frame_index": 137
+        },
+        {
+          "frame_index": 150
+        }
+      ],
+      "4": [
+        {
+          "frame_index": 247
+        },
+        {
+          "frame_index": 253
+        }
+      ],
+      "5": [
+        {
+          "frame_index": 240
+        },
+        {
+          "frame_index": 247
+        },
+        {
+          "frame_index": 260
+        },
+        {
+          "frame_index": 267
+        }
+      ],
+      "6": [
+        {
+          "frame_index": 328
+        },
+        {
+          "frame_index": 336
+        },
+        {
+          "frame_index": 349
+        }
+      ],
+      "7": [
+        {
+          "frame_index": 376
+        },
+        {
+          "frame_index": 384
+        },
+        {
+          "frame_index": 397
+        }
+      ]
+    },
+    "bearded_watchmaker_workshop": {
+      "1": [
+        {
+          "frame_index": 27
+        },
+        {
+          "frame_index": 41
+        }
+      ],
+      "2": [
+        {
+          "frame_index": 137
+        },
+        {
+          "frame_index": 150
+        }
+      ],
+      "3": [
+        {
+          "frame_index": 192
+        },
+        {
+          "frame_index": 199
+        },
+        {
+          "frame_index": 205
+        }
+      ],
+      "4": [
+        {
+          "frame_index": 199
+        },
+        {
+          "frame_index": 205
+        },
+        {
+          "frame_index": 212
+        },
+        {
+          "frame_index": 219
+        }
+      ],
+      "5": [
+        {
+          "frame_index": 192
+        },
+        {
+          "frame_index": 205
+        },
+        {
+          "frame_index": 212
+        },
+        {
+          "frame_index": 226
+        }
+      ],
+      "6": [
+        {
+          "frame_index": 328
+        },
+        {
+          "frame_index": 336
+        },
+        {
+          "frame_index": 349
+        }
+      ],
+      "7": [
+        {
+          "frame_index": 376
+        },
+        {
+          "frame_index": 384
+        },
+        {
+          "frame_index": 397
+        }
+      ]
+    },
+    "brown_bear_river": {
+      "1": [
+        {
+          "frame_index": 27
+        },
+        {
+          "frame_index": 41
+        },
+        {
+          "frame_index": 54
+        }
+      ],
+      "2": [
+        {
+          "frame_index": 137
+        },
+        {
+          "frame_index": 150
+        }
+      ],
+      "3": [
+        {
+          "frame_index": 192
+        },
+        {
+          "frame_index": 199
+        },
+        {
+          "frame_index": 205
+        }
+      ],
+      "4": [
+        {
+          "frame_index": 199
+        },
+        {
+          "frame_index": 205
+        },
+        {
+          "frame_index": 212
+        },
+        {
+          "frame_index": 219
+        }
+      ],
+      "5": [
+        {
+          "frame_index": 287
+        },
+        {
+          "frame_index": 295
+        },
+        {
+          "frame_index": 301
+        }
+      ],
+      "6": [
+        {
+          "frame_index": 328
+        },
+        {
+          "frame_index": 336
+        },
+        {
+          "frame_index": 349
+        }
+      ],
+      "7": [
+        {
+          "frame_index": 137
+        },
+        {
+          "frame_index": 280
+        },
+        {
+          "frame_index": 343
+        },
+        {
+          "frame_index": 397
+        }
+      ]
+    },
+    "indoor_tender_moment": {
+      "2": [
+        {
+          "frame_index": 137
+        },
+        {
+          "frame_index": 150
+        }
+      ],
+      "3": [
+        {
+          "frame_index": 246
+        }
+      ],
+      "4": [
+        {
+          "frame_index": 288
+        },
+        {
+          "frame_index": 315
+        },
+        {
+          "frame_index": 329
+        },
+        {
+          "frame_index": 342
+        }
+      ],
+      "5": [
+        {
+          "frame_index": 192
+        },
+        {
+          "frame_index": 391
+        },
+        {
+          "frame_index": 397
+        }
+      ]
+    },
+    "sandy_beach_driftwood": {
+      "1": [
+        {
+          "frame_index": 0
+        },
+        {
+          "frame_index": 14
+        },
+        {
+          "frame_index": 27
+        },
+        {
+          "frame_index": 41
+        }
+      ],
+      "2": [
+        {
+          "frame_index": 123
+        },
+        {
+          "frame_index": 137
+        },
+        {
+          "frame_index": 150
+        }
+      ],
+      "3": [
+        {
+          "frame_index": 0
+        },
+        {
+          "frame_index": 192
+        },
+        {
+          "frame_index": 199
+        },
+        {
+          "frame_index": 205
+        }
+      ],
+      "4": [
+        {
+          "frame_index": 240
+        },
+        {
+          "frame_index": 247
+        },
+        {
+          "frame_index": 253
+        }
+      ],
+      "5": [
+        {
+          "frame_index": 287
+        },
+        {
+          "frame_index": 295
+        },
+        {
+          "frame_index": 301
+        }
+      ],
+      "6": [
+        {
+          "frame_index": 349
+        },
+        {
+          "frame_index": 274
+        },
+        {
+          "frame_index": 260
+        },
+        {
+          "frame_index": 240
+        }
+      ],
+      "7": [
+        {
+          "frame_index": 376
+        },
+        {
+          "frame_index": 384
+        },
+        {
+          "frame_index": 397
+        }
+      ]
+    },
+    "shimmering_puzzle_surface": {
+      "1": [
+        {
+          "frame_index": 41
+        },
+        {
+          "frame_index": 54
+        }
+      ],
+      "2": [
+        {
+          "frame_index": 110
+        },
+        {
+          "frame_index": 123
+        },
+        {
+          "frame_index": 137
+        },
+        {
+          "frame_index": 150
+        }
+      ],
+      "3": [
+        {
+          "frame_index": 192
+        },
+        {
+          "frame_index": 206
+        },
+        {
+          "frame_index": 219
+        },
+        {
+          "frame_index": 233
+        }
+      ],
+      "4": [
+        {
+          "frame_index": 329
+        },
+        {
+          "frame_index": 342
+        }
+      ],
+      "5": [
+        {
+          "frame_index": 192
+        },
+        {
+          "frame_index": 219
+        },
+        {
+          "frame_index": 233
+        },
+        {
+          "frame_index": 260
+        }
+      ]
+    },
+    "tattooed_noodle_chef": {
+      "1": [
+        {
+          "frame_index": 27
+        },
+        {
+          "frame_index": 41
+        }
+      ],
+      "2": [
+        {
+          "frame_index": 137
+        },
+        {
+          "frame_index": 150
+        }
+      ],
+      "3": [
+        {
+          "frame_index": 192
+        },
+        {
+          "frame_index": 199
+        },
+        {
+          "frame_index": 205
+        }
+      ],
+      "4": [
+        {
+          "frame_index": 192
+        },
+        {
+          "frame_index": 240
+        },
+        {
+          "frame_index": 247
+        },
+        {
+          "frame_index": 253
+        }
+      ],
+      "5": [
+        {
+          "frame_index": 192
+        },
+        {
+          "frame_index": 205
+        },
+        {
+          "frame_index": 212
+        },
+        {
+          "frame_index": 226
+        }
+      ],
+      "6": [
+        {
+          "frame_index": 192
+        },
+        {
+          "frame_index": 205
+        },
+        {
+          "frame_index": 219
+        },
+        {
+          "frame_index": 232
+        }
+      ],
+      "7": [
+        {
+          "frame_index": 343
+        },
+        {
+          "frame_index": 356
+        },
+        {
+          "frame_index": 376
+        },
+        {
+          "frame_index": 384
+        }
+      ]
+    },
+    "vintage_archival_scene": {
+      "3": [
+        {
+          "frame_index": 192
+        },
+        {
+          "frame_index": 206
+        },
+        {
+          "frame_index": 219
+        },
+        {
+          "frame_index": 233
+        }
+      ],
+      "4": [
+        {
+          "frame_index": 0
+        },
+        {
+          "frame_index": 14
+        },
+        {
+          "frame_index": 27
+        },
+        {
+          "frame_index": 41
+        }
+      ],
+      "5": [
+        {
+          "frame_index": 288
+        },
+        {
+          "frame_index": 295
+        },
+        {
+          "frame_index": 308
+        },
+        {
+          "frame_index": 315
+        }
+      ],
+      "6": [
+        {
+          "frame_index": 308
+        },
+        {
+          "frame_index": 322
+        },
+        {
+          "frame_index": 335
+        },
+        {
+          "frame_index": 343
+        }
+      ]
+    },
+    "warm_indoor_dining": {
+      "1": [
+        {
+          "frame_index": 0
+        },
+        {
+          "frame_index": 14
+        },
+        {
+          "frame_index": 27
+        },
+        {
+          "frame_index": 41
+        }
+      ],
+      "2": [
+        {
+          "frame_index": 137
+        },
+        {
+          "frame_index": 150
+        }
+      ],
+      "3": [
+        {
+          "frame_index": 192
+        },
+        {
+          "frame_index": 199
+        },
+        {
+          "frame_index": 205
+        }
+      ],
+      "4": [
+        {
+          "frame_index": 192
+        },
+        {
+          "frame_index": 205
+        },
+        {
+          "frame_index": 219
+        },
+        {
+          "frame_index": 239
+        }
+      ],
+      "5": [
+        {
+          "frame_index": 287
+        },
+        {
+          "frame_index": 295
+        },
+        {
+          "frame_index": 301
+        }
+      ],
+      "6": [
+        {
+          "frame_index": 274
+        },
+        {
+          "frame_index": 287
+        },
+        {
+          "frame_index": 295
+        },
+        {
+          "frame_index": 308
+        }
+      ],
+      "7": [
+        {
+          "frame_index": 335
+        },
+        {
+          "frame_index": 343
+        },
+        {
+          "frame_index": 356
+        },
+        {
+          "frame_index": 376
+        }
+      ]
+    }
+  },
+  "source": "qwen3_vl_per_boundary_retrieval",
+  "version": 2
+}

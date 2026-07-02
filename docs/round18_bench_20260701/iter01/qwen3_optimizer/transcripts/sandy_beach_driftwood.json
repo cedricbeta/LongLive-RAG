@@ -1,0 +1,427 @@
+{
+  "cache_fingerprint": "b6757f05850f3fab8c4e9c75456e61744d970dba50857d78b920e4e516b0bec5",
+  "image_hashes": {
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot00_frame00_idx0000.png": "6f5285f5cdbb0d5e4efc44a35010c8bdd777b162f237f9c6a12598b4d3b519f4",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot00_frame01_idx0032.png": "954f0e3f1267a299e6f60f275e517bf607836811f2e852fc7c13656effcdafcb",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot00_frame02_idx0063.png": "782519ec974f972534cffc6aa46f4944714e78cd914b4a937bbdb6b54a75494d",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot00_frame03_idx0095.png": "e0a3f331f0174d2a89e60cb71aafaf4e22dbf7a10ec1d5e02d4959de9054a88a",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot01_frame00_idx0096.png": "9304cf0dc33d6d358fe0c5dcdb7e265ece0470f3a1abde8961c33dcd4a90e15d",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot01_frame01_idx0128.png": "20f868e736dba6e2cd2760f4dd40d721b2e1032881fb2c923b25ccb3ce537c20",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot01_frame02_idx0159.png": "f2f1849677cdd454a08abdd09ff403040e8e5b6cca81bd5d9ff96fb5cc9748ab",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot01_frame03_idx0191.png": "415e1b9bc1bf4064e24e4b53339beac0523f1e741bc62098204a045492ecf090",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot02_frame00_idx0192.png": "5636fa9997cb6b27752df54090eedf7ea95fd781f2dfecf0258e21d627d704b4",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot02_frame01_idx0208.png": "d2d47e5c4be02101a8bf0a982dc3cbaa568ff020a456dd6013ad30cffcff0d05",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot02_frame02_idx0223.png": "db4a19b6aa40ee15033c8aac617a989e301a0e5c6738324dde2b0b93dbc997fe",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot02_frame03_idx0239.png": "d4a8b93dcdd8a7a767bb187fa7e9c7d3b294a911ed8d0b4db183d743ac054f07",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot03_frame00_idx0240.png": "ae9bb8d55d2c047e8fc9c45314235949d7b172eabdcc83c3fb19766e9a13e56a",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot03_frame01_idx0256.png": "335c1399766b1583512e16a1519b4a22bf6746268a07ed975d6709985e1db297",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot03_frame02_idx0271.png": "b1bfe714c396f9b41abb70182ad877cd69c03f7286b729bd4ddd3a1a4aa52e8e",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot03_frame03_idx0287.png": "810b7c6e509b9c212a7c4ec2c2dccfbe8d0e6e22df780e6143e885e82527cacb",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot04_frame00_idx0288.png": "ded13503db58484425df684992fc6daac9140d21e247c0ceca55a8211387dcba",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot04_frame01_idx0304.png": "8d0651a67c27683174337b8b84cd60521dfd422ebda194607dba0e38a7155bb5",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot04_frame02_idx0319.png": "e64afa8771a46c761e9100f59f886762880654ca6ca585a08bc464566efa37dc",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot04_frame03_idx0335.png": "d2090494940c1558e1e4180a2f465574555e36471fcb54ff8f04735db533335b",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot05_frame00_idx0336.png": "4d971ed5af95e6e9d57aefe79e4653c81203b78218e706bcb2b45ffb645bd810",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot05_frame01_idx0352.png": "3a52c085b964c44670351f729b0bae1bfd5291c2b1320b26a08cb5e1f9c6e380",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot05_frame02_idx0367.png": "cda5386580eb134ee5f115afab94dbc12a217644b188fffa0041e3a3f4e28bc8",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot05_frame03_idx0383.png": "8ea5b3b948c6beef31bd1a706e64acfe167578887bbcddbf4791c563e92f6b68",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot06_frame00_idx0384.png": "556a98d22d4bf4c8aab87038dc20f1f6ba6a8170b68edf99f43152a0badaa07a",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot06_frame01_idx0400.png": "4bc657788d0b4bb6410f0fdb34d868926380dfe66a19670c0cf73a97f3b2931d",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot06_frame02_idx0415.png": "7996db3f131990a22ae0d161dac2b8d2a5e10eaa21733bc17ce4abd309221b3a",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot06_frame03_idx0431.png": "12d00147c84eff692812ccaae6e396863c31a963290a67ab0d6dd02bd1c82985",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot07_frame00_idx0432.png": "4c10cf06712cb1a54d5112295ac9d62a27a2061747d77bade4675e5eccba32af",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot07_frame01_idx0448.png": "836da924f7aa1936aaf13a5120a3a04e60f800d8bc1ed9feecc64fac43cf5009",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot07_frame02_idx0463.png": "5f0839f2664e8bc136eda68f3efa6acccf7366bf8b40114aaf79a1b8882d0a68",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot07_frame03_idx0479.png": "2b9943b1517aff5ce0194e4a2080509dee26508910131f6a157adc052b62039c"
+  },
+  "image_paths": [
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot00_frame00_idx0000.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot00_frame01_idx0032.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot00_frame02_idx0063.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot00_frame03_idx0095.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot01_frame00_idx0096.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot01_frame01_idx0128.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot01_frame02_idx0159.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot01_frame03_idx0191.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot02_frame00_idx0192.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot02_frame01_idx0208.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot02_frame02_idx0223.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot02_frame03_idx0239.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot03_frame00_idx0240.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot03_frame01_idx0256.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot03_frame02_idx0271.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot03_frame03_idx0287.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot04_frame00_idx0288.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot04_frame01_idx0304.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot04_frame02_idx0319.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot04_frame03_idx0335.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot05_frame00_idx0336.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot05_frame01_idx0352.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot05_frame02_idx0367.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot05_frame03_idx0383.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot06_frame00_idx0384.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot06_frame01_idx0400.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot06_frame02_idx0415.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot06_frame03_idx0431.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot07_frame00_idx0432.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot07_frame01_idx0448.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot07_frame02_idx0463.png",
+    "docs/round18_bench_20260701/iter01/optimizer_frames/sandy_beach_driftwood/shot07_frame03_idx0479.png"
+  ],
+  "parse_attempts": [],
+  "parsed": {
+    "global_invariant_additions": [
+      "The central subject is a single woman, consistently depicted with dark hair, olive-green hat, black bikini top, and white bikini bottoms, maintaining visual continuity across all shots."
+    ],
+    "kv_anchor_plan": [],
+    "per_shot_additions": [
+      {
+        "rationale": "The hand\u2019s appearance contradicts the authored invariant; reasserting the woman\u2019s identity preserves continuity.",
+        "shot_index": 5,
+        "text": "The hand is the woman\u2019s, identifiable by her consistent olive-green hat and black bikini top visible in surrounding frames."
+      }
+    ],
+    "stop_rule": "one bounded refinement round",
+    "which_cut_broke": {
+      "cut_index": 5,
+      "how": "Introduces a male hand and gender-neutral attire, contradicting the established female subject."
+    }
+  },
+  "request": {
+    "max_tokens": 1800,
+    "messages": [
+      {
+        "content": [
+          {
+            "text": "You are the LOCAL Qwen3-VL optimizer, not the held-out judge.\nDiagnose which shot cut breaks cross-shot consistency and propose constrained fixes.\nReturn strict JSON only with this shape:\n{\n  \"which_cut_broke\": {\"cut_index\": integer_or_null, \"how\": \"short reason\"},\n  \"global_invariant_additions\": [\"additive invariant text\", ...],\n  \"per_shot_additions\": [{\"shot_index\": 0, \"text\": \"additive invariant text\", \"rationale\": \"why\"}, ...],\n  \"kv_anchor_plan\": [],\n  \"stop_rule\": \"one bounded refinement round\"\n}\nRules: ADD subject/scene invariants only. Do not delete or weaken per-shot camera/action.\nInvariant additions must RESTATE or SHARPEN the authored global invariant below.\nIf the rendered video contradicts that invariant (wrong clothing/color/object), that is a\ndefect to FIX: re-assert the authored invariant. NEVER codify the rendered appearance when\nit conflicts with the authored invariant.\nDo not collapse shots into near-identical text.\nKV anchors are chosen in a separate per-boundary pass; return an empty kv_anchor_plan.\nScene: sandy_beach_driftwood\nGlobal invariant: The same continuous sandy beach driftwood scene persists across every shot, with the same central subject or objects, the same environment, and coherent event continuity despite legitimate camera, framing, and action changes.\nSHOT 0: frames=[0, 32, 63, 95]; caption=The video opens with a close-up shot of a sandy beach scene, where weathered driftwood and scattered rocks form a natural arrangement. The sand is pale and textured, with visible footprints and debris, illuminated by bright, natural daylight. The color tone is warm and sun-drenched, with high contrast casting sharp shadows, suggesting a clear, sunny day. The atmosphere is serene, untouched, and evocative of a remote coastal paradise. The camera pans slightly upward, revealing a woman walking into the frame from the right. She is wearing a wide-brimmed olive-green hat, a black bikini top with thin straps, and white bikini bottoms. Her long, dark hair is tied back in a braid, and she moves with a relaxed, contemplative gait, glancing down at the sand. Her facial expression is neutral, suggesting quiet enjoyment of the surroundings. The background features a vast, pristine beach stretching toward turquoise waters, with distant, hazy mountains visible on the horizon. The sea sparkles under the sun, and the sky is a vibrant blue with minimal cloud cover. The camera follows her movement, maintaining a medium shot that captures her from the waist up, keeping her centered as she walks toward the left of the frame. The driftwood and rocks remain in the foreground, grounding the scene, while the expansive beach and ocean form the backdrop. The overall style is cinematic and naturalistic, with a wide-angle lens emphasizing the openness and tranquility of the environment. There is no wind or other natural movement beyond her slow, deliberate walk, and the focus remains consistently on her and the serene landscape, conveying a sense of peaceful solitude.\nSHOT 1: frames=[96, 128, 159, 191]; caption=The video unfolds in a sun-drenched, natural beach environment under clear blue skies, casting sharp, high-contrast shadows across the scene. The color tone is warm and golden, enhanced by natural daylight\u2014likely midday\u2014with a crisp, vivid realism that emphasizes the texture of sand, rocks, and sea. The atmosphere is serene yet adventurous, with a sense of solitude and connection to nature. The style is documentary-like, capturing candid moments with dynamic camera movement and natural framing.\nThe setting is an outdoor, rugged coastline with fine white sand, scattered driftwood, and smooth, weathered rocks. In the background, distant mountains and calm blue water stretch under a cloudless sky. The environment feels untouched and wild, with no signs of urbanization. The lighting suggests bright, direct sunlight, enhancing the vividness of colors and casting elongated shadows from the characters and objects.\n\nThe only visible character is a woman, appearing in the first frame (0:00) and again at 0:03. She is likely in her late 20s to early 30s, with fair skin and long, blonde braided hair. She wears a black bikini top and white bikini bottoms, complemented by a wide-brimmed olive-green hat and a delicate gold necklace. Her expression is relaxed and cheerful, with a warm smile directed at the camera. She appears to be a traveler or outdoor enthusiast, possibly engaged in beachside fishing or exploration.\n\nAt 0:01, the camera tilts down to a close-up of a freshly caught fish\u2014its scales glistening with moisture, its mouth agape, and fins slightly frayed\u2014resting on a gray stone. The fish\u2019s reddish-orange hue contrasts with the pale sand. At 0:02, the camera pans up to show the woman\u2019s feet and the fish, emphasizing the casual, hands-on nature of her activity. At 0:03, the camera returns to a medium shot of the woman, who turns toward the camera with a playful, proud smile, her body angled slightly away from the lens. She gestures casually with her hands, as if presenting her catch or explaining her activity.\n\nThe camera movement is fluid and handheld, shifting from a low-angle shot of the fish to a medium shot of the woman, then panning to reveal the surrounding driftwood and rocks. The focus remains sharp throughout, with a shallow depth of field that blurs the background slightly, drawing attention to the subject and her immediate environment. The video\u2019s narrative is observational and personal, capturing a moment of quiet triumph in nature. The woman\u2019s movements are slow and deliberate, reinforcing the tranquil, meditative mood of the scene. There is no visible wind or other natural elements in motion, but the sunlight\u2019s shifting shadows suggest the passage of time. The overall tone is joyful and immersive, inviting viewers into a moment of simple, natural beauty.\nSHOT 2: frames=[192, 208, 223, 239]; caption=The video presents a vivid, sunlit outdoor scene on a sandy beach under clear skies, with natural daylight casting sharp, high-contrast shadows. The color tone is warm and saturated, emphasizing the rich reds and oranges of the fish\u2019s scales, contrasted with the pale sand and the person\u2019s dark clothing. The atmosphere is casual and immersive, evoking the raw, tactile experience of beachside fishing or seafood preparation. The style is documentary-like, with close-up, handheld framing that enhances realism and intimacy.\nThe scene unfolds on a sun-drenched beach, likely midday, with visible sand grains and scattered seawater droplets. A concrete slab or low pier edge is partially visible, where the fish rests. The background includes blurred beach elements\u2014sand, distant water, and faint shadows of equipment\u2014suggesting an active, possibly recreational or commercial fishing environment.\n\nOne person is featured prominently, their hands actively handling a large, freshly caught fish. Though their face is not visible, their arms and hands are clearly visible, suggesting an adult of indeterminate gender, likely mid-30s to 50s. Their hands are calloused, with visible dirt and water, indicating manual labor. They wear dark shorts and a black top, and a silver ring adorns one finger. Their posture is bent over the fish, leaning into the task with focused intent.\n\nThe fish is the central object\u2014large, with reddish-orange scales speckled with white, a yellowish dorsal fin, and a slightly open mouth revealing pinkish flesh. Its body is broad and textured, lying horizontally on the concrete surface. The person\u2019s hands grip the fish\u2019s head and side, rotating it slightly to display its features. The fish\u2019s gills and fins glisten with moisture, and its scales catch the sunlight, creating a shimmering effect.\n\nThe camera remains close-up throughout, focusing sharply on the fish and the person\u2019s hands, creating a shallow depth of field that blurs the background. The shot is slightly tilted downward, capturing the action from a low angle that emphasizes the fish\u2019s size and the person\u2019s interaction with it. There is minimal camera movement\u2014mostly slight handheld adjustments\u2014to maintain focus on the details of the fish\u2019s texture and the person\u2019s handling.\n\nThe motion is slow and deliberate: the hands shift the fish\u2019s orientation, revealing its underside and fins, while the person\u2019s fingers press gently, as if inspecting or preparing it. The fish remains mostly static, but its gills and fins subtly ripple with the touch. No wind or other natural elements are visible, but the glistening scales and water droplets suggest recent contact with seawater.\n\nThe narrative is observational and tactile, focusing on the sensory experience of handling a catch. The shot composition and lighting draw attention to the fish\u2019s vibrant colors and the person\u2019s skilled, methodical actions, evoking themes of nature, labor, and the immediacy of the moment. The framing is intimate, inviting viewers to engage with the details of the fish\u2019s anatomy and the human interaction with it. The overall tone is grounded and authentic, capturing a fleeting, yet significant, moment in the rhythm of coastal life.\nSHOT 3: frames=[240, 256, 271, 287]; caption=The video opens with a vibrant, sunlit beach scene under a clear blue sky, creating a warm, golden tone with natural daylight casting sharp, crisp shadows. The atmosphere is serene yet adventurous, with a rustic, survivalist aesthetic. The setting is an outdoor, natural environment: a white-sand beach bordered by rugged, mossy cliffs and scattered driftwood. A green tarp tent is pitched nearby, hinting at a temporary campsite, while the calm ocean stretches into the distance under the bright sun. The scene is bathed in midday sunlight, suggesting a hot, clear day with no clouds or wind.\nIn the first shot (0:00), a woman\u2014appearing mid-30s, Caucasian, with short dark hair peeking from under a wide-brimmed olive-green hat\u2014stands in the foreground. She wears a black bikini top and a simple gold necklace, her expression triumphant and proud as she holds a large, freshly caught fish mounted on a wooden stick. The fish, likely a rockfish or similar species, has a mottled brown-and-orange body, sharp teeth, and a wide-open mouth. Her hands grip the stick firmly, positioning the fish to showcase its size. The camera is at eye-level, capturing her face partially obscured by the fish, emphasizing her accomplishment. The background includes rocky terrain and sparse vegetation.\n\nAt 0:02, the scene transitions to a close-up of her hands as she arranges a fire pit made of driftwood. The camera focuses tightly on her fingers, adorned with a silver ring, gently placing a small stick into the structure. The driftwood is weathered, gray-brown, and uneven, forming a teepee-like arrangement. The sand beneath is light and granular, and the shot is static, emphasizing her deliberate, careful movements. The shallow depth of field blurs the background, keeping attention on her hands and the fire structure. The lighting remains bright and natural, casting soft shadows across the wood. The mood shifts subtly from celebration to preparation, suggesting the next step: cooking the fish over the fire. The video\u2019s style is documentary-style realism, capturing raw, unpolished moments of survival and achievement in nature. The camera remains steady, with no noticeable movement, maintaining a grounded, intimate perspective. The narrative arc is clear: catch \u2192 prepare \u2192 cook, framed as a self-reliant outdoor adventure.\nSHOT 4: frames=[288, 304, 319, 335]; caption=The video opens with a close-up of a smoldering campfire, its embers glowing beneath a pile of weathered driftwood and ash. The scene is bathed in natural daylight with a warm, earthy color tone, suggesting a clear, sunny day. The lighting is soft and diffused, casting gentle shadows that highlight the textures of the wood and sand. The atmosphere feels serene and rustic, evoking a sense of solitude and connection with nature. The camera remains steady, focusing on the fire\u2019s quiet, flickering life as it slowly consumes the wood.\nAs the camera pans upward, a young woman appears, kneeling beside the fire. She is wearing a wide-brimmed hat, a black bikini top, and a necklace with a circular pendant. Her long, dark hair is tied back in a braid, and her expression is focused and content as she tends to the flames. The background reveals a sandy beach with scattered rocks and sparse vegetation, reinforcing the outdoor, natural setting.\n\nThe camera then zooms in on a fish impaled on a stick, resting atop a rock. The fish, with its reddish-orange flesh and open mouth, appears freshly caught and prepared for cooking. The camera lingers on this detail before returning to the fire, where the flames grow slightly more vigorous as the woman adjusts the wood. Her movements are deliberate and calm, indicating experience and comfort with the task.\n\nThe video\u2019s style is documentary-like, with naturalistic framing and minimal editing. The shots are composed to emphasize the interplay between human activity and the natural environment. The shallow depth of field keeps the focus on the fire and the woman\u2019s hands, while the background remains softly blurred. The camera angles are mostly eye-level, creating an intimate, immersive perspective. The overall narrative conveys a peaceful moment of survival and simplicity, capturing the essence of outdoor living and the quiet beauty of nature. The woman\u2019s actions are unhurried, reflecting a deep appreciation for the simple pleasures of the moment.\nSHOT 5: frames=[336, 352, 367, 383]; caption=The video features a warm, golden-orange color tone, illuminated by natural sunlight that casts soft, diffused light across the scene. The atmosphere is serene yet primal, evoking a sense of survival and connection to nature. The style is realistic and documentary-like, with a handheld, intimate camera angle that emphasizes the tactile experience of building a fire. The shot is a close-up, shallow depth of field, focusing sharply on the flames and the hand, while the background remains slightly blurred.\nThe scene takes place outdoors on a sandy, possibly beach or desert-like terrain, with dry, weathered driftwood and scattered twigs forming the structure of the fire pit. The fire burns steadily, with flickering orange flames and glowing embers visible through the gaps in the wood. The environment appears arid and sunlit, suggesting midday or early afternoon under clear skies. No artificial structures or urban elements are visible \u2014 only natural elements like sand, driftwood, and sparse vegetation (a red berry briefly appears at the edge of the frame).\n\nA single character \u2014 an adult hand, likely male or gender-neutral \u2014 is visible. The hand is tanned, with visible veins and calluses, suggesting outdoor activity or manual labor. The hand is positioned in the foreground, gently adjusting a piece of driftwood to feed the fire. No face, clothing, or accessories are visible, keeping focus on the action. The hand moves slowly and deliberately, indicating experience and care in fire tending.\n\nKey objects include the fire pit, constructed of interwoven driftwood (light gray, weathered, splintered), and smaller twigs and sand scattered around. The fire itself is the central dynamic element, with flames flickering upward and embers glowing intermittently. The camera remains stationary, maintaining a close-up shot, with the hand entering the frame from the top left and moving downward to adjust the wood.\n\nThe hand\u2019s movement is slow, deliberate, and controlled \u2014 it pushes a piece of wood slightly deeper into the fire, creating a subtle shift in the flame\u2019s pattern. The fire responds with a gentle flicker, and the sand around the pit remains undisturbed except for the hand\u2019s interaction. The camera stays low and close, capturing the texture of the wood and the warmth of the flames, enhancing the immersive, tactile quality of the scene. The natural elements \u2014 the fire, wind (implied by slight wood movement), and sunlight \u2014 are in constant, gentle motion, contrasting with the hand\u2019s steady, purposeful action. The shot is a medium close-up, with a shallow depth of field that keeps the fire and hand in sharp focus while blurring the surrounding sand and background. The angle is slightly tilted downward, emphasizing the intimate, grounded nature of the task.\nSHOT 6: frames=[384, 400, 415, 431]; caption=The video opens with a warm, sunlit outdoor scene bathed in natural daylight, casting sharp shadows across a sandy, rocky terrain. The color tone is earthy and golden, with muted browns, tans, and grays dominating the landscape, suggesting a dry, arid environment under a clear sky. The atmosphere feels serene yet purposeful, as if capturing a moment of quiet survival or outdoor recreation. The style is documentary-like, with a handheld, intimate camera angle that moves slightly to follow the action, offering an immersive, real-time perspective.\nThe setting is unmistakably natural \u2014 a rugged, open outdoor space resembling a desert or dry coastal area. Large, weathered rocks are scattered across the sandy ground, and a pile of driftwood or dry branches is arranged in a teepee-like structure, presumably for a fire. The sun\u2019s position indicates midday, with strong, direct lighting that enhances texture and depth. No urban elements are visible, reinforcing the wilderness theme.\n\nA single character appears \u2014 a woman, likely in her 30s or 40s, with fair skin and dark hair partially visible beneath a wide-brimmed olive-green hat. She is dressed in dark, practical clothing, possibly shorts or a sundress, and wears a simple pendant necklace. Her hands are the primary focus as she kneels to tend to the fire. Her posture is bent forward, with one hand holding a green and red lighter while the other steadies a small piece of tinder or kindling near the base of the wooden structure. Her expression is concentrated, suggesting focus and calm determination.\n\nThe key objects include the driftwood structure \u2014 irregular, weathered branches of varying thickness, forming a loose pyramid around a central gap. These are in the foreground and slightly to the right. The lighter is small, brightly colored, and held in her right hand, positioned near the base of the woodpile. The rocks are scattered around the perimeter, some partially buried in sand, adding to the ruggedness of the scene.\n\nThe camera starts with a close-up of the hat and upper body, then tilts down to reveal her hands and the fire setup. The movement is smooth and deliberate, maintaining focus on her actions. The lighting accentuates the dust particles in the air, suggesting a dry, windless environment. There\u2019s no wind movement, and the fire remains unlit \u2014 the moment captured is one of preparation, not combustion.\n\nThe shot is a medium close-up, with a shallow depth of field that blurs the background slightly, keeping the viewer\u2019s attention on her hands and the fire setup. The camera angle is slightly low, almost at eye level with the ground, enhancing the sense of immersion. The narrative is one of survival, preparation, or perhaps a ritualistic outdoor activity \u2014 the woman\u2019s calm demeanor and precise movements suggest experience and intentionality. The overall tone is peaceful, grounded, and deeply connected to nature.\nSHOT 7: frames=[432, 448, 463, 479]; caption=The video opens with a vivid, sunlit beach scene, bathed in warm, golden natural daylight that enhances the earthy tones of the environment. The lighting is bright and direct, casting sharp shadows, suggesting a midday setting under clear, cloudless skies. The atmosphere is serene and primal, evoking a sense of isolation and simplicity, with the camera capturing the rawness of nature through a realistic, documentary-style lens. The style is unfiltered and immersive, emphasizing texture and motion.\nThe scene unfolds outdoors on a sandy beach, scattered with rocks and driftwood, surrounded by the vast, shimmering blue expanse of the ocean. In the distance, rugged, hazy mountains frame the horizon, adding depth and a sense of untouched wilderness. The sand is textured with footprints and small debris, hinting at human presence without intrusion. At the center of the frame, a small fire crackles among driftwood and rocks, flames dancing vividly in the sunlight. The camera pans slowly across the fire, revealing the charred wood and embers, then shifts focus to the sand, capturing its undulating surface and scattered shells.\n\nA woman appears in the final shot, seated on the beach with her back to the camera. She is wearing a dark sun hat and a bikini, her bare shoulders and back exposed to the sun. Her hair is tied back, and she appears relaxed, gazing out at the ocean. The camera remains stationary, capturing her in a long shot that emphasizes the vastness of the landscape around her. The fire\u2019s flickering flames and the gentle movement of the water create a tranquil, meditative rhythm. Her posture is calm, suggesting a moment of reflection or solitude. The video\u2019s narrative is contemplative, focusing on the harmony between human presence and nature, with the fire\u2019s warmth contrasting the cool blue of the sea and sky. The camera\u2019s slow, deliberate movements enhance the immersive, almost ritualistic quality of the scene.",
+            "type": "text"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          },
+          {
+            "image_url": {
+              "url": "<base64 image omitted>"
+            },
+            "type": "image_url"
+          }
+        ],
+        "role": "user"
+      }
+    ],
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "response_format": {
+      "json_schema": {
+        "name": "decision",
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "global_invariant_additions": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "kv_anchor_plan": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "boundary_shot_index": {
+                    "type": "integer"
+                  },
+                  "decoded_frame_indices": {
+                    "items": {
+                      "type": "integer"
+                    },
+                    "type": "array"
+                  },
+                  "rationale": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "boundary_shot_index",
+                  "decoded_frame_indices",
+                  "rationale"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "per_shot_additions": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "rationale": {
+                    "type": "string"
+                  },
+                  "shot_index": {
+                    "type": "integer"
+                  },
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "shot_index",
+                  "text",
+                  "rationale"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "stop_rule": {
+              "type": "string"
+            },
+            "which_cut_broke": {
+              "additionalProperties": false,
+              "properties": {
+                "cut_index": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "how": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "cut_index",
+                "how"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "which_cut_broke",
+            "global_invariant_additions",
+            "per_shot_additions",
+            "kv_anchor_plan",
+            "stop_rule"
+          ],
+          "type": "object"
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "temperature": 0
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "matched_stop": 151645,
+        "message": {
+          "content": "{\n  \"which_cut_broke\": {\n    \"cut_index\": 5,\n    \"how\": \"Introduces a male hand and gender-neutral attire, contradicting the established female subject.\"\n  },\n  \"global_invariant_additions\": [\n    \"The central subject is a single woman, consistently depicted with dark hair, olive-green hat, black bikini top, and white bikini bottoms, maintaining visual continuity across all shots.\"\n  ],\n  \"per_shot_additions\": [\n    {\n      \"shot_index\": 5,\n      \"text\": \"The hand is the woman\u2019s, identifiable by her consistent olive-green hat and black bikini top visible in surrounding frames.\",\n      \"rationale\": \"The hand\u2019s appearance contradicts the authored invariant; reasserting the woman\u2019s identity preserves continuity.\"\n    }\n  ],\n  \"kv_anchor_plan\": [],\n  \"stop_rule\": \"one bounded refinement round\"\n}",
+          "reasoning_content": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1782975593,
+    "id": "fe3445ea030944eeb979c84151720660",
+    "metadata": {
+      "weight_version": "default"
+    },
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 185,
+      "prompt_tokens": 32729,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "total_tokens": 32914
+    }
+  },
+  "schema_enforced": true,
+  "wall_clock_seconds": 34.492268562316895
+}

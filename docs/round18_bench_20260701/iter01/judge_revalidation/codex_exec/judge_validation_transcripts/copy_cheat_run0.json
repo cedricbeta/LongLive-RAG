@@ -1,0 +1,411 @@
+{
+  "fixture": "copy_cheat",
+  "run": 0,
+  "model": "gpt-5.5",
+  "from_cache": true,
+  "elapsed_seconds": 0.0002143383026123047,
+  "video_hash": "60743eef9d5862beffc784b5cbf091ca15f68a90ae4f8b76d6c44095e9d34220",
+  "prompt_hash": "49a411c80eecc56ca3f909d2fbf57a80333511c36975cb420c954ab160309685",
+  "frames_shown": [
+    [
+      "docs/round18_bench_20260701/iter01/judge_revalidation/codex_exec/judge_validation_frames/copy_cheat/shot0_frame0.png"
+    ],
+    [
+      "docs/round18_bench_20260701/iter01/judge_revalidation/codex_exec/judge_validation_frames/copy_cheat/shot1_frame0.png"
+    ],
+    [
+      "docs/round18_bench_20260701/iter01/judge_revalidation/codex_exec/judge_validation_frames/copy_cheat/shot2_frame0.png"
+    ]
+  ],
+  "request": {
+    "model": "gpt-5.5",
+    "store": false,
+    "temperature": 0,
+    "instructions": "You are a held-out video consistency judge.\n\nYou will see 1-3 decoded frames per shot, in temporal shot order unless the\nfixture explicitly says it is a shuffled-order probe. Judge only perceptual\ncross-shot consistency:\n- subject_identity_preserved: whether the same central subject/object continues\n  across shot cuts.\n- background_coherent: whether the same scene/place/event persists.\n- per_shot_adherence: whether each shot still follows its own caption.\n- inter_shot_diversity: whether the shots preserve legitimate requested camera,\n  action, composition, and scene variation instead of collapsing toward the same\n  looking shot.\n- motion_continuity: whether the sampled sequence shows plausible motion/change\n  for the captions instead of becoming frozen or near-static.\n- which_cut_broke: the cut index i for transition shot i -> i+1 that most\n  clearly broke consistency, or null if no cut broke.\n- cheat_flags: flag copy/freeze/prompt-collapse cheats. Do not reward a copied\n  frame sequence when captions ask for distinct actions or camera views.\n\nDo not penalize a legitimate camera/viewpoint/framing change by itself. Do\npenalize any apparent consistency gain that comes from reducing inter-shot\ndiversity or motion. Return only the strict JSON object required by the\nresponse schema.",
+    "input": [
+      {
+        "role": "user",
+        "content": [
+          {
+            "type": "input_text",
+            "text": "Fixture: copy_cheat\nDescription: All shots are pixel-identical despite captions asking for different views/actions.\nShots and captions are listed below. Judge the frames in the order shown."
+          },
+          {
+            "type": "input_text",
+            "text": "SHOT 0 CAPTION: Wide kitchen view of the red robot standing still."
+          },
+          {
+            "type": "input_image",
+            "image_url": "<base64 image omitted>",
+            "detail": "high"
+          },
+          {
+            "type": "input_text",
+            "text": "Frame marker: shot=0, frame=0, file=shot0_frame0.png"
+          },
+          {
+            "type": "input_text",
+            "text": "SHOT 1 CAPTION: Close-up side view of the red robot moving right."
+          },
+          {
+            "type": "input_image",
+            "image_url": "<base64 image omitted>",
+            "detail": "high"
+          },
+          {
+            "type": "input_text",
+            "text": "Frame marker: shot=1, frame=0, file=shot1_frame0.png"
+          },
+          {
+            "type": "input_text",
+            "text": "SHOT 2 CAPTION: Overhead view of the red robot reaching the counter."
+          },
+          {
+            "type": "input_image",
+            "image_url": "<base64 image omitted>",
+            "detail": "high"
+          },
+          {
+            "type": "input_text",
+            "text": "Frame marker: shot=2, frame=0, file=shot2_frame0.png"
+          }
+        ]
+      }
+    ],
+    "text": {
+      "format": {
+        "type": "json_schema",
+        "name": "cross_shot_consistency_judge",
+        "strict": true,
+        "schema": {
+          "type": "object",
+          "properties": {
+            "subject_identity_preserved": {
+              "type": "object",
+              "properties": {
+                "score": {
+                  "type": "number",
+                  "minimum": 0.0,
+                  "maximum": 1.0
+                },
+                "verdict": {
+                  "type": "string",
+                  "enum": [
+                    "low",
+                    "medium",
+                    "high"
+                  ]
+                },
+                "rationale": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "score",
+                "verdict",
+                "rationale"
+              ],
+              "additionalProperties": false
+            },
+            "background_coherent": {
+              "type": "object",
+              "properties": {
+                "score": {
+                  "type": "number",
+                  "minimum": 0.0,
+                  "maximum": 1.0
+                },
+                "verdict": {
+                  "type": "string",
+                  "enum": [
+                    "low",
+                    "medium",
+                    "high"
+                  ]
+                },
+                "rationale": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "score",
+                "verdict",
+                "rationale"
+              ],
+              "additionalProperties": false
+            },
+            "per_shot_adherence": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "shot_index": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "score": {
+                    "type": "number",
+                    "minimum": 0.0,
+                    "maximum": 1.0
+                  },
+                  "issue": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "shot_index",
+                  "score",
+                  "issue"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "inter_shot_diversity": {
+              "type": "object",
+              "properties": {
+                "score": {
+                  "type": "number",
+                  "minimum": 0.0,
+                  "maximum": 1.0
+                },
+                "verdict": {
+                  "type": "string",
+                  "enum": [
+                    "collapsed",
+                    "borderline",
+                    "healthy"
+                  ]
+                },
+                "rationale": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "score",
+                "verdict",
+                "rationale"
+              ],
+              "additionalProperties": false
+            },
+            "motion_continuity": {
+              "type": "object",
+              "properties": {
+                "score": {
+                  "type": "number",
+                  "minimum": 0.0,
+                  "maximum": 1.0
+                },
+                "verdict": {
+                  "type": "string",
+                  "enum": [
+                    "frozen",
+                    "borderline",
+                    "active"
+                  ]
+                },
+                "rationale": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "score",
+                "verdict",
+                "rationale"
+              ],
+              "additionalProperties": false
+            },
+            "which_cut_broke": {
+              "type": "object",
+              "properties": {
+                "cut_index": {
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "confidence": {
+                  "type": "number",
+                  "minimum": 0.0,
+                  "maximum": 1.0
+                },
+                "how": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "cut_index",
+                "confidence",
+                "how"
+              ],
+              "additionalProperties": false
+            },
+            "cheat_flags": {
+              "type": "object",
+              "properties": {
+                "copy_cheat": {
+                  "type": "boolean"
+                },
+                "freeze_cheat": {
+                  "type": "boolean"
+                },
+                "prompt_collapse": {
+                  "type": "boolean"
+                },
+                "position_bias_suspected": {
+                  "type": "boolean"
+                },
+                "rationale": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "copy_cheat",
+                "freeze_cheat",
+                "prompt_collapse",
+                "position_bias_suspected",
+                "rationale"
+              ],
+              "additionalProperties": false
+            },
+            "overall_consistency_score": {
+              "type": "number",
+              "minimum": 0.0,
+              "maximum": 1.0
+            }
+          },
+          "required": [
+            "subject_identity_preserved",
+            "background_coherent",
+            "per_shot_adherence",
+            "inter_shot_diversity",
+            "motion_continuity",
+            "which_cut_broke",
+            "cheat_flags",
+            "overall_consistency_score"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "codex_prompt": "You are a held-out video consistency judge.\n\nYou will see 1-3 decoded frames per shot, in temporal shot order unless the\nfixture explicitly says it is a shuffled-order probe. Judge only perceptual\ncross-shot consistency:\n- subject_identity_preserved: whether the same central subject/object continues\n  across shot cuts.\n- background_coherent: whether the same scene/place/event persists.\n- per_shot_adherence: whether each shot still follows its own caption.\n- inter_shot_diversity: whether the shots preserve legitimate requested camera,\n  action, composition, and scene variation instead of collapsing toward the same\n  looking shot.\n- motion_continuity: whether the sampled sequence shows plausible motion/change\n  for the captions instead of becoming frozen or near-static.\n- which_cut_broke: the cut index i for transition shot i -> i+1 that most\n  clearly broke consistency, or null if no cut broke.\n- cheat_flags: flag copy/freeze/prompt-collapse cheats. Do not reward a copied\n  frame sequence when captions ask for distinct actions or camera views.\n\nDo not penalize a legitimate camera/viewpoint/framing change by itself. Do\npenalize any apparent consistency gain that comes from reducing inter-shot\ndiversity or motion. Return only the strict JSON object required by the\nresponse schema.\n\nFixture: copy_cheat\nDescription: All shots are pixel-identical despite captions asking for different views/actions.\nImages are attached in exact shot order. Return only JSON matching the output schema.\nSHOT 0 CAPTION: Wide kitchen view of the red robot standing still.\nFrame marker: shot=0, frame=0, file=shot0_frame0.png\nSHOT 1 CAPTION: Close-up side view of the red robot moving right.\nFrame marker: shot=1, frame=0, file=shot1_frame0.png\nSHOT 2 CAPTION: Overhead view of the red robot reaching the counter.\nFrame marker: shot=2, frame=0, file=shot2_frame0.png",
+    "codex_images": [
+      "docs/round18_bench_20260701/iter01/judge_revalidation/codex_exec/judge_validation_frames/copy_cheat/shot0_frame0.png",
+      "docs/round18_bench_20260701/iter01/judge_revalidation/codex_exec/judge_validation_frames/copy_cheat/shot1_frame0.png",
+      "docs/round18_bench_20260701/iter01/judge_revalidation/codex_exec/judge_validation_frames/copy_cheat/shot2_frame0.png"
+    ]
+  },
+  "client": {
+    "provider": "codex_exec_oauth",
+    "command": "codex exec --output-schema ... --image ...",
+    "auth": "reused Codex login through codex CLI; no token file extraction",
+    "codex_bin": "/home/chendong/.nvm/versions/node/v22.17.0/bin/codex",
+    "model": "gpt-5.5",
+    "last_command": null
+  },
+  "response": {
+    "output_text": "{\"subject_identity_preserved\": {\"score\": 1, \"verdict\": \"high\", \"rationale\": \"The same red robot remains centered in all shots.\"}, \"background_coherent\": {\"score\": 1, \"verdict\": \"high\", \"rationale\": \"The kitchen/background elements are unchanged across shots.\"}, \"per_shot_adherence\": [{\"shot_index\": 0, \"score\": 0.9, \"issue\": \"Matches a wide kitchen view with the red robot standing still.\"}, {\"shot_index\": 1, \"score\": 0.15, \"issue\": \"Does not show a close-up side view or any rightward motion; it is the same wide front view as shot 0.\"}, {\"shot_index\": 2, \"score\": 0.1, \"issue\": \"Does not show an overhead view or the robot reaching the counter; it repeats the same composition.\"}], \"inter_shot_diversity\": {\"score\": 0, \"verdict\": \"collapsed\", \"rationale\": \"All shots are pixel-identical despite captions requesting different views and actions.\"}, \"motion_continuity\": {\"score\": 0, \"verdict\": \"frozen\", \"rationale\": \"No perceptual motion or state change appears across the sampled sequence.\"}, \"which_cut_broke\": {\"cut_index\": 0, \"confidence\": 0.98, \"how\": \"The first transition already collapses: shot 1 should change to a close-up side moving view but exactly repeats shot 0.\"}, \"cheat_flags\": {\"copy_cheat\": true, \"freeze_cheat\": true, \"prompt_collapse\": true, \"position_bias_suspected\": true, \"rationale\": \"The sequence appears copied/frozen with identical subject placement, background, and composition across captions requiring distinct camera views and actions.\"}, \"overall_consistency_score\": 0.18}",
+    "usage": {
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "total_tokens": 0
+    },
+    "raw_response": {
+      "stdout_prefix": "{\"subject_identity_preserved\":{\"score\":1,\"verdict\":\"high\",\"rationale\":\"The same red robot remains centered in all shots.\"},\"background_coherent\":{\"score\":1,\"verdict\":\"high\",\"rationale\":\"The kitchen/background elements are unchanged across shots.\"},\"per_shot_adherence\":[{\"shot_index\":0,\"score\":0.9,\"issue\":\"Matches a wide kitchen view with the red robot standing still.\"},{\"shot_index\":1,\"score\":0.15,\"issue\":\"Does not show a close-up side view or any rightward motion; it is the same wide front view as shot 0.\"},{\"shot_index\":2,\"score\":0.1,\"issue\":\"Does not show an overhead view or the robot reaching the counter; it repeats the same composition.\"}],\"inter_shot_diversity\":{\"score\":0,\"verdict\":\"collapsed\",\"rationale\":\"All shots are pixel-identical despite captions requesting different views and actions.\"},\"motion_continuity\":{\"score\":0,\"verdict\":\"frozen\",\"rationale\":\"No perceptual motion or state change appears across the sampled sequence.\"},\"which_cut_broke\":{\"cut_index\":0,\"confidence\":0.98",
+      "stderr_prefix": "Reading prompt from stdin...\nOpenAI Codex v0.142.0\n--------\nworkdir: /home/chendong/video-gen/LongLive-RAG\nmodel: gpt-5.5\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: xhigh\nreasoning summaries: none\nsession id: 019f2191-0bca-7b62-b4ae-ffea6cd9f6b1\n--------\nuser\nYou are a held-out video consistency judge.\n\nYou will see 1-3 decoded frames per shot, in temporal shot order unless the\nfixture explicitly says it is a shuffled-order probe. Judge only perceptual\ncross-shot consistency:\n- subject_identity_preserved: whether the same central subject/object continues\n  across shot cuts.\n- background_coherent: whether the same scene/place/event persists.\n- per_shot_adherence: whether each shot still follows its own caption.\n- inter_shot_diversity: whether the shots preserve legitimate requested camera,\n  action, composition, and scene variation instead of collapsing toward the same\n  looking shot.\n- motion_continuity: whether the sampled sequence shows plausible motion/cha"
+    },
+    "client": {
+      "provider": "codex_exec_oauth",
+      "command": "codex exec --output-schema ... --image ...",
+      "auth": "reused Codex login through codex CLI; no token file extraction",
+      "codex_bin": "/home/chendong/.nvm/versions/node/v22.17.0/bin/codex",
+      "model": "gpt-5.5",
+      "last_command": {
+        "argv_redacted": [
+          "/home/chendong/.nvm/versions/node/v22.17.0/bin/codex",
+          "exec",
+          "-C",
+          "/home/chendong/video-gen/LongLive-RAG",
+          "--sandbox",
+          "read-only",
+          "--ephemeral",
+          "--output-schema",
+          "docs/round18_bench_20260701/iter01/judge_revalidation/codex_exec/judge_validation_transcripts/codex_judge_schema.json",
+          "--output-last-message",
+          "docs/round18_bench_20260701/iter01/judge_revalidation/codex_exec/judge_validation_transcripts/codex_copy_cheat_last_message.json",
+          "--model",
+          "gpt-5.5",
+          "--image",
+          "<image-path>",
+          "--image",
+          "<image-path>",
+          "--image",
+          "<image-path>",
+          "-"
+        ],
+        "schema_path": "docs/round18_bench_20260701/iter01/judge_revalidation/codex_exec/judge_validation_transcripts/codex_judge_schema.json",
+        "output_path": "docs/round18_bench_20260701/iter01/judge_revalidation/codex_exec/judge_validation_transcripts/codex_copy_cheat_last_message.json",
+        "returncode": 0,
+        "stderr_prefix": "Reading prompt from stdin...\nOpenAI Codex v0.142.0\n--------\nworkdir: /home/chendong/video-gen/LongLive-RAG\nmodel: gpt-5.5\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: xhigh\nreasoning summaries: none\nsession id: 019f2191-0bca-7b62-b4ae-ffea6cd9f6b1\n--------\nuser\nYou are a held-out video consistency judge.\n\nYou will see 1-3 decoded frames per shot, in temporal shot order unless the\nfixture explicitly says it is a shuffled-order probe. Judge only perceptual\ncross-shot consistency:\n- subject_identity_preserved: whether the same central subject/object continues\n  across shot cuts.\n- background_coherent: whether the same scene/place/event persists.\n- per_shot_adherence: whether each shot still follows its own caption.\n- inter_shot_diversity: whether the shots preserve legitimate requested camera,\n  action, composition, and scene variation instead of collapsing toward the same\n  looking shot.\n- motion_continuity: whether the sampled sequence shows plausible motion/cha"
+      }
+    }
+  },
+  "verdict": {
+    "subject_identity_preserved": {
+      "score": 1,
+      "verdict": "high",
+      "rationale": "The same red robot remains centered in all shots."
+    },
+    "background_coherent": {
+      "score": 1,
+      "verdict": "high",
+      "rationale": "The kitchen/background elements are unchanged across shots."
+    },
+    "per_shot_adherence": [
+      {
+        "shot_index": 0,
+        "score": 0.9,
+        "issue": "Matches a wide kitchen view with the red robot standing still."
+      },
+      {
+        "shot_index": 1,
+        "score": 0.15,
+        "issue": "Does not show a close-up side view or any rightward motion; it is the same wide front view as shot 0."
+      },
+      {
+        "shot_index": 2,
+        "score": 0.1,
+        "issue": "Does not show an overhead view or the robot reaching the counter; it repeats the same composition."
+      }
+    ],
+    "inter_shot_diversity": {
+      "score": 0,
+      "verdict": "collapsed",
+      "rationale": "All shots are pixel-identical despite captions requesting different views and actions."
+    },
+    "motion_continuity": {
+      "score": 0,
+      "verdict": "frozen",
+      "rationale": "No perceptual motion or state change appears across the sampled sequence."
+    },
+    "which_cut_broke": {
+      "cut_index": 0,
+      "confidence": 0.98,
+      "how": "The first transition already collapses: shot 1 should change to a close-up side moving view but exactly repeats shot 0."
+    },
+    "cheat_flags": {
+      "copy_cheat": true,
+      "freeze_cheat": true,
+      "prompt_collapse": true,
+      "position_bias_suspected": true,
+      "rationale": "The sequence appears copied/frozen with identical subject placement, background, and composition across captions requiring distinct camera views and actions."
+    },
+    "overall_consistency_score": 0.18
+  },
+  "expectation_ok": true,
+  "expectation_message": "copy/freeze cheat expected, got flags={'copy_cheat': True, 'freeze_cheat': True, 'prompt_collapse': True, 'position_bias_suspected': True, 'rationale': 'The sequence appears copied/frozen with identical subject placement, background, and composition across captions requiring distinct camera views and actions.'}"
+}
