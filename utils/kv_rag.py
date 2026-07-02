@@ -415,8 +415,13 @@ class KVRAGMemory:
         # new perspective's window only by numeric coincidence across DIFFERENT
         # videos, not a real double-count. Set by _reset_kv_rag_keep_scene.
         self._scene_cross_clock = False
-        self._manual_anchor_plan = self._load_manual_anchor_plan(config.manual_anchor_plan_path)
+        self._manual_anchor_plan, self._manual_anchor_plan_scenes = self._load_manual_anchor_plan(
+            config.manual_anchor_plan_path
+        )
         self.manual_anchor_events: list[dict[str, object]] = []
+        # Current sample/scene identifier so per-scene manual plans resolve to the
+        # right scene; set from the driver right before each sample's inference().
+        self._scene_name: str | None = None
         self._runtime_context = {
             "chunk_index": None,
             "shot_index": None,
@@ -467,15 +472,7 @@ class KVRAGMemory:
         self._store_dtype = _dtype_from_name(config.store_dtype)
 
     @staticmethod
-    def _load_manual_anchor_plan(path_value: str | None) -> dict[int, list[int]]:
-        if not path_value:
-            return {}
-        path = Path(str(path_value)).expanduser()
-        try:
-            data = json.loads(path.read_text(encoding="utf-8"))
-        except Exception:
-            return {}
-        raw = data.get("boundaries", data) if isinstance(data, dict) else {}
+    def _parse_boundary_map(raw: object) -> dict[int, list[int]]:
         out: dict[int, list[int]] = {}
         if not isinstance(raw, dict):
             return out
@@ -496,6 +493,34 @@ class KVRAGMemory:
             if frames:
                 out[boundary_idx] = sorted(set(f for f in frames if f >= 0))
         return out
+
+    @classmethod
+    def _load_manual_anchor_plan(
+        cls, path_value: str | None
+    ) -> tuple[dict[int, list[int]], dict[str, dict[int, list[int]]]]:
+        """Parse a manual anchor plan file.
+
+        Returns ``(global_plan, per_scene_plans)``. Legacy files carry one
+        boundary->frames map under ``boundaries`` (or at top level); v2 files add
+        ``scenes: {scene_name: {boundary: [frames]}}`` so each scene gets the
+        anchors chosen FOR it instead of a cross-scene union.
+        """
+        if not path_value:
+            return {}, {}
+        path = Path(str(path_value)).expanduser()
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except Exception:
+            return {}, {}
+        if not isinstance(data, dict):
+            return {}, {}
+        scenes: dict[str, dict[int, list[int]]] = {}
+        for name, raw in (data.get("scenes") or {}).items() if isinstance(data.get("scenes"), dict) else []:
+            parsed = cls._parse_boundary_map(raw)
+            if parsed:
+                scenes[str(name)] = parsed
+        global_plan = cls._parse_boundary_map(data.get("boundaries", data))
+        return global_plan, scenes
 
     @staticmethod
     def _validate_config(config: KVRAGConfig) -> None:
@@ -581,6 +606,30 @@ class KVRAGMemory:
             "shot_index": shot_index,
             "phase": phase,
         }
+
+    def set_scene_name(self, name: str | None) -> None:
+        """Identify the sample being generated so per-scene manual plans apply.
+
+        Survives clear()/reset between shots; only the next set_scene_name call
+        replaces it. A None or unmatched name falls back to the global plan.
+        """
+        self._scene_name = str(name) if name else None
+
+    def _manual_plan_for_current_scene(self) -> dict[int, list[int]]:
+        if self._manual_anchor_plan_scenes:
+            name = self._scene_name or ""
+            if name in self._manual_anchor_plan_scenes:
+                return self._manual_anchor_plan_scenes[name]
+            # Sample names embed the prompt-folder scene token between '-'
+            # delimiters (e.g. "kv_only-rank0-african_savanna-seed0"), so match
+            # the token delimiter-bounded — plain containment would let a scene
+            # named "cat" claim "cathedral" samples. Longest key first so a
+            # scene whose name is a substring of another cannot shadow it.
+            bounded = f"-{name}-"
+            for scene in sorted(self._manual_anchor_plan_scenes, key=len, reverse=True):
+                if scene and f"-{scene}-" in bounded:
+                    return self._manual_anchor_plan_scenes[scene]
+        return self._manual_anchor_plan
 
     def mark_scene_cross_clock(self) -> None:
         """Flag that the scene partition now spans a per-video token-clock restart.
@@ -1042,7 +1091,7 @@ class KVRAGMemory:
             shot = int(shot_index)
         except Exception:
             return None
-        requested = list(self._manual_anchor_plan.get(shot, []))
+        requested = list(self._manual_plan_for_current_scene().get(shot, []))
         if not requested:
             return None
         self.stats["manual_anchor_requested_frames"] += len(requested)
@@ -1069,6 +1118,11 @@ class KVRAGMemory:
             if len(self.manual_anchor_events) < 128:
                 self.manual_anchor_events.append({
                     "shot_index": shot,
+                    "scene_name": self._scene_name,
+                    "plan_source": "per_scene" if (
+                        self._manual_anchor_plan_scenes
+                        and self._manual_plan_for_current_scene() is not self._manual_anchor_plan
+                    ) else "global",
                     "requested_frames": requested,
                     "selected_source_frames": [
                         list(entry.source_frame_indices) for entry in selected

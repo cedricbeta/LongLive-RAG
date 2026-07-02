@@ -189,6 +189,23 @@ def parse_args() -> argparse.Namespace:
                         help="Fail closed unless the admission JSON provides at least this many main scenes.")
     parser.add_argument("--primary_logit_bias_lambda", type=float, default=1.0,
                         help="Persistent logit-bias lambda for primary kv_only/both arms.")
+    parser.add_argument("--kv_selection_mode", default="per_boundary",
+                        choices=("per_boundary", "legacy_single_call"),
+                        help="per_boundary: one retrieval-style VLM call per shot boundary with "
+                             "candidate thumbnails (per-scene plans). legacy_single_call: whole "
+                             "plan in the diagnosis call (Round 17 behaviour).")
+    parser.add_argument("--kv_candidate_frames_per_shot", type=int, default=6,
+                        help="Denser per-shot sampling used only as candidate thumbnails for "
+                             "per-boundary KV selection.")
+    parser.add_argument("--prompt_review", default="on", choices=("on", "off"),
+                        help="Independent VLM review of proposed prompt additions against the "
+                             "authored invariants (drop/rewrite contradictions).")
+    parser.add_argument("--optimizer_video_dir", default=None,
+                        help="Directory of renders the OPTIMIZER watches (multi-pass feedback: "
+                             "point at a prior round's arm dir). Judges/metrics still compare "
+                             "against the baseline. Default: the baseline dir.")
+    parser.add_argument("--optimizer_video_prefix", default=None,
+                        help="Filename prefix inside --optimizer_video_dir (e.g. 'both').")
     return parser.parse_args()
 
 
@@ -419,6 +436,39 @@ def _extract_json(text: str) -> dict[str, Any]:
         raise
 
 
+def _post_chat(base_url: str, payload: dict[str, Any], timeout: int) -> dict[str, Any]:
+    req = urllib.request.Request(
+        f"{base_url}/chat/completions",
+        data=json.dumps(payload).encode("utf-8"),
+        headers={"Content-Type": "application/json"},
+        method="POST",
+    )
+    with urllib.request.urlopen(req, timeout=timeout) as response:
+        return json.loads(response.read().decode("utf-8"))
+
+
+def qwen_call_fingerprint(
+    *,
+    model: str,
+    prompt: str,
+    image_paths: list[Path],
+    json_schema: dict[str, Any] | None,
+) -> str:
+    """Content hash of everything that determines a Qwen call's output.
+
+    Image ORDER matters (labels like Q0/C3 refer to positions), so hash the
+    ordered list of per-image digests, not a set."""
+    import hashlib
+
+    payload = json.dumps({
+        "model": model,
+        "prompt": prompt,
+        "images": [file_sha256(p) for p in image_paths],
+        "schema": json_schema,
+    }, sort_keys=True)
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
 def qwen_chat_json(
     *,
     base_url: str,
@@ -427,27 +477,57 @@ def qwen_chat_json(
     image_paths: list[Path],
     transcript_path: Path,
     timeout: int = 240,
+    json_schema: dict[str, Any] | None = None,
+    max_parse_retries: int = 1,
 ) -> dict[str, Any]:
     content: list[dict[str, Any]] = [{"type": "text", "text": prompt}]
     for path in image_paths:
         content.append({"type": "image_url", "image_url": {"url": _image_data_uri(path)}})
-    payload = {
+    payload: dict[str, Any] = {
         "model": model,
         "messages": [{"role": "user", "content": content}],
         "temperature": 0,
         "max_tokens": 1800,
     }
-    req = urllib.request.Request(
-        f"{base_url}/chat/completions",
-        data=json.dumps(payload).encode("utf-8"),
-        headers={"Content-Type": "application/json"},
-        method="POST",
-    )
+    schema_active = bool(json_schema)
+    if schema_active:
+        payload["response_format"] = {
+            "type": "json_schema",
+            "json_schema": {"name": "decision", "schema": json_schema, "strict": True},
+        }
     started = time.time()
-    with urllib.request.urlopen(req, timeout=timeout) as response:
-        raw = json.loads(response.read().decode("utf-8"))
-    message = raw["choices"][0]["message"]["content"]
-    parsed = _extract_json(message)
+    attempts: list[dict[str, Any]] = []
+    parsed: dict[str, Any] | None = None
+    raw: dict[str, Any] = {}
+    for attempt in range(int(max_parse_retries) + 1):
+        try:
+            raw = _post_chat(base_url, payload, timeout)
+        except urllib.error.HTTPError as exc:
+            # Older SGLang builds reject response_format for VLMs; drop the
+            # constraint once and rely on prompt + parse-retry instead.
+            if schema_active and exc.code in (400, 422):
+                attempts.append({"attempt": attempt, "error": f"HTTP {exc.code}: response_format rejected"})
+                payload.pop("response_format", None)
+                schema_active = False
+                raw = _post_chat(base_url, payload, timeout)
+            else:
+                raise
+        message = raw["choices"][0]["message"]["content"]
+        try:
+            parsed = _extract_json(message)
+            break
+        except Exception as exc:
+            attempts.append({"attempt": attempt, "error": f"json parse failed: {exc}", "raw_text": str(message)[:2000]})
+            if attempt >= int(max_parse_retries):
+                raise
+            payload["messages"].append({"role": "assistant", "content": str(message)})
+            payload["messages"].append({
+                "role": "user",
+                "content": (
+                    f"Your previous reply was not valid JSON ({exc}). "
+                    "Reply again with ONLY the JSON object, no prose, no code fences."
+                ),
+            })
     transcript_path.parent.mkdir(parents=True, exist_ok=True)
     safe_payload = copy.deepcopy(payload)
     safe_payload["messages"][0]["content"] = [
@@ -458,8 +538,13 @@ def qwen_chat_json(
         "request": safe_payload,
         "image_paths": [str(p) for p in image_paths],
         "image_hashes": {str(p): file_sha256(p) for p in image_paths},
+        "cache_fingerprint": qwen_call_fingerprint(
+            model=model, prompt=prompt, image_paths=image_paths, json_schema=json_schema
+        ),
         "response": raw,
         "parsed": parsed,
+        "schema_enforced": schema_active,
+        "parse_attempts": attempts,
         "wall_clock_seconds": time.time() - started,
     })
     return {"parsed": parsed, "raw": raw, "transcript": str(transcript_path), "wall_clock_seconds": time.time() - started}
@@ -587,6 +672,86 @@ def candidate_frames_by_boundary(shot_records: list[dict[str, Any]], *, local_at
     return out
 
 
+OPTIMIZER_DIAGNOSIS_SCHEMA: dict[str, Any] = {
+    "type": "object",
+    "additionalProperties": False,
+    "properties": {
+        "which_cut_broke": {
+            "type": "object",
+            "additionalProperties": False,
+            "properties": {
+                "cut_index": {"type": ["integer", "null"]},
+                "how": {"type": "string"},
+            },
+            "required": ["cut_index", "how"],
+        },
+        "global_invariant_additions": {"type": "array", "items": {"type": "string"}},
+        "per_shot_additions": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": False,
+                "properties": {
+                    "shot_index": {"type": "integer"},
+                    "text": {"type": "string"},
+                    "rationale": {"type": "string"},
+                },
+                "required": ["shot_index", "text", "rationale"],
+            },
+        },
+        "kv_anchor_plan": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": False,
+                "properties": {
+                    "boundary_shot_index": {"type": "integer"},
+                    "decoded_frame_indices": {"type": "array", "items": {"type": "integer"}},
+                    "rationale": {"type": "string"},
+                },
+                "required": ["boundary_shot_index", "decoded_frame_indices", "rationale"],
+            },
+        },
+        "stop_rule": {"type": "string"},
+    },
+    "required": ["which_cut_broke", "global_invariant_additions", "per_shot_additions", "kv_anchor_plan", "stop_rule"],
+}
+
+BOUNDARY_SELECT_SCHEMA: dict[str, Any] = {
+    "type": "object",
+    "additionalProperties": False,
+    "properties": {
+        "selected_frame_indices": {"type": "array", "items": {"type": "integer"}},
+        "skip": {"type": "boolean"},
+        "rationale": {"type": "string"},
+    },
+    "required": ["selected_frame_indices", "skip", "rationale"],
+}
+
+PROMPT_REVIEW_SCHEMA: dict[str, Any] = {
+    "type": "object",
+    "additionalProperties": False,
+    "properties": {
+        "verdicts": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": False,
+                "properties": {
+                    "index": {"type": "integer"},
+                    "target": {"type": "string", "enum": ["global", "per_shot"]},
+                    "verdict": {"type": "string", "enum": ["keep", "drop", "rewrite"]},
+                    "text": {"type": "string"},
+                    "reason": {"type": "string"},
+                },
+                "required": ["index", "target", "verdict", "text", "reason"],
+            },
+        },
+    },
+    "required": ["verdicts"],
+}
+
+
 def build_optimizer_prompt(
     scene: str,
     spec: dict[str, Any],
@@ -594,6 +759,7 @@ def build_optimizer_prompt(
     candidates: dict[int, list[int]],
     *,
     anchor_cap: int,
+    include_kv_plan: bool = True,
 ) -> str:
     lines = [
         "You are the LOCAL Qwen3-VL optimizer, not the held-out judge.",
@@ -603,12 +769,29 @@ def build_optimizer_prompt(
         '  "which_cut_broke": {"cut_index": integer_or_null, "how": "short reason"},',
         '  "global_invariant_additions": ["additive invariant text", ...],',
         '  "per_shot_additions": [{"shot_index": 0, "text": "additive invariant text", "rationale": "why"}, ...],',
-        '  "kv_anchor_plan": [{"boundary_shot_index": 1, "decoded_frame_indices": [0], "rationale": "why"}, ...],',
+    ]
+    if include_kv_plan:
+        lines.append('  "kv_anchor_plan": [{"boundary_shot_index": 1, "decoded_frame_indices": [0], "rationale": "why"}, ...],')
+    else:
+        lines.append('  "kv_anchor_plan": [],')
+    lines += [
         '  "stop_rule": "one bounded refinement round"',
         "}",
         "Rules: ADD subject/scene invariants only. Do not delete or weaken per-shot camera/action.",
-        "Do not collapse shots into near-identical text. Choose only listed decoded frame indices.",
-        f"Cap KV anchors to {anchor_cap} frames per boundary. Use only source shots outside the live local window.",
+        "Invariant additions must RESTATE or SHARPEN the authored global invariant below.",
+        "If the rendered video contradicts that invariant (wrong clothing/color/object), that is a",
+        "defect to FIX: re-assert the authored invariant. NEVER codify the rendered appearance when",
+        "it conflicts with the authored invariant.",
+        "Do not collapse shots into near-identical text.",
+    ]
+    if include_kv_plan:
+        lines += [
+            "Choose only listed decoded frame indices.",
+            f"Cap KV anchors to {anchor_cap} frames per boundary. Use only source shots outside the live local window.",
+        ]
+    else:
+        lines.append("KV anchors are chosen in a separate per-boundary pass; return an empty kv_anchor_plan.")
+    lines += [
         f"Scene: {scene}",
         f"Global invariant: {spec.get('invariant_caption') or spec.get('global_caption') or ''}",
     ]
@@ -617,8 +800,9 @@ def build_optimizer_prompt(
         lines.append(
             f"SHOT {idx}: frames={rec.get('sampled_frame_indices', [])}; caption={caption}"
         )
-    for boundary, frames in sorted(candidates.items()):
-        lines.append(f"KV candidates for boundary entering shot {boundary}: {frames}")
+    if include_kv_plan:
+        for boundary, frames in sorted(candidates.items()):
+            lines.append(f"KV candidates for boundary entering shot {boundary}: {frames}")
     return "\n".join(lines)
 
 
@@ -691,6 +875,311 @@ def sanitize_optimizer_decision(
     if missing_boundaries:
         notes.append(f"optimizer omitted boundaries with eligible candidates: {missing_boundaries}; left unforced")
     return decision, notes
+
+
+def qwen_chat_json_cached(
+    *,
+    get_base_url,
+    model: str,
+    prompt: str,
+    image_paths: list[Path],
+    transcript_path: Path,
+    timeout: int = 240,
+    json_schema: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Serve a prior transcript only when its content fingerprint (model + prompt
+    text + ordered image hashes + schema) matches this call exactly; otherwise
+    make the live call (starting the server lazily via get_base_url). Transcripts
+    written before fingerprints existed never match, so they are recomputed
+    instead of silently reused across prompt or mode changes."""
+    if transcript_path.exists():
+        try:
+            cached = load_json(transcript_path)
+            parsed = cached.get("parsed")
+            fingerprint = qwen_call_fingerprint(
+                model=model, prompt=prompt, image_paths=image_paths, json_schema=json_schema
+            )
+            if isinstance(parsed, dict) and cached.get("cache_fingerprint") == fingerprint:
+                return {
+                    "parsed": parsed,
+                    "raw": cached.get("response"),
+                    "transcript": str(transcript_path),
+                    "wall_clock_seconds": 0.0,
+                    "cached": True,
+                }
+        except Exception:
+            pass
+    return qwen_chat_json(
+        base_url=get_base_url(),
+        model=model,
+        prompt=prompt,
+        image_paths=image_paths,
+        transcript_path=transcript_path,
+        timeout=timeout,
+        json_schema=json_schema,
+    )
+
+
+def sanitize_boundary_selection(
+    raw: dict[str, Any],
+    *,
+    boundary: int,
+    allowed: list[int],
+    anchor_cap: int,
+) -> tuple[dict[str, Any] | None, list[str]]:
+    """Validate one per-boundary selection: snap to eligible frames, dedup, cap."""
+    notes: list[str] = []
+    if not allowed:
+        return None, notes
+    if bool(raw.get("skip")):
+        return None, [f"boundary {boundary}: optimizer skipped ({str(raw.get('rationale', ''))[:160]})"]
+    chosen: list[int] = []
+    for frame in raw.get("selected_frame_indices", []) if isinstance(raw.get("selected_frame_indices"), list) else []:
+        try:
+            f = int(frame)
+        except Exception:
+            continue
+        if f not in allowed:
+            nearest = min(allowed, key=lambda x: abs(int(x) - f))
+            notes.append(f"boundary {boundary}: snapped invalid frame {f} to {nearest}")
+            f = nearest
+        if f not in chosen:
+            chosen.append(f)
+        if len(chosen) >= int(anchor_cap):
+            break
+    if not chosen:
+        return None, notes + [f"boundary {boundary}: selection empty after sanitization"]
+    return {
+        "boundary_shot_index": int(boundary),
+        "decoded_frame_indices": chosen,
+        "rationale": str(raw.get("rationale", "")).strip(),
+    }, notes
+
+
+def build_boundary_select_prompt(
+    *,
+    scene: str,
+    spec: dict[str, Any],
+    boundary: int,
+    allowed: list[int],
+    candidate_labels: list[tuple[int, str]],
+    query_labels: list[tuple[int, str]],
+    anchor_cap: int,
+) -> str:
+    captions = spec.get("captions", [])
+    entering_caption = captions[boundary] if boundary < len(captions) else ""
+    lines = [
+        "You are the LOCAL Qwen3-VL KV-anchor selector.",
+        f"Task: pick which PAST decoded frames get re-injected into the KV cache at the cut into shot {boundary},",
+        "so the subject and scene identity stay consistent across the cut.",
+        f"Scene: {scene}",
+        f"Authored invariant: {spec.get('invariant_caption') or spec.get('global_caption') or ''}",
+        f"Entering shot {boundary} caption: {entering_caption}",
+        "",
+        f"QUERY images (start of shot {boundary}, what the transition must stay consistent with):",
+    ]
+    for frame_idx, tag in query_labels:
+        lines.append(f"- image {tag}: decoded frame {frame_idx}")
+    lines.append("")
+    lines.append("CANDIDATE anchor images (past frames outside the live attention window):")
+    for frame_idx, tag in candidate_labels:
+        lines.append(f"- image {tag}: decoded frame {frame_idx}")
+    lines += [
+        "",
+        f"Choose up to {anchor_cap} candidate frames whose CONTENT best pins the subject identity",
+        "(face/clothing/markings) and scene layout for this specific cut.",
+        "Judge by what the images show, not by position in the video: an early frame is NOT",
+        "automatically better. Prefer frames with a clear, unoccluded view of the subject as it",
+        "should appear entering this shot. Skip only if no candidate shows the relevant subject.",
+        "Return strict JSON: {\"selected_frame_indices\": [..], \"skip\": false, \"rationale\": \"content-based reason naming what the chosen frames show\"}",
+        f"Valid frame indices: {allowed}",
+    ]
+    return "\n".join(lines)
+
+
+def select_kv_anchors_per_boundary(
+    *,
+    get_base_url,
+    model: str,
+    scene: str,
+    spec: dict[str, Any],
+    diagnosis_records: list[dict[str, Any]],
+    candidate_records: list[dict[str, Any]],
+    candidates: dict[int, list[int]],
+    anchor_cap: int,
+    transcript_dir: Path,
+    timeout: int,
+) -> tuple[list[dict[str, Any]], list[str]]:
+    """One retrieval-style VLM call per shot boundary.
+
+    Every boundary with eligible candidates gets an explicit decision (select or
+    skip) -- the single-call mode silently dropped late boundaries, exactly where
+    drift accumulates.
+    """
+    frame_to_path: dict[int, Path] = {}
+    for rec in candidate_records:
+        for frame_idx, path in zip(rec.get("sampled_frame_indices", []), rec.get("paths", [])):
+            frame_to_path[int(frame_idx)] = Path(path)
+    plan: list[dict[str, Any]] = []
+    notes: list[str] = []
+    for boundary in sorted(candidates):
+        allowed = [f for f in candidates[boundary] if f in frame_to_path]
+        dropped = sorted(set(candidates[boundary]) - set(allowed))
+        if dropped:
+            notes.append(f"boundary {boundary}: {len(dropped)} candidates lacked thumbnails; dropped {dropped[:8]}")
+        if not allowed:
+            notes.append(f"boundary {boundary}: no eligible candidates with thumbnails")
+            continue
+        query_rec = diagnosis_records[boundary] if boundary < len(diagnosis_records) else {}
+        query_paths = [Path(p) for p in (query_rec.get("paths") or [])[:2]]
+        query_frames = [int(f) for f in (query_rec.get("sampled_frame_indices") or [])[:2]]
+        images: list[Path] = []
+        query_labels: list[tuple[int, str]] = []
+        for i, (f, p) in enumerate(zip(query_frames, query_paths)):
+            images.append(p)
+            query_labels.append((f, f"Q{i}"))
+        candidate_labels: list[tuple[int, str]] = []
+        for i, f in enumerate(allowed):
+            images.append(frame_to_path[f])
+            candidate_labels.append((f, f"C{i}"))
+        prompt = build_boundary_select_prompt(
+            scene=scene,
+            spec=spec,
+            boundary=boundary,
+            allowed=allowed,
+            candidate_labels=candidate_labels,
+            query_labels=query_labels,
+            anchor_cap=anchor_cap,
+        )
+        qres = qwen_chat_json_cached(
+            get_base_url=get_base_url,
+            model=model,
+            prompt=prompt,
+            image_paths=images,
+            transcript_path=transcript_dir / f"{scene}__boundary{boundary:02d}.json",
+            timeout=timeout,
+            json_schema=BOUNDARY_SELECT_SCHEMA,
+        )
+        item, item_notes = sanitize_boundary_selection(
+            qres["parsed"] or {},
+            boundary=boundary,
+            allowed=allowed,
+            anchor_cap=anchor_cap,
+        )
+        notes.extend(item_notes)
+        if item:
+            plan.append(item)
+    return plan, notes
+
+
+def build_prompt_review_prompt(
+    *,
+    scene: str,
+    spec: dict[str, Any],
+    global_additions: list[str],
+    per_shot_additions: list[dict[str, Any]],
+) -> str:
+    lines = [
+        "You are an independent REVIEWER of proposed prompt edits (not their author).",
+        "The authored invariants below are the ground truth of what the video MUST show.",
+        f"Scene: {scene}",
+        f"Authored global caption: {spec.get('global_caption') or ''}",
+        f"Authored invariant: {spec.get('invariant_caption') or ''}",
+        "",
+        "Proposed additions:",
+    ]
+    for i, text in enumerate(global_additions):
+        lines.append(f"- [global #{i}] {text}")
+    for i, item in enumerate(per_shot_additions):
+        lines.append(f"- [per_shot #{i} shot={item.get('shot_index')}] {item.get('text')}")
+    lines += [
+        "",
+        "For EACH addition return a verdict:",
+        "- keep: consistent with the authored invariants (may sharpen them).",
+        "- rewrite: contradicts an authored invariant (e.g. different clothing/color/object than",
+        "  authored) or drifts toward what a flawed render showed; provide `text` restating the",
+        "  AUTHORED invariant for that aspect instead.",
+        "- drop: unrelated to invariants, collapses shot diversity, or is unsalvageable.",
+        "For keep/drop verdicts set `text` to the original addition text unchanged.",
+        "Return strict JSON: {\"verdicts\": [{\"index\": 0, \"target\": \"global\"|\"per_shot\",",
+        "\"verdict\": \"keep\"|\"drop\"|\"rewrite\", \"text\": \"...\", \"reason\": \"...\"}]}",
+        "Cover every addition exactly once.",
+    ]
+    return "\n".join(lines)
+
+
+def apply_review_verdicts(
+    decision: dict[str, Any],
+    verdicts: list[dict[str, Any]],
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    """Apply reviewer verdicts to a sanitized decision; unreviewed additions keep."""
+    global_adds = list(decision.get("global_invariant_additions", []))
+    per_shot = [dict(item) for item in decision.get("per_shot_additions", [])]
+    record: dict[str, Any] = {"applied": [], "invalid": []}
+    for v in verdicts:
+        if not isinstance(v, dict):
+            continue
+        target = v.get("target")
+        verdict = str(v.get("verdict", "")).lower()
+        try:
+            idx = int(v.get("index"))
+        except Exception:
+            record["invalid"].append(v)
+            continue
+        rewrite_text = str(v.get("text", "")).strip()
+        if verdict not in {"keep", "drop", "rewrite"} or (verdict == "rewrite" and not rewrite_text):
+            record["invalid"].append(v)
+            continue
+        if target == "global" and 0 <= idx < len(global_adds):
+            if verdict == "drop":
+                global_adds[idx] = None
+            elif verdict == "rewrite":
+                global_adds[idx] = rewrite_text
+        elif target == "per_shot" and 0 <= idx < len(per_shot):
+            if verdict == "drop":
+                per_shot[idx] = None
+            elif verdict == "rewrite":
+                per_shot[idx]["text"] = rewrite_text
+        else:
+            record["invalid"].append(v)
+            continue
+        record["applied"].append({k: v.get(k) for k in ("index", "target", "verdict", "reason")})
+    reviewed = dict(decision)
+    reviewed["global_invariant_additions"] = [t for t in global_adds if t]
+    reviewed["per_shot_additions"] = [p for p in per_shot if p]
+    return reviewed, record
+
+
+def per_scene_anchor_plan(decisions: dict[str, dict[str, Any]], *, anchor_cap: int) -> dict[str, Any]:
+    """v2 manual plan: each scene keeps ITS OWN boundary->frames choices.
+
+    The legacy `boundaries` union stays as a fallback for samples whose name
+    matches no scene key (utils/kv_rag.py resolves scenes first, then falls
+    back to it)."""
+    scenes: dict[str, dict[str, list[dict[str, int]]]] = {}
+    union: dict[int, list[int]] = {}
+    for scene, decision in decisions.items():
+        per_boundary: dict[str, list[dict[str, int]]] = {}
+        for item in decision.get("kv_anchor_plan", []):
+            boundary = int(item["boundary_shot_index"])
+            frames = [int(f) for f in item.get("decoded_frame_indices", [])][: int(anchor_cap)]
+            if frames:
+                per_boundary[str(boundary)] = [{"frame_index": f} for f in frames]
+                union.setdefault(boundary, []).extend(frames)
+        if per_boundary:
+            scenes[scene] = per_boundary
+    boundaries: dict[str, list[dict[str, int]]] = {}
+    for boundary, frames in sorted(union.items()):
+        unique = sorted(set(frames))[: int(anchor_cap)]
+        boundaries[str(boundary)] = [{"frame_index": f} for f in unique]
+    return {
+        "version": 2,
+        "source": "qwen3_vl_per_boundary_retrieval",
+        "aggregation": "per-scene boundary plans; legacy `boundaries` union is fallback only",
+        "anchor_cap": int(anchor_cap),
+        "scenes": scenes,
+        "boundaries": boundaries,
+    }
 
 
 def load_optimizer_decisions_from_transcripts(
@@ -1381,7 +1870,9 @@ def main() -> int:
         "explicit_scene_cap": int(args.max_scenes),
     }
 
-    qwen_proc: subprocess.Popen | None = None
+    # Declared before try so `finally` can terminate a lazily-started server even
+    # when the optimizer loop raises mid-scene.
+    qwen_state: dict[str, Any] = {"proc": None, "meta": None, "base_url": None}
     qwen_meta: dict[str, Any] | None = None
     generation: dict[str, Any] = {"runs": {}, "skipped_generation": bool(args.skip_generation)}
     optimizer_decisions: dict[str, Any] = {}
@@ -1398,15 +1889,41 @@ def main() -> int:
         anchor_plan_path = output_root / "manual_anchor_plan.json"
         prior_ledger_path = output_root / "ledger.json"
         eval_scenes = admitted + negatives
+        # Everything that changes what the optimizer would produce; resume is
+        # only valid when a prior run recorded the SAME configuration.
+        optimizer_marker_path = output_root / "optimizer_config.json"
+        optimizer_config_expected = {
+            "kv_selection_mode": args.kv_selection_mode,
+            "prompt_review": args.prompt_review,
+            "kv_anchor_cap": int(args.kv_anchor_cap),
+            "optimizer_frames_per_shot": int(args.optimizer_frames_per_shot),
+            "kv_candidate_frames_per_shot": int(args.kv_candidate_frames_per_shot),
+            "qwen_model": args.qwen_model,
+            "optimizer_video_dir": str(args.optimizer_video_dir) if args.optimizer_video_dir else None,
+            "optimizer_video_prefix": args.optimizer_video_prefix or None,
+            "baseline_seed": int(args.baseline_seed),
+        }
+        prior_optimizer_config = (
+            load_json(optimizer_marker_path) if optimizer_marker_path.exists() else None
+        )
         can_resume_optimizer = (
             args.resume
+            and prior_optimizer_config == optimizer_config_expected
             and (output_root / "optimizer_decisions.json").exists()
             and anchor_plan_path.exists()
             and refined_prompt_dir.exists()
             and original_prompt_dir.exists()
         )
+        if args.resume and prior_optimizer_config is not None and prior_optimizer_config != optimizer_config_expected:
+            print(
+                "[vlm-ablation] optimizer config changed since prior run; "
+                "recomputing optimizer artifacts instead of resuming",
+                flush=True,
+            )
         can_resume_transcripts = (
             args.resume
+            and args.kv_selection_mode == "legacy_single_call"
+            and args.prompt_review == "off"
             and all(
                 (output_root / "qwen3_optimizer" / "transcripts" / f"{scene}.json").exists()
                 for scene in eval_scenes
@@ -1447,6 +1964,7 @@ def main() -> int:
                 anchor_cap=args.kv_anchor_cap,
             )
             write_json(anchor_plan_path, anchor_plan)
+            write_json(optimizer_marker_path, optimizer_config_expected)
             qwen_meta = {
                 "reused_transcripts": True,
                 "transcript_dir": str(output_root / "qwen3_optimizer" / "transcripts"),
@@ -1454,11 +1972,21 @@ def main() -> int:
             }
             generation["resumed_optimizer_transcripts"] = True
         else:
-            qwen_proc, qwen_meta = start_qwen3_server(args, gpu["optimizer_gpu"], output_root)
-            base_url = qwen_meta["launch"]["base_url"]
+            def get_base_url() -> str:
+                if qwen_state["base_url"] is None:
+                    proc, meta = start_qwen3_server(args, gpu["optimizer_gpu"], output_root)
+                    qwen_state.update(proc=proc, meta=meta, base_url=meta["launch"]["base_url"])
+                return qwen_state["base_url"]
+
+            # Multi-pass feedback: the optimizer can watch a prior round's arm
+            # render instead of the baseline; judge/metrics still pair against
+            # the baseline.
+            watch_dir = Path(args.optimizer_video_dir) if args.optimizer_video_dir else baseline_dir
+            watch_prefix = args.optimizer_video_prefix or baseline_prefix
+            per_boundary = args.kv_selection_mode == "per_boundary"
 
             for scene in eval_scenes:
-                video = scene_video(baseline_dir, baseline_prefix, scene, args.baseline_seed)
+                video = scene_video(watch_dir, watch_prefix, scene, args.baseline_seed)
                 spec = build_spec_resolver(prompt_subset, with_captions=True, max_chunks=num_blocks)(video.stem)
                 sampled = sample_scene_frames(
                     video_path=video,
@@ -1466,35 +1994,98 @@ def main() -> int:
                     out_dir=output_root / "optimizer_frames" / scene,
                     frames_per_shot=args.optimizer_frames_per_shot,
                 )
-                candidates = candidate_frames_by_boundary(sampled["records"], local_attn_size=local_attn_size)
+                if per_boundary:
+                    candidate_sampled = sample_scene_frames(
+                        video_path=video,
+                        spec=spec,
+                        out_dir=output_root / "kv_candidate_frames" / scene,
+                        frames_per_shot=args.kv_candidate_frames_per_shot,
+                    )
+                    candidates = candidate_frames_by_boundary(
+                        candidate_sampled["records"], local_attn_size=local_attn_size
+                    )
+                else:
+                    candidate_sampled = None
+                    candidates = candidate_frames_by_boundary(sampled["records"], local_attn_size=local_attn_size)
                 prompt = build_optimizer_prompt(
                     scene,
                     spec,
                     sampled["records"],
                     candidates,
                     anchor_cap=args.kv_anchor_cap,
+                    include_kv_plan=not per_boundary,
                 )
                 images = [Path(p) for rec in sampled["records"] for p in rec["paths"]]
-                qres = qwen_chat_json(
-                    base_url=base_url,
+                qres = qwen_chat_json_cached(
+                    get_base_url=get_base_url,
                     model=args.qwen_model,
                     prompt=prompt,
                     image_paths=images,
                     transcript_path=output_root / "qwen3_optimizer" / "transcripts" / f"{scene}.json",
+                    json_schema=OPTIMIZER_DIAGNOSIS_SCHEMA,
                 )
                 decision, notes = sanitize_optimizer_decision(
                     qres["parsed"],
-                    candidates=candidates,
+                    # In per-boundary mode the diagnosis call owns no KV plan, so
+                    # give it no candidates: stray plan entries drop and the
+                    # "omitted boundaries" note (owned by the selection pass) is
+                    # not emitted here.
+                    candidates={} if per_boundary else candidates,
                     anchor_cap=args.kv_anchor_cap,
                     num_shots=len(spec["captions"]),
                 )
+                review_record: dict[str, Any] | None = None
+                if args.prompt_review == "on" and (
+                    decision["global_invariant_additions"] or decision["per_shot_additions"]
+                ):
+                    review_prompt = build_prompt_review_prompt(
+                        scene=scene,
+                        spec=spec,
+                        global_additions=decision["global_invariant_additions"],
+                        per_shot_additions=decision["per_shot_additions"],
+                    )
+                    rres = qwen_chat_json_cached(
+                        get_base_url=get_base_url,
+                        model=args.qwen_model,
+                        prompt=review_prompt,
+                        image_paths=[],
+                        transcript_path=output_root / "qwen3_optimizer" / "prompt_review" / f"{scene}.json",
+                        json_schema=PROMPT_REVIEW_SCHEMA,
+                    )
+                    verdicts = (rres["parsed"] or {}).get("verdicts") or []
+                    decision, review_record = apply_review_verdicts(decision, verdicts)
+                    review_record["transcript"] = rres["transcript"]
+                if per_boundary:
+                    kv_plan, kv_notes = select_kv_anchors_per_boundary(
+                        get_base_url=get_base_url,
+                        model=args.qwen_model,
+                        scene=scene,
+                        spec=spec,
+                        diagnosis_records=sampled["records"],
+                        candidate_records=candidate_sampled["records"],
+                        candidates=candidates,
+                        anchor_cap=args.kv_anchor_cap,
+                        transcript_dir=output_root / "qwen3_optimizer" / "kv_selection",
+                        timeout=240,
+                    )
+                    decision["kv_anchor_plan"] = kv_plan
+                    notes.extend(kv_notes)
                 optimizer_decisions[scene] = {
                     "decision": decision,
                     "sanitization_notes": notes,
                     "transcript": qres["transcript"],
                     "frames_shown": sampled["records"],
                     "kv_candidates": candidates,
+                    "kv_selection_mode": args.kv_selection_mode,
+                    "prompt_review": review_record,
+                    "optimizer_watched_video": str(video),
                 }
+
+            qwen_meta = qwen_state["meta"] or {
+                "reused_transcripts": True,
+                "transcript_dir": str(output_root / "qwen3_optimizer" / "transcripts"),
+                "model": args.qwen_model,
+            }
 
             prompt_diffs = apply_prompt_refinements(
                 source_prompt_dir=prompt_subset,
@@ -1506,11 +2097,13 @@ def main() -> int:
                 shutil.rmtree(original_prompt_dir)
             copy_prompt_subset(prompt_subset, eval_scenes, original_prompt_dir)
 
-            anchor_plan = universal_anchor_plan(
-                {k: v["decision"] for k, v in optimizer_decisions.items()},
-                anchor_cap=args.kv_anchor_cap,
-            )
+            plan_decisions = {k: v["decision"] for k, v in optimizer_decisions.items()}
+            if per_boundary:
+                anchor_plan = per_scene_anchor_plan(plan_decisions, anchor_cap=args.kv_anchor_cap)
+            else:
+                anchor_plan = universal_anchor_plan(plan_decisions, anchor_cap=args.kv_anchor_cap)
             write_json(anchor_plan_path, anchor_plan)
+            write_json(optimizer_marker_path, optimizer_config_expected)
 
         base_kv = _base_kv_rag_block(base_cfg)
         manual_kv = dict(DEFAULT_KV_RAG)
@@ -1708,6 +2301,7 @@ def main() -> int:
     except Exception as exc:
         blocked_reason = str(exc)
     finally:
+        qwen_proc = qwen_state["proc"]
         if qwen_proc is not None and qwen_proc.poll() is None:
             qwen_proc.terminate()
             try:

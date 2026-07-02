@@ -48,6 +48,16 @@ def _verdict(subject=0.9, background=0.9, *, copy=False, freeze=False, collapse=
             {"shot_index": 0, "score": 0.8, "issue": ""},
             {"shot_index": 1, "score": 0.8, "issue": ""},
         ],
+        "inter_shot_diversity": {
+            "score": 0.8,
+            "verdict": "healthy",
+            "rationale": "test",
+        },
+        "motion_continuity": {
+            "score": 0.8,
+            "verdict": "active",
+            "rationale": "test",
+        },
         "which_cut_broke": {"cut_index": None, "confidence": 0.0, "how": "none"},
         "cheat_flags": {
             "copy_cheat": copy,

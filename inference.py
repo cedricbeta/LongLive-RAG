@@ -631,6 +631,11 @@ for i, batch_data in tqdm(enumerate(dataloader), disable=(local_rank != 0)):
         is_first_perspective = bool(ifp.item() if hasattr(ifp, "item") else ifp)
     seed_scene_memory = (not multiview_per_perspective) or is_first_perspective
     force_scene_memory_boundary = preserve_scene_memory
+    # Per-scene manual anchor plans resolve against the sample being generated.
+    if getattr(pipeline, "kv_rag_enabled", False):
+        for bank in (getattr(pipeline, "kv_rag_pos", None), getattr(pipeline, "kv_rag_neg", None)):
+            if bank is not None:
+                bank.set_scene_name(scene_name or sample_name)
     inference_kwargs = dict(
         noise=sampled_noise,
         text_prompts=prompts,

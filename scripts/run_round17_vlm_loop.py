@@ -106,6 +106,15 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--prompt_subset", default=None, help="Debug cap; omitted means all prompt folders.")
     parser.add_argument("--rounds", type=int, default=3, help="Bounded refinement rounds, max 3.")
+    parser.add_argument("--kv_selection_mode", default="per_boundary",
+                        choices=("per_boundary", "legacy_single_call"))
+    parser.add_argument("--kv_candidate_frames_per_shot", type=int, default=6)
+    parser.add_argument("--prompt_review", default="on", choices=("on", "off"))
+    parser.add_argument("--multi_pass_watch_arm", default="both",
+                        choices=("both", "kv_only", "prompt_only", "baseline"),
+                        help="From round 2 on, the optimizer watches THIS arm's previous-round "
+                             "render (feedback loop). 'baseline' restores the old behaviour of "
+                             "re-diagnosing the untouched baseline every round.")
     parser.add_argument("--primary_logit_bias_lambda", type=float, default=1.0)
     parser.add_argument("--extra_logit_bias_lambdas", default="2", help="Final static-prompt lambda sweep.")
     parser.add_argument("--kv_anchor_cap", type=int, default=4)
@@ -221,6 +230,7 @@ def main() -> int:
     for idx in range(1, args.rounds + 1):
         iter_docs = docs_root / f"iter{idx:02d}"
         iter_videos = video_root / f"iter{idx:02d}"
+        optimizer_watch: tuple[str, str] | None = None
         if idx > 1:
             prev_videos = video_root / f"iter{idx - 1:02d}"
             admission_path = patch_admission_prompt_subset(
@@ -228,6 +238,13 @@ def main() -> int:
                 prev_videos / "prompt_refined",
                 docs_root / f"iter{idx:02d}_admission.json",
             )
+            if args.multi_pass_watch_arm != "baseline":
+                # Feedback loop: diagnose the previous round's INTERVENED render,
+                # not the untouched baseline, so later rounds target residual breaks.
+                optimizer_watch = (
+                    str(prev_videos / args.multi_pass_watch_arm),
+                    args.multi_pass_watch_arm,
+                )
         cmd = [
             sys.executable,
             "scripts/run_vlm_closed_judge_ablation.py",
@@ -271,7 +288,20 @@ def main() -> int:
             str(args.primary_logit_bias_lambda),
             "--single_seed_consistency_delta_threshold",
             str(args.single_seed_consistency_delta_threshold),
+            "--kv_selection_mode",
+            args.kv_selection_mode,
+            "--kv_candidate_frames_per_shot",
+            str(args.kv_candidate_frames_per_shot),
+            "--prompt_review",
+            args.prompt_review,
         ]
+        if optimizer_watch is not None:
+            cmd += [
+                "--optimizer_video_dir",
+                optimizer_watch[0],
+                "--optimizer_video_prefix",
+                optimizer_watch[1],
+            ]
         if args.optimizer_gpu is not None:
             cmd += ["--optimizer_gpu", str(args.optimizer_gpu)]
         if args.generator_gpu is not None:
@@ -383,6 +413,10 @@ def main() -> int:
             "extra_logit_bias_lambdas": [r["lambda"] for r in extra_records],
             "kv_anchor_cap": int(args.kv_anchor_cap),
             "optimizer_frames_per_shot": int(args.optimizer_frames_per_shot),
+            "kv_selection_mode": args.kv_selection_mode,
+            "kv_candidate_frames_per_shot": int(args.kv_candidate_frames_per_shot),
+            "prompt_review": args.prompt_review,
+            "multi_pass_watch_arm": args.multi_pass_watch_arm,
         },
         "command_args": vars(args),
     }
