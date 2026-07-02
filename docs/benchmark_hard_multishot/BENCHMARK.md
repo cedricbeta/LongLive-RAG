@@ -17,24 +17,29 @@ from the Round 17 Stage-A drift audit
 for any consistency intervention, avoiding the near-ceiling regime that made
 Rounds 13–14 unfalsifiable.
 
-| scene | baseline drift (seed 0) | role |
-| --- | --- | --- |
-| sandy_beach_driftwood | 0.637 | main |
-| indoor_tender_moment | 0.520 | main |
-| brown_bear_river | 0.454 | main |
-| vintage_archival_scene | 0.450 | main |
-| aquamarine_underwater | 0.434 | main |
-| african_savanna | 0.400 | main |
-| warm_indoor_dining | 0.399 | main |
-| bearded_watchmaker_workshop | TBD (new) | main, human fine-detail |
-| tattooed_noodle_chef | TBD (new) | main, human fine-detail |
-| shimmering_puzzle_surface | 0.267 | negative control (`negative_control: true`) |
+Multi-seed Stage A ran 2026-07-01 (seeds 0-2, 30 renders): **all 9 main
+scenes admitted**, negative control sanity-checked. Frozen per-scene numbers
+(drift = mean over seeds; win threshold = 2 x cross-seed baseline sigma,
+`threshold_source: baseline_seed_sigma`):
+
+| scene | baseline drift (seeds 0-2) | win threshold (2σ) | role |
+| --- | --- | --- | --- |
+| sandy_beach_driftwood | 0.612 | 0.045 | main |
+| bearded_watchmaker_workshop | 0.570 | 0.050 | main, human fine-detail (new) |
+| indoor_tender_moment | 0.543 | 0.044 | main |
+| aquamarine_underwater | 0.509 | 0.135 | main (noisiest — hard to win here) |
+| vintage_archival_scene | 0.500 | 0.097 | main |
+| brown_bear_river | 0.478 | 0.073 | main |
+| tattooed_noodle_chef | 0.449 | 0.066 | main, human fine-detail (new) |
+| warm_indoor_dining | 0.446 | 0.109 | main |
+| african_savanna | 0.410 | 0.018 | main (tightest floor — most sensitive) |
+| shimmering_puzzle_surface | 0.287 | 0.118 | negative control (`negative_control: true`) |
 
 The two new scenes are authored specifically around **fine human identity
 details** (beard/eyebrows/mole/glasses; tattoo/earring/bandana) because the
 Round 16/17 GPT-judge wins concentrated on exactly this kind of detail, which
-whole-frame embedding metrics are suspected to miss. Their baseline drift gets
-measured by the Stage-A run below and should be recorded here once known.
+whole-frame embedding metrics are suspected to miss. Both landed squarely in
+the hard regime (0.570 / 0.449).
 
 Deliberately excluded: `skateboarder_high_motion`, `sunlit_balcony_tour`,
 `cozy_red_room` (drift 0.25/0.20/0.11 — too close to the metric's stable
