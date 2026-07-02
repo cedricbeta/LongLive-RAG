@@ -32,6 +32,7 @@ from scripts.run_vlm_closed_judge_ablation import (
     per_scene_anchor_plan,
     qwen_call_fingerprint,
     sanitize_boundary_selection,
+    subsample_candidates,
     universal_anchor_plan,
 )
 
@@ -167,6 +168,23 @@ class ReviewGate(unittest.TestCase):
         reviewed, record = apply_review_verdicts(self.DECISION, verdicts)
         self.assertEqual(reviewed["global_invariant_additions"], self.DECISION["global_invariant_additions"])
         self.assertEqual(len(record["invalid"]), 2)
+
+
+class CandidateSubsampling(unittest.TestCase):
+    def test_under_cap_is_untouched(self):
+        kept, dropped = subsample_candidates([5, 1, 9], 24)
+        self.assertEqual(kept, [5, 1, 9])
+        self.assertEqual(dropped, [])
+
+    def test_over_cap_keeps_temporal_spread_and_endpoints(self):
+        allowed = list(range(0, 480, 10))  # 48 candidates
+        kept, dropped = subsample_candidates(allowed, 12)
+        self.assertLessEqual(len(kept), 12)
+        self.assertIn(0, kept)
+        self.assertIn(470, kept)
+        self.assertEqual(sorted(set(kept) | set(dropped)), sorted(allowed))
+        gaps = [b - a for a, b in zip(kept, kept[1:])]
+        self.assertLessEqual(max(gaps), 60)  # no giant temporal hole
 
 
 class CacheFingerprint(unittest.TestCase):

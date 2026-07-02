@@ -108,7 +108,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--rounds", type=int, default=3, help="Bounded refinement rounds, max 3.")
     parser.add_argument("--kv_selection_mode", default="per_boundary",
                         choices=("per_boundary", "legacy_single_call"))
-    parser.add_argument("--kv_candidate_frames_per_shot", type=int, default=6)
+    parser.add_argument("--kv_candidate_frames_per_shot", type=int, default=8)
+    parser.add_argument("--kv_max_candidates_per_boundary", type=int, default=24)
     parser.add_argument("--prompt_review", default="on", choices=("on", "off"))
     parser.add_argument("--multi_pass_watch_arm", default="both",
                         choices=("both", "kv_only", "prompt_only", "baseline"),
@@ -118,7 +119,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--primary_logit_bias_lambda", type=float, default=1.0)
     parser.add_argument("--extra_logit_bias_lambdas", default="2", help="Final static-prompt lambda sweep.")
     parser.add_argument("--kv_anchor_cap", type=int, default=4)
-    parser.add_argument("--optimizer_frames_per_shot", type=int, default=3)
+    parser.add_argument("--optimizer_frames_per_shot", type=int, default=4)
     parser.add_argument("--judge_frames_per_shot", type=int, default=1)
     parser.add_argument("--min_admitted_main_scenes", type=int, default=8)
     parser.add_argument("--baseline_seeds", default="0")
@@ -292,6 +293,8 @@ def main() -> int:
             args.kv_selection_mode,
             "--kv_candidate_frames_per_shot",
             str(args.kv_candidate_frames_per_shot),
+            "--kv_max_candidates_per_boundary",
+            str(args.kv_max_candidates_per_boundary),
             "--prompt_review",
             args.prompt_review,
         ]
@@ -415,6 +418,7 @@ def main() -> int:
             "optimizer_frames_per_shot": int(args.optimizer_frames_per_shot),
             "kv_selection_mode": args.kv_selection_mode,
             "kv_candidate_frames_per_shot": int(args.kv_candidate_frames_per_shot),
+            "kv_max_candidates_per_boundary": int(args.kv_max_candidates_per_boundary),
             "prompt_review": args.prompt_review,
             "multi_pass_watch_arm": args.multi_pass_watch_arm,
         },

@@ -180,7 +180,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--single_seed_consistency_delta_threshold", type=float, default=0.02)
     parser.add_argument("--baseline_seed", type=int, default=0)
     parser.add_argument("--kv_anchor_cap", type=int, default=2)
-    parser.add_argument("--optimizer_frames_per_shot", type=int, default=2)
+    parser.add_argument("--optimizer_frames_per_shot", type=int, default=4)
     parser.add_argument("--judge_frames_per_shot", type=int, default=1)
     parser.add_argument("--skip_generation", action="store_true")
     parser.add_argument("--resume", action="store_true", help="Reuse existing optimizer decisions/prompts/videos when present.")
@@ -194,9 +194,13 @@ def parse_args() -> argparse.Namespace:
                         help="per_boundary: one retrieval-style VLM call per shot boundary with "
                              "candidate thumbnails (per-scene plans). legacy_single_call: whole "
                              "plan in the diagnosis call (Round 17 behaviour).")
-    parser.add_argument("--kv_candidate_frames_per_shot", type=int, default=6,
+    parser.add_argument("--kv_candidate_frames_per_shot", type=int, default=8,
                         help="Denser per-shot sampling used only as candidate thumbnails for "
                              "per-boundary KV selection.")
+    parser.add_argument("--kv_max_candidates_per_boundary", type=int, default=24,
+                        help="Uniformly subsample a boundary's eligible candidates down to this "
+                             "many thumbnails per selection call (late boundaries accumulate "
+                             "candidates from every prior shot).")
     parser.add_argument("--prompt_review", default="on", choices=("on", "off"),
                         help="Independent VLM review of proposed prompt additions against the "
                              "authored invariants (drop/rewrite contradictions).")
@@ -997,6 +1001,18 @@ def build_boundary_select_prompt(
     return "\n".join(lines)
 
 
+def subsample_candidates(allowed: list[int], max_candidates: int) -> tuple[list[int], list[int]]:
+    """Uniformly thin an eligible-frame list to max_candidates, keeping temporal
+    spread (first and last always survive). Returns (kept, dropped)."""
+    if max_candidates <= 0 or len(allowed) <= max_candidates:
+        return list(allowed), []
+    ordered = sorted(allowed)
+    idxs = np.linspace(0, len(ordered) - 1, num=int(max_candidates)).round().astype(int)
+    kept = sorted({ordered[i] for i in idxs})
+    dropped = [f for f in ordered if f not in kept]
+    return kept, dropped
+
+
 def select_kv_anchors_per_boundary(
     *,
     get_base_url,
@@ -1009,6 +1025,7 @@ def select_kv_anchors_per_boundary(
     anchor_cap: int,
     transcript_dir: Path,
     timeout: int,
+    max_candidates_per_boundary: int = 24,
 ) -> tuple[list[dict[str, Any]], list[str]]:
     """One retrieval-style VLM call per shot boundary.
 
@@ -1030,6 +1047,12 @@ def select_kv_anchors_per_boundary(
         if not allowed:
             notes.append(f"boundary {boundary}: no eligible candidates with thumbnails")
             continue
+        allowed, thinned = subsample_candidates(allowed, max_candidates_per_boundary)
+        if thinned:
+            notes.append(
+                f"boundary {boundary}: thinned {len(thinned)} candidates to cap "
+                f"{max_candidates_per_boundary} (uniform spread kept)"
+            )
         query_rec = diagnosis_records[boundary] if boundary < len(diagnosis_records) else {}
         query_paths = [Path(p) for p in (query_rec.get("paths") or [])[:2]]
         query_frames = [int(f) for f in (query_rec.get("sampled_frame_indices") or [])[:2]]
@@ -1898,6 +1921,7 @@ def main() -> int:
             "kv_anchor_cap": int(args.kv_anchor_cap),
             "optimizer_frames_per_shot": int(args.optimizer_frames_per_shot),
             "kv_candidate_frames_per_shot": int(args.kv_candidate_frames_per_shot),
+            "kv_max_candidates_per_boundary": int(args.kv_max_candidates_per_boundary),
             "qwen_model": args.qwen_model,
             "optimizer_video_dir": str(args.optimizer_video_dir) if args.optimizer_video_dir else None,
             "optimizer_video_prefix": args.optimizer_video_prefix or None,
@@ -2067,6 +2091,7 @@ def main() -> int:
                         anchor_cap=args.kv_anchor_cap,
                         transcript_dir=output_root / "qwen3_optimizer" / "kv_selection",
                         timeout=240,
+                        max_candidates_per_boundary=args.kv_max_candidates_per_boundary,
                     )
                     decision["kv_anchor_plan"] = kv_plan
                     notes.extend(kv_notes)
