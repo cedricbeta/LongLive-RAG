@@ -4,6 +4,45 @@
 
 **问题定义**:自回归视频扩散模型生成长多镜头视频时,注意力只覆盖最近的局部窗口,早期 shot 建立的主体身份/场景布局会随镜头切换漂移。我们研究**免训练**的推理期干预:能否用一个 VLM agent 在生成过程中(a)改写文本条件、(b)决定把哪些历史帧的 KV 重新注入当前注意力窗口,来抑制跨 shot 漂移。
 
+## 流程总览
+
+```mermaid
+flowchart TB
+    A0["冻结难例 benchmark<br/>9 主场景(按漂移选)+ 负控制<br/>baseline seeds 0-2 → 逐场景 2σ 噪声底"] --> B0
+    B0["baseline 渲染(同 seed 配对基准)"] --> OPT
+
+    subgraph OPT["VLM 优化器 · Qwen3-VL-8B(schema 约束解码 + 指纹缓存)"]
+        D1["① 诊断 pass<br/>逐 shot 采样帧 → 断点定位<br/>+ 不变量添加项(只许追加)"]
+        D2["② 审查 pass(独立 reviewer)<br/>对照授权不变量逐条裁决<br/>keep / rewrite / drop"]
+        D3["③ 逐 boundary KV 选帧(检索式)<br/>query=进入 shot 前 2 帧<br/>候选=窗口外缩略图 ≤24<br/>→ ≤4 锚帧 或 显式 skip"]
+        D1 --> D2
+        D1 --> D3
+    end
+
+    D2 --> P1["精修 prompt 集"]
+    D3 --> P2["逐场景注入计划 v2<br/>scenes → boundary → 帧"]
+
+    P1 --> R1["prompt_only 渲染"]
+    P2 --> R2["kv_only 渲染<br/>boundary 注入 + RoPE 重编码<br/>+ λ=1.0 注意力偏置"]
+    P1 --> R3["both 渲染"]
+    P2 --> R3
+
+    R1 --> EV
+    R2 --> EV
+    R3 --> EV
+
+    subgraph EV["双裁判评估(每 arm 与 baseline 同 seed 配对)"]
+        E1["GPT-5.5 闭环裁判<br/>(上岗前过降解校验)"]
+        E2["数值漂移指标<br/>逐场景 delta vs 2σ 阈值"]
+        E3["guard 组:RAFT 运动 / 多样性<br/>/ adherence / 不变量探针 / 负控制"]
+    end
+
+    EV --> V{"gate:一致性场景胜 ≥5/9<br/>且 guard 全绿?"}
+    V -- "PASS / HONEST NULL" --> OUT["ledger + 2×2 网格视频<br/>+ 注意力诊断"]
+    V -- "继续迭代" --> MP["多 pass 反馈:优化器改看<br/>上一轮 both 渲染,修残余断点"]
+    MP --> OPT
+```
+
 ---
 
 ## 1. 生成基底
@@ -28,6 +67,22 @@
 ## 3. 干预方法二:Agentic KV 选帧注入(检索式)
 
 这是本工作的核心贡献:把"往注意力窗口里回灌哪些历史帧"从启发式(固定取最近帧/开头帧)变成**逐切点的内容检索决策**。
+
+```
+                  ◄──────────── 历史帧(模型已不可见)────────────►   ◄─ live window(32帧)─►
+ 时间轴  shot0            shot1            shot2         shot3        │ shot4 生成中…
+        ├────────────────┼────────────────┼─────────────┼────────────┼─────────────────►
+ 候选池   ▫  ▫  ▫  ▫  ▫  ▫   ▫  ▫  ▫  ▫  ▫    ▫  ▫  ▫  ▫    ▫  ▫       │  (每 shot 采 8 帧缩略图,
+          └──────────── 仅取窗口外的帧,均匀子采样至 ≤24 ───────────┘   │   frame < boundary−32)
+                             │                                        │
+                             ▼   VLM 检索(每个 boundary 一次调用)      │
+              query = shot4 开头 2 帧  +  候选缩略图(带 C0..Cn 标签)   │
+              → 按画面内容选 ≤4 锚帧(或显式 skip,须给理由)            │
+                             │                                        │
+                             ▼                                        ▼
+              [f_a, f_b, f_c] ──KV 注入:RoPE 重编码 + λ·logit bias──► 当前注意力窗口
+                                        (attention-mass 落账,作为操纵检查)
+```
 
 **选帧机制**(每个 shot boundary 一次独立 VLM 调用):
 
