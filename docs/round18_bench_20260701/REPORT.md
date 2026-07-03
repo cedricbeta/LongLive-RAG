@@ -1,7 +1,7 @@
 # Round 17 VLM Closed-Judge Ablation
 
 - Generated UTC: 2026-07-02T21:26:10+00:00
-- Repo hash before artifact commit: `f1d9364d71733ab1524573d8d37d8541e36c8fa8`
+- Repo hash before artifact commit: `4f1dd7808b02e99cfa40d5742b1a98c6fd14d5cd`
 - Result: `HONEST NULL`
 - Winner: `None`
 - Baseline path: `videos/benchmark_hard_multishot/stage_A/baseline_seed0`
