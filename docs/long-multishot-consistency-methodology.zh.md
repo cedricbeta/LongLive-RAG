@@ -159,4 +159,24 @@
 - **诚实的反例**:两个人物细节场景未受益(noodle_chef 裁判视角 kv 反而 0.76→0.66)——当前 KV 注入的收益模式是"主体清晰的自然场景",细节假说暂未获支持;
 - 负控制与全部 guard 通过,增益不来自作弊通道。
 
+## 8. 定性结果(逐 shot 首帧,上排 baseline / 下排 kv_only)
+
+**brown_bear_river —— 双尺胜利场景(数值 +0.082/阈 0.073,裁判 0.61→0.67)**
+
+![brown_bear_river baseline vs kv_only](round18_bench_20260701/qualitative/brown_bear_river_baseline_vs_kv_only.png)
+
+看点:baseline 从 shot 4 起漂成脸部特写、丢掉河岸环境,**shot 6 主体几乎完全消失在树叶里**;kv_only 全程保住熊的存在感和中景构图,shot 6 熊依然清晰在画面中,河岸植被上下文保持。这正是"注入早期锚帧 → 主体不被局部窗口遗忘"的直观形态。
+
+**sandy_beach_driftwood —— 双尺胜利场景(+0.069/阈 0.045,裁判 0.62→0.70),但故事更微妙**
+
+![sandy_beach_driftwood baseline vs kv_only](round18_bench_20260701/qualitative/sandy_beach_driftwood_baseline_vs_kv_only.png)
+
+看点:这个场景的漂移压力极强——**两个 arm 都**漂进了"烤鱼叙事"(凭空出现的戴帽女子和红鱼;优化器看 baseline 时甚至想把她写进不变量,被审查门拦下,见 §2)。差别在于:baseline 后段(shot 4-6)塌缩成篝火/炭堆特写,shot0 的浮木海滩几乎不可见;kv_only 的 shot 4-7 里**白色浮木枝干和海岸线始终在画面里**。to-first 指标奖励的正是这种对开场设定的保持——KV 注入没能阻止叙事漂移,但守住了场景元素。
+
+**tattooed_noodle_chef —— 反例(裁判 0.76→0.66,数值 −0.044)**
+
+![tattooed_noodle_chef baseline vs kv_only](round18_bench_20260701/qualitative/tattooed_noodle_chef_baseline_vs_kv_only.png)
+
+看点:kv_only 在中段(shot 2-4)**把厨师本人弄丢了**(空炒锅、无人躯干、过饱和的红灯笼光效),baseline 反而维持了更连贯的人物线;两个 arm 都守不住精细身份细节(头巾从授权的"系在脖子上"漂到头上)。这解释了为什么人物细节假说本轮未获支持:整帧 KV 注入回灌的是**场景统计量**(色调、布局),对"具体的人长什么样"帮助有限甚至有干扰——指向 token/region 级选择(只注入主体区域)的下一步。
+
 **开放问题 / 计划中的检验**:① seeds 1-2 配对复验(3 个胜利是否是 seed 噪声);② 多 pass 第 2 轮的边际增益;③ λ∈{0,1,2} 扫描分离"选帧"与"偏置"贡献;④ 数值指标的 subject masking + ArcFace 升级(裁决人物场景上裁判-数值分歧);⑤ token/region 级 KV 选择(注入主体区域而非整帧)。
