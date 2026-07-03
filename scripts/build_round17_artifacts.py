@@ -120,26 +120,31 @@ def render_4up_grid(
         str(output),
         cv2.VideoWriter_fourcc(*"mp4v"),
         fps,
-        (cell_w * 4, cell_h),
+        (cell_w * 2, cell_h * 2),
     )
     if not writer.isOpened():
         raise RuntimeError(f"could not open writer for {output}")
-    order = ["baseline", "prompt_only", "kv_only", "both"]
+    # 2x2: top row baseline | prompt_only, bottom row kv_only | both
+    grid_rows = [["baseline", "prompt_only"], ["kv_only", "both"]]
     for idx in range(min_frames):
-        cells = []
-        for arm in order:
-            rgb = frames_by_arm[arm][idx]
-            bgr = cv2.cvtColor(rgb, cv2.COLOR_RGB2BGR)
-            cell = resize_cell(bgr, cell_w, cell_h)
-            overlay_label(cell, labels[arm], 10, 28, 0.65)
-            cells.append(cell)
-        canvas = np.hstack(cells)
-        overlay_label(canvas, f"%{{pts:hms}} {hms(idx / fps)}", 10, cell_h - 12, 0.55)
+        row_imgs = []
+        for row in grid_rows:
+            cells = []
+            for arm in row:
+                rgb = frames_by_arm[arm][idx]
+                bgr = cv2.cvtColor(rgb, cv2.COLOR_RGB2BGR)
+                cell = resize_cell(bgr, cell_w, cell_h)
+                overlay_label(cell, labels[arm], 10, 28, 0.65)
+                cells.append(cell)
+            row_imgs.append(np.hstack(cells))
+        canvas = np.vstack(row_imgs)
+        overlay_label(canvas, f"%{{pts:hms}} {hms(idx / fps)}", cell_w - 60, cell_h * 2 - 12, 0.55)
         active_cuts = [b for b in boundaries if b <= idx < b + max(2, int(round(fps * 0.4)))]
         for boundary in active_cuts:
             cut_label = f"CUT {cut_to_index.get(boundary, '?')}"
-            cv2.line(canvas, (0, 46), (cell_w * 4, 46), (0, 0, 255), 3)
-            overlay_label(canvas, cut_label, cell_w * 2 - 42, 72, 0.65)
+            for row_top in (0, cell_h):
+                cv2.line(canvas, (0, row_top + 46), (cell_w * 2, row_top + 46), (0, 0, 255), 3)
+            overlay_label(canvas, cut_label, cell_w - 42, 72, 0.65)
         writer.write(canvas)
     writer.release()
     return {
