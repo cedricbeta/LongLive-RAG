@@ -1,0 +1,353 @@
+diff --git a/pipeline/causal_inference.py b/pipeline/causal_inference.py
+index f442265..9ccef51 100644
+--- a/pipeline/causal_inference.py
++++ b/pipeline/causal_inference.py
+@@ -15,6 +15,19 @@ from ae.config import AEConfig
+ from ae.model import LatentAE
+ 
+ 
++class Block0AdherenceFailure(Exception):
++    """Raised when block 0 exhausts its retry budget with the wrong subject.
++
++    Signals the caller to escalate (prompt surgery / restart) instead of
++    continuing a video whose subject is wrong from the start.
++    """
++
++    def __init__(self, reasons, thumbs):
++        super().__init__("block 0 adherence failure after retry budget")
++        self.reasons = reasons
++        self.thumbs = thumbs
++
++
+ def avg_pool(latent_frame: torch.Tensor) -> torch.Tensor:
+     """
+     Compress a latent frame [B, C, H, W] into a descriptor [B, C] via spatial average pooling.
+@@ -203,6 +216,11 @@ class CausalInferencePipeline(torch.nn.Module):
+         # Initialize latent descriptor cache for memory token selection
+         self.latent_descriptors = []  # List of [B, C] tensors (or [B, D] for AE)
+         self.memory_indices_log = []  # Track memory selection
++        self.vlm_block_log = []
++        self.vlm_rejected_frames = set()
++        self.vlm_golden_frames = []
++        self._block_thumbs = []
++        self.vlm_frame_bboxes = {}
+         # self.compression_method is already set in __init__
+         sink_size = getattr(self.args.model_kwargs, "sink_size", 0)
+         recent_exclude = getattr(self.args.model_kwargs, "recent_exclude", 0)
+@@ -244,80 +262,212 @@ class CausalInferencePipeline(torch.nn.Module):
+                     k_norm = evicted_descs / (evicted_descs.norm(dim=-1, keepdim=True) + 1e-8)
+                     sims = torch.bmm(k_norm, q_norm.transpose(1, 2)).squeeze(-1)  # [B, num_eligible]
+ 
+-                    topk_sims, memory_indices = torch.topk(sims, k=k_sel, dim=-1)  # [B, k_sel]
+-
+-                    global_frame_indices = memory_indices + sink_size
+-                    self.memory_indices_log.append({
+-                        "query_frame": current_start_frame,
+-                        "num_evicted": num_evicted,
+-                        "selected_pool_indices": memory_indices.cpu().tolist(),
+-                        "selected_global_frames": global_frame_indices.cpu().tolist(),
+-                        "selected_similarities": topk_sims.cpu().tolist(),
+-                        "compression_method": self.compression_method,
+-                    })
+-
+-            # Step 2.1: Spatial denoising loop
+-            for index, current_timestep in enumerate(self.denoising_step_list):
+-                # print(f"current_timestep: {current_timestep}")
+-
+-                # set current timestep
+-                timestep = torch.ones(
+-                    [batch_size, current_num_frames],
+-                    device=noise.device,
+-                    dtype=torch.int64) * current_timestep
+-
+-                if index < len(self.denoising_step_list) - 1:
+-                    _, denoised_pred = self.generator(
+-                        noisy_image_or_video=noisy_input,
+-                        conditional_dict=conditional_dict,
+-                        timestep=timestep,
+-                        kv_cache=self.kv_cache1,
+-                        crossattn_cache=self.crossattn_cache,
+-                        current_start=current_start_frame * self.frame_seq_length,
+-                        memory_indices=memory_indices
+-                    )
+-                    next_timestep = self.denoising_step_list[index + 1]
+-                    noisy_input = self.scheduler.add_noise(
+-                        denoised_pred.flatten(0, 1),
+-                        torch.randn_like(denoised_pred.flatten(0, 1)),
+-                        next_timestep * torch.ones(
+-                            [batch_size * current_num_frames], device=noise.device, dtype=torch.long)
+-                    ).unflatten(0, denoised_pred.shape[:2])
++                    vlm_mode = getattr(self, "vlm_mode", "off")
++                    forced_pool, banned_pool = [], set()
++                    if vlm_mode == "guide":
++                        banned_pool = {f - sink_size for f in getattr(self, "vlm_rejected_frames", set())
++                                       if 0 <= f - sink_size < num_eligible}
++                        forced_pool = [f - sink_size for f in getattr(self, "vlm_golden_frames", [])
++                                       if 0 <= f - sink_size < num_eligible]
++                        banned_pool -= set(forced_pool)
++
++                    if forced_pool or banned_pool:
++                        assert sims.shape[0] == 1, "VLM guide supports batch_size=1"
++                        sims_masked = sims.clone()
++                        for i in banned_pool:
++                            sims_masked[:, i] = float("-inf")
++                        for i in forced_pool:
++                            sims_masked[:, i] = float("inf")
++                        allowed = num_eligible - len(banned_pool)
++                        k_sel = min(memory_size_cfg, allowed)
++                        if k_sel > 0:
++                            topk_sims, memory_indices = torch.topk(sims_masked, k=k_sel, dim=-1)
++                        else:
++                            memory_indices = None
++                    else:
++                        topk_sims, memory_indices = torch.topk(sims, k=k_sel, dim=-1)  # [B, k_sel]
++
++                    probe = getattr(self, "_attn_probe", None)
++                    if probe is not None:
++                        if memory_indices is not None:
++                            fids = [int(i) + sink_size for i in memory_indices[0].tolist()]
++                            fs = self.frame_seq_length
++                            gh, gw = 30, 52  # latent 60x104, patchify 2x2
++                            subj = torch.zeros(len(fids) * fs, dtype=torch.bool)
++                            known = torch.zeros(len(fids) * fs, dtype=torch.bool)
++                            for si, fid in enumerate(fids):
++                                bbox = getattr(self, "vlm_frame_bboxes", {}).get(fid)
++                                if bbox is None:
++                                    continue
++                                known[si * fs : (si + 1) * fs] = True
++                                x1, y1, x2, y2 = bbox
++                                c1, c2 = int(x1 / 1000 * gw), max(int(x1 / 1000 * gw) + 1, round(x2 / 1000 * gw))
++                                r1, r2 = int(y1 / 1000 * gh), max(int(y1 / 1000 * gh) + 1, round(y2 / 1000 * gh))
++                                m = torch.zeros(gh, gw, dtype=torch.bool)
++                                m[r1:r2, c1:c2] = True
++                                subj[si * fs : (si + 1) * fs] = m.flatten()
++                            probe.mem_subject_mask = subj
++                            probe.mem_known_mask = known
++                            probe.mem_frame_ids = fids
++                            probe.frame_seqlen = fs
++                        else:
++                            probe.mem_subject_mask = None
++                            probe.mem_known_mask = None
++                            probe.mem_frame_ids = None
++
++                    if memory_indices is not None:
++                        global_frame_indices = memory_indices + sink_size
++                        self.memory_indices_log.append({
++                            "query_frame": current_start_frame,
++                            "num_evicted": num_evicted,
++                            "selected_pool_indices": memory_indices.cpu().tolist(),
++                            "selected_global_frames": global_frame_indices.cpu().tolist(),
++                            "selected_similarities": topk_sims.cpu().tolist(),
++                            "compression_method": self.compression_method,
++                            "forced_global_frames": [i + sink_size for i in forced_pool],
++                            "banned_global_frames": sorted(i + sink_size for i in banned_pool),
++                        })
++
++            # Steps 2.1-2.4, wrapped so a VLM-rejected block can be rolled back
++            # and regenerated once with fresh noise (vlm_retry mode).
++            vlm_guide = getattr(self, "vlm_guide", None)
++            vlm_mode = getattr(self, "vlm_mode", "off")
++            retry_enabled = (vlm_guide is not None and vlm_mode == "guide"
++                             and getattr(self, "vlm_retry", False))
++            if retry_enabled:
++                # Front-loaded budget: the subject is decided in block 0, so it
++                # gets a larger reroll budget; later blocks keep a single retry.
++                if current_start_frame == 0:
++                    max_attempts = 1 + getattr(self, "vlm_retry_budget_block0", 1)
+                 else:
+-                    # for getting real output
+-                    _, denoised_pred = self.generator(
+-                        noisy_image_or_video=noisy_input,
+-                        conditional_dict=conditional_dict,
+-                        timestep=timestep,
+-                        kv_cache=self.kv_cache1,
+-                        crossattn_cache=self.crossattn_cache,
+-                        current_start=current_start_frame * self.frame_seq_length,
+-                        memory_indices=memory_indices
+-                    )
+-            # Step 2.2: record the model's output
+-            output[:, current_start_frame:current_start_frame + current_num_frames] = denoised_pred.to(output.device)
+-
+-            # Step 2.2.1: Store latent descriptors for newly denoised frames
+-            # denoised_pred shape: [B, current_num_frames, C, H, W]
+-            for f_idx in range(current_num_frames):
+-                frame = denoised_pred[:, f_idx]  # [B, C, H, W]
+-                if self.compression_method == "ae" and self.ae_model is not None:
+-                    desc = self.ae_model.encode(frame)  # [B, latent_dim]
+-                else:
+-                    desc = avg_pool(frame)              # [B, C]
+-                self.latent_descriptors.append(desc.detach())
+-
+-            # Step 2.3: rerun with timestep zero to update KV cache using clean context
+-            context_timestep = torch.ones_like(timestep) * getattr(self.args, "context_noise", 0.0)
+-            self.generator(
+-                noisy_image_or_video=denoised_pred,
+-                conditional_dict=conditional_dict,
+-                timestep=context_timestep,
+-                kv_cache=self.kv_cache1,
+-                crossattn_cache=self.crossattn_cache,
+-                current_start=current_start_frame * self.frame_seq_length,
+-                memory_indices=memory_indices
+-            )
++                    max_attempts = 2
++            else:
++                max_attempts = 1
++            kv_snapshot = self._snapshot_kv_state() if max_attempts > 1 else None
++            desc_len_snapshot = len(self.latent_descriptors)
++            attempt = 0
++            while True:
++                attempt += 1
++                # Step 2.1: Spatial denoising loop
++                for index, current_timestep in enumerate(self.denoising_step_list):
++                    # set current timestep
++                    timestep = torch.ones(
++                        [batch_size, current_num_frames],
++                        device=noise.device,
++                        dtype=torch.int64) * current_timestep
++
++                    if index < len(self.denoising_step_list) - 1:
++                        _, denoised_pred = self.generator(
++                            noisy_image_or_video=noisy_input,
++                            conditional_dict=conditional_dict,
++                            timestep=timestep,
++                            kv_cache=self.kv_cache1,
++                            crossattn_cache=self.crossattn_cache,
++                            current_start=current_start_frame * self.frame_seq_length,
++                            memory_indices=memory_indices
++                        )
++                        next_timestep = self.denoising_step_list[index + 1]
++                        noisy_input = self.scheduler.add_noise(
++                            denoised_pred.flatten(0, 1),
++                            torch.randn_like(denoised_pred.flatten(0, 1)),
++                            next_timestep * torch.ones(
++                                [batch_size * current_num_frames], device=noise.device, dtype=torch.long)
++                        ).unflatten(0, denoised_pred.shape[:2])
++                    else:
++                        # for getting real output
++                        _, denoised_pred = self.generator(
++                            noisy_image_or_video=noisy_input,
++                            conditional_dict=conditional_dict,
++                            timestep=timestep,
++                            kv_cache=self.kv_cache1,
++                            crossattn_cache=self.crossattn_cache,
++                            current_start=current_start_frame * self.frame_seq_length,
++                            memory_indices=memory_indices
++                        )
++                # Step 2.2: record the model's output
++                output[:, current_start_frame:current_start_frame + current_num_frames] = denoised_pred.to(output.device)
++
++                # Step 2.2.1: Store latent descriptors for newly denoised frames
++                # denoised_pred shape: [B, current_num_frames, C, H, W]
++                for f_idx in range(current_num_frames):
++                    frame = denoised_pred[:, f_idx]  # [B, C, H, W]
++                    if self.compression_method == "ae" and self.ae_model is not None:
++                        desc = self.ae_model.encode(frame)  # [B, latent_dim]
++                    else:
++                        desc = avg_pool(frame)              # [B, C]
++                    self.latent_descriptors.append(desc.detach())
++
++                # Step 2.3: rerun with timestep zero to update KV cache using clean context
++                context_timestep = torch.ones_like(timestep) * getattr(self.args, "context_noise", 0.0)
++                self.generator(
++                    noisy_image_or_video=denoised_pred,
++                    conditional_dict=conditional_dict,
++                    timestep=context_timestep,
++                    kv_cache=self.kv_cache1,
++                    crossattn_cache=self.crossattn_cache,
++                    current_start=current_start_frame * self.frame_seq_length,
++                    memory_indices=memory_indices
++                )
++
++                # Step 2.4: VLM admission gate + golden-frame election
++                if vlm_guide is not None and vlm_mode in ("observe", "guide"):
++                    with torch.no_grad():
++                        pix = self.vae.decode_to_pixel(denoised_pred)
++                    pix = (pix.float() * 0.5 + 0.5).clamp(0, 1)[0]  # [F_pix, C, H, W]
++                    mid, last = pix[pix.shape[0] // 2], pix[-1]
++                    verdict = vlm_guide.judge_block([mid, last], text_prompts[0])
++                    block_frames = list(range(current_start_frame, current_start_frame + current_num_frames))
++                    entry = {
++                        "block_start_frame": current_start_frame,
++                        "frames": block_frames,
++                        "attempt": attempt,
++                        **verdict,
++                    }
++                    self.vlm_block_log.append(entry)
++                    self._block_thumbs.append((current_start_frame + current_num_frames // 2, mid.cpu()))
++                    for f in block_frames:
++                        self.vlm_frame_bboxes[f] = verdict.get("subject_bbox")
++
++                    if (vlm_mode == "guide" and not verdict.get("admit", True)
++                            and attempt < max_attempts):
++                        # Roll back this block and regenerate with fresh noise
++                        entry["retried"] = True
++                        self._restore_kv_state(kv_snapshot)
++                        del self.latent_descriptors[desc_len_snapshot:]
++                        self._block_thumbs.pop()
++                        noisy_input = torch.randn_like(
++                            noise[:, current_start_frame:current_start_frame + current_num_frames])
++                        continue
++
++                    if (vlm_mode == "guide" and not verdict.get("admit", True)
++                            and current_start_frame == 0
++                            and verdict.get("subject_ok") is False
++                            and getattr(self, "vlm_abort_on_block0_fail", False)):
++                        # Wrong subject from the very first block and the reroll
++                        # budget is spent: this is a conditioning-level failure,
++                        # escalate instead of generating 39 more wrong blocks.
++                        reasons = [e.get("reason", "") for e in self.vlm_block_log
++                                   if e.get("block_start_frame") == 0]
++                        raise Block0AdherenceFailure(reasons, [mid.cpu(), last.cpu()])
++
++                    if vlm_mode == "guide":
++                        if not verdict.get("admit", True):
++                            self.vlm_rejected_frames.update(block_frames)
++                        golden_at = getattr(self, "vlm_golden_at_frame", 12)
++                        if (not self.vlm_golden_frames
++                                and current_start_frame + current_num_frames >= golden_at):
++                            admitted = {f for e in self.vlm_block_log
++                                        if e.get("admit", True) for f in e.get("frames", [])}
++                            cands = [(fi, th) for fi, th in self._block_thumbs if fi in admitted]
++                            if not cands:
++                                cands = list(self._block_thumbs)
++                            election = vlm_guide.elect_golden(cands, text_prompts[0], num_golden=2)
++                            self.vlm_golden_frames = list(election["golden"])
++                            self.vlm_block_log.append({
++                                "golden_election": election,
++                                "at_frame": current_start_frame + current_num_frames,
++                            })
++                break
+ 
+             if profile:
+                 block_end.record()
+@@ -375,6 +525,30 @@ class CausalInferencePipeline(torch.nn.Module):
+         else:
+             return video
+ 
++    def _snapshot_kv_state(self):
++        """Snapshot the causal KV cache + CPU memory pool so a block can be
++        regenerated from an identical state (restore-and-retry)."""
++        snap = []
++        for c in self.kv_cache1:
++            snap.append({
++                "k": c["k"].clone(),
++                "v": c["v"].clone(),
++                "global_end": c["global_end_index"].item(),
++                "local_end": c["local_end_index"].item(),
++                "n_cpu_k": len(c.get("cpu_k_frames", [])),
++                "n_cpu_v": len(c.get("cpu_v_frames", [])),
++            })
++        return snap
++
++    def _restore_kv_state(self, snap):
++        for c, s in zip(self.kv_cache1, snap):
++            c["k"].copy_(s["k"])
++            c["v"].copy_(s["v"])
++            c["global_end_index"].fill_(s["global_end"])
++            c["local_end_index"].fill_(s["local_end"])
++            del c["cpu_k_frames"][s["n_cpu_k"]:]
++            del c["cpu_v_frames"][s["n_cpu_v"]:]
++
+     def _initialize_kv_cache(self, batch_size, dtype, device, kv_cache_size_override: int | None = None):
+         """
+         Initialize a Per-GPU KV cache for the Wan model.

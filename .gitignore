@@ -46,3 +46,7 @@ build/
 dist/
 fouroversix/build/
 utils/kernel/build/
+
+# GitHub-ready doc assets for the VLM-guided same-shot experiment
+!docs/vlm_agent_sameshot_20260723/videos/
+!docs/vlm_agent_sameshot_20260723/videos/*.mp4

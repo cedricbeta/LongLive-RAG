@@ -1,0 +1,448 @@
+{
+    "subject_consistency": [
+        0.9353395867856499,
+        [
+            {
+                "video_path": "vbench_eval/videos_flat/latentmem__prompt001.mp4",
+                "video_results": 0.9181815956032049
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_guided__prompt000.mp4",
+                "video_results": 0.9541469819323961
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_agent__prompt002.mp4",
+                "video_results": 0.9195051603413031
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/latentmem__prompt000.mp4",
+                "video_results": 0.9536241292323421
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_agent__prompt000.mp4",
+                "video_results": 0.9541469819323961
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/native__prompt002.mp4",
+                "video_results": 0.9261229573168159
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/latentmem__prompt002.mp4",
+                "video_results": 0.9167712417767869
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_agent__prompt006.mp4",
+                "video_results": 0.9639811462252135
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/latentmem__prompt006.mp4",
+                "video_results": 0.9620250452144453
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_guided__prompt001.mp4",
+                "video_results": 0.9064446753855739
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/native__prompt000.mp4",
+                "video_results": 0.9364689403936173
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_guided__prompt006.mp4",
+                "video_results": 0.9639811462252135
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/native__prompt006.mp4",
+                "video_results": 0.9245743120195498
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/native__prompt001.mp4",
+                "video_results": 0.9224968103349335
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_agent__prompt001.mp4",
+                "video_results": 0.9234571042953031
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_guided__prompt002.mp4",
+                "video_results": 0.9195051603413031
+            }
+        ]
+    ],
+    "background_consistency": [
+        0.9444085215917349,
+        [
+            {
+                "video_path": "vbench_eval/videos_flat/latentmem__prompt001.mp4",
+                "video_results": 0.926064102140592,
+                "video_sim": 438.0283203125,
+                "cnt_per_video": 473
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_guided__prompt000.mp4",
+                "video_results": 0.9304988933668076,
+                "video_sim": 440.1259765625,
+                "cnt_per_video": 473
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_agent__prompt002.mp4",
+                "video_results": 0.9486416903409091,
+                "video_sim": 448.70751953125,
+                "cnt_per_video": 473
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/latentmem__prompt000.mp4",
+                "video_results": 0.9291305703290169,
+                "video_sim": 439.478759765625,
+                "cnt_per_video": 473
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_agent__prompt000.mp4",
+                "video_results": 0.9304988933668076,
+                "video_sim": 440.1259765625,
+                "cnt_per_video": 473
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/native__prompt002.mp4",
+                "video_results": 0.9385735993657506,
+                "video_sim": 443.9453125,
+                "cnt_per_video": 473
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/latentmem__prompt002.mp4",
+                "video_results": 0.949305463794926,
+                "video_sim": 449.021484375,
+                "cnt_per_video": 473
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_agent__prompt006.mp4",
+                "video_results": 0.9804759761495772,
+                "video_sim": 463.76513671875,
+                "cnt_per_video": 473
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/latentmem__prompt006.mp4",
+                "video_results": 0.9790219716239429,
+                "video_sim": 463.077392578125,
+                "cnt_per_video": 473
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_guided__prompt001.mp4",
+                "video_results": 0.9353651889534884,
+                "video_sim": 442.427734375,
+                "cnt_per_video": 473
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/native__prompt000.mp4",
+                "video_results": 0.9176136363636364,
+                "video_sim": 434.03125,
+                "cnt_per_video": 473
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_guided__prompt006.mp4",
+                "video_results": 0.9804759761495772,
+                "video_sim": 463.76513671875,
+                "cnt_per_video": 473
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/native__prompt006.mp4",
+                "video_results": 0.9621984631012156,
+                "video_sim": 455.119873046875,
+                "cnt_per_video": 473
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/native__prompt001.mp4",
+                "video_results": 0.9335813623150105,
+                "video_sim": 441.583984375,
+                "cnt_per_video": 473
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_agent__prompt001.mp4",
+                "video_results": 0.920448867765592,
+                "video_sim": 435.372314453125,
+                "cnt_per_video": 473
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_guided__prompt002.mp4",
+                "video_results": 0.9486416903409091,
+                "video_sim": 448.70751953125,
+                "cnt_per_video": 473
+            }
+        ]
+    ],
+    "motion_smoothness": [
+        0.9891172737307325,
+        [
+            {
+                "video_path": "vbench_eval/videos_flat/latentmem__prompt001.mp4",
+                "video_results": 0.9914512149732028
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_guided__prompt000.mp4",
+                "video_results": 0.9837050772456712
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_agent__prompt002.mp4",
+                "video_results": 0.9884978869425821
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/latentmem__prompt000.mp4",
+                "video_results": 0.9844544917181549
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_agent__prompt000.mp4",
+                "video_results": 0.9837050772456712
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/native__prompt002.mp4",
+                "video_results": 0.9888010675144926
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/latentmem__prompt002.mp4",
+                "video_results": 0.9883633930467989
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_agent__prompt006.mp4",
+                "video_results": 0.993210248755381
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/latentmem__prompt006.mp4",
+                "video_results": 0.9932859281535956
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_guided__prompt001.mp4",
+                "video_results": 0.9922415592154714
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/native__prompt000.mp4",
+                "video_results": 0.9853340381860339
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_guided__prompt006.mp4",
+                "video_results": 0.993210248755381
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/native__prompt006.mp4",
+                "video_results": 0.9886849154309907
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/native__prompt001.mp4",
+                "video_results": 0.9930295329733733
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_agent__prompt001.mp4",
+                "video_results": 0.9894038125923379
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_guided__prompt002.mp4",
+                "video_results": 0.9884978869425821
+            }
+        ]
+    ],
+    "dynamic_degree": [
+        0.5625,
+        [
+            {
+                "video_path": "vbench_eval/videos_flat/latentmem__prompt001.mp4",
+                "video_results": false
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_guided__prompt000.mp4",
+                "video_results": true
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_agent__prompt002.mp4",
+                "video_results": true
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/latentmem__prompt000.mp4",
+                "video_results": true
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_agent__prompt000.mp4",
+                "video_results": true
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/native__prompt002.mp4",
+                "video_results": true
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/latentmem__prompt002.mp4",
+                "video_results": true
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_agent__prompt006.mp4",
+                "video_results": false
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/latentmem__prompt006.mp4",
+                "video_results": false
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_guided__prompt001.mp4",
+                "video_results": false
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/native__prompt000.mp4",
+                "video_results": true
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_guided__prompt006.mp4",
+                "video_results": false
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/native__prompt006.mp4",
+                "video_results": false
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/native__prompt001.mp4",
+                "video_results": false
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_agent__prompt001.mp4",
+                "video_results": true
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_guided__prompt002.mp4",
+                "video_results": true
+            }
+        ]
+    ],
+    "aesthetic_quality": [
+        0.6717367358505726,
+        [
+            {
+                "video_path": "vbench_eval/videos_flat/latentmem__prompt001.mp4",
+                "video_results": 0.6502957344055176
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_guided__prompt000.mp4",
+                "video_results": 0.6436601877212524
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_agent__prompt002.mp4",
+                "video_results": 0.7604265213012695
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/latentmem__prompt000.mp4",
+                "video_results": 0.6501634120941162
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_agent__prompt000.mp4",
+                "video_results": 0.6436601877212524
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/native__prompt002.mp4",
+                "video_results": 0.7603933215141296
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/latentmem__prompt002.mp4",
+                "video_results": 0.7620745301246643
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_agent__prompt006.mp4",
+                "video_results": 0.6132450103759766
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/latentmem__prompt006.mp4",
+                "video_results": 0.6143131256103516
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_guided__prompt001.mp4",
+                "video_results": 0.6426703929901123
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/native__prompt000.mp4",
+                "video_results": 0.6619107127189636
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_guided__prompt006.mp4",
+                "video_results": 0.6132450103759766
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/native__prompt006.mp4",
+                "video_results": 0.5951476097106934
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/native__prompt001.mp4",
+                "video_results": 0.6693467497825623
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_agent__prompt001.mp4",
+                "video_results": 0.7068087458610535
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_guided__prompt002.mp4",
+                "video_results": 0.7604265213012695
+            }
+        ]
+    ],
+    "imaging_quality": [
+        0.687621374411925,
+        [
+            {
+                "video_path": "vbench_eval/videos_flat/latentmem__prompt001.mp4",
+                "video_results": 72.68297122198821
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_guided__prompt000.mp4",
+                "video_results": 60.096302917738
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_agent__prompt002.mp4",
+                "video_results": 76.04065620647704
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/latentmem__prompt000.mp4",
+                "video_results": 59.16664072833484
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_agent__prompt000.mp4",
+                "video_results": 60.096302917738
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/native__prompt002.mp4",
+                "video_results": 74.56144075353437
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/latentmem__prompt002.mp4",
+                "video_results": 76.0475218084794
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_agent__prompt006.mp4",
+                "video_results": 67.28423214361135
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/latentmem__prompt006.mp4",
+                "video_results": 67.29749829256082
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_guided__prompt001.mp4",
+                "video_results": 74.99909899103993
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/native__prompt000.mp4",
+                "video_results": 55.79058967461566
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_guided__prompt006.mp4",
+                "video_results": 67.28423214361135
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/native__prompt006.mp4",
+                "video_results": 68.12312455318146
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/native__prompt001.mp4",
+                "video_results": 70.10227592886751
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_agent__prompt001.mp4",
+                "video_results": 74.58065457082499
+            },
+            {
+                "video_path": "vbench_eval/videos_flat/vlm_guided__prompt002.mp4",
+                "video_results": 76.04065620647704
+            }
+        ]
+    ]
+}
