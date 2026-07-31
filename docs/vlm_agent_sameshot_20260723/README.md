@@ -115,6 +115,28 @@ dynamic degree 那列需要单独解释:其他 arm 在猛犸和凤冠鸠上是 0
 
 远一点的:把手写升级链换成 Controller(把工具箱、账本、成本表给 VLM,让它自己提动作并预测效果),和手写链对跑——检验"agent 是否过度依赖人的 heuristic"那个问题;以及把这里验证过的选择机制搬回主仓库 Wan2.2-5B 的跨镜头设定,与原位 V-edit 配对。
 
+## 追记(2026-07-30):负记忆(error buffer)的离线验证
+
+想法:quarantine 现在只是把被拒块挡在池外,什么都不留。把被拒块的描述子存成负 buffer,后续块算一个 margin = sim(正池) − sim(负池),margin 塌缩就是"正在滑向已知失败模式"的预警——不用逐块调 VLM。
+
+验证方式是 observe 模式重放:生成时 VLM 只打标不干预,离线模拟在线池(截至 t−1 块的正/负池),检验 margin 能否预测第 t 块的标签。第一轮就翻车了,而且翻得有信息量:12 条 60 秒 observe(latentmem 6 条 + native 6 条)**全部单一标签**——健康 prompt 全过,熊全拒。原因不是视频没坏(native 的凤冠鸠后段冒出多只鸟、颜色全漂,见 figures/pigeon_progression.jpg),而是**绝对式裁决对渐进漂移是盲的**:"这段画面本身有无清晰失败"抓得住灾难,抓不住漂移,因为漂移只有对比早期参照才可见。改成对比式重打标(给参照帧问"相对开场漂了没有",缩略图都在,离线重标不用重新生成)后立刻拿到干净的分级标签:凤冠鸠 0-23 块 none、24 块起 mild、45 块后连续——教科书式的漂移相变。
+
+用漂移标签做验证(6 条 native × 80 块,319 个双池非空的可评估块):
+
+| 信号 | AUC |
+|---|---|
+| margin = sim(正池) − sim(负池) | **0.787** |
+| 只用负池距离 | 0.756 |
+| 只用正池距离(无负记忆对照) | 0.605 |
+
+负记忆把 AUC 从 0.605 抬到 0.787,增量明确;margin 用 AE 描述子、标签来自 VLM 看像素,两个空间独立,不是循环论证。时间线图(figures/fig_negmem_margin.png)里凤冠鸠的 margin 恰好在标签转为连续漂移的 block 45 陡降。
+
+![负记忆 margin 时间线](figures/fig_negmem_margin.png)
+
+三个结论:margin 预警 guard 可用(支撑 VLM 异步化——margin 塌了才调 VLM 确认);**裁决要分双层**——绝对式管灾难(触发重试/手术),对比式管漂移(触发准入/负记忆),现在生产 gate 只有前者,这解释了为什么 30 秒健康场景准入门零触发;保留意见是 AE 空间对负簇不友好(熊负簇内聚仅 0.338,Delta Loss 故意打散相邻内容),重试预过滤那一步要在语义 embedding 上再验一版。
+
+据此在上面的计划里插两项:对比式准入门改造(排在区域 logit bias 之后)和 margin guard 上线(与 VLM 异步化合并做)。
+
 ## 复现
 
 `code/` 里是全部材料:对上游的 diff、VLM 客户端、四臂 driver、注意力探针和它的实测数据、VBench 原始分、条带图脚本。VLM 服务用 sglang 起:`python -m sglang.launch_server --model-path Qwen/Qwen3-VL-8B-Instruct --port 30000`。未压缩的完整产物(逐 block 缩略图、原始分辨率视频、全部账本)在本机 `videos/vlm_guided_sameshot_20260723/`,没入库。

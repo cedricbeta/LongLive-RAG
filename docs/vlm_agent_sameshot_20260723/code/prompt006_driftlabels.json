@@ -1,0 +1,642 @@
+[
+ {
+  "frame": 1,
+  "block": 0,
+  "subject_drift": "none",
+  "scene_drift": "none",
+  "reason": "Bird appearance and background identical to reference frame.",
+  "drop": false
+ },
+ {
+  "frame": 4,
+  "block": 1,
+  "subject_drift": "none",
+  "scene_drift": "none",
+  "reason": "Bird appearance and background identical to reference frame.",
+  "drop": false
+ },
+ {
+  "frame": 7,
+  "block": 2,
+  "subject_drift": "none",
+  "scene_drift": "none",
+  "reason": "Bird appearance and background identical to reference frames.",
+  "drop": false
+ },
+ {
+  "frame": 10,
+  "block": 3,
+  "subject_drift": "none",
+  "scene_drift": "none",
+  "reason": "Bird appearance and background unchanged between frames.",
+  "drop": false
+ },
+ {
+  "frame": 13,
+  "block": 4,
+  "subject_drift": "none",
+  "scene_drift": "none",
+  "reason": "Bird appearance and background unchanged, consistent with natural motion.",
+  "drop": false
+ },
+ {
+  "frame": 16,
+  "block": 5,
+  "subject_drift": "none",
+  "scene_drift": "none",
+  "reason": "Bird appearance and background unchanged, consistent with natural motion.",
+  "drop": false
+ },
+ {
+  "frame": 19,
+  "block": 6,
+  "subject_drift": "none",
+  "scene_drift": "none",
+  "reason": "Bird appearance and background unchanged, consistent with natural motion.",
+  "drop": false
+ },
+ {
+  "frame": 22,
+  "block": 7,
+  "subject_drift": "none",
+  "scene_drift": "none",
+  "reason": "Bird appearance and background unchanged, consistent with natural motion.",
+  "drop": false
+ },
+ {
+  "frame": 25,
+  "block": 8,
+  "subject_drift": "none",
+  "scene_drift": "none",
+  "reason": "Bird appearance and background unchanged, consistent with natural motion.",
+  "drop": false
+ },
+ {
+  "frame": 28,
+  "block": 9,
+  "subject_drift": "none",
+  "scene_drift": "none",
+  "reason": "Bird appearance and background unchanged, consistent with natural motion.",
+  "drop": false
+ },
+ {
+  "frame": 31,
+  "block": 10,
+  "subject_drift": "none",
+  "scene_drift": "none",
+  "reason": "Bird appearance and background unchanged, consistent with natural motion.",
+  "drop": false
+ },
+ {
+  "frame": 34,
+  "block": 11,
+  "subject_drift": "none",
+  "scene_drift": "none",
+  "reason": "Bird appearance and background consistent across all frames.",
+  "drop": false
+ },
+ {
+  "frame": 37,
+  "block": 12,
+  "subject_drift": "none",
+  "scene_drift": "none",
+  "reason": "Bird appearance and background consistent with reference frames.",
+  "drop": false
+ },
+ {
+  "frame": 40,
+  "block": 13,
+  "subject_drift": "none",
+  "scene_drift": "none",
+  "reason": "Bird appearance and background consistent across all frames.",
+  "drop": false
+ },
+ {
+  "frame": 43,
+  "block": 14,
+  "subject_drift": "none",
+  "scene_drift": "none",
+  "reason": "Bird appearance and background consistent with reference frames.",
+  "drop": false
+ },
+ {
+  "frame": 46,
+  "block": 15,
+  "subject_drift": "none",
+  "scene_drift": "none",
+  "reason": "Bird appearance and background consistent with reference frames.",
+  "drop": false
+ },
+ {
+  "frame": 49,
+  "block": 16,
+  "subject_drift": "none",
+  "scene_drift": "none",
+  "reason": "Bird appearance and background consistent with reference frames.",
+  "drop": false
+ },
+ {
+  "frame": 52,
+  "block": 17,
+  "subject_drift": "none",
+  "scene_drift": "none",
+  "reason": "Bird appearance and background consistent with reference frames.",
+  "drop": false
+ },
+ {
+  "frame": 55,
+  "block": 18,
+  "subject_drift": "none",
+  "scene_drift": "none",
+  "reason": "Bird appearance and background consistent with reference frames.",
+  "drop": false
+ },
+ {
+  "frame": 58,
+  "block": 19,
+  "subject_drift": "none",
+  "scene_drift": "none",
+  "reason": "Bird appearance and background consistent with reference frames.",
+  "drop": false
+ },
+ {
+  "frame": 61,
+  "block": 20,
+  "subject_drift": "none",
+  "scene_drift": "none",
+  "reason": "Bird appearance and background consistent with reference frames.",
+  "drop": false
+ },
+ {
+  "frame": 64,
+  "block": 21,
+  "subject_drift": "none",
+  "scene_drift": "none",
+  "reason": "Bird appearance and background consistent with reference frames.",
+  "drop": false
+ },
+ {
+  "frame": 67,
+  "block": 22,
+  "subject_drift": "none",
+  "scene_drift": "none",
+  "reason": "Bird appearance and background consistent with reference frames.",
+  "drop": false
+ },
+ {
+  "frame": 70,
+  "block": 23,
+  "subject_drift": "none",
+  "scene_drift": "none",
+  "reason": "Bird appearance and background consistent with reference frames.",
+  "drop": false
+ },
+ {
+  "frame": 73,
+  "block": 24,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, background blur less focused in later frame.",
+  "drop": false
+ },
+ {
+  "frame": 76,
+  "block": 25,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, background blur shifted slightly, composition unchanged.",
+  "drop": false
+ },
+ {
+  "frame": 79,
+  "block": 26,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, background blur slight shift, composition unchanged.",
+  "drop": false
+ },
+ {
+  "frame": 82,
+  "block": 27,
+  "subject_drift": "none",
+  "scene_drift": "none",
+  "reason": "Bird appearance and background consistent with reference frames.",
+  "drop": false
+ },
+ {
+  "frame": 85,
+  "block": 28,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, background slightly more blurred and shifted.",
+  "drop": false
+ },
+ {
+  "frame": 88,
+  "block": 29,
+  "subject_drift": "none",
+  "scene_drift": "none",
+  "reason": "Bird appearance and background consistent with reference frames.",
+  "drop": false
+ },
+ {
+  "frame": 91,
+  "block": 30,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, background blur shifted slightly, lighting changed.",
+  "drop": false
+ },
+ {
+  "frame": 94,
+  "block": 31,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, background slightly blurred and shifted.",
+  "drop": false
+ },
+ {
+  "frame": 97,
+  "block": 32,
+  "subject_drift": "none",
+  "scene_drift": "none",
+  "reason": "Bird appearance and background consistent with reference frames.",
+  "drop": false
+ },
+ {
+  "frame": 100,
+  "block": 33,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, background slightly blurred and shifted.",
+  "drop": false
+ },
+ {
+  "frame": 103,
+  "block": 34,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, background slightly blurred and shifted.",
+  "drop": false
+ },
+ {
+  "frame": 106,
+  "block": 35,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, background blur changed, lighting slightly different",
+  "drop": false
+ },
+ {
+  "frame": 109,
+  "block": 36,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, background blur changed, lighting slightly different",
+  "drop": false
+ },
+ {
+  "frame": 112,
+  "block": 37,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, background blur less focused, slight angle change.",
+  "drop": false
+ },
+ {
+  "frame": 115,
+  "block": 38,
+  "subject_drift": "none",
+  "scene_drift": "none",
+  "reason": "Bird appearance and background consistent with reference frames.",
+  "drop": false
+ },
+ {
+  "frame": 118,
+  "block": 39,
+  "subject_drift": "none",
+  "scene_drift": "none",
+  "reason": "Bird appearance and background consistent with reference frames.",
+  "drop": false
+ },
+ {
+  "frame": 121,
+  "block": 40,
+  "subject_drift": "none",
+  "scene_drift": "none",
+  "reason": "Bird appearance and background consistent with reference frames.",
+  "drop": false
+ },
+ {
+  "frame": 124,
+  "block": 41,
+  "subject_drift": "none",
+  "scene_drift": "none",
+  "reason": "Bird appearance and background consistent with reference frames.",
+  "drop": false
+ },
+ {
+  "frame": 127,
+  "block": 42,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, but background blur and lighting slightly changed.",
+  "drop": false
+ },
+ {
+  "frame": 130,
+  "block": 43,
+  "subject_drift": "none",
+  "scene_drift": "none",
+  "reason": "Bird appearance and background consistent with reference frames.",
+  "drop": false
+ },
+ {
+  "frame": 133,
+  "block": 44,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, background blur changed, slight angle shift",
+  "drop": false
+ },
+ {
+  "frame": 136,
+  "block": 45,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, background blur changed, slight angle shift",
+  "drop": false
+ },
+ {
+  "frame": 139,
+  "block": 46,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, background blur changed, slight angle shift",
+  "drop": false
+ },
+ {
+  "frame": 142,
+  "block": 47,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, background blur changed, focus shifted slightly.",
+  "drop": false
+ },
+ {
+  "frame": 145,
+  "block": 48,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, background blur changed, composition slightly different",
+  "drop": false
+ },
+ {
+  "frame": 148,
+  "block": 49,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, background blur changed, more birds visible",
+  "drop": false
+ },
+ {
+  "frame": 151,
+  "block": 50,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, background blur changed, composition slightly different",
+  "drop": false
+ },
+ {
+  "frame": 154,
+  "block": 51,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, background blur changed, composition slightly different",
+  "drop": false
+ },
+ {
+  "frame": 157,
+  "block": 52,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, background blur changed, slight angle shift.",
+  "drop": false
+ },
+ {
+  "frame": 160,
+  "block": 53,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, background blur changed, composition slightly different",
+  "drop": false
+ },
+ {
+  "frame": 163,
+  "block": 54,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, background blur changed, slight angle shift",
+  "drop": false
+ },
+ {
+  "frame": 166,
+  "block": 55,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, background blur changed, slight angle shift.",
+  "drop": false
+ },
+ {
+  "frame": 169,
+  "block": 56,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, background blur changed, focus shifted slightly.",
+  "drop": false
+ },
+ {
+  "frame": 172,
+  "block": 57,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, but background blur and lighting slightly changed.",
+  "drop": false
+ },
+ {
+  "frame": 175,
+  "block": 58,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, but background blur and focus shifted slightly.",
+  "drop": false
+ },
+ {
+  "frame": 178,
+  "block": 59,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, but background blur and lighting differ slightly.",
+  "drop": false
+ },
+ {
+  "frame": 181,
+  "block": 60,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, but background blur and another bird visible.",
+  "drop": false
+ },
+ {
+  "frame": 184,
+  "block": 61,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, but background blur and focus shifted slightly.",
+  "drop": false
+ },
+ {
+  "frame": 187,
+  "block": 62,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird appears different, background slightly changed.",
+  "drop": false
+ },
+ {
+  "frame": 190,
+  "block": 63,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, but background blur and focus shifted slightly.",
+  "drop": false
+ },
+ {
+  "frame": 193,
+  "block": 64,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, but background blur and focus shifted slightly.",
+  "drop": false
+ },
+ {
+  "frame": 196,
+  "block": 65,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, but background blur and focus shifted slightly.",
+  "drop": false
+ },
+ {
+  "frame": 199,
+  "block": 66,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, but background blur and focus shifted slightly.",
+  "drop": false
+ },
+ {
+  "frame": 202,
+  "block": 67,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, but background blur and focus shifted slightly.",
+  "drop": false
+ },
+ {
+  "frame": 205,
+  "block": 68,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, but background blur and angle slightly changed.",
+  "drop": false
+ },
+ {
+  "frame": 208,
+  "block": 69,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, but background blur and focus shifted slightly.",
+  "drop": false
+ },
+ {
+  "frame": 211,
+  "block": 70,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, but background blur and second bird visible.",
+  "drop": false
+ },
+ {
+  "frame": 214,
+  "block": 71,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, but background blur and angle slightly changed.",
+  "drop": false
+ },
+ {
+  "frame": 217,
+  "block": 72,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, background slightly different, focus shifted.",
+  "drop": false
+ },
+ {
+  "frame": 220,
+  "block": 73,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, but background blur and focus shifted slightly.",
+  "drop": false
+ },
+ {
+  "frame": 223,
+  "block": 74,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, but background blur and second bird visible.",
+  "drop": false
+ },
+ {
+  "frame": 226,
+  "block": 75,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, but background blur and second bird visible.",
+  "drop": false
+ },
+ {
+  "frame": 229,
+  "block": 76,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, but background changed with another bird visible.",
+  "drop": false
+ },
+ {
+  "frame": 232,
+  "block": 77,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, but background blur and second bird visible.",
+  "drop": false
+ },
+ {
+  "frame": 235,
+  "block": 78,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, but background blur and second bird visible.",
+  "drop": false
+ },
+ {
+  "frame": 238,
+  "block": 79,
+  "subject_drift": "none",
+  "scene_drift": "mild",
+  "reason": "Bird same, but background blur and focus shifted slightly.",
+  "drop": false
+ }
+]
