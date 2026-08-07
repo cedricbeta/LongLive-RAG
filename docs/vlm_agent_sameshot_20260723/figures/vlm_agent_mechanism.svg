@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="810" viewBox="0 0 1280 810" font-family="Noto Sans CJK JP, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#444"/>
+    </marker>
+    <marker id="arG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2e7d32"/>
+    </marker>
+    <marker id="arR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/>
+    </marker>
+    <marker id="arO" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c07d1a"/>
+    </marker>
+    <marker id="arGy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#888"/>
+    </marker>
+  </defs>
+
+  <rect width="1280" height="810" fill="white"/>
+
+  <!-- ===================== Panel A ===================== -->
+  <text x="50" y="46" font-size="21" font-weight="600" fill="#222">A · 验证-控制环:每个 block 的生命周期</text>
+
+  <!-- generator -->
+  <rect x="50" y="86" width="200" height="96" rx="10" fill="#eef4fb" stroke="#3a6ea5" stroke-width="2"/>
+  <text x="150" y="116" font-size="16" font-weight="600" text-anchor="middle" fill="#1f3d5c">冻结的生成器</text>
+  <text x="150" y="140" font-size="14" text-anchor="middle" fill="#333">生成 block b(4 步去噪)</text>
+  <text x="150" y="162" font-size="13" text-anchor="middle" fill="#777">开始前保存 KV 快照</text>
+
+  <!-- judge -->
+  <rect x="340" y="86" width="190" height="96" rx="10" fill="#fdf3e3" stroke="#c07d1a" stroke-width="2"/>
+  <text x="435" y="116" font-size="16" font-weight="600" text-anchor="middle" fill="#7a4d0a">VLM 裁决</text>
+  <text x="435" y="140" font-size="14" text-anchor="middle" fill="#333">绝对式 · 抓灾难</text>
+  <text x="435" y="161" font-size="14" text-anchor="middle" fill="#333">对比式 · 抓漂移</text>
+
+  <!-- pool -->
+  <rect x="620" y="86" width="200" height="96" rx="10" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+  <text x="720" y="116" font-size="16" font-weight="600" text-anchor="middle" fill="#1e5722">ADMIT</text>
+  <text x="720" y="140" font-size="14" text-anchor="middle" fill="#333">KV + 描述子进检索池</text>
+  <text x="720" y="162" font-size="13" text-anchor="middle" fill="#777">成为后续 block 的参照</text>
+
+  <!-- next -->
+  <rect x="910" y="86" width="160" height="96" rx="10" fill="#fff" stroke="#3a6ea5" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="990" y="126" font-size="15" font-weight="600" text-anchor="middle" fill="#1f3d5c">block b 定稿</text>
+  <text x="990" y="150" font-size="14" text-anchor="middle" fill="#333">进入 b+1</text>
+
+  <!-- main arrows -->
+  <line x1="250" y1="134" x2="336" y2="134" stroke="#444" stroke-width="2" marker-end="url(#ar)"/>
+  <line x1="530" y1="134" x2="616" y2="134" stroke="#2e7d32" stroke-width="2" marker-end="url(#arG)"/>
+  <text x="573" y="124" font-size="13" text-anchor="middle" fill="#2e7d32">admit</text>
+  <line x1="820" y1="134" x2="906" y2="134" stroke="#444" stroke-width="2" marker-end="url(#ar)"/>
+
+  <!-- retry -->
+  <rect x="340" y="252" width="190" height="96" rx="10" fill="#fdecea" stroke="#c0392b" stroke-width="2"/>
+  <text x="435" y="282" font-size="16" font-weight="600" text-anchor="middle" fill="#8c2a1e">回滚 + 重摇</text>
+  <text x="435" y="306" font-size="14" text-anchor="middle" fill="#333">恢复 KV 快照,换噪声</text>
+  <text x="435" y="327" font-size="13" text-anchor="middle" fill="#777">block 0 ×6 · 其余 ×1</text>
+
+  <line x1="435" y1="182" x2="435" y2="248" stroke="#c0392b" stroke-width="2" marker-end="url(#arR)"/>
+  <text x="447" y="222" font-size="13" fill="#c0392b">reject</text>
+
+  <path d="M 340 300 L 150 300 L 150 186" fill="none" stroke="#c0392b" stroke-width="2" marker-end="url(#arR)"/>
+  <text x="160" y="255" font-size="13" fill="#c0392b">重新生成本块</text>
+
+  <!-- quarantine -->
+  <rect x="620" y="252" width="200" height="96" rx="10" fill="#f4f4f4" stroke="#888" stroke-width="2"/>
+  <text x="720" y="282" font-size="16" font-weight="600" text-anchor="middle" fill="#555">QUARANTINE</text>
+  <text x="720" y="306" font-size="14" text-anchor="middle" fill="#333">视频照常输出</text>
+  <text x="720" y="327" font-size="14" text-anchor="middle" fill="#333">记忆扣下,不进池</text>
+
+  <line x1="530" y1="300" x2="616" y2="300" stroke="#888" stroke-width="2" marker-end="url(#arGy)"/>
+  <text x="573" y="290" font-size="13" text-anchor="middle" fill="#777">仍拒</text>
+  <path d="M 820 300 L 990 300 L 990 186" fill="none" stroke="#888" stroke-width="2" marker-end="url(#arGy)"/>
+
+  <!-- surgery -->
+  <rect x="290" y="408" width="470" height="74" rx="10" fill="#fdf3e3" stroke="#c07d1a" stroke-width="2"/>
+  <text x="525" y="437" font-size="16" font-weight="600" text-anchor="middle" fill="#7a4d0a">prompt 手术</text>
+  <text x="525" y="461" font-size="14" text-anchor="middle" fill="#333">VLM 带着"实际画成了什么"的证据帧改写条件文本,从头重启(≤2 轮)</text>
+
+  <line x1="435" y1="348" x2="435" y2="404" stroke="#c07d1a" stroke-width="2" marker-end="url(#arO)"/>
+  <text x="447" y="382" font-size="13" fill="#c07d1a">连续同因失败 = 先验问题</text>
+
+  <path d="M 290 445 L 90 445 L 90 186" fill="none" stroke="#c07d1a" stroke-width="2" marker-end="url(#arO)"/>
+  <text x="100" y="430" font-size="13" fill="#c07d1a">带新 prompt 重启</text>
+
+  <!-- ===================== Panel B ===================== -->
+  <text x="50" y="546" font-size="21" font-weight="600" fill="#222">B · 记忆分区与上下文组装</text>
+
+  <!-- positive pool -->
+  <rect x="50" y="570" width="260" height="100" rx="10" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+  <text x="180" y="600" font-size="16" font-weight="600" text-anchor="middle" fill="#1e5722">正池</text>
+  <text x="180" y="624" font-size="14" text-anchor="middle" fill="#333">验收过的 KV / 描述子</text>
+  <text x="180" y="646" font-size="13" text-anchor="middle" fill="#777">相似度检索只在这里找</text>
+
+  <!-- golden -->
+  <rect x="350" y="570" width="260" height="100" rx="10" fill="#e8f5e9" stroke="#2e7d32" stroke-width="3.5"/>
+  <text x="480" y="600" font-size="16" font-weight="600" text-anchor="middle" fill="#1e5722">金帧 ×2</text>
+  <text x="480" y="624" font-size="14" text-anchor="middle" fill="#333">VLM 选举的规范参照</text>
+  <text x="480" y="646" font-size="13" text-anchor="middle" fill="#777">每次检索强制占 2 槽</text>
+
+  <!-- negative pool -->
+  <rect x="650" y="570" width="290" height="100" rx="10" fill="#fdecea" stroke="#c0392b" stroke-width="2"/>
+  <text x="795" y="600" font-size="16" font-weight="600" text-anchor="middle" fill="#8c2a1e">负池(error buffer)</text>
+  <text x="795" y="624" font-size="14" text-anchor="middle" fill="#333">被拒块的描述子</text>
+  <text x="795" y="646" font-size="13" text-anchor="middle" fill="#777">margin 塌缩 → 才请 VLM(预警)</text>
+
+  <!-- context bar -->
+  <text x="50" y="716" font-size="15" fill="#333">block b+1 的注意力上下文(12 帧):</text>
+  <g>
+    <rect x="330" y="698" width="55" height="42" fill="#c9d4e4" stroke="#666"/>
+    <rect x="385" y="698" width="110" height="42" fill="#79b37e" stroke="#666"/>
+    <rect x="495" y="698" width="220" height="42" fill="#bfe0c2" stroke="#666"/>
+    <rect x="715" y="698" width="275" height="42" fill="#e6e6e6" stroke="#666"/>
+    <text x="357" y="724" font-size="13" text-anchor="middle" fill="#222">sink 1</text>
+    <text x="440" y="724" font-size="13" text-anchor="middle" fill="#fff" font-weight="600">金帧 2</text>
+    <text x="605" y="724" font-size="13" text-anchor="middle" fill="#222">相似度检索 4</text>
+    <text x="852" y="724" font-size="13" text-anchor="middle" fill="#222">局部滑窗 5</text>
+  </g>
+  <text x="330" y="768" font-size="13" fill="#777">金帧与检索帧 re-RoPE 到位置 0(sink 相位)——注意力里唯一不被时近性压制的位置</text>
+
+  <!-- arrows into bar -->
+  <path d="M 480 670 L 480 694" fill="none" stroke="#2e7d32" stroke-width="2" marker-end="url(#arG)"/>
+  <path d="M 180 670 L 180 684 L 605 684 L 605 694" fill="none" stroke="#2e7d32" stroke-width="2" marker-end="url(#arG)"/>
+
+  <!-- neg pool guard arrow up to judge -->
+  <path d="M 940 620 L 1160 620 L 1160 64 L 480 64 L 480 82" fill="none" stroke="#c0392b" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#arR)"/>
+  <text x="1172" y="400" font-size="13" fill="#c0392b" transform="rotate(90 1172 400)">margin 预警:塌了才触发裁决(AUC 0.787)</text>
+</svg>
