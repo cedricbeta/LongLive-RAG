@@ -1,6 +1,6 @@
 # 用 VLM 引导 LongLive-RAG 的检索记忆:同 shot 实验记录
 
-2026-07-23,分支 `feat/multiview-consistency`。基于 [LongLive-RAG](https://github.com/qixinhu11/LongLive-RAG) (arXiv 2606.02553) 的官方代码和权重做的一组实验,目的是搞清楚:在它的设定(单 prompt 连续长视频)下,把检索决策交给 VLM 能不能比它训练出来的检索器做得更好。
+2026-07-23,分支 `feat/multiview-consistency`。短版方法总结与实验计划见 [SUMMARY.md](SUMMARY.md)。基于 [LongLive-RAG](https://github.com/qixinhu11/LongLive-RAG) (arXiv 2606.02553) 的官方代码和权重做的一组实验,目的是搞清楚:在它的设定(单 prompt 连续长视频)下,把检索决策交给 VLM 能不能比它训练出来的检索器做得更好。
 
 ## 起因
 
