@@ -421,6 +421,18 @@ def make_two_up(baseline: Path, final: Path, output: Path) -> None:
     )
 
 
+def resolve_entity_phrase(args, scene: str) -> str:
+    if getattr(args, "entities_json", None):
+        table = json.loads((ROOT / args.entities_json).read_text())
+        if scene in table:
+            return table[scene]
+    if scene in ENTITIES:
+        return ENTITIES[scene]
+    raise KeyError(
+        f"no entity phrase for scene {scene}; pass --entities_json with an entry for it"
+    )
+
+
 def run_scene(args, scene: str, base_url: str, output_root: Path) -> dict[str, Any]:
     scene_src = ROOT / args.data_root / scene
     out_dir = output_root / scene
@@ -477,7 +489,7 @@ def run_scene(args, scene: str, base_url: str, output_root: Path) -> dict[str, A
     )
     verifier = ComparativeDriftVerifier(
         client,
-        entity_phrase=ENTITIES[scene],
+        entity_phrase=resolve_entity_phrase(args, scene),
         edit_entry_sigma=runtime_config.edit_entry_sigma,
         prompt_template=runtime_config.edit_prompt_template,
     )
@@ -530,6 +542,11 @@ def main() -> None:
     parser.add_argument("--output_root", default="videos/agent_edit_demo")
     parser.add_argument("--entry_sigma", type=float, default=1.0)
     parser.add_argument("--scenes", nargs="*", default=list(SCENES))
+    parser.add_argument(
+        "--entities_json",
+        default=None,
+        help="JSON file mapping scene name -> CLIPSeg entity phrase (overrides built-ins)",
+    )
     args = parser.parse_args()
 
     output_root = ROOT / args.output_root
