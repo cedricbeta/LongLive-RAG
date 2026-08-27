@@ -557,6 +557,35 @@ class ComparativeDriftVerifierTest(unittest.TestCase):
             self.assertEqual(call["call_kind"], "drift_judge")
             self.assertEqual(call["prompt"]["reference_image_count"], 1)
             self.assertTrue(call["images"][0].endswith("ref0.png"))
+            # Without a judged repaint_region the mask falls back to the entity phrase.
+            self.assertEqual(params["mask_phrase"], "fish")
+
+    def test_repaint_region_widens_the_mask(self):
+        from utils.agent_vlm import ComparativeDriftVerifier
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            graph = _scene(root, shots=2)
+            client = _StubVLMClient(
+                {
+                    "subject_drifted": True,
+                    "drift_description": "an extra woman appeared beside the man",
+                    "reference_description": "a man in a dark green work shirt",
+                    "repaint_region": "person",
+                    "confidence": 1.0,
+                }
+            )
+            verifier = ComparativeDriftVerifier(
+                client, entity_phrase="tall man", edit_entry_sigma=1.0
+            )
+            verdict = verifier.judge(self._observation(root, with_reference=True), graph.view(1))
+            self.assertFalse(verdict.accept)
+            params = dict(verdict.directed_actions[0].params)
+            # Appeared-content drift: the judge's repaint region (all persons)
+            # overrides the narrow static entity phrase, so the spurious person
+            # falls inside the mask instead of being pinned back verbatim.
+            self.assertEqual(params["mask_phrase"], "person")
+            self.assertEqual(verdict.metrics["repaint_region"], "person")
 
     def test_no_drift_and_no_reference_accept(self):
         from utils.agent_vlm import ComparativeDriftVerifier

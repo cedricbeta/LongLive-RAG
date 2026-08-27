@@ -255,9 +255,16 @@ DRIFT_JUDGE_SCHEMA: dict[str, Any] = {
         "subject_drifted": {"type": "boolean"},
         "drift_description": {"type": "string", "minLength": 0, "maxLength": 240},
         "reference_description": {"type": "string", "minLength": 0, "maxLength": 240},
+        "repaint_region": {"type": "string", "minLength": 0, "maxLength": 120},
         "confidence": {"type": "number", "enum": [0, 0.25, 0.5, 0.75, 1]},
     },
-    "required": ["subject_drifted", "drift_description", "reference_description", "confidence"],
+    "required": [
+        "subject_drifted",
+        "drift_description",
+        "reference_description",
+        "repaint_region",
+        "confidence",
+    ],
 }
 
 
@@ -836,6 +843,12 @@ class ComparativeDriftVerifier(Verifier):
                     "text repaints the subject, so name ONLY what should appear — never "
                     "mention the wrong or drifted appearance."
                 ),
+                "repaint_region": (
+                    "Short segmentation phrase naming everything in the CURRENT frames "
+                    "that must be erased and repainted: the drifted subject PLUS any "
+                    "extra or wrong person/object that appeared. Use a broad noun like "
+                    "'person' when an extra person appeared. Empty string if not drifted."
+                ),
                 "output": "strict JSON matching the supplied schema",
             },
             sort_keys=True,
@@ -857,6 +870,7 @@ class ComparativeDriftVerifier(Verifier):
             "confidence": confidence,
             "drift_description": str(parsed["drift_description"]),
             "reference_description": str(parsed.get("reference_description", "")),
+            "repaint_region": str(parsed.get("repaint_region", "")),
         }
         if not drifted:
             return Verdict(
@@ -877,12 +891,18 @@ class ComparativeDriftVerifier(Verifier):
             str(parsed.get("reference_description", "")),
             template=self.prompt_template,
         )
+        # Mask what the judge says must be repainted — the drifted subject plus
+        # any extra person/object that appeared. A static entity phrase leaves
+        # appeared-content outside the mask, where the background pin preserves
+        # it verbatim (pilot ns100: repaired man came back, spurious woman
+        # survived pinned beside him).
+        mask_phrase = str(parsed.get("repaint_region", "")).strip() or self.entity_phrase
         action = Action(
             "edit_shot",
             {
                 "shot": observation.shot_index,
                 "prompt": repair_prompt,
-                "mask_phrase": self.entity_phrase,
+                "mask_phrase": mask_phrase,
                 "entry_sigma": self.edit_entry_sigma,
             },
             reason="masked_renoise_repair_scheduled",
