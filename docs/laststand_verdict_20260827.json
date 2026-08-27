@@ -1,0 +1,85 @@
+{
+  "scenes": {
+    "bearded_watchmaker_workshop": {
+      "arms": {
+        "baseline_rerun": {
+          "video": "/home/chendong/video-gen/LongLive-RAG/videos/laststand_20260827/renders/bearded_watchmaker_workshop__baseline_rerun/laststand_baseline_rerun-rank0-bearded_watchmaker_workshop-seed0_regular.mp4",
+          "frames": 480,
+          "metrics": {
+            "subject_anchor_consistency": 0.7971057221731399,
+            "background_anchor_consistency": 0.9329392390240772,
+            "anchor_centroid_consistency": 0.8650224805986085,
+            "subject_anchor_to_shot0_consistency": 0.6813601462983149,
+            "background_anchor_to_shot0_consistency": 0.8820623325292699,
+            "anchor_to_shot0_consistency": 0.7817112394137924,
+            "subject_worst_to_shot0_consistency": 0.1839227657032803,
+            "background_worst_to_shot0_consistency": 0.7298548035214956,
+            "worst_anchor_to_shot0_consistency": 0.1839227657032803,
+            "anchor_drift_aggregate_consistency": 0.4828170025585363
+          }
+        },
+        "laststand_full": {
+          "video": "/home/chendong/video-gen/LongLive-RAG/videos/laststand_20260827/renders/bearded_watchmaker_workshop__laststand_full/laststand_laststand_full-rank0-bearded_watchmaker_workshop-seed0_regular.mp4",
+          "frames": 480,
+          "metrics": {
+            "subject_anchor_consistency": 0.7856812269471323,
+            "background_anchor_consistency": 0.9281523284984112,
+            "anchor_centroid_consistency": 0.8569167777227717,
+            "subject_anchor_to_shot0_consistency": 0.6592178355634017,
+            "background_anchor_to_shot0_consistency": 0.8773481944027284,
+            "anchor_to_shot0_consistency": 0.7682830149830651,
+            "subject_worst_to_shot0_consistency": 0.18182672204998707,
+            "background_worst_to_shot0_consistency": 0.7166160296917887,
+            "worst_anchor_to_shot0_consistency": 0.18182672204998707,
+            "anchor_drift_aggregate_consistency": 0.47505486851652606
+          }
+        }
+      },
+      "delta_anchor_drift_aggregate": -0.00776213404201026,
+      "frozen_2sigma_threshold": 0.0500931786597236,
+      "win": false,
+      "knob_counters": {}
+    },
+    "sandy_beach_driftwood": {
+      "arms": {
+        "baseline_rerun": {
+          "video": "/home/chendong/video-gen/LongLive-RAG/videos/laststand_20260827/renders/sandy_beach_driftwood__baseline_rerun/laststand_baseline_rerun-rank0-sandy_beach_driftwood-seed0_regular.mp4",
+          "frames": 480,
+          "metrics": {
+            "subject_anchor_consistency": 0.7432209871953804,
+            "background_anchor_consistency": 0.9076163703804273,
+            "anchor_centroid_consistency": 0.8254186787879039,
+            "subject_anchor_to_shot0_consistency": 0.3997796674694939,
+            "background_anchor_to_shot0_consistency": 0.747926718833731,
+            "anchor_to_shot0_consistency": 0.5738531931516124,
+            "subject_worst_to_shot0_consistency": 0.18892350093899374,
+            "background_worst_to_shot0_consistency": 0.6807470417895246,
+            "worst_anchor_to_shot0_consistency": 0.18892350093899374,
+            "anchor_drift_aggregate_consistency": 0.3813883470453031
+          }
+        },
+        "laststand_full": {
+          "video": "/home/chendong/video-gen/LongLive-RAG/videos/laststand_20260827/renders/sandy_beach_driftwood__laststand_full/laststand_laststand_full-rank0-sandy_beach_driftwood-seed0_regular.mp4",
+          "frames": 480,
+          "metrics": {
+            "subject_anchor_consistency": 0.799845570751144,
+            "background_anchor_consistency": 0.9134449888096207,
+            "anchor_centroid_consistency": 0.8566452797803823,
+            "subject_anchor_to_shot0_consistency": 0.43605388694847236,
+            "background_anchor_to_shot0_consistency": 0.7656324530256386,
+            "anchor_to_shot0_consistency": 0.6008431699870556,
+            "subject_worst_to_shot0_consistency": 0.3112748698844826,
+            "background_worst_to_shot0_consistency": 0.7432748814942362,
+            "worst_anchor_to_shot0_consistency": 0.3112748698844826,
+            "anchor_drift_aggregate_consistency": 0.4560590199357691
+          }
+        }
+      },
+      "delta_anchor_drift_aggregate": 0.07467067289046597,
+      "frozen_2sigma_threshold": 0.045033992203391146,
+      "win": true,
+      "knob_counters": {}
+    }
+  },
+  "gate": "ARCHIVE_additive_route"
+}
