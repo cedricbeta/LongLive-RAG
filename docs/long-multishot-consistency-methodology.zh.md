@@ -130,14 +130,6 @@
 - 每场景的胜出阈值 = **2σ 跨 seed 噪声底**(seeds 0-2 的 baseline 漂移标准差 ×2,逐场景冻结:最灵敏 0.018,最噪 0.135)——"赢"必须超过同场景的随机波动,不用全局固定阈值;
 - gate 判定:一致性场景胜数 ≥5/9,且全部 guard 通过。
 
-**双裁判 + 反作弊 guard**:
-
-- **数值指标**:`anchor_drift_aggregate_consistency`(DINO 主体流 + CLIP 背景流的 to-first / worst-to-first 漂移敏感聚合)——刻意不用会把对称漂移平均掉的 centroid 类指标;
-- **闭环裁判**:GPT-5.5(codex OAuth,与优化器完全独立)对每 shot 1 帧的 fixture 打分(subject/background/逐 shot adherence/切点诊断/作弊 flag),裁判本身先过降解校验(subject-swap 必须掉分、copy-cheat 必须被 flag、纯视角变化不得误伤)才允许上岗;
-- **guard 组**:RAFT 相对运动(防冻结)、inter-shot 多样性下限(防复制粘贴)、CLIP prompt adherence 容差(防文本覆盖)、不变量对比探针、prompt 文本相似度下限(防 shot 文本坍缩)、合成降解负控制(复制帧序列必须被裁判 flag);
-- 结论只有三态:PASS(过 gate 且 guard 全绿)/ HONEST NULL(渲染成功但未过)/ BLOCKED(前置条件未满足,不出结论)。
-
-**收益**:任何单一评审的失效模式都被另一方覆盖——裁判的粗粒度反作弊漏掉的多样性/运动塌缩由数值 guard 拦,数值指标看不见的细节改善由裁判补;两者在同一场景上**同向**时,证据强度质变(Round 18 首次出现,2 个场景)。
 
 ## 6. 多轮编排与可复现性
 
