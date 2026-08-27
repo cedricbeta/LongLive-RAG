@@ -258,6 +258,19 @@ class KVRAGConfig:
     #                   attention during the clean recache store path; requires
     #                   frame_aligned_store and a received-attention vector
     retrieval_value_mode: str = "raw"
+    # --- attention down-weighting probe (docs/attention-downweighting-study.zh.md) ---
+    # When attn_probe_dir is set, the bank dumps the raw tensors needed to
+    # decompose injected-column logits offline: sampled pre/post-RoPE queries
+    # per denoise step, the assembled post-RoPE window K (first step only),
+    # the injected block's pre-RoPE keys, and every stored chunk's full
+    # pre-RoPE K on the clean-recache pass. Read-only; never perturbs attention.
+    attn_probe_dir: str | None = None
+    attn_probe_max_q_rows: int = 96
+    # Dump the FULL query (all current-chunk rows) on the first denoise step of
+    # each boundary so a per-query-token spatial map can be built offline.
+    attn_probe_full_q_first_step: bool = True
+    # Dump full-chunk pre-RoPE K on the clean-recache store path (per layer).
+    attn_probe_store_k: bool = True
 
     @classmethod
     def from_config(cls, value: Any) -> "KVRAGConfig":
@@ -321,6 +334,12 @@ class KVRAGConfig:
             retrieval_key_centroids=max(1, _as_int(cfg.get("retrieval_key_centroids", 4), 4)),
             retrieval_key_top_m=max(1, _as_int(cfg.get("retrieval_key_top_m", 8), 8)),
             retrieval_value_mode=str(cfg.get("retrieval_value_mode", "raw")).lower(),
+            attn_probe_dir=cfg.get("attn_probe_dir", None),
+            attn_probe_max_q_rows=max(1, _as_int(cfg.get("attn_probe_max_q_rows", 96), 96)),
+            attn_probe_full_q_first_step=_as_bool(
+                cfg.get("attn_probe_full_q_first_step", True), True
+            ),
+            attn_probe_store_k=_as_bool(cfg.get("attn_probe_store_k", True), True),
         )
 
     def layer_enabled(self, layer: int) -> bool:
@@ -427,6 +446,10 @@ class KVRAGMemory:
             "shot_index": None,
             "phase": None,
         }
+        # attention down-weighting probe: per-(layer, chunk) denoise-step
+        # counters, plus a one-shot flag for the RoPE freqs dump.
+        self._attn_probe_step: dict[tuple[int, int], int] = {}
+        self._attn_probe_freqs_saved = False
         self.attention_mass_by_shot_layer: dict[str, dict[str, dict[str, float | int]]] = {}
         self.attention_mass_by_shot_layer_frame: dict[
             str, dict[str, dict[str, dict[str, float | int]]]
@@ -707,6 +730,53 @@ class KVRAGMemory:
             self.stats[key] = 0 if isinstance(self.stats[key], int) else 0.0
         self._warnings.clear()
 
+    def snapshot_state(self) -> dict[str, object]:
+        """Clone every mutable partition/index used by retrieval.
+
+        This is an in-memory transaction snapshot for ``CausalShotSession``.  It
+        intentionally includes diagnostics and manual-plan cursors because a
+        verifier retry must be observationally equal to a continuous no-action
+        run, including its ledger-side telemetry.
+        """
+        from utils.agent_snapshot import clone_state
+
+        return clone_state({
+            "entries_by_layer": self.entries_by_layer,
+            "scene_entries_by_layer": self.scene_entries_by_layer,
+            "boundary_inject": self._boundary_inject,
+            "context_key": self._context_key,
+            "scene_cross_clock": self._scene_cross_clock,
+            "scene_name": self._scene_name,
+            "runtime_context": self._runtime_context,
+            "attention_mass_by_shot_layer": self.attention_mass_by_shot_layer,
+            "attention_mass_by_shot_layer_frame": self.attention_mass_by_shot_layer_frame,
+            "frame_alignment_drop_events": self.frame_alignment_drop_events,
+            "manual_anchor_events": self.manual_anchor_events,
+            "stats": self.stats,
+            "warnings": self._warnings,
+        })
+
+    def restore_state(self, state: dict[str, object]) -> None:
+        """Restore a state returned by :meth:`snapshot_state`."""
+        from utils.agent_snapshot import clone_state
+
+        restored = clone_state(state)
+        self.entries_by_layer = restored["entries_by_layer"]
+        self.scene_entries_by_layer = restored["scene_entries_by_layer"]
+        self._boundary_inject = restored["boundary_inject"]
+        self._context_key = restored["context_key"]
+        self._scene_cross_clock = restored["scene_cross_clock"]
+        self._scene_name = restored["scene_name"]
+        self._runtime_context = restored["runtime_context"]
+        self.attention_mass_by_shot_layer = restored["attention_mass_by_shot_layer"]
+        self.attention_mass_by_shot_layer_frame = restored[
+            "attention_mass_by_shot_layer_frame"
+        ]
+        self.frame_alignment_drop_events = restored["frame_alignment_drop_events"]
+        self.manual_anchor_events = restored["manual_anchor_events"]
+        self.stats = restored["stats"]
+        self._warnings = restored["warnings"]
+
     def reset_shot(self) -> None:
         """Reset only the per-shot partition at a shot boundary.
 
@@ -815,6 +885,49 @@ class KVRAGMemory:
             k_pre = None if k_pre is None else k_pre.detach()
             k_post = None if k_post is None else k_post.detach()
             v = v.detach()
+
+            # attention down-weighting probe: keep the FULL chunk's pre-RoPE K
+            # from the clean-recache pass (before any frame subsampling below),
+            # so offline analyses can rebuild memory-candidate and local-window
+            # key pools at every position. Best-effort, read-only.
+            if (
+                self.attn_probe_enabled
+                and self.config.attn_probe_store_k
+                and k_pre is not None
+                and phase is not None
+                and "recache" in str(phase)
+                and "uncond" not in str(phase)
+            ):
+                try:
+                    out_dir = (
+                        Path(self.config.attn_probe_dir)
+                        / "store_k"
+                        / f"layer_{int(layer):02d}"
+                    )
+                    out_dir.mkdir(parents=True, exist_ok=True)
+                    ci = -1 if chunk_index is None else int(chunk_index)
+                    torch.save(
+                        {
+                            "schema_version": 1,
+                            "layer": int(layer),
+                            "chunk_index": ci,
+                            "shot_index": self._runtime_context.get("shot_index"),
+                            "phase": str(phase),
+                            "start_token": int(start_token),
+                            "end_token": int(end_token),
+                            "frame_seqlen": int(frame_seqlen),
+                            "grid_h": int(h),
+                            "grid_w": int(w),
+                            "frames": int(frames),
+                            "k_pre": k_pre[0].half().cpu(),
+                        },
+                        out_dir / f"chunk_{ci:03d}.pt",
+                    )
+                except Exception as exc:
+                    self.warn_once(
+                        "attn_probe_store_failed",
+                        f"[KV-RAG][warn] attn probe store dump failed once: {exc}",
+                    )
 
             inject_src = k_pre if self.config.reinject_rope else k_post
             if inject_src is None:
@@ -1734,6 +1847,133 @@ class KVRAGMemory:
         if self.config.similarity == "l2":
             return float(-(query_summary - entry_summary).pow(2).mean().item())
         raise ValueError(f"Unsupported KV-RAG similarity={self.config.similarity!r}")
+
+    @property
+    def attn_probe_enabled(self) -> bool:
+        return bool(self.config.attn_probe_dir)
+
+    def record_attn_probe(
+        self,
+        *,
+        layer: int,
+        q_pre: torch.Tensor,
+        q_post: torch.Tensor,
+        window_k: torch.Tensor,
+        rag_k_pre: torch.Tensor | None,
+        rag_tokens: int,
+        rag_start_frame: int | None,
+        selected_entries: list["KVRAGEntry"] | None,
+        frame_seqlen: int,
+        current_start: int,
+        current_end: int,
+        effective_sink: int,
+        pinned_len: int,
+        grid_h: int,
+        grid_w: int,
+        t_scale: float,
+        temporal_offset: int,
+        freqs: torch.Tensor | None = None,
+    ) -> None:
+        """Dump the raw tensors behind one injected-attention call.
+
+        Called from the causal attention layer at the same site as
+        record_injected_attention_mass, once per (layer, chunk, denoise step)
+        whenever memory columns were prepended. Everything is saved fp16 on
+        CPU under ``config.attn_probe_dir``; heavy tensors (full window K,
+        injected pre-RoPE keys) only on the first denoise step of a boundary.
+        Best-effort: never raises into the forward pass.
+        """
+        if not self.attn_probe_enabled:
+            return
+        try:
+            with torch.no_grad():
+                chunk = self._runtime_context.get("chunk_index")
+                chunk = -1 if chunk is None else int(chunk)
+                phase = str(self._runtime_context.get("phase"))
+                if "uncond" in phase:
+                    return
+                key = (int(layer), chunk)
+                step = self._attn_probe_step.get(key, 0)
+                self._attn_probe_step[key] = step + 1
+
+                root = Path(self.config.attn_probe_dir)
+                out_dir = root / "attn" / f"layer_{int(layer):02d}"
+                out_dir.mkdir(parents=True, exist_ok=True)
+
+                if freqs is not None and not self._attn_probe_freqs_saved:
+                    torch.save(
+                        {"freqs": freqs.detach().cpu()}, root / "rope_freqs.pt"
+                    )
+                    self._attn_probe_freqs_saved = True
+
+                lq = int(q_pre.shape[1])
+                full_q = bool(self.config.attn_probe_full_q_first_step) and step == 0
+                if full_q or lq <= int(self.config.attn_probe_max_q_rows):
+                    rows = torch.arange(lq, device=q_pre.device)
+                else:
+                    rows = torch.linspace(
+                        0, lq - 1, steps=int(self.config.attn_probe_max_q_rows),
+                        device=q_pre.device,
+                    ).round().to(torch.long)
+
+                chunk_tokens = int(current_end - current_start)
+                payload: dict[str, Any] = {
+                    "schema_version": 1,
+                    "layer": int(layer),
+                    "chunk_index": chunk,
+                    "shot_index": self._runtime_context.get("shot_index"),
+                    "phase": phase,
+                    "step": int(step),
+                    "current_start": int(current_start),
+                    "current_end": int(current_end),
+                    "frame_seqlen": int(frame_seqlen),
+                    "grid_h": int(grid_h),
+                    "grid_w": int(grid_w),
+                    "t_scale": float(t_scale),
+                    "temporal_offset": (
+                        temporal_offset.detach().cpu()
+                        if torch.is_tensor(temporal_offset)
+                        else float(temporal_offset)
+                    ),
+                    "rag_tokens": int(rag_tokens),
+                    "rag_start_frame": (
+                        None if rag_start_frame is None else int(rag_start_frame)
+                    ),
+                    "effective_sink": int(effective_sink),
+                    "pinned_len": int(pinned_len),
+                    "window_tokens": int(window_k.shape[1]),
+                    "logit_bias_lambda": float(
+                        self.config.persistent_logit_bias_lambda
+                    ),
+                    "entries": [
+                        {
+                            "start_token": int(e.start_token),
+                            "num_tokens": int(e.num_tokens),
+                            "frame_seqlen": int(e.frame_seqlen),
+                            "persistent": bool(e.persistent),
+                        }
+                        for e in (selected_entries or [])
+                    ],
+                    "q_rows": rows.detach().cpu(),
+                    "q_pre": q_pre.index_select(1, rows)[0].detach().half().cpu(),
+                    "q_post": q_post.index_select(1, rows)[0].detach().half().cpu(),
+                    # current chunk's post-RoPE keys at this denoise sigma
+                    # (last chunk_tokens columns of the window) -> phase-gap E4
+                    "chunk_k_post": window_k[0, -chunk_tokens:].detach().half().cpu(),
+                }
+                if step == 0:
+                    payload["window_k_post"] = window_k[0].detach().half().cpu()
+                    if rag_k_pre is not None:
+                        payload["rag_k_pre"] = rag_k_pre[0].detach().half().cpu()
+                torch.save(payload, out_dir / f"chunk_{chunk:03d}_step{step}.pt")
+        except Exception as exc:
+            if self.fail_open:
+                self.warn_once(
+                    "attn_probe_failed",
+                    f"[KV-RAG][warn] attn probe dump failed once: {exc}",
+                )
+            else:
+                raise
 
     def record_attention_mass(
         self,
