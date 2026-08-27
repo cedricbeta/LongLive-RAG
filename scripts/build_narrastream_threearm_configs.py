@@ -55,7 +55,15 @@ def main() -> None:
             shape = cfg["data"]["image_or_video_shape"]
             shape[1] = FRAMES
             cfg["sample_names"] = [scene]
-            cfg["output_folder"] = f"{args.out_root}/renders/{scene}__{arm}"
+            # The pipeline reads inference.output_folder / inference.filename_prefix;
+            # the top-level output_folder is set too for tooling that keys off it.
+            # (First campaign run lost an arm per scene to this: only the top-level
+            # key was rewritten, so all 66 renders collided in the template's
+            # inference.output_folder under identical filenames.)
+            out_folder = f"{args.out_root}/renders/{scene}__{arm}"
+            cfg["output_folder"] = out_folder
+            cfg["inference"]["output_folder"] = out_folder
+            cfg["inference"]["filename_prefix"] = arm
             cfg["inference"]["kv_rag"].pop("attn_probe_dir", None)
             for knob in (
                 "inject_active_steps",
