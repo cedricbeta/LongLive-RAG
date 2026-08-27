@@ -1,0 +1,143 @@
+{
+  "source": "/home/chendong/video-gen/LongLive-RAG/example/narrastream_bench/streambench_324.jsonl",
+  "blocks_per_segment": 8,
+  "selection": {
+    "indices": null,
+    "stride": 10,
+    "offset": 0
+  },
+  "samples": [
+    {
+      "index": 0,
+      "sample_name": "ns000_in_the_library_reading"
+    },
+    {
+      "index": 10,
+      "sample_name": "ns010_iris"
+    },
+    {
+      "index": 20,
+      "sample_name": "ns020_at_the_studio_equipment"
+    },
+    {
+      "index": 30,
+      "sample_name": "ns030_at_the_workshop_workbench"
+    },
+    {
+      "index": 40,
+      "sample_name": "ns040_at_the_rooftop_bar"
+    },
+    {
+      "index": 50,
+      "sample_name": "ns050_at_the_market_produce"
+    },
+    {
+      "index": 60,
+      "sample_name": "ns060_at_the_office_meeting"
+    },
+    {
+      "index": 70,
+      "sample_name": "ns070_at_the_classroom_front"
+    },
+    {
+      "index": 80,
+      "sample_name": "ns080_at_the_restaurant_prep"
+    },
+    {
+      "index": 90,
+      "sample_name": "ns090_iris_stands_at_the"
+    },
+    {
+      "index": 100,
+      "sample_name": "ns100_noah_stands_at_the"
+    },
+    {
+      "index": 110,
+      "sample_name": "ns110_in_the_library_reading"
+    },
+    {
+      "index": 120,
+      "sample_name": "ns120_at_the_cafe_corner"
+    },
+    {
+      "index": 130,
+      "sample_name": "ns130_at_the_studio_equipment"
+    },
+    {
+      "index": 140,
+      "sample_name": "ns140_at_the_workshop_workbench"
+    },
+    {
+      "index": 150,
+      "sample_name": "ns150_at_the_rooftop_bar"
+    },
+    {
+      "index": 160,
+      "sample_name": "ns160_at_the_market_produce"
+    },
+    {
+      "index": 170,
+      "sample_name": "ns170_at_the_office_meeting"
+    },
+    {
+      "index": 180,
+      "sample_name": "ns180_noah"
+    },
+    {
+      "index": 190,
+      "sample_name": "ns190_in_the_hotel_lobby"
+    },
+    {
+      "index": 200,
+      "sample_name": "ns200_at_the_flower_shop"
+    },
+    {
+      "index": 210,
+      "sample_name": "ns210_at_the_lecture_hall"
+    },
+    {
+      "index": 220,
+      "sample_name": "ns220_in_the_library_reading"
+    },
+    {
+      "index": 230,
+      "sample_name": "ns230_at_the_cafe_corner"
+    },
+    {
+      "index": 240,
+      "sample_name": "ns240_at_the_studio_equipment"
+    },
+    {
+      "index": 250,
+      "sample_name": "ns250_at_the_workshop_workbench"
+    },
+    {
+      "index": 260,
+      "sample_name": "ns260_at_the_rooftop_bar"
+    },
+    {
+      "index": 270,
+      "sample_name": "ns270_at_the_office_meeting"
+    },
+    {
+      "index": 280,
+      "sample_name": "ns280_kai"
+    },
+    {
+      "index": 290,
+      "sample_name": "ns290_at_the_restaurant_prep"
+    },
+    {
+      "index": 300,
+      "sample_name": "ns300_in_the_hotel_lobby"
+    },
+    {
+      "index": 310,
+      "sample_name": "ns310_at_the_flower_shop"
+    },
+    {
+      "index": 320,
+      "sample_name": "ns320_at_the_lecture_hall"
+    }
+  ]
+}
