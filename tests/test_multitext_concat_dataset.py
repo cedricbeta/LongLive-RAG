@@ -84,6 +84,24 @@ class TestMultiTextConcatGlobalCaption(unittest.TestCase):
         self.assertEqual(item["prompts"], ["shot zero only", "CUT shot one only"])
         self.assertNotIn("global_caption", item)
 
+    def test_sample_names_filters_exact_scene_and_rejects_missing(self):
+        root = Path(tempfile.mkdtemp())
+        for name in ("scene_a", "scene_b"):
+            scene = root / name
+            scene.mkdir(parents=True)
+            _write_json(scene / "0.json", name)
+            (scene / "shot_durations.txt").write_text("1", encoding="utf-8")
+
+        ds = MultiTextConcatDataset(
+            str(root), num_blocks=1, deterministic=True, sample_names=["scene_b"]
+        )
+        self.assertEqual(len(ds), 1)
+        self.assertEqual(ds[0]["sample_name"], "scene_b")
+        with self.assertRaisesRegex(ValueError, "requested sample_names"):
+            MultiTextConcatDataset(
+                str(root), num_blocks=1, sample_names=["scene_missing"]
+            )
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -532,6 +532,7 @@ else:
         scene_cut_prefix=scene_cut_prefix,
         ignore_global_json=bool(sparse_long_multishot),
         deterministic=True,
+        sample_names=getattr(config, "sample_names", None),
     )
 collate_fn = eval_collate_fn
 _prev_scene_name = None
@@ -643,6 +644,7 @@ for i, batch_data in tqdm(enumerate(dataloader), disable=(local_rank != 0)):
         preserve_scene_memory=preserve_scene_memory,
         seed_scene_memory=seed_scene_memory,
         force_scene_memory_boundary=force_scene_memory_boundary,
+        sample_name=scene_name or sample_name,
     )
     with torch.inference_mode():
         generated = pipeline.inference(**inference_kwargs)

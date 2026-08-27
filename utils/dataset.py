@@ -126,6 +126,7 @@ class MultiTextConcatDataset(Dataset):
         global_caption_separator: str = "\n\nShot-specific description:\n",
         ignore_global_json: bool = False,
         deterministic: bool = False,
+        sample_names: list[str] | tuple[str, ...] | None = None,
     ):
         self.num_blocks = num_blocks
         self.chunks_per_shot = chunks_per_shot
@@ -137,6 +138,8 @@ class MultiTextConcatDataset(Dataset):
 
         path = Path(data_path)
         if data_path.endswith(".txt") or path.is_file():
+            if sample_names:
+                raise ValueError("sample_names filtering is supported only for directory datasets")
             self._mode = "txt"
             with open(data_path, encoding="utf-8") as f:
                 self._prompts = [line.rstrip() for line in f if line.strip()]
@@ -148,6 +151,15 @@ class MultiTextConcatDataset(Dataset):
                 d for d in self._caption_dir.iterdir()
                 if d.is_dir() and any(f.name != "global.json" for f in d.glob("*.json"))
             ])
+            if sample_names:
+                requested = {str(name) for name in sample_names}
+                self._folders = [d for d in self._folders if d.name in requested]
+                found = {d.name for d in self._folders}
+                missing = sorted(requested - found)
+                if missing:
+                    raise ValueError(
+                        f"requested sample_names are missing from {self._caption_dir}: {missing}"
+                    )
             assert len(self._folders) > 0, (
                 f"No caption subfolders found in {self._caption_dir}"
             )
