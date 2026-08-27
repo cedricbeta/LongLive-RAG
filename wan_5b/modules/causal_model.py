@@ -758,7 +758,49 @@ class CausalWanSelfAttention(nn.Module):
             kv_rag_cfg = getattr(kv_rag, "config", None) if kv_rag is not None else None
             kv_rag_summary_prerope = bool(getattr(kv_rag_cfg, "summary_prerope", True))
             kv_rag_reinject = bool(getattr(kv_rag, "reinject_rope", False)) if kv_rag is not None else False
-            if kv_rag is not None and kv_rag_retrieve:
+            # Last-stand knobs (utils/kv_rag.py, default-off): a per-(layer,
+            # chunk) denoise-step index drives (1) step-gated injection
+            # (inject_active_steps) and (3) phase-matched step-0 K capture
+            # (store_phase_matched_layers). laststand_step_tracking is False
+            # for default configs, so the incumbent path never enters here.
+            laststand_step = None
+            if kv_rag is not None and getattr(kv_rag, "laststand_step_tracking", False):
+                try:
+                    laststand_step = kv_rag.denoise_step_index(
+                        kv_rag_layer if kv_rag_layer is not None else -1
+                    )
+                    if laststand_step == 0:
+                        # k is this chunk's pre-RoPE key at the current (noisy)
+                        # phase -- the phase the queries will actually be in.
+                        kv_rag.capture_phase_matched_k(
+                            layer=kv_rag_layer if kv_rag_layer is not None else -1,
+                            step=laststand_step,
+                            k_pre=k,
+                            start_token=current_start,
+                            end_token=current_end,
+                        )
+                except Exception as exc:
+                    if getattr(kv_rag, "fail_open", True):
+                        warn_once = getattr(kv_rag, "warn_once", None)
+                        if warn_once is not None:
+                            warn_once(
+                                "laststand_step_failed",
+                                f"[KV-RAG][warn] last-stand step tracking failed once: {exc}",
+                            )
+                        laststand_step = None
+                    else:
+                        raise
+            laststand_skip_inject = (
+                kv_rag is not None
+                and laststand_step is not None
+                and not kv_rag.inject_allowed_at_step(laststand_step)
+            )
+            if laststand_skip_inject:
+                try:
+                    kv_rag.note_active_step_skip()
+                except Exception:
+                    pass
+            if kv_rag is not None and kv_rag_retrieve and not laststand_skip_inject:
                 # Match on the pre-RoPE query so the same content at a different
                 # time still scores as similar (position-invariant retrieval).
                 if not use_relative_rope:
@@ -856,30 +898,65 @@ class CausalWanSelfAttention(nn.Module):
                                 pass
 
             def _build_rag_logit_bias(total_tokens: int):
+                bias = None
                 if (
-                    kv_rag is None
-                    or rag_selected is None
-                    or int(rag_prepended_tokens) <= 0
-                    or not hasattr(kv_rag, "build_persistent_logit_bias")
+                    kv_rag is not None
+                    and rag_selected is not None
+                    and int(rag_prepended_tokens) > 0
+                    and hasattr(kv_rag, "build_persistent_logit_bias")
                 ):
-                    return None
-                try:
-                    return kv_rag.build_persistent_logit_bias(
-                        total_tokens=int(total_tokens),
-                        selected_entries=rag_selected,
-                        device=v.device,
-                        dtype=torch.float32,
-                    )
-                except Exception as exc:
-                    if getattr(kv_rag, "fail_open", True):
-                        warn_once = getattr(kv_rag, "warn_once", None)
-                        if warn_once is not None:
-                            warn_once(
-                                "persistent_logit_bias_failed",
-                                f"[KV-RAG][warn] persistent logit bias failed once: {exc}",
-                            )
-                        return None
-                    raise
+                    try:
+                        bias = kv_rag.build_persistent_logit_bias(
+                            total_tokens=int(total_tokens),
+                            selected_entries=rag_selected,
+                            device=v.device,
+                            dtype=torch.float32,
+                        )
+                    except Exception as exc:
+                        if getattr(kv_rag, "fail_open", True):
+                            warn_once = getattr(kv_rag, "warn_once", None)
+                            if warn_once is not None:
+                                warn_once(
+                                    "persistent_logit_bias_failed",
+                                    f"[KV-RAG][warn] persistent logit bias failed once: {exc}",
+                                )
+                            bias = None
+                        else:
+                            raise
+                # Last-stand knob 2 (inject_head_filter, default-off): on a
+                # filtered layer only the whitelisted heads see the injected
+                # memory columns (the first rag_prepended_tokens window
+                # columns); every other head gets a large negative additive
+                # logit there. The [1, H, 1, L] shape broadcasts against the
+                # persistent bias's [1, 1, 1, L].
+                if (
+                    kv_rag is not None
+                    and int(rag_prepended_tokens) > 0
+                    and hasattr(kv_rag, "build_head_filter_bias")
+                ):
+                    try:
+                        head_bias = kv_rag.build_head_filter_bias(
+                            layer=kv_rag_layer if kv_rag_layer is not None else -1,
+                            total_tokens=int(total_tokens),
+                            rag_tokens=int(rag_prepended_tokens),
+                            num_heads=self.num_heads,
+                            device=v.device,
+                            dtype=torch.float32,
+                        )
+                    except Exception as exc:
+                        if getattr(kv_rag, "fail_open", True):
+                            warn_once = getattr(kv_rag, "warn_once", None)
+                            if warn_once is not None:
+                                warn_once(
+                                    "head_filter_bias_failed",
+                                    f"[KV-RAG][warn] head-filter bias failed once: {exc}",
+                                )
+                            head_bias = None
+                        else:
+                            raise
+                    if head_bias is not None:
+                        bias = head_bias if bias is None else bias + head_bias
+                return bias
 
             def _attach_received_attention(q_for_attn, k_for_attn):
                 if (

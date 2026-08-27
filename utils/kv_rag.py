@@ -108,6 +108,12 @@ CONTEXT_KEY_MODES = ("semantic",)
 #:     importance, not key-norm saliency).
 VALUE_MODES = ("raw", "mean_frame", "top_frame", "attention_mass")
 
+#: Additive logit applied to injected memory columns for heads that are masked
+#: out by ``inject_head_filter``. Finite (not -inf) so fp16/bf16 SDPA cannot
+#: produce NaN rows, yet large enough that softmax mass is exactly 0 in
+#: half precision (logits in this model are a few nats).
+HEAD_FILTER_NEG_LOGIT = -1.0e4
+
 
 def virtual_frame_start(
     *,
@@ -271,6 +277,29 @@ class KVRAGConfig:
     attn_probe_full_q_first_step: bool = True
     # Dump full-chunk pre-RoPE K on the clean-recache store path (per layer).
     attn_probe_store_k: bool = True
+    # --- last-stand appended-injection knobs ---
+    # (docs/attention-downweighting-study.zh.md, "留给追加式的两个真靶子")
+    # All three default to None = feature off = byte-identical to the incumbent
+    # behavior. They are read by wan_5b/modules/causal_model.py on the eager
+    # KV-RAG attention path.
+    #
+    # 1) Injection timing: denoise steps (0-based, conditional passes only) at
+    #    which the injected memory columns participate in attention. None keeps
+    #    the incumbent all-steps behavior; e.g. (0, 1) front-loads the memory
+    #    into the first two steps (L29 consumption decays 4x from step 0 to 3).
+    inject_active_steps: tuple[int, ...] | None = None
+    # 2) Head targeting: per-layer whitelist of heads that may see the injected
+    #    columns; every OTHER head on a listed layer gets a large negative
+    #    additive logit on those columns. Layers not listed are untouched.
+    #    Stored as a sorted tuple of (layer, (head, ...)) pairs so the frozen
+    #    dataclass stays hashable; from_config accepts {layer: [heads]}.
+    inject_head_filter: tuple[tuple[int, tuple[int, ...]], ...] | None = None
+    # 3) Phase-matched storage: layers whose stored memory K (the injection /
+    #    concat copy) is replaced by the SAME chunk's denoise-step-0 pre-RoPE K
+    #    instead of the clean-recache K (E4: clean vs noisy K cosine 0.43 at
+    #    L14). V and the retrieval summary stay clean -- only the key-matching
+    #    phase is aligned, not the read-out content.
+    store_phase_matched_layers: tuple[int, ...] | None = None
 
     @classmethod
     def from_config(cls, value: Any) -> "KVRAGConfig":
@@ -286,6 +315,24 @@ class KVRAGConfig:
             layers = (raw_layers,)
         else:
             layers = tuple(int(v) for v in raw_layers)
+
+        def _int_tuple(raw: Any) -> tuple[int, ...] | None:
+            if raw is None:
+                return None
+            if isinstance(raw, int):
+                return (int(raw),)
+            return tuple(sorted({int(v) for v in raw}))
+
+        raw_head_filter = cfg.get("inject_head_filter", None)
+        head_filter: tuple[tuple[int, tuple[int, ...]], ...] | None = None
+        if raw_head_filter is not None:
+            plain = _to_plain_dict(raw_head_filter)
+            head_filter = tuple(
+                sorted(
+                    (int(layer_key), _int_tuple(heads) or ())
+                    for layer_key, heads in plain.items()
+                )
+            ) or None
 
         return cls(
             enabled=_as_bool(cfg.get("enabled", False), False),
@@ -340,12 +387,34 @@ class KVRAGConfig:
                 cfg.get("attn_probe_full_q_first_step", True), True
             ),
             attn_probe_store_k=_as_bool(cfg.get("attn_probe_store_k", True), True),
+            inject_active_steps=_int_tuple(cfg.get("inject_active_steps", None)),
+            inject_head_filter=head_filter,
+            store_phase_matched_layers=_int_tuple(
+                cfg.get("store_phase_matched_layers", None)
+            ),
         )
 
     def layer_enabled(self, layer: int) -> bool:
         if self.layers is not None:
             return layer in self.layers
         return layer % self.layer_stride == 0
+
+    def head_filter_for_layer(self, layer: int) -> tuple[int, ...] | None:
+        """Whitelisted heads for ``layer``, or None when the layer is unfiltered."""
+        if not self.inject_head_filter:
+            return None
+        for filt_layer, heads in self.inject_head_filter:
+            if filt_layer == int(layer):
+                return heads
+        return None
+
+    @property
+    def laststand_step_tracking(self) -> bool:
+        """True when any last-stand knob needs the per-chunk denoise-step index."""
+        return (
+            self.inject_active_steps is not None
+            or self.store_phase_matched_layers is not None
+        )
 
     def describe(self) -> str:
         layers = "all" if self.layers is None else ",".join(str(v) for v in self.layers)
@@ -372,7 +441,10 @@ class KVRAGConfig:
             f"retrieval_key_mode={self.retrieval_key_mode}, "
             f"retrieval_key_centroids={self.retrieval_key_centroids}, "
             f"retrieval_key_top_m={self.retrieval_key_top_m}, "
-            f"retrieval_value_mode={self.retrieval_value_mode}"
+            f"retrieval_value_mode={self.retrieval_value_mode}, "
+            f"inject_active_steps={self.inject_active_steps}, "
+            f"inject_head_filter={self.inject_head_filter}, "
+            f"store_phase_matched_layers={self.store_phase_matched_layers}"
         )
 
 
@@ -450,6 +522,13 @@ class KVRAGMemory:
         # counters, plus a one-shot flag for the RoPE freqs dump.
         self._attn_probe_step: dict[tuple[int, int], int] = {}
         self._attn_probe_freqs_saved = False
+        # last-stand knobs: per-(layer, chunk) denoise-step counter (same shape
+        # as the attn-probe counter, but incremented on EVERY conditional
+        # denoise forward so step gating works without the probe), and the
+        # latest denoise-step-0 pre-RoPE K captured per phase-matched layer
+        # (consumed by the next clean-recache store of the same chunk).
+        self._denoise_step_counter: dict[tuple[int, int], int] = {}
+        self._phase_matched_k: dict[int, tuple[int, int, torch.Tensor]] = {}
         self.attention_mass_by_shot_layer: dict[str, dict[str, dict[str, float | int]]] = {}
         self.attention_mass_by_shot_layer_frame: dict[
             str, dict[str, dict[str, dict[str, float | int]]]
@@ -490,6 +569,13 @@ class KVRAGMemory:
             "rag_mass_calls": 0,
             "persistent_rag_attention_mass": 0.0,
             "persistent_rag_mass_calls": 0,
+            # last-stand knobs observability
+            "active_step_inject_skips": 0,
+            "head_filter_bias_calls": 0,
+            "head_filter_masked_heads": 0,
+            "phase_matched_k_captures": 0,
+            "phase_matched_k_replacements": 0,
+            "phase_matched_k_misses": 0,
         }
         self._warnings: set[str] = set()
         self._store_dtype = _dtype_from_name(config.store_dtype)
@@ -590,6 +676,36 @@ class KVRAGMemory:
             raise ValueError(
                 "KV-RAG scene_memory_rolling/every_chunk schedule requires "
                 "scene_memory_enabled=true."
+            )
+        if config.inject_active_steps is not None:
+            if len(config.inject_active_steps) == 0 or any(
+                int(s) < 0 for s in config.inject_active_steps
+            ):
+                raise ValueError(
+                    "KV-RAG inject_active_steps must be a non-empty list of "
+                    f"denoise-step indices >= 0, got {config.inject_active_steps!r}"
+                )
+        if config.inject_head_filter is not None:
+            for filt_layer, heads in config.inject_head_filter:
+                if int(filt_layer) < 0 or len(heads) == 0 or any(int(h) < 0 for h in heads):
+                    raise ValueError(
+                        "KV-RAG inject_head_filter must map layer -> non-empty "
+                        f"list of head indices >= 0, got {config.inject_head_filter!r}"
+                    )
+        if config.store_phase_matched_layers is not None and any(
+            int(layer) < 0 for layer in config.store_phase_matched_layers
+        ):
+            raise ValueError(
+                "KV-RAG store_phase_matched_layers must be layer indices >= 0, "
+                f"got {config.store_phase_matched_layers!r}"
+            )
+        if config.store_phase_matched_layers is not None and not config.reinject_rope:
+            # The captured step-0 K is pre-RoPE; the legacy (reinject_rope=false)
+            # injection path stores/injects post-RoPE keys, so the substitution
+            # would mix RoPE phases. Fail fast instead of silently mixing.
+            raise ValueError(
+                "KV-RAG store_phase_matched_layers requires reinject_rope=true "
+                "(the captured step-0 key is pre-RoPE)."
             )
 
     @property
@@ -722,6 +838,8 @@ class KVRAGMemory:
         self._context_key = None
         self._scene_cross_clock = False
         self._runtime_context = {"chunk_index": None, "shot_index": None, "phase": None}
+        self._denoise_step_counter.clear()
+        self._phase_matched_k.clear()
         self.attention_mass_by_shot_layer.clear()
         self.attention_mass_by_shot_layer_frame.clear()
         self.frame_alignment_drop_events.clear()
@@ -754,6 +872,8 @@ class KVRAGMemory:
             "manual_anchor_events": self.manual_anchor_events,
             "stats": self.stats,
             "warnings": self._warnings,
+            "denoise_step_counter": self._denoise_step_counter,
+            "phase_matched_k": self._phase_matched_k,
         })
 
     def restore_state(self, state: dict[str, object]) -> None:
@@ -776,6 +896,9 @@ class KVRAGMemory:
         self.manual_anchor_events = restored["manual_anchor_events"]
         self.stats = restored["stats"]
         self._warnings = restored["warnings"]
+        # Older snapshots (taken before the last-stand knobs) lack these keys.
+        self._denoise_step_counter = restored.get("denoise_step_counter", {})
+        self._phase_matched_k = restored.get("phase_matched_k", {})
 
     def reset_shot(self) -> None:
         """Reset only the per-shot partition at a shot boundary.
@@ -845,6 +968,148 @@ class KVRAGMemory:
             return
         self._warnings.add(key)
         print(message)
+
+    # ------------------------------------------------------------------
+    # last-stand appended-injection knobs
+    # (docs/attention-downweighting-study.zh.md; all default-off)
+    # ------------------------------------------------------------------
+
+    @property
+    def laststand_step_tracking(self) -> bool:
+        """True when the attention layer must report denoise steps to the bank."""
+        return self.enabled and self.config.laststand_step_tracking
+
+    def denoise_step_index(self, layer: int) -> int | None:
+        """0-based denoise-step index for the CURRENT forward of ``layer``.
+
+        Increments a per-(layer, chunk) counter, so it must be called exactly
+        once per self-attention forward per layer. Returns None (and does not
+        count) outside conditional denoise passes -- recache, uncond and setup
+        phases are never step-gated. Mirrors the attn_probe counter, which
+        cannot be reused because it only ticks when a probe dump is written.
+        """
+        phase = self._runtime_context.get("phase")
+        if phase is None:
+            return None
+        phase = str(phase)
+        if "denoise" not in phase or "uncond" in phase:
+            return None
+        chunk = self._runtime_context.get("chunk_index")
+        key = (int(layer), -1 if chunk is None else int(chunk))
+        step = self._denoise_step_counter.get(key, 0)
+        self._denoise_step_counter[key] = step + 1
+        return step
+
+    def inject_allowed_at_step(self, step: int | None) -> bool:
+        """Whether injected memory columns participate at this denoise step.
+
+        ``step is None`` (non-denoise phase, or tracking disabled) always
+        allows injection, so the default path is untouched.
+        """
+        active = self.config.inject_active_steps
+        if active is None or step is None:
+            return True
+        return int(step) in active
+
+    def note_active_step_skip(self) -> None:
+        self.stats["active_step_inject_skips"] += 1
+
+    def capture_phase_matched_k(
+        self,
+        *,
+        layer: int,
+        step: int | None,
+        k_pre: torch.Tensor,
+        start_token: int,
+        end_token: int,
+    ) -> None:
+        """Keep the current chunk's denoise-step-0 pre-RoPE K for ``layer``.
+
+        Called from the attention layer on the first conditional denoise step.
+        Only the LATEST capture per layer is kept (chunks are sequential, and
+        the matching clean-recache store consumes it right after the denoise
+        loop), bounding memory to one chunk per configured layer.
+        """
+        layers = self.config.store_phase_matched_layers
+        if layers is None or int(layer) not in layers:
+            return
+        if step != 0 or not self.enabled or not self.config.layer_enabled(int(layer)):
+            return
+        self._phase_matched_k[int(layer)] = (
+            int(start_token),
+            int(end_token),
+            k_pre.detach().clone(),
+        )
+        self.stats["phase_matched_k_captures"] += 1
+
+    def _consume_phase_matched_k(
+        self,
+        *,
+        layer: int,
+        start_token: int,
+        end_token: int,
+        expected_tokens: int,
+    ) -> torch.Tensor | None:
+        """Pop the captured step-0 K for ``layer`` if it matches this chunk."""
+        captured = self._phase_matched_k.pop(int(layer), None)
+        if captured is None:
+            self.stats["phase_matched_k_misses"] += 1
+            return None
+        cap_start, cap_end, k_step0 = captured
+        if (
+            cap_start != int(start_token)
+            or cap_end != int(end_token)
+            or int(k_step0.shape[1]) != int(expected_tokens)
+        ):
+            self.stats["phase_matched_k_misses"] += 1
+            self.warn_once(
+                "phase_matched_k_mismatch",
+                "[KV-RAG][warn] phase-matched step-0 K did not match the "
+                f"clean-recache store (layer={layer}, captured=[{cap_start},"
+                f"{cap_end}) tokens={int(k_step0.shape[1])}, store="
+                f"[{start_token},{end_token}) tokens={expected_tokens}); "
+                "keeping the clean K for this chunk.",
+            )
+            return None
+        return k_step0
+
+    def build_head_filter_bias(
+        self,
+        *,
+        layer: int,
+        total_tokens: int,
+        rag_tokens: int,
+        num_heads: int,
+        device: torch.device,
+        dtype: torch.dtype = torch.float32,
+    ) -> torch.Tensor | None:
+        """Per-head additive mask hiding injected columns from non-listed heads.
+
+        Returns ``[1, num_heads, 1, total_tokens]`` for SDPA broadcasting (the
+        injected memory block occupies the FIRST ``rag_tokens`` window columns),
+        or None when ``layer`` is unfiltered / nothing was injected. Heads
+        listed in ``inject_head_filter[layer]`` see the memory unchanged; every
+        other head gets ``HEAD_FILTER_NEG_LOGIT`` on those columns only.
+        """
+        allowed = self.config.head_filter_for_layer(layer)
+        if allowed is None:
+            return None
+        total_tokens = int(total_tokens)
+        rag_tokens = int(rag_tokens)
+        num_heads = int(num_heads)
+        if rag_tokens <= 0 or total_tokens < rag_tokens or num_heads <= 0:
+            return None
+        allowed_set = {int(h) for h in allowed if 0 <= int(h) < num_heads}
+        masked = [h for h in range(num_heads) if h not in allowed_set]
+        if not masked:
+            return None
+        bias = torch.zeros(
+            1, num_heads, 1, total_tokens, device=device, dtype=torch.float32
+        )
+        bias[0, masked, 0, :rag_tokens] = HEAD_FILTER_NEG_LOGIT
+        self.stats["head_filter_bias_calls"] += 1
+        self.stats["head_filter_masked_heads"] += len(masked)
+        return bias.to(dtype=dtype)
 
     def add(
         self,
@@ -937,6 +1202,30 @@ class KVRAGMemory:
             summary_src = k_pre if self.config.summary_prerope else k_post
             if summary_src is None:
                 summary_src = inject_src
+
+            # last-stand knob 3: on the clean-recache store of a phase-matched
+            # layer, swap the INJECTION copy of K for the same chunk's captured
+            # denoise-step-0 pre-RoPE K. V and the retrieval summary (bound to
+            # summary_src above) keep the clean representation -- only the
+            # attention key-matching phase is aligned.
+            if (
+                self.config.store_phase_matched_layers is not None
+                and int(layer) in self.config.store_phase_matched_layers
+                and phase is not None
+                and "recache" in str(phase)
+                and "uncond" not in str(phase)
+            ):
+                replacement = self._consume_phase_matched_k(
+                    layer=int(layer),
+                    start_token=int(start_token),
+                    end_token=int(end_token),
+                    expected_tokens=int(inject_src.shape[1]),
+                )
+                if replacement is not None:
+                    inject_src = replacement.to(
+                        device=inject_src.device, dtype=inject_src.dtype
+                    )
+                    self.stats["phase_matched_k_replacements"] += 1
 
             idx, kept_frames, frame_offsets = self._select_index(
                 num_tokens=int(inject_src.shape[1]),
