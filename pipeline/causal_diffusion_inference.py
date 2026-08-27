@@ -234,6 +234,12 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
             self._edit_donor = None
             print(f"[edit_renoise] {self.edit_renoise}")
 
+        # Runtime-installed masked-renoise repair plan (agent edit_shot action).
+        # Strictly inert unless set_runtime_edit_plan() is called; the static
+        # edit_renoise config block above keeps priority and its exact legacy
+        # behavior when both are present.
+        self._runtime_edit_plan = None
+
         capsule_probe_raw = section_get(
             args, "inference", "capsule_probe", getattr(args, "capsule_probe", None)
         )
@@ -1079,11 +1085,11 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
 
             # SDEdit repair pass: masked renoise + re-denoise with the repair
             # prompt. Replaces `latents` so both the decoded output (3.2) and
-            # the clean recache (3.3) carry the edited chunk.
-            if (
-                self.edit_renoise is not None
-                and self.edit_renoise["chunk_start"] <= chunk_index <= self.edit_renoise["chunk_end"]
-            ):
+            # the clean recache (3.3) carry the edited chunk. The active config
+            # is the static edit_renoise block (legacy, priority) or a
+            # runtime-installed repair plan (agent edit_shot action).
+            _edit_cfg = self._active_edit_cfg(chunk_index)
+            if _edit_cfg is not None:
                 latents = self._apply_edit_renoise(
                     latents,
                     sample_scheduler=sample_scheduler,
@@ -1093,6 +1099,7 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
                     current_start_frame=current_start_frame,
                     cache_start_frame=cache_start_frame,
                     batch_size=batch_size,
+                    cfg=_edit_cfg,
                 )
 
             # Step 3.2: record the model's output
@@ -1405,23 +1412,121 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
         self.crossattn_cache_neg = None
         self._reset_kv_rag()
 
-    def _edit_mask_for_chunk(self, chunk_index, device, dtype):
+    def _active_edit_cfg(self, chunk_index):
+        """Edit config active for this chunk, or None.
+
+        The static ``inference.edit_renoise`` block keeps priority and its
+        legacy predicate exactly; only when it does not claim the chunk may a
+        runtime-installed plan (agent edit_shot) apply.
+        """
+        if (
+            self.edit_renoise is not None
+            and self.edit_renoise["chunk_start"] <= chunk_index <= self.edit_renoise["chunk_end"]
+        ):
+            return self.edit_renoise
+        plan = self._runtime_edit_plan
+        if plan is not None and plan["chunk_start"] <= chunk_index <= plan["chunk_end"]:
+            return plan
+        return None
+
+    def set_runtime_edit_plan(
+        self,
+        *,
+        chunk_start,
+        chunk_end,
+        masks,
+        prompt,
+        entry_sigma=1.0,
+        mask_threshold=0.35,
+        mask_dilate=1,
+        noise_seed=4242,
+    ):
+        """Install a masked-renoise repair plan for the next generation pass.
+
+        Runtime counterpart of the static ``inference.edit_renoise`` config
+        block, used by the agent edit_shot action: restore the boundary
+        snapshot, install the plan, replay the shot (deterministic pass-1
+        denoise, then per edited chunk: renoise inside the subject mask to
+        ``entry_sigma``, re-denoise with the repair ``prompt`` while the
+        background is pinned back every step), and the clean recache then
+        writes the EDITED chunks into KV history automatically because
+        ``latents`` is replaced before Step 3.2/3.3 of ``_inference_inner``.
+
+        ``masks`` is either a path to a payload written by
+        scripts/prepare_renoise_edit_masks.py / utils.agent_edit.save_mask_payload
+        (``{"masks": {chunk: FloatTensor [F, gh, gw]}}``) or that mapping
+        directly.  Returns a JSON-compatible summary for the ledger.
+        """
+        if isinstance(masks, (str, os.PathLike)):
+            payload = torch.load(masks, map_location="cpu", weights_only=False)
+            mask_dict = {int(k): v for k, v in payload["masks"].items()}
+        else:
+            mask_dict = {int(k): v for k, v in dict(masks).items()}
+        plan = {
+            "chunk_start": int(chunk_start),
+            "chunk_end": int(chunk_end),
+            "entry_index": 0,
+            "entry_sigma": float(entry_sigma),
+            "mask_path": "",
+            "masks": mask_dict,
+            "mask_threshold": float(mask_threshold),
+            "mask_dilate": int(mask_dilate),
+            "prompt": str(prompt),
+            "noise_seed": int(noise_seed),
+            "collage": False,
+            "donor_chunk": -1,
+            "donor_frame": 0,
+            "donor_mask_path": "",
+            "donor_flip": False,
+            "paste_pin": False,
+        }
+        self._runtime_edit_plan = plan
+        summary = {
+            "chunk_start": plan["chunk_start"],
+            "chunk_end": plan["chunk_end"],
+            "entry_sigma": plan["entry_sigma"],
+            "mask_threshold": plan["mask_threshold"],
+            "mask_dilate": plan["mask_dilate"],
+            "prompt": plan["prompt"],
+            "noise_seed": plan["noise_seed"],
+            "mask_chunks": sorted(mask_dict),
+            "mask_coverage": {
+                int(chunk): float(
+                    (soft.float() >= plan["mask_threshold"]).float().mean()
+                )
+                for chunk, soft in mask_dict.items()
+            },
+        }
+        print(f"[edit_shot] runtime edit plan installed: {summary}")
+        return summary
+
+    def clear_runtime_edit_plan(self):
+        self._runtime_edit_plan = None
+
+    def _edit_mask_for_chunk(self, chunk_index, device, dtype, cfg=None):
         """Binary subject mask for one chunk, upsampled to latent H x W.
 
         Mask file: {"masks": {chunk_index: FloatTensor [F, 22, 40] soft}}.
         Returns [1, F, 1, H, W] in {0,1} or None if the chunk has no mask.
         """
-        if self._edit_masks is None:
-            payload = torch.load(
-                self.edit_renoise["mask_path"], map_location="cpu",
-                weights_only=False,
-            )
-            self._edit_masks = {int(k): v for k, v in payload["masks"].items()}
-        soft = self._edit_masks.get(int(chunk_index))
+        if cfg is None:
+            cfg = self.edit_renoise
+        if cfg is self.edit_renoise:
+            # Legacy static path: lazy-load from mask_path and cache on self.
+            if self._edit_masks is None:
+                payload = torch.load(
+                    self.edit_renoise["mask_path"], map_location="cpu",
+                    weights_only=False,
+                )
+                self._edit_masks = {int(k): v for k, v in payload["masks"].items()}
+            masks = self._edit_masks
+        else:
+            masks = cfg["masks"]
+        soft = masks.get(int(chunk_index))
         if soft is None:
             return None
-        m = (soft.float() >= self.edit_renoise["mask_threshold"]).float()
-        d = self.edit_renoise["mask_dilate"]
+        m = (soft.float() >= cfg["mask_threshold"]).float()
+        d = cfg["mask_dilate"]
         if d > 0:
             m = torch.nn.functional.max_pool2d(
                 m.unsqueeze(1), kernel_size=2 * d + 1, stride=1, padding=d
@@ -1502,17 +1607,31 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
         current_start_frame,
         cache_start_frame,
         batch_size,
+        cfg=None,
     ):
-        cfg = self.edit_renoise
-        mask = self._edit_mask_for_chunk(chunk_index, latents.device, latents.dtype)
+        if cfg is None:
+            cfg = self.edit_renoise
+        mask = self._edit_mask_for_chunk(
+            chunk_index, latents.device, latents.dtype, cfg=cfg
+        )
         if mask is None:
             print(f"[edit_renoise] chunk {chunk_index}: no mask entry, skipping")
             return latents
-        if self._edit_conditional_dict is None:
-            enc = self.text_encoder(text_prompts=[cfg["prompt"]])
-            self._edit_conditional_dict = {
-                "prompt_embeds": enc["prompt_embeds"][0:1]
-            }
+        if cfg is self.edit_renoise:
+            # Legacy static path: encode once and cache on self.
+            if self._edit_conditional_dict is None:
+                enc = self.text_encoder(text_prompts=[cfg["prompt"]])
+                self._edit_conditional_dict = {
+                    "prompt_embeds": enc["prompt_embeds"][0:1]
+                }
+            edit_conditional_dict = self._edit_conditional_dict
+        else:
+            # Runtime plan: cache the encoded repair prompt inside the plan.
+            edit_conditional_dict = cfg.get("_conditional_dict")
+            if edit_conditional_dict is None:
+                enc = self.text_encoder(text_prompts=[cfg["prompt"]])
+                edit_conditional_dict = {"prompt_embeds": enc["prompt_embeds"][0:1]}
+                cfg["_conditional_dict"] = edit_conditional_dict
 
         sigmas = sample_scheduler.sigmas.detach().float().cpu().tolist()
         timesteps = sample_scheduler.timesteps.detach().float().cpu().tolist()
@@ -1579,7 +1698,7 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
             )
             flow_pred, _ = self.generator(
                 noisy_image_or_video=x,
-                conditional_dict=self._edit_conditional_dict,
+                conditional_dict=edit_conditional_dict,
                 timestep=timestep,
                 kv_cache=self.kv_cache_pos,
                 crossattn_cache=self.crossattn_cache_pos,

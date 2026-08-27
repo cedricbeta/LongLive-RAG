@@ -32,6 +32,7 @@ from utils.agent_runtime import (
     file_sha256,
     fingerprint,
 )
+from utils.agent_edit import build_repair_prompt
 
 
 def _action_branch(
@@ -182,7 +183,29 @@ _CONTRACT_REASON = {
     "rope_remap": "rope_remap_required",
     "logit_bias": "bounded_logit_bias_required",
     "quarantine": "current_shot_must_be_quarantined",
+    "edit_shot": "masked_renoise_repair_scheduled",
     "abstain": "insufficient_evidence_abstain",
+}
+
+
+# edit_shot is deliberately NOT part of ACTION_PROGRAM_SCHEMA: controllers may
+# only select bounded pre-generation tools.  The masked-renoise repair is a
+# verifier-directed action that the session runs through its dedicated edit
+# stage after a rejection (utils/agent_runtime.py run_shot).
+EDIT_SHOT_ACTION_SCHEMA: dict[str, Any] = _action_branch(
+    "edit_shot",
+    params_properties={
+        "shot": {"type": "integer"},
+        "prompt": {"type": "string", "minLength": 1, "maxLength": 512},
+        "mask_phrase": {"type": "string", "minLength": 1, "maxLength": 80},
+        "entry_sigma": {"type": "number", "enum": [0.63, 0.83, 0.94, 1.0]},
+    },
+    params_required=["shot", "prompt", "mask_phrase", "entry_sigma"],
+    reason="masked_renoise_repair_scheduled",
+)
+
+DIRECTED_ACTION_ITEM_SCHEMA: dict[str, Any] = {
+    "oneOf": [*ACTION_ITEM_SCHEMA["oneOf"], EDIT_SHOT_ACTION_SCHEMA]
 }
 
 
@@ -216,11 +239,24 @@ VERIFIER_SCHEMA: dict[str, Any] = {
         },
         "directed_actions": {
             **ACTION_PROGRAM_SCHEMA["properties"]["actions"],
+            "items": DIRECTED_ACTION_ITEM_SCHEMA,
             "minItems": 0,
             "maxItems": 1,
         },
     },
     "required": ["accept", "reason", "metrics", "directed_actions"],
+}
+
+
+DRIFT_JUDGE_SCHEMA: dict[str, Any] = {
+    "type": "object",
+    "additionalProperties": False,
+    "properties": {
+        "subject_drifted": {"type": "boolean"},
+        "drift_description": {"type": "string", "minLength": 0, "maxLength": 240},
+        "confidence": {"type": "number", "enum": [0, 0.25, 0.5, 0.75, 1]},
+    },
+    "required": ["subject_drifted", "drift_description", "confidence"],
 }
 
 
@@ -727,6 +763,120 @@ class BoundedVLMVerifier(Verifier):
             reason=str(parsed["reason"]),
             metrics=dict(parsed.get("metrics", {})),
             directed_actions=actions,
+            call_id=result["call_id"],
+            input_fingerprint=observation.input_fingerprint,
+        )
+
+
+class ComparativeDriftVerifier(Verifier):
+    """Comparative subject-drift judge driving the edit_shot repair loop.
+
+    Instead of judging the current shot in isolation, the VLM sees the
+    REFERENCE frames (the subject as first established, supplied by the backend
+    through ``observation.telemetry['reference_frames']`` and audited through
+    ``observation.inputs``) next to the CURRENT provisional frames and answers
+    one comparative question: has the subject changed relative to the
+    reference?  On drift the verdict is a rejection carrying one directed
+    ``edit_shot`` action whose repair prompt is the shot's authored caption
+    joined with the judged drift description (template hook:
+    ``AgentRuntimeConfig.edit_prompt_template``).
+    """
+
+    def __init__(
+        self,
+        client: FingerprintedVLMClient,
+        *,
+        entity_phrase: str,
+        edit_entry_sigma: float = 1.0,
+        prompt_template: str | None = None,
+        min_confidence: float = 0.5,
+    ) -> None:
+        self.client = client
+        self.entity_phrase = str(entity_phrase)
+        self.edit_entry_sigma = float(edit_entry_sigma)
+        self.prompt_template = prompt_template
+        self.min_confidence = float(min_confidence)
+
+    def judge(self, observation: ShotObservation, normative: NormativeView) -> Verdict:
+        reference = [Path(item) for item in observation.telemetry.get("reference_frames", [])]
+        current = _paths_from_visual(observation.frames) + _paths_from_visual(observation.crops)
+        if not reference:
+            # Nothing committed to compare against yet (opening shot).
+            return Verdict(
+                accept=True,
+                reason="accept_numeric_and_visual_guards",
+                metrics={"drift_reference_available": False},
+                input_fingerprint=observation.input_fingerprint,
+            )
+        prompt = json.dumps(
+            {
+                "role": "comparative subject-drift judge",
+                "rule": (
+                    "The first images are REFERENCE frames showing the subject as first "
+                    "established in this scene; the remaining images are the CURRENT "
+                    "provisional shot. Judge ONLY whether the subject's identity or "
+                    "appearance has changed relative to the reference (species, color, "
+                    "face, distinguishing marks). Ignore pose, camera angle, framing, "
+                    "lighting, and allowed state changes."
+                ),
+                "subject": self.entity_phrase,
+                "reference_image_count": len(reference),
+                "current_image_count": len(current),
+                "shot_index": observation.shot_index,
+                "attempt": observation.attempt,
+                "normative_as_of": normative.to_dict(),
+                "drift_description": (
+                    "When drifted, describe concretely what changed versus the reference "
+                    "in one short sentence; empty string otherwise."
+                ),
+                "output": "strict JSON matching the supplied schema",
+            },
+            sort_keys=True,
+            ensure_ascii=False,
+        )
+        result = self.client.call(
+            prompt=prompt,
+            image_paths=[*reference, *current],
+            schema=DRIFT_JUDGE_SCHEMA,
+            call_kind="drift_judge",
+            shot_index=observation.shot_index,
+            temporal_inputs=observation.inputs,
+        )
+        parsed = result["parsed"]
+        confidence = float(parsed["confidence"])
+        drifted = bool(parsed["subject_drifted"]) and confidence >= self.min_confidence
+        metrics = {
+            "subject_drifted": bool(parsed["subject_drifted"]),
+            "confidence": confidence,
+            "drift_description": str(parsed["drift_description"]),
+        }
+        if not drifted:
+            return Verdict(
+                accept=True,
+                reason="accept_numeric_and_visual_guards",
+                metrics=metrics,
+                call_id=result["call_id"],
+                input_fingerprint=observation.input_fingerprint,
+            )
+        caption = str(normative.shot_state[-1].get("caption", "")) if normative.shot_state else ""
+        repair_prompt = build_repair_prompt(
+            caption, str(parsed["drift_description"]), template=self.prompt_template
+        )
+        action = Action(
+            "edit_shot",
+            {
+                "shot": observation.shot_index,
+                "prompt": repair_prompt,
+                "mask_phrase": self.entity_phrase,
+                "entry_sigma": self.edit_entry_sigma,
+            },
+            reason="masked_renoise_repair_scheduled",
+        ).normalized(shot_index=observation.shot_index)
+        return Verdict(
+            accept=False,
+            reason="reject_identity_drift",
+            metrics=metrics,
+            directed_actions=(action,),
             call_id=result["call_id"],
             input_fingerprint=observation.input_fingerprint,
         )

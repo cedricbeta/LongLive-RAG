@@ -27,6 +27,16 @@ from typing import Any, Callable, Iterable, Mapping, Protocol, Sequence
 ALLOWED_STEER_LAYERS = frozenset({0, 7, 14, 21, 29})
 ALLOWED_STEER_ALPHA = frozenset({0.25, 0.5, 1.0})
 ALLOWED_LOGIT_BIAS = frozenset({0.0, 1.0, 2.0})
+# Masked-renoise entry sigmas measured in the SDEdit repair pilot
+# (docs/editing-repair-report.zh.md); sigma=1.0 (full erase inside the mask)
+# was the strength champion and is the default.
+ALLOWED_EDIT_SIGMA = frozenset({0.63, 0.83, 0.94, 1.0})
+# Default repair-prompt template for edit_shot: authored shot caption joined
+# with the judge's drift description.  Overridable via
+# AgentRuntimeConfig.edit_prompt_template.
+DEFAULT_EDIT_PROMPT_TEMPLATE = (
+    "{caption} Repair the subject so it matches its first established appearance: {drift}"
+)
 ACTION_NAMES = frozenset(
     {
         "patch_prompt",
@@ -37,6 +47,7 @@ ACTION_NAMES = frozenset(
         "logit_bias",
         "quarantine",
         "restore_and_retry",
+        "edit_shot",
         "abstain",
     }
 )
@@ -53,6 +64,10 @@ FORWARD_ONLY = MappingProxyType(
         "logit_bias": True,
         "quarantine": True,
         "restore_and_retry": False,
+        # edit_shot rewrites the current provisional shot by replaying it from
+        # the boundary snapshot with a masked-renoise plan installed; strict
+        # streaming cannot rewrite already-streamed frames.
+        "edit_shot": False,
         "abstain": True,
     }
 )
@@ -144,6 +159,13 @@ class AgentRuntimeConfig:
     verify_every_boundary: bool = True
     require_streaming_vae_off: bool = True
     archive_failures: bool = True
+    # edit_shot (masked-renoise in-place repair) budget and defaults.  The edit
+    # budget is per shot, in addition to the single retry slot: a shot may be
+    # repaired at most once, and a failed repair review falls back to the
+    # existing restore+retry / accept-with-quarantine degradation path.
+    max_edits_per_shot: int = 1
+    edit_entry_sigma: float = 1.0
+    edit_prompt_template: str = DEFAULT_EDIT_PROMPT_TEMPLATE
 
     @classmethod
     def from_config(cls, value: Any) -> "AgentRuntimeConfig":
@@ -159,11 +181,20 @@ class AgentRuntimeConfig:
             verify_every_boundary=_as_bool(cfg.get("verify_every_boundary", True), True),
             require_streaming_vae_off=_as_bool(cfg.get("require_streaming_vae_off", True), True),
             archive_failures=_as_bool(cfg.get("archive_failures", True), True),
+            max_edits_per_shot=int(cfg.get("max_edits_per_shot", 1)),
+            edit_entry_sigma=float(cfg.get("edit_entry_sigma", 1.0)),
+            edit_prompt_template=str(cfg.get("edit_prompt_template", cls.edit_prompt_template)),
         )
         if result.mode != "shot_buffered":
             raise ValueError("agent runtime v1 supports only mode='shot_buffered'")
         if result.max_retries_per_shot != 1:
             raise ValueError("agent runtime v1 requires exactly one retry slot per shot")
+        if result.max_edits_per_shot not in (0, 1):
+            raise ValueError("agent runtime v1 allows at most one edit_shot repair per shot")
+        if result.edit_entry_sigma not in ALLOWED_EDIT_SIGMA:
+            raise ValueError(
+                f"edit_entry_sigma must be one of {sorted(ALLOWED_EDIT_SIGMA)}"
+            )
         return result
 
 
@@ -488,6 +519,27 @@ class Action:
             if target != int(shot_index):
                 raise ValueError("quarantine can target only the current shot")
             params = {"shot": target}
+        elif tool == "edit_shot":
+            target = int(params.get("shot", shot_index))
+            if target != int(shot_index):
+                raise ValueError("edit_shot can target only the current shot")
+            prompt = str(params.get("prompt", "")).strip()
+            if not prompt:
+                raise ValueError("edit_shot requires a non-empty repair prompt")
+            mask_phrase = str(params.get("mask_phrase", "")).strip()
+            if not mask_phrase:
+                raise ValueError("edit_shot requires a non-empty mask_phrase")
+            entry_sigma = float(params.get("entry_sigma", 1.0))
+            if entry_sigma not in ALLOWED_EDIT_SIGMA:
+                raise ValueError(
+                    f"edit_shot entry_sigma must be one of {sorted(ALLOWED_EDIT_SIGMA)}"
+                )
+            params = {
+                "shot": target,
+                "prompt": prompt,
+                "mask_phrase": mask_phrase,
+                "entry_sigma": entry_sigma,
+            }
         elif tool == "restore_and_retry":
             raw_program = params.get("action_program")
             if not isinstance(raw_program, Sequence) or isinstance(raw_program, (str, bytes)):
@@ -502,8 +554,8 @@ class Action:
                 else item.normalized(shot_index=shot_index)
                 for item in raw_program
             ]
-            if any(action.tool == "restore_and_retry" for action in nested):
-                raise ValueError("restore_and_retry cannot recurse")
+            if any(action.tool in ("restore_and_retry", "edit_shot") for action in nested):
+                raise ValueError("restore_and_retry cannot nest restore_and_retry or edit_shot")
             params = {"action_program": [action.to_dict() for action in nested]}
         elif tool == "abstain":
             params = {}
@@ -707,6 +759,20 @@ class ShotBackend(Protocol):
 
     def telemetry(self, shot_index: int) -> Mapping[str, Any]: ...
 
+    # Optional capability: an in-place masked-renoise repair of the current
+    # provisional shot.  Called after the session has restored the boundary
+    # snapshot; the backend replays the shot with the repair plan installed
+    # (see CausalDiffusionInferencePipeline.set_runtime_edit_plan) and returns
+    # the repaired candidate plus a JSON-compatible result mapping for the
+    # ledger.  Backends without this method never receive edit_shot.
+    def edit(
+        self,
+        shot_index: int,
+        attempt: int,
+        action: "Action",
+        verdict: "Verdict",
+    ) -> tuple[GeneratedShot, Mapping[str, Any]]: ...
+
 
 @dataclass(frozen=True)
 class ShotResult:
@@ -742,6 +808,7 @@ class CausalShotSession:
         self.memory = TrustPartitionedMemory()
         self.ledger = JsonlLedger(ledger_path)
         self.retry_counts: dict[int, int] = {}
+        self.edit_counts: dict[int, int] = {}
         self.committed_shots: set[int] = set()
         self._lock = SessionLock(config.lock_path, nonblocking=config.lock_nonblocking)
         self._owns_lock = bool(acquire_lock)
@@ -855,6 +922,11 @@ class CausalShotSession:
             shot_index=shot_index,
             controller_call_id=program.controller_call_id,
         )
+        if any(action.tool == "edit_shot" for action in checked.actions):
+            raise ValueError(
+                "edit_shot executes through the session edit stage after a verifier "
+                "rejection, never through apply()"
+            )
         results = list(self.backend.apply(int(shot_index), checked, retry=bool(retry)))
         for index, action in enumerate(checked.actions):
             result = results[index] if index < len(results) else {}
@@ -934,8 +1006,163 @@ class CausalShotSession:
             accept=verdict.accept,
             reason=verdict.reason,
             metrics=verdict.metrics,
+            directed_actions=[
+                item.to_dict() if isinstance(item, Action) else dict(item)
+                for item in verdict.directed_actions
+            ],
         )
         return observation, verdict
+
+    def _stage_and_judge(
+        self,
+        context: ShotContext,
+        generated: GeneratedShot,
+        *,
+        expected_attempt: int,
+    ) -> Verdict:
+        k = context.shot_index
+        if generated.shot_index != k or generated.attempt != int(expected_attempt):
+            raise RuntimeError("backend generated candidate has an invalid shot/attempt id")
+        candidate_inputs = self._inputs_or_fail(
+            generated.input_refs,
+            shot_index=k,
+            stage="generate_candidate",
+        )
+        payload = MemoryPayload(
+            shot_index=k,
+            attempt=generated.attempt,
+            visual=generated.visual_candidate,
+            model_native=generated.model_native_candidate,
+            provenance=candidate_inputs,
+        )
+        self.memory.stage(payload)
+        self.ledger.append(
+            "candidate",
+            shot_index=k,
+            attempt=generated.attempt,
+            payload_fingerprint=payload.payload_fingerprint,
+            partition_counts=self.memory.partition_counts(),
+        )
+        _, verdict = self._observe_and_judge(generated, context.normative)
+        return verdict
+
+    def _commit_accepted(self, generated: GeneratedShot, verdict: Verdict) -> ShotResult:
+        k = generated.shot_index
+        admitted = self.memory.admit(k, generated.attempt)
+        delivered = self.backend.commit(generated, quarantined=False)
+        self.committed_shots.add(k)
+        self.ledger.append(
+            "commit",
+            shot_index=k,
+            attempt=generated.attempt,
+            payload_fingerprint=admitted.payload_fingerprint,
+            quarantined=False,
+            partition_counts=self.memory.partition_counts(),
+        )
+        self.scene.assert_unchanged()
+        return ShotResult(k, generated.attempt + 1, True, False, delivered, verdict)
+
+    def _reject_candidate(self, generated: GeneratedShot, verdict: Verdict) -> MemoryPayload:
+        # Rejected candidates are archived in quarantine immediately.  Only a
+        # final rejected candidate is delivered; none can enter trusted reads.
+        quarantined = self.memory.quarantine(generated.shot_index, generated.attempt)
+        self.ledger.append(
+            "reject_candidate",
+            shot_index=generated.shot_index,
+            attempt=generated.attempt,
+            payload_fingerprint=quarantined.payload_fingerprint,
+            reason=verdict.reason,
+            partition_counts=self.memory.partition_counts(),
+        )
+        return quarantined
+
+    def _restore_checked(
+        self,
+        shot_index: int,
+        snapshot: Any,
+        snapshot_digest: str,
+        **extra: Any,
+    ) -> None:
+        self.backend.restore(snapshot)
+        restored_digest = fingerprint(self.backend.snapshot(int(shot_index)))
+        self.ledger.append(
+            "restore",
+            shot_index=int(shot_index),
+            expected_snapshot_fingerprint=snapshot_digest,
+            restored_snapshot_fingerprint=restored_digest,
+            equal=restored_digest == snapshot_digest,
+            **extra,
+        )
+        if restored_digest != snapshot_digest:
+            raise RuntimeError("snapshot restore was not state-identical")
+
+    def _select_edit_action(self, shot_index: int, verdict: Verdict) -> Action | None:
+        """Return the verifier-directed edit_shot action when it may run.
+
+        The edit budget (at most ``max_edits_per_shot`` per shot) and backend
+        support are both required; otherwise the rejection proceeds directly to
+        the restore+retry / accept-with-quarantine degradation path.
+        """
+        k = int(shot_index)
+        if int(self.config.max_edits_per_shot) <= int(self.edit_counts.get(k, 0)):
+            return None
+        if not callable(getattr(self.backend, "edit", None)):
+            return None
+        for raw in verdict.directed_actions:
+            action = raw if isinstance(raw, Action) else Action(
+                tool=str(raw.get("tool", "")),
+                params=raw.get("params", {}),
+                reason=str(raw.get("reason", verdict.reason)),
+            )
+            if str(action.tool) == "edit_shot":
+                return action.normalized(shot_index=k)
+        return None
+
+    def _edit_and_review(
+        self,
+        context: ShotContext,
+        verdict: Verdict,
+        action: Action,
+        snapshot: Any,
+        snapshot_digest: str,
+        attempt: int,
+    ) -> tuple[GeneratedShot, Verdict]:
+        """Run one masked-renoise repair of the current shot and re-judge it.
+
+        The boundary snapshot is restored first, then the backend replays the
+        shot with the repair plan installed (pass-1 denoise, masked renoise to
+        the entry sigma with the repair prompt, background pinned per step, the
+        edited chunks entering the clean recache).  The repaired candidate goes
+        through the same observe -> verifier stage as any other candidate.
+        """
+        k = context.shot_index
+        self.edit_counts[k] = self.edit_counts.get(k, 0) + 1
+        if self.edit_counts[k] > self.config.max_edits_per_shot:
+            raise RuntimeError("edit budget exceeded before restore")
+        self._restore_checked(
+            k, snapshot, snapshot_digest, purpose="edit_shot", edit_count=self.edit_counts[k]
+        )
+        edited, raw_result = self.backend.edit(k, int(attempt), action, verdict)
+        result = dict(raw_result or {})
+        self.ledger.append(
+            "action",
+            shot_index=k,
+            retry=False,
+            edit=True,
+            edit_count=self.edit_counts[k],
+            diagnostic_input_fingerprint=verdict.input_fingerprint,
+            controller_call_id=verdict.call_id,
+            diagnosis="identity_drift_masked_renoise_repair",
+            tool=action.tool,
+            params=action.params,
+            reason=action.reason,
+            forward_only=action.forward_only,
+            attention_mass_check=result.get("attention_mass_check", "not_applicable_latent_rewrite"),
+            result_metrics=result.get("metrics", {}),
+            result=result,
+        )
+        edit_verdict = self._stage_and_judge(context, edited, expected_attempt=attempt)
+        return edited, edit_verdict
 
     def run_shot(self, shot_index: int) -> ShotResult:
         k = int(shot_index)
@@ -951,102 +1178,62 @@ class CausalShotSession:
         snapshot_digest = fingerprint(snapshot)
         self.ledger.append("snapshot", shot_index=k, inventory_fingerprint=snapshot_digest)
 
-        final_generated: GeneratedShot | None = None
-        final_verdict: Verdict | None = None
-        for attempt in (0, 1):
-            generated = self.backend.generate(k, attempt)
-            if generated.shot_index != k or generated.attempt != attempt:
-                raise RuntimeError("backend generated candidate has an invalid shot/attempt id")
-            candidate_inputs = self._inputs_or_fail(
-                generated.input_refs,
-                shot_index=k,
-                stage="generate_candidate",
-            )
-            payload = MemoryPayload(
-                shot_index=k,
-                attempt=attempt,
-                visual=generated.visual_candidate,
-                model_native=generated.model_native_candidate,
-                provenance=candidate_inputs,
-            )
-            self.memory.stage(payload)
-            self.ledger.append(
-                "candidate",
-                shot_index=k,
-                attempt=attempt,
-                payload_fingerprint=payload.payload_fingerprint,
-                partition_counts=self.memory.partition_counts(),
-            )
-            _, verdict = self._observe_and_judge(generated, context.normative)
-            final_generated = generated
-            final_verdict = verdict
-            if verdict.accept:
-                admitted = self.memory.admit(k, attempt)
-                delivered = self.backend.commit(generated, quarantined=False)
-                self.committed_shots.add(k)
-                self.ledger.append(
-                    "commit",
-                    shot_index=k,
-                    attempt=attempt,
-                    payload_fingerprint=admitted.payload_fingerprint,
-                    quarantined=False,
-                    partition_counts=self.memory.partition_counts(),
-                )
-                self.scene.assert_unchanged()
-                return ShotResult(k, attempt + 1, True, False, delivered, verdict)
+        attempt = 0
+        generated = self.backend.generate(k, attempt)
+        verdict = self._stage_and_judge(context, generated, expected_attempt=attempt)
+        if verdict.accept:
+            return self._commit_accepted(generated, verdict)
+        self._reject_candidate(generated, verdict)
 
-            # Rejected candidates are archived in quarantine immediately.  Only the
-            # second one is delivered; neither can enter trusted reads.
-            quarantined = self.memory.quarantine(k, attempt)
-            self.ledger.append(
-                "reject_candidate",
-                shot_index=k,
-                attempt=attempt,
-                payload_fingerprint=quarantined.payload_fingerprint,
-                reason=verdict.reason,
-                partition_counts=self.memory.partition_counts(),
+        # edit_shot stage: a verifier-directed in-place repair, budgeted to one
+        # per shot.  A passing review commits the repaired shot; a failing
+        # review falls through to the pre-existing degradation path below.
+        edit_action = self._select_edit_action(k, verdict)
+        if edit_action is not None:
+            attempt += 1
+            edited, edit_verdict = self._edit_and_review(
+                context, verdict, edit_action, snapshot, snapshot_digest, attempt
             )
-            if attempt == 0:
-                self.retry_counts[k] = self.retry_counts.get(k, 0) + 1
-                if self.retry_counts[k] > self.config.max_retries_per_shot:
-                    raise RuntimeError("retry budget exceeded before restore")
-                self.backend.restore(snapshot)
-                restored_digest = fingerprint(self.backend.snapshot(k))
-                self.ledger.append(
-                    "restore",
-                    shot_index=k,
-                    retry_count=self.retry_counts[k],
-                    expected_snapshot_fingerprint=snapshot_digest,
-                    restored_snapshot_fingerprint=restored_digest,
-                    equal=restored_digest == snapshot_digest,
-                )
-                if restored_digest != snapshot_digest:
-                    raise RuntimeError("snapshot restore was not state-identical")
-                repair = self.controller.repair(context, verdict)
-                if repair.input_fingerprint != verdict.input_fingerprint:
-                    raise RuntimeError("repair fingerprint does not match verifier input")
-                self.apply(k, repair, retry=True)
-                continue
+            if edit_verdict.accept:
+                return self._commit_accepted(edited, edit_verdict)
+            self._reject_candidate(edited, edit_verdict)
+            verdict = edit_verdict
 
-            delivered = self.backend.commit(generated, quarantined=True)
-            self.committed_shots.add(k)
-            self.ledger.append(
-                "commit",
-                shot_index=k,
-                attempt=attempt,
-                payload_fingerprint=quarantined.payload_fingerprint,
-                quarantined=True,
-                retry_count=self.retry_counts.get(k, 0),
-                partition_counts=self.memory.partition_counts(),
-            )
-            self.scene.assert_unchanged()
-            invisible_errors = self.memory.audit_invisible()
-            if invisible_errors:
-                raise RuntimeError("; ".join(invisible_errors))
-            return ShotResult(k, 2, False, True, delivered, verdict)
+        # Restore + directed retry: exactly one slot per shot.
+        self.retry_counts[k] = self.retry_counts.get(k, 0) + 1
+        if self.retry_counts[k] > self.config.max_retries_per_shot:
+            raise RuntimeError("retry budget exceeded before restore")
+        self._restore_checked(
+            k, snapshot, snapshot_digest, retry_count=self.retry_counts[k]
+        )
+        repair = self.controller.repair(context, verdict)
+        if repair.input_fingerprint != verdict.input_fingerprint:
+            raise RuntimeError("repair fingerprint does not match verifier input")
+        self.apply(k, repair, retry=True)
 
-        assert final_generated is not None and final_verdict is not None
-        raise AssertionError("unreachable shot transaction exit")
+        attempt += 1
+        generated = self.backend.generate(k, attempt)
+        verdict = self._stage_and_judge(context, generated, expected_attempt=attempt)
+        if verdict.accept:
+            return self._commit_accepted(generated, verdict)
+
+        quarantined = self._reject_candidate(generated, verdict)
+        delivered = self.backend.commit(generated, quarantined=True)
+        self.committed_shots.add(k)
+        self.ledger.append(
+            "commit",
+            shot_index=k,
+            attempt=generated.attempt,
+            payload_fingerprint=quarantined.payload_fingerprint,
+            quarantined=True,
+            retry_count=self.retry_counts.get(k, 0),
+            partition_counts=self.memory.partition_counts(),
+        )
+        self.scene.assert_unchanged()
+        invisible_errors = self.memory.audit_invisible()
+        if invisible_errors:
+            raise RuntimeError("; ".join(invisible_errors))
+        return ShotResult(k, generated.attempt + 1, False, True, delivered, verdict)
 
     def run(self, shot_indices: Iterable[int] | None = None) -> list[ShotResult]:
         indices = list(range(self.scene.num_shots)) if shot_indices is None else [int(x) for x in shot_indices]
@@ -1080,7 +1267,14 @@ class AbstainingController:
         )
 
     def repair(self, context: ShotContext, verdict: Verdict) -> ActionProgram:
-        actions = verdict.directed_actions or (
+        # edit_shot runs only through the session edit stage; a directed edit
+        # that already failed its review must not re-enter as a retry program.
+        directed = tuple(
+            item
+            for item in verdict.directed_actions
+            if str(item.tool if isinstance(item, Action) else item.get("tool", "")) != "edit_shot"
+        )
+        actions = directed or (
             Action("abstain", reason="verifier supplied no directed repair"),
         )
         return ActionProgram.build(
