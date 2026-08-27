@@ -254,9 +254,10 @@ DRIFT_JUDGE_SCHEMA: dict[str, Any] = {
     "properties": {
         "subject_drifted": {"type": "boolean"},
         "drift_description": {"type": "string", "minLength": 0, "maxLength": 240},
+        "reference_description": {"type": "string", "minLength": 0, "maxLength": 240},
         "confidence": {"type": "number", "enum": [0, 0.25, 0.5, 0.75, 1]},
     },
-    "required": ["subject_drifted", "drift_description", "confidence"],
+    "required": ["subject_drifted", "drift_description", "reference_description", "confidence"],
 }
 
 
@@ -829,6 +830,12 @@ class ComparativeDriftVerifier(Verifier):
                     "When drifted, describe concretely what changed versus the reference "
                     "in one short sentence; empty string otherwise."
                 ),
+                "reference_description": (
+                    "Describe the subject's appearance AS SEEN IN THE REFERENCE frames in "
+                    "one positive phrase (colors, clothing, distinguishing marks). This "
+                    "text repaints the subject, so name ONLY what should appear — never "
+                    "mention the wrong or drifted appearance."
+                ),
                 "output": "strict JSON matching the supplied schema",
             },
             sort_keys=True,
@@ -849,6 +856,7 @@ class ComparativeDriftVerifier(Verifier):
             "subject_drifted": bool(parsed["subject_drifted"]),
             "confidence": confidence,
             "drift_description": str(parsed["drift_description"]),
+            "reference_description": str(parsed.get("reference_description", "")),
         }
         if not drifted:
             return Verdict(
@@ -859,8 +867,15 @@ class ComparativeDriftVerifier(Verifier):
                 input_fingerprint=observation.input_fingerprint,
             )
         caption = str(normative.shot_state[-1].get("caption", "")) if normative.shot_state else ""
+        # The repaint prompt must carry only the TARGET appearance. Diffusion text
+        # conditioning is bag-of-concepts: feeding the drift narration ("a woman
+        # with red hair appeared") paints the drift back in. The drift text stays
+        # in metrics/ledger for audit; the prompt gets the positive reference
+        # description, falling back to the authored caption alone.
         repair_prompt = build_repair_prompt(
-            caption, str(parsed["drift_description"]), template=self.prompt_template
+            caption,
+            str(parsed.get("reference_description", "")),
+            template=self.prompt_template,
         )
         action = Action(
             "edit_shot",

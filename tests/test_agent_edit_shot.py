@@ -521,6 +521,7 @@ class ComparativeDriftVerifierTest(unittest.TestCase):
                 {
                     "subject_drifted": True,
                     "drift_description": "the fish turned olive-gray",
+                    "reference_description": "a bright red snapper with silver fins",
                     "confidence": 0.75,
                 }
             )
@@ -539,9 +540,16 @@ class ComparativeDriftVerifierTest(unittest.TestCase):
             params = dict(action.params)
             self.assertEqual(params["mask_phrase"], "fish")
             self.assertEqual(params["entry_sigma"], 1.0)
+            # The repaint prompt carries the positive reference description only;
+            # the drift narration must never reach the prompt (bag-of-concepts
+            # conditioning would paint the drift back in). It stays in metrics.
             self.assertEqual(
                 params["prompt"],
-                "shot 1: the same red snapper FIX: the fish turned olive-gray",
+                "shot 1: the same red snapper FIX: a bright red snapper with silver fins",
+            )
+            self.assertNotIn("olive-gray", params["prompt"])
+            self.assertEqual(
+                verdict.metrics["drift_description"], "the fish turned olive-gray"
             )
             # Comparative call: reference images precede the current frames and
             # the prompt states the split.
