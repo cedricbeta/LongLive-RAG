@@ -386,7 +386,11 @@ class WanDiffusionWrapper(torch.nn.Module):
         if defer_kv_updates:
             kwargs["defer_cache_updates"] = True
 
-        use_compiled_call = self._compiled_model_call is not None and kwargs.get("kv_rag", None) is None
+        dynamic_runtime = (
+            kwargs.get("kv_rag", None) is not None
+            or kwargs.get("capsule_runtime", None) is not None
+        )
+        use_compiled_call = self._compiled_model_call is not None and not dynamic_runtime
         if self._compiled_model_call is not None and kwargs.get("kv_rag", None) is not None:
             if not self._warned_kv_rag_compile_bypass:
                 print("[KV-RAG][warn] bypassing torch.compile for KV-RAG calls")
@@ -419,6 +423,7 @@ class WanDiffusionWrapper(torch.nn.Module):
                     kv_rag=kwargs.get("kv_rag", None),
                     kv_rag_store=kwargs.get("kv_rag_store", False),
                     kv_rag_meta=kwargs.get("kv_rag_meta", None),
+                    capsule_runtime=kwargs.get("capsule_runtime", None),
                 )
             return output
         return result
@@ -488,6 +493,7 @@ class WanDiffusionWrapper(torch.nn.Module):
         kv_rag_retrieve: bool = True,
         kv_rag_store: bool = False,
         kv_rag_meta: Optional[dict] = None,
+        capsule_runtime=None,
     ) -> torch.Tensor:
         prompt_embeds = conditional_dict["prompt_embeds"]
 
@@ -520,6 +526,7 @@ class WanDiffusionWrapper(torch.nn.Module):
                 kv_rag_retrieve=kv_rag_retrieve,
                 kv_rag_store=kv_rag_store,
                 kv_rag_meta=kv_rag_meta,
+                capsule_runtime=capsule_runtime,
             ).permute(0, 2, 1, 3, 4)
         else:
             if clean_x is not None:

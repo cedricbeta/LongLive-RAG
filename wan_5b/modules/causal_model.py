@@ -186,7 +186,16 @@ def causal_rope_apply(x, grid_sizes, freqs, start_frame=0, t_scale=1.0,
 
 class MultiShotT2VCrossAttention(WanCrossAttention):
 
-    def forward(self, x, context, context_lens, is_teacher_forcing=False, crossattn_cache=None):
+    def forward(
+        self,
+        x,
+        context,
+        context_lens,
+        is_teacher_forcing=False,
+        crossattn_cache=None,
+        capsule_runtime=None,
+        capsule_layer=None,
+    ):
         r"""
         Args:
             x(Tensor): Shape [B, L1, C]
@@ -223,6 +232,14 @@ class MultiShotT2VCrossAttention(WanCrossAttention):
             # for cudagraphs unlock of the 28% wall-time gap.
             k = self.norm_k(self.k(context)).view(b_eff, -1, n, d)
             v = self.v(context).view(b_eff, -1, n, d)
+
+            if capsule_runtime is not None:
+                try:
+                    capsule_runtime.record_cross_attention(
+                        q, k, layer=int(capsule_layer)
+                    )
+                except Exception as exc:
+                    capsule_runtime.handle_error("cross_attention_mask", exc)
 
             # compute attention
             x_attn = flash_attention(q, k, v, k_lens=context_lens)
@@ -733,6 +750,7 @@ class CausalWanSelfAttention(nn.Module):
 
             rag_result = None
             rag_k_pending = None
+            rag_start_frame = None
             rag_v_pending = None
             rag_selected = None
             rag_prepended_tokens = 0
@@ -1020,6 +1038,27 @@ class CausalWanSelfAttention(nn.Module):
                         layer=kv_rag_layer if kv_rag_layer is not None else -1,
                         logit_bias=rag_logit_bias,
                     )
+                    if getattr(kv_rag, "attn_probe_enabled", False):
+                        kv_rag.record_attn_probe(
+                            layer=kv_rag_layer if kv_rag_layer is not None else -1,
+                            q_pre=q,
+                            q_post=roped_query,
+                            window_k=window_k,
+                            rag_k_pre=rag_k_pending,
+                            rag_tokens=rag_prepended_tokens,
+                            rag_start_frame=rag_start_frame,
+                            selected_entries=rag_selected,
+                            frame_seqlen=frame_seqlen,
+                            current_start=current_start,
+                            current_end=current_end,
+                            effective_sink=effective_sink,
+                            pinned_len=pinned_len_val,
+                            grid_h=h,
+                            grid_w=w,
+                            t_scale=t_scale,
+                            temporal_offset=temporal_offset,
+                            freqs=freqs,
+                        )
                 else:
                     rag_logit_bias = _build_rag_logit_bias(window_k.shape[1])
                 _attach_received_attention(roped_query, window_k)
@@ -1093,6 +1132,7 @@ class CausalWanAttentionBlock(nn.Module):
         kv_rag=None,
         kv_rag_layer=None,
         kv_rag_retrieve=True,
+        capsule_runtime=None,
     ):
         r"""
         Args:
@@ -1154,7 +1194,10 @@ class CausalWanAttentionBlock(nn.Module):
             is_tf = (x.shape[1] == seq_lens[0].item() * 2)
         def cross_attn_ffn(x, context, context_lens, e, crossattn_cache=None):
             x = x + self.cross_attn(self.norm3(x), context,
-                                    context_lens, crossattn_cache=crossattn_cache, is_teacher_forcing=is_tf)
+                                    context_lens, crossattn_cache=crossattn_cache,
+                                    is_teacher_forcing=is_tf,
+                                    capsule_runtime=capsule_runtime,
+                                    capsule_layer=kv_rag_layer)
             if _TRITON_ADALN_ENABLED:
                 # iter-43: fused LayerNorm + (1+e[4])*x + e[3] in one Triton kernel.
                 from utils.adaln_triton import adaln_modulate_triton
@@ -1625,6 +1668,7 @@ class CausalWanModel(ModelMixin, ConfigMixin):
         kv_rag=None,
         kv_rag_store: bool = False,
         kv_rag_meta: dict | None = None,
+        capsule_runtime=None,
     ):
         """
         Applies cache updates collected from multiple blocks.
@@ -1636,6 +1680,16 @@ class CausalWanModel(ModelMixin, ConfigMixin):
             if update_info is not None:
                 cache = kv_cache[block_index]
                 is_quantized = cache.get("quantized", False)
+
+                if capsule_runtime is not None:
+                    try:
+                        capsule_runtime.capture_clean_v(
+                            layer=block_index,
+                            new_v=update_info.get("new_v"),
+                            update_info=update_info,
+                        )
+                    except Exception as exc:
+                        capsule_runtime.handle_error("clean_v_capture", exc)
                 
                 if update_info["action"] == "roll_and_insert":
                     # Apply the rolling update.
@@ -1770,6 +1824,21 @@ class CausalWanModel(ModelMixin, ConfigMixin):
                                 )
                         else:
                             raise
+
+                if capsule_runtime is not None:
+                    try:
+                        cache_tokens = (
+                            int(cache["v"].shape[1])
+                            if not cache.get("quantized", False)
+                            else int(cache["max_blocks"] * cache["block_token_size"])
+                        )
+                        capsule_runtime.mirror_cache_update(
+                            layer=block_index,
+                            update_info=update_info,
+                            cache_tokens=cache_tokens,
+                        )
+                    except Exception as exc:
+                        capsule_runtime.handle_error("cache_mask_update", exc)
             
             # Update cache indices.
             kv_cache[block_index]["global_end_index"].fill_(current_end)
@@ -1792,6 +1861,7 @@ class CausalWanModel(ModelMixin, ConfigMixin):
         kv_rag_retrieve: bool = True,
         kv_rag_store: bool = False,
         kv_rag_meta: dict | None = None,
+        capsule_runtime=None,
     ):
         r"""
         Run the diffusion model with kv caching.
@@ -1902,6 +1972,7 @@ class CausalWanModel(ModelMixin, ConfigMixin):
                         "kv_rag": kv_rag,
                         "kv_rag_layer": block_index,
                         "kv_rag_retrieve": kv_rag_retrieve,
+                        "capsule_runtime": capsule_runtime,
                     }
                 )
                 result = torch.utils.checkpoint.checkpoint(
@@ -1928,6 +1999,7 @@ class CausalWanModel(ModelMixin, ConfigMixin):
                         "kv_rag": kv_rag,
                         "kv_rag_layer": block_index,
                         "kv_rag_retrieve": kv_rag_retrieve,
+                        "capsule_runtime": capsule_runtime,
                     }
                 )
                 result = block(x, **kwargs)
@@ -1951,6 +2023,7 @@ class CausalWanModel(ModelMixin, ConfigMixin):
                 kv_rag=kv_rag,
                 kv_rag_store=kv_rag_store,
                 kv_rag_meta=kv_rag_meta,
+                capsule_runtime=capsule_runtime,
             )
 
         # head
