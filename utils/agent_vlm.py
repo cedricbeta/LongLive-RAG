@@ -822,10 +822,20 @@ class ComparativeDriftVerifier(Verifier):
                 "rule": (
                     "The first images are REFERENCE frames showing the subject as first "
                     "established in this scene; the remaining images are the CURRENT "
-                    "provisional shot. Judge ONLY whether the subject's identity or "
-                    "appearance has changed relative to the reference (species, color, "
-                    "face, distinguishing marks). Ignore pose, camera angle, framing, "
-                    "lighting, and allowed state changes."
+                    "provisional shot. Judge ONLY whether an ESTABLISHED character's "
+                    "identity or appearance has changed relative to the reference "
+                    "(species, color, face, clothing, distinguishing marks), or a "
+                    "character has been replaced or duplicated. The current shot's "
+                    "authored caption (current_caption below) may legitimately "
+                    "introduce new characters or remove existing ones — narrative "
+                    "entrances and exits that the caption calls for are NOT drift. "
+                    "Ignore pose, camera angle, framing, lighting, and allowed state "
+                    "changes."
+                ),
+                "current_caption": (
+                    str(normative.shot_state[-1].get("caption", ""))
+                    if normative.shot_state
+                    else ""
                 ),
                 "subject": self.entity_phrase,
                 "reference_image_count": len(reference),
@@ -846,8 +856,10 @@ class ComparativeDriftVerifier(Verifier):
                 "repaint_region": (
                     "Short segmentation phrase naming everything in the CURRENT frames "
                     "that must be erased and repainted: the drifted subject PLUS any "
-                    "extra or wrong person/object that appeared. Use a broad noun like "
-                    "'person' when an extra person appeared. Empty string if not drifted."
+                    "person/object that the current caption does NOT call for. Never "
+                    "include characters the caption legitimately places in the shot. "
+                    "Use a broad noun like 'person' only when every visible person is "
+                    "wrong. Empty string if not drifted."
                 ),
                 "output": "strict JSON matching the supplied schema",
             },
