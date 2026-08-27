@@ -493,7 +493,9 @@ def run_scene(args, scene: str, base_url: str, output_root: Path) -> dict[str, A
         edit_entry_sigma=runtime_config.edit_entry_sigma,
         prompt_template=runtime_config.edit_prompt_template,
     )
-    graph = NormativeGraph.compile_scene(scene_src)
+    graph = NormativeGraph.compile_scene(
+        scene_src, allow_missing_global=bool(getattr(args, "allow_missing_global", False))
+    )
     ledger = out_dir / "ledger.jsonl"
     if ledger.exists():
         ledger.unlink()
@@ -546,6 +548,11 @@ def main() -> None:
         "--entities_json",
         default=None,
         help="JSON file mapping scene name -> CLIPSeg entity phrase (overrides built-ins)",
+    )
+    parser.add_argument(
+        "--allow_missing_global",
+        action="store_true",
+        help="permit scenes without global.json (self-contained suites like NarraStream)",
     )
     args = parser.parse_args()
 

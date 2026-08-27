@@ -312,12 +312,20 @@ class NormativeGraph:
             raise RuntimeError("normative memory changed after compilation")
 
     @classmethod
-    def compile_scene(cls, scene_dir: str | Path) -> "NormativeGraph":
+    def compile_scene(
+        cls, scene_dir: str | Path, *, allow_missing_global: bool = False
+    ) -> "NormativeGraph":
         root = Path(scene_dir)
         global_path = root / "global.json"
         if not global_path.exists():
-            raise FileNotFoundError(global_path)
-        global_raw = json.loads(global_path.read_text(encoding="utf-8"))
+            # Self-contained prompt suites (e.g. NarraStream-Bench) carry no
+            # authored global.json by design; callers must opt in explicitly so
+            # the authored-benchmark fail-fast contract stays intact.
+            if not allow_missing_global:
+                raise FileNotFoundError(global_path)
+            global_raw: dict[str, Any] = {}
+        else:
+            global_raw = json.loads(global_path.read_text(encoding="utf-8"))
         shot_paths = sorted(
             (path for path in root.glob("*.json") if path.stem.isdigit()),
             key=lambda path: int(path.stem),
@@ -332,7 +340,7 @@ class NormativeGraph:
             "entities": global_raw.get("entities", []),
             "invariants": global_raw.get("invariants", []),
             "allowed_state_changes": global_raw.get("allowed_state_changes", []),
-            "source": "authored_global",
+            "source": "authored_global" if global_raw else "no_global_json",
         }
         shots: list[dict[str, Any]] = []
         for expected, path in enumerate(shot_paths):
@@ -350,7 +358,9 @@ class NormativeGraph:
                     "source": "authored_shot",
                 }
             )
-        source_hashes = {"global.json": file_sha256(global_path)}
+        source_hashes = (
+            {"global.json": file_sha256(global_path)} if global_path.exists() else {}
+        )
         source_hashes.update({path.name: file_sha256(path) for path in shot_paths})
         return cls(root.name, global_state, shots, source_hashes)
 
