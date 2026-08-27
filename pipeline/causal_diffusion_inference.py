@@ -21,6 +21,21 @@ from utils.wan_5b_wrapper import WanDiffusionWrapper, WanTextEncoder, build_vae_
 from utils.dataset import DEFAULT_SCENE_CUT_PREFIX
 from utils.config import section_get, wan_default_config
 from utils.kv_rag import KVRAGConfig, KVRAGMemory
+from utils.capsule import CapsuleEditConfig, CapsuleProbeConfig, CapsuleRuntime
+from utils.agent_runtime import AgentRuntimeConfig, CausalShotSession, NormativeGraph
+
+
+def _plain_get(cfg, key, default=None):
+    """Read a key from a dict / OmegaConf node / namespace uniformly."""
+    if cfg is None:
+        return default
+    if isinstance(cfg, dict):
+        return cfg.get(key, default)
+    try:
+        value = getattr(cfg, key, default)
+    except Exception:
+        return default
+    return default if value is None else value
 
 
 class CausalDiffusionInferencePipeline(torch.nn.Module):
@@ -115,6 +130,25 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
         vae_device = section_get(args, "inference", "vae_device", getattr(args, "vae_device", None))
         self.vae_device = torch.device(vae_device) if vae_device else None
 
+        # The legacy inference path remains untouched when this default-off flag
+        # is absent/false.  Active sessions are constructed explicitly through
+        # build_agent_session(), preventing an enabled flag from silently running
+        # a non-transactional full-video generation.
+        agent_runtime_raw = section_get(
+            args, "inference", "agent_runtime", getattr(args, "agent_runtime", None)
+        )
+        self.agent_runtime_config = AgentRuntimeConfig.from_config(agent_runtime_raw)
+        self.agent_runtime_enabled = self.agent_runtime_config.enabled
+        if (
+            self.agent_runtime_enabled
+            and self.agent_runtime_config.require_streaming_vae_off
+            and self.streaming_vae
+        ):
+            raise ValueError(
+                "agent runtime v1 is shot-buffered and requires streaming_vae=false; "
+                "strict streaming is a later degradation mode"
+            )
+
         if self.quantize_kv:
             from utils.quant import LongLiveQuantizationConfig
 
@@ -156,6 +190,105 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
         self.kv_rag_neg = KVRAGMemory(self.kv_rag_config) if self.kv_rag_enabled else None
         if self.kv_rag_enabled:
             print(f"[KV-RAG] {self.kv_rag_config.describe()}")
+
+        # SDEdit-style masked renoise repair of one shot's chunks (see
+        # docs/attention-downweighting-study.zh.md follow-up): after the normal
+        # denoise of an edit-range chunk, add noise back to an intermediate
+        # sigma inside the subject mask only and re-denoise with a repair
+        # prompt; background latents are re-pinned to the first-pass result at
+        # every step, and the clean recache stores the EDITED chunk so later
+        # chunks inherit the repaired history. Inert unless configured.
+        edit_renoise_raw = section_get(
+            args, "inference", "edit_renoise", getattr(args, "edit_renoise", None)
+        )
+        self.edit_renoise = None
+        if edit_renoise_raw is not None and bool(
+            _plain_get(edit_renoise_raw, "enabled", False)
+        ):
+            self.edit_renoise = {
+                "chunk_start": int(_plain_get(edit_renoise_raw, "chunk_start", -1)),
+                "chunk_end": int(_plain_get(edit_renoise_raw, "chunk_end", -1)),
+                "entry_index": int(_plain_get(edit_renoise_raw, "entry_index", 2)),
+                "entry_sigma": _plain_get(edit_renoise_raw, "entry_sigma", None),
+                "mask_path": str(_plain_get(edit_renoise_raw, "mask_path", "")),
+                "mask_threshold": float(
+                    _plain_get(edit_renoise_raw, "mask_threshold", 0.35)
+                ),
+                "mask_dilate": int(_plain_get(edit_renoise_raw, "mask_dilate", 1)),
+                "prompt": str(_plain_get(edit_renoise_raw, "prompt", "")),
+                "noise_seed": int(_plain_get(edit_renoise_raw, "noise_seed", 4242)),
+                # cut-paste-SDEdit: initialize the masked region from a pasted
+                # golden-subject latent instead of the drifted content, then
+                # harmonize with a mid-sigma renoise.
+                "collage": bool(_plain_get(edit_renoise_raw, "collage", False)),
+                "donor_chunk": int(_plain_get(edit_renoise_raw, "donor_chunk", -1)),
+                "donor_frame": int(_plain_get(edit_renoise_raw, "donor_frame", 0)),
+                "donor_mask_path": str(_plain_get(edit_renoise_raw, "donor_mask_path", "")),
+                "donor_flip": bool(_plain_get(edit_renoise_raw, "donor_flip", False)),
+                # freeze the pasted donor core at its clean value (zero noise)
+                # and repaint only the seam ring + rest of the mask
+                "paste_pin": bool(_plain_get(edit_renoise_raw, "paste_pin", False)),
+            }
+            self._edit_masks = None
+            self._edit_conditional_dict = None
+            self._edit_donor = None
+            print(f"[edit_renoise] {self.edit_renoise}")
+
+        capsule_probe_raw = section_get(
+            args, "inference", "capsule_probe", getattr(args, "capsule_probe", None)
+        )
+        capsule_edit_raw = section_get(
+            args, "inference", "capsule_edit", getattr(args, "capsule_edit", None)
+        )
+        self.capsule_probe_config = CapsuleProbeConfig.from_config(capsule_probe_raw)
+        self.capsule_edit_config = CapsuleEditConfig.from_config(capsule_edit_raw)
+        self.capsule_runtime = None
+        if self.capsule_probe_config.enabled or self.capsule_edit_config.enabled:
+            latent_h = int(args.image_or_video_shape[-2])
+            latent_w = int(args.image_or_video_shape[-1])
+            self.capsule_runtime = CapsuleRuntime(
+                self.capsule_probe_config,
+                self.capsule_edit_config,
+                frame_seqlen=self.frame_seq_length,
+                grid_h=latent_h // 2,
+                grid_w=latent_w // 2,
+            )
+            print(
+                "[capsule] "
+                f"probe={self.capsule_probe_config.enabled}, "
+                f"edit={self.capsule_edit_config.enabled}, "
+                f"grid={latent_h // 2}x{latent_w // 2}"
+            )
+
+    def build_agent_session(
+        self,
+        *,
+        scene_dir,
+        backend,
+        controller,
+        verifier,
+        ledger_path,
+        acquire_lock=True,
+    ):
+        """Create the opt-in transactional driver around a pipeline shot backend.
+
+        The backend owns model-specific provisional generation and uses
+        ``PipelineBoundaryAdapter`` for exact state capture.  Keeping construction
+        explicit makes feature-off inference byte-for-byte identical and makes it
+        impossible to mistake the legacy monolithic call for an agent session.
+        """
+        if not self.agent_runtime_enabled:
+            raise ValueError("set inference.agent_runtime.enabled=true before building a session")
+        scene = NormativeGraph.compile_scene(scene_dir)
+        return CausalShotSession(
+            self.agent_runtime_config,
+            scene,
+            backend,
+            controller,
+            verifier,
+            ledger_path=ledger_path,
+            acquire_lock=acquire_lock,
+        )
 
     @property
     def _dit_model(self):
@@ -319,10 +452,16 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
         phase: str | None = None,
         persistent: bool = False,
     ):
+        kwargs = {}
+        if self.capsule_runtime is not None:
+            self.capsule_runtime.set_runtime_context(
+                chunk_index=chunk_index, shot_index=shot_index, phase=phase
+            )
+            kwargs["capsule_runtime"] = self.capsule_runtime
         if not self.kv_rag_enabled or bank is None:
-            return {}
+            return kwargs
         bank.set_runtime_context(chunk_index=chunk_index, shot_index=shot_index, phase=phase)
-        return {
+        kwargs.update({
             "kv_rag": bank,
             "kv_rag_retrieve": bool(retrieve),
             "kv_rag_store": bool(store),
@@ -332,7 +471,8 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
                 "phase": phase,
                 "persistent": bool(persistent),
             },
-        }
+        })
+        return kwargs
 
     def kv_rag_diagnostics(self) -> dict[str, object]:
         """JSON-serializable KV-RAG diagnostics for the last inference call."""
@@ -362,6 +502,7 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
         preserve_scene_memory: bool = False,
         seed_scene_memory: bool = True,
         force_scene_memory_boundary: bool = False,
+        sample_name: str | None = None,
     ) -> torch.Tensor:
         """
         Perform inference on the given noise and text prompts.
@@ -528,6 +669,16 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
             print(f"[inference] multi_shot_rope_offset={self.multi_shot_rope_offset} "
                   f"(multi-shot RoPE offset enabled)")
 
+        capsule_error = None
+        if self.capsule_runtime is not None:
+            raw_for_manifest = (
+                text_prompts[0]
+                if isinstance(text_prompts[0], (list, tuple))
+                else text_prompts
+            )
+            self.capsule_runtime.start_sample(
+                sample_name, int(getattr(self.args, "seed", 0)), raw_for_manifest
+            )
         try:
             raw_prompts = text_prompts[0] if isinstance(text_prompts[0], (list, tuple)) else text_prompts
             return self._inference_inner(
@@ -546,7 +697,12 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
                 seed_scene_memory=seed_scene_memory,
                 force_scene_memory_boundary=force_scene_memory_boundary,
             )
+        except Exception as exc:
+            capsule_error = f"{type(exc).__name__}: {exc}"
+            raise
         finally:
+            if self.capsule_runtime is not None:
+                self.capsule_runtime.finalize_sample(capsule_error)
             dit.local_attn_size = prev_local_attn_size
             dit.t_scale = prev_t_scale
             dit.rope_method = prev_rope_method
@@ -786,6 +942,33 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
             is_shot_boundary = self._is_shot_boundary(raw_prompts, chunk_index)
             if is_shot_boundary:
                 scene_shot_index += 1
+            if self.capsule_runtime is not None:
+                self.capsule_runtime.set_runtime_context(
+                    chunk_index=chunk_index,
+                    shot_index=scene_shot_index,
+                    phase="boundary_setup",
+                )
+                self.capsule_runtime.runtime["num_frames"] = int(current_num_frames)
+                self.capsule_runtime.runtime["start_token"] = int(
+                    current_start_frame * self.frame_seq_length
+                )
+                current_prompt = (
+                    raw_prompts[chunk_index]
+                    if isinstance(raw_prompts, (list, tuple))
+                    else str(raw_prompts)
+                )
+                self.capsule_runtime.set_chunk_prompt(
+                    current_prompt, self.text_encoder.tokenizer
+                )
+                if is_shot_boundary:
+                    edit_record = self.capsule_runtime.edit_active_window(
+                        self.kv_cache_pos,
+                        boundary_shot=scene_shot_index,
+                        local_attn_frames=self.local_attn_size,
+                        global_sink_frames=self.global_sink_size,
+                    )
+                    if edit_record is not None:
+                        print(f"[capsule] boundary edit: {edit_record}")
             is_shot_end = self._is_shot_end(raw_prompts, chunk_index, len(all_num_frames))
             if is_shot_boundary and phi != 0.0:
                 current_shot_index += 1
@@ -883,6 +1066,34 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
                 if os.environ.get("LLV2_DEBUG_KV", "0") == "1":
                     print(f"kv_cache['local_end_index']: {self.kv_cache_pos[0]['local_end_index']}")
                     print(f"kv_cache['global_end_index']: {self.kv_cache_pos[0]['global_end_index']}")
+
+            # cut-paste donor capture: stash the golden chunk's clean latent
+            # as it flows past, for later collage initialization.
+            if (
+                self.edit_renoise is not None
+                and self.edit_renoise["collage"]
+                and chunk_index == self.edit_renoise["donor_chunk"]
+            ):
+                self._edit_donor = latents.detach().clone()
+                print(f"[edit_renoise] captured donor latent from chunk {chunk_index}")
+
+            # SDEdit repair pass: masked renoise + re-denoise with the repair
+            # prompt. Replaces `latents` so both the decoded output (3.2) and
+            # the clean recache (3.3) carry the edited chunk.
+            if (
+                self.edit_renoise is not None
+                and self.edit_renoise["chunk_start"] <= chunk_index <= self.edit_renoise["chunk_end"]
+            ):
+                latents = self._apply_edit_renoise(
+                    latents,
+                    sample_scheduler=sample_scheduler,
+                    chunk_index=chunk_index,
+                    scene_shot_index=scene_shot_index,
+                    current_num_frames=current_num_frames,
+                    current_start_frame=current_start_frame,
+                    cache_start_frame=cache_start_frame,
+                    batch_size=batch_size,
+                )
 
             # Step 3.2: record the model's output
             output[:, cache_start_frame:cache_start_frame + current_num_frames] = latents
@@ -1193,6 +1404,199 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
         self.crossattn_cache_pos = None
         self.crossattn_cache_neg = None
         self._reset_kv_rag()
+
+    def _edit_mask_for_chunk(self, chunk_index, device, dtype):
+        """Binary subject mask for one chunk, upsampled to latent H x W.
+
+        Mask file: {"masks": {chunk_index: FloatTensor [F, 22, 40] soft}}.
+        Returns [1, F, 1, H, W] in {0,1} or None if the chunk has no mask.
+        """
+        if self._edit_masks is None:
+            payload = torch.load(
+                self.edit_renoise["mask_path"], map_location="cpu",
+                weights_only=False,
+            )
+            self._edit_masks = {int(k): v for k, v in payload["masks"].items()}
+        soft = self._edit_masks.get(int(chunk_index))
+        if soft is None:
+            return None
+        m = (soft.float() >= self.edit_renoise["mask_threshold"]).float()
+        d = self.edit_renoise["mask_dilate"]
+        if d > 0:
+            m = torch.nn.functional.max_pool2d(
+                m.unsqueeze(1), kernel_size=2 * d + 1, stride=1, padding=d
+            ).squeeze(1)
+        m = torch.nn.functional.interpolate(
+            m.unsqueeze(1), scale_factor=2, mode="nearest"
+        ).squeeze(1)  # [F, H, W]
+        return m.unsqueeze(0).unsqueeze(2).to(device=device, dtype=dtype)
+
+    def _build_collage(self, x0_ref, mask, chunk_index):
+        """Paste the donor subject's latent into each target frame's mask bbox.
+
+        Donor patch is cut by the donor frame's CLIPSeg silhouette, optionally
+        h-flipped, resized to the target bbox, and blended in only where the
+        target mask is on. Rough alignment is fine: the entry-sigma renoise
+        harmonizes seams, pose, and lighting.
+        """
+        cfg = self.edit_renoise
+        donor = self._edit_donor[:, cfg["donor_frame"]].float()  # [B, C, H, W]
+        dm_payload = torch.load(cfg["donor_mask_path"], map_location="cpu",
+                                weights_only=False)
+        dsoft = dm_payload["masks"][cfg["donor_chunk"]][cfg["donor_frame"]]
+        dm = (dsoft.float() >= 0.35)
+        dm = torch.nn.functional.max_pool2d(
+            dm.float()[None, None], 3, stride=1, padding=1)[0, 0]
+        dm = torch.nn.functional.interpolate(
+            dm[None, None], scale_factor=2, mode="nearest")[0, 0]  # [H, W]
+        ys, xs = torch.where(dm > 0)
+        dy0, dy1 = int(ys.min()), int(ys.max()) + 1
+        dx0, dx1 = int(xs.min()), int(xs.max()) + 1
+        patch = donor[:, :, dy0:dy1, dx0:dx1]
+        sil = dm[dy0:dy1, dx0:dx1][None, None]
+        if cfg["donor_flip"]:
+            patch = torch.flip(patch, dims=[-1])
+            sil = torch.flip(sil, dims=[-1])
+
+        out = x0_ref.clone()
+        core = torch.zeros_like(mask)
+        n_frames = x0_ref.shape[1]
+        for f in range(n_frames):
+            mf = mask[0, f, 0]  # [H, W] on device
+            ys, xs = torch.where(mf > 0)
+            if ys.numel() < 8:
+                continue
+            ty0, ty1 = int(ys.min()), int(ys.max()) + 1
+            tx0, tx1 = int(xs.min()), int(xs.max()) + 1
+            th, tw = ty1 - ty0, tx1 - tx0
+            patch_t = torch.nn.functional.interpolate(
+                patch.to(x0_ref.device), size=(th, tw), mode="bilinear",
+                align_corners=False)
+            sil_t = torch.nn.functional.interpolate(
+                sil.to(x0_ref.device), size=(th, tw), mode="bilinear",
+                align_corners=False)
+            weight = (sil_t >= 0.5).to(x0_ref.dtype) * mf[ty0:ty1, tx0:tx1]
+            region = out[:, f, :, ty0:ty1, tx0:tx1]
+            out[:, f, :, ty0:ty1, tx0:tx1] = (
+                weight * patch_t.to(x0_ref.dtype) + (1.0 - weight) * region
+            )
+            # paste core = pasted area eroded by ~2 latent px (ring left free)
+            w2 = (weight[0] > 0.5).to(x0_ref.dtype)[None]
+            eroded = -torch.nn.functional.max_pool2d(-w2, 5, stride=1, padding=2)
+            core[0, f, 0, ty0:ty1, tx0:tx1] = eroded[0]
+        print(f"[edit_renoise] chunk {chunk_index}: collage init from donor "
+              f"chunk {cfg['donor_chunk']} frame {cfg['donor_frame']} "
+              f"(flip={cfg['donor_flip']}, paste_pin={cfg['paste_pin']}, "
+              f"core={float(core.mean()):.3f})")
+        self._edit_paste_core = core
+        return out
+
+    def _apply_edit_renoise(
+        self,
+        latents,
+        *,
+        sample_scheduler,
+        chunk_index,
+        scene_shot_index,
+        current_num_frames,
+        current_start_frame,
+        cache_start_frame,
+        batch_size,
+    ):
+        cfg = self.edit_renoise
+        mask = self._edit_mask_for_chunk(chunk_index, latents.device, latents.dtype)
+        if mask is None:
+            print(f"[edit_renoise] chunk {chunk_index}: no mask entry, skipping")
+            return latents
+        if self._edit_conditional_dict is None:
+            enc = self.text_encoder(text_prompts=[cfg["prompt"]])
+            self._edit_conditional_dict = {
+                "prompt_embeds": enc["prompt_embeds"][0:1]
+            }
+
+        sigmas = sample_scheduler.sigmas.detach().float().cpu().tolist()
+        timesteps = sample_scheduler.timesteps.detach().float().cpu().tolist()
+        pairs = [
+            (timesteps[i], sigmas[i],
+             sigmas[i + 1] if i + 1 < len(sigmas) else 0.0)
+            for i in range(len(timesteps))
+        ]
+        if cfg["entry_sigma"] is not None:
+            entry = float(cfg["entry_sigma"])
+            below = [p for p in pairs if p[1] < entry - 1e-6]
+            first_next = below[0][1] if below else 0.0
+            pairs = [(entry * self.num_train_timesteps, entry, first_next)] + below
+        else:
+            pairs = pairs[cfg["entry_index"]:]
+        if not pairs:
+            return latents
+
+        x0_ref = latents.detach().clone()
+        gen = torch.Generator(device=latents.device)
+        gen.manual_seed(cfg["noise_seed"] + int(chunk_index))
+        eps = torch.randn(
+            latents.shape, generator=gen, device=latents.device,
+            dtype=torch.float32,
+        ).to(latents.dtype)
+
+        x0_init = x0_ref
+        self._edit_paste_core = None
+        if cfg["collage"]:
+            if self._edit_donor is None:
+                print(f"[edit_renoise] chunk {chunk_index}: no donor captured, "
+                      "falling back to plain renoise")
+            else:
+                x0_init = self._build_collage(x0_ref, mask, chunk_index)
+
+        # x0_pin: what pinned regions are held to at each step. paste_pin mode
+        # holds the pasted core to its clean golden value and shrinks the
+        # repaint region to the seam ring + non-core mask.
+        x0_pin = x0_ref
+        if cfg["paste_pin"] and self._edit_paste_core is not None:
+            core = self._edit_paste_core
+            x0_pin = core * x0_init + (1.0 - core) * x0_ref
+            mask = mask * (1.0 - core)
+
+        entry_sigma = pairs[0][1]
+        x_start = mask * x0_init + (1.0 - mask) * x0_pin
+        x = (1.0 - entry_sigma) * x_start + entry_sigma * eps
+        coverage = float(mask.mean().item())
+        print(
+            f"[edit_renoise] chunk {chunk_index}: entry sigma {entry_sigma:.4f}, "
+            f"{len(pairs)} steps, mask coverage {coverage:.3f}"
+        )
+
+        # the repair prompt must repopulate the cross-attn cache
+        for block_index in range(self.num_transformer_blocks):
+            self.crossattn_cache_pos[block_index]["is_init"] = False
+
+        for t, sigma, sigma_next in pairs:
+            bg = (1.0 - sigma) * x0_pin + sigma * eps
+            x = mask * x + (1.0 - mask) * bg
+            timestep = t * torch.ones(
+                [batch_size, current_num_frames],
+                device=latents.device, dtype=torch.float32,
+            )
+            flow_pred, _ = self.generator(
+                noisy_image_or_video=x,
+                conditional_dict=self._edit_conditional_dict,
+                timestep=timestep,
+                kv_cache=self.kv_cache_pos,
+                crossattn_cache=self.crossattn_cache_pos,
+                current_start=current_start_frame * self.frame_seq_length,
+                cache_start=cache_start_frame * self.frame_seq_length,
+                **self._kv_rag_call_kwargs(
+                    self.kv_rag_pos,
+                    retrieve=self.kv_rag_config.retrieve_during_denoise,
+                    chunk_index=chunk_index,
+                    shot_index=scene_shot_index,
+                    phase="denoise",
+                ),
+            )
+            x = x + flow_pred * (sigma_next - sigma)
+
+        x = mask * x + (1.0 - mask) * x0_pin
+        return x.to(latents.dtype)
 
     def _initialize_sample_scheduler(self, noise):
         if self.sample_solver == 'unipc':
