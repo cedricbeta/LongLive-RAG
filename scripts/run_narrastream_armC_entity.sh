@@ -19,7 +19,7 @@ for ((g = 0; g < n; g++)); do
   group=()
   for ((i = g; i < ${#scenes[@]}; i += n)); do group+=("${scenes[$i]}"); done
   gpu=${gpus[$g]}
-  nohup /home/chendong/miniconda3/bin/python "$root/scripts/run_agent_edit_demo.py" \
+  nohup "$root/venv/bin/python" "$root/scripts/run_agent_edit_demo.py" \
     --base_url "$base_url" --render_gpu "$gpu" --clipseg_device "cuda:$gpu" \
     --base_config videos/narrastream_threearm_20260827/armC_base.yaml \
     --data_root example/narrastream_bench/multitext_subset33_b8 \
