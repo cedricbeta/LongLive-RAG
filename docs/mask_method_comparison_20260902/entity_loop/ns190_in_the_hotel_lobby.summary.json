@@ -1,0 +1,79 @@
+{
+  "entry_sigma": 1.0,
+  "loop": "drift_judge -> edit_shot(masked renoise) -> re-review -> commit/quarantine",
+  "passed": true,
+  "quality_claim": false,
+  "scenes": {
+    "ns190_in_the_hotel_lobby": {
+      "baseline_video": "/home/chendong/video-gen/LongLive-RAG/videos/agent_entity_20260902/ns190_in_the_hotel_lobby/ns190_in_the_hotel_lobby/renders/baseline-rank0-ns190_in_the_hotel_lobby-seed0_regular.mp4",
+      "delivered": [
+        {
+          "attempt": 1,
+          "edited": true,
+          "quarantined": false,
+          "shot": 0,
+          "video": "/home/chendong/video-gen/LongLive-RAG/videos/agent_entity_20260902/ns190_in_the_hotel_lobby/ns190_in_the_hotel_lobby/renders/edit_shot00_attempt1-rank0-ns190_in_the_hotel_lobby-seed0_regular.mp4"
+        },
+        {
+          "attempt": 0,
+          "edited": false,
+          "quarantined": false,
+          "shot": 1,
+          "video": "/home/chendong/video-gen/LongLive-RAG/videos/agent_entity_20260902/ns190_in_the_hotel_lobby/ns190_in_the_hotel_lobby/renders/edit_shot00_attempt1-rank0-ns190_in_the_hotel_lobby-seed0_regular.mp4"
+        },
+        {
+          "attempt": 0,
+          "edited": false,
+          "quarantined": false,
+          "shot": 2,
+          "video": "/home/chendong/video-gen/LongLive-RAG/videos/agent_entity_20260902/ns190_in_the_hotel_lobby/ns190_in_the_hotel_lobby/renders/edit_shot00_attempt1-rank0-ns190_in_the_hotel_lobby-seed0_regular.mp4"
+        },
+        {
+          "attempt": 0,
+          "edited": false,
+          "quarantined": false,
+          "shot": 3,
+          "video": "/home/chendong/video-gen/LongLive-RAG/videos/agent_entity_20260902/ns190_in_the_hotel_lobby/ns190_in_the_hotel_lobby/renders/edit_shot00_attempt1-rank0-ns190_in_the_hotel_lobby-seed0_regular.mp4"
+        },
+        {
+          "attempt": 0,
+          "edited": false,
+          "quarantined": false,
+          "shot": 4,
+          "video": "/home/chendong/video-gen/LongLive-RAG/videos/agent_entity_20260902/ns190_in_the_hotel_lobby/ns190_in_the_hotel_lobby/renders/edit_shot00_attempt1-rank0-ns190_in_the_hotel_lobby-seed0_regular.mp4"
+        },
+        {
+          "attempt": 0,
+          "edited": false,
+          "quarantined": false,
+          "shot": 5,
+          "video": "/home/chendong/video-gen/LongLive-RAG/videos/agent_entity_20260902/ns190_in_the_hotel_lobby/ns190_in_the_hotel_lobby/renders/edit_shot00_attempt1-rank0-ns190_in_the_hotel_lobby-seed0_regular.mp4"
+        }
+      ],
+      "edited_commits": [
+        {
+          "attempt": 1,
+          "edited": true,
+          "quarantined": false,
+          "shot": 0,
+          "video": "/home/chendong/video-gen/LongLive-RAG/videos/agent_entity_20260902/ns190_in_the_hotel_lobby/ns190_in_the_hotel_lobby/renders/edit_shot00_attempt1-rank0-ns190_in_the_hotel_lobby-seed0_regular.mp4"
+        }
+      ],
+      "edited_shots": {
+        "0": 1
+      },
+      "final_delivery_video": "/home/chendong/video-gen/LongLive-RAG/videos/agent_entity_20260902/ns190_in_the_hotel_lobby/ns190_in_the_hotel_lobby/renders/edit_shot00_attempt1-rank0-ns190_in_the_hotel_lobby-seed0_regular.mp4",
+      "ledger": "/home/chendong/video-gen/LongLive-RAG/videos/agent_entity_20260902/ns190_in_the_hotel_lobby/ns190_in_the_hotel_lobby/ledger.jsonl",
+      "memory_partition_counts": {
+        "candidate": 0,
+        "persistent": 6,
+        "quarantine": 1
+      },
+      "passed": true,
+      "quarantined_shots": [],
+      "shots": 6,
+      "two_up": "/home/chendong/video-gen/LongLive-RAG/videos/agent_entity_20260902/ns190_in_the_hotel_lobby/ns190_in_the_hotel_lobby/two_up.mp4"
+    }
+  },
+  "schema_version": 1
+}

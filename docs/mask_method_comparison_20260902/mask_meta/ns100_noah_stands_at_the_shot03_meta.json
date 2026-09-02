@@ -1,0 +1,330 @@
+{
+  "m0_phrase": "man",
+  "m1_phrases": [
+    "man"
+  ],
+  "m2_box_sam2_boxes": {
+    "24": {
+      "raw": [],
+      "pixels": []
+    },
+    "25": {
+      "raw": [],
+      "pixels": []
+    },
+    "26": {
+      "raw": [],
+      "pixels": []
+    },
+    "27": {
+      "raw": [],
+      "pixels": []
+    },
+    "28": {
+      "raw": [],
+      "pixels": []
+    },
+    "29": {
+      "raw": [],
+      "pixels": []
+    },
+    "30": {
+      "raw": [],
+      "pixels": []
+    },
+    "31": {
+      "raw": [],
+      "pixels": []
+    }
+  },
+  "m3_box_direct_boxes": {
+    "24": {
+      "raw": [
+        {
+          "bbox_2d": [
+            292,
+            77,
+            693,
+            999
+          ],
+          "label": "drifted subject (man)"
+        },
+        {
+          "bbox_2d": [
+            69,
+            827,
+            899,
+            999
+          ],
+          "label": "unwanted object (desk)"
+        }
+      ],
+      "pixels": [
+        [
+          373,
+          54,
+          887,
+          703
+        ],
+        [
+          88,
+          582,
+          1150,
+          703
+        ]
+      ]
+    },
+    "25": {
+      "raw": [
+        {
+          "bbox_2d": [
+            292,
+            77,
+            692,
+            999
+          ],
+          "label": "drifted subject (man)"
+        },
+        {
+          "bbox_2d": [
+            0,
+            825,
+            999,
+            999
+          ],
+          "label": "unmentioned object (desk)"
+        }
+      ],
+      "pixels": [
+        [
+          373,
+          54,
+          885,
+          703
+        ],
+        [
+          0,
+          580,
+          1278,
+          703
+        ]
+      ]
+    },
+    "26": {
+      "raw": [
+        {
+          "bbox_2d": [
+            292,
+            77,
+            692,
+            999
+          ],
+          "label": "drifted subject (man)"
+        },
+        {
+          "bbox_2d": [
+            0,
+            800,
+            999,
+            999
+          ],
+          "label": "unmentioned object (desk)"
+        }
+      ],
+      "pixels": [
+        [
+          373,
+          54,
+          885,
+          703
+        ],
+        [
+          0,
+          563,
+          1278,
+          703
+        ]
+      ]
+    },
+    "27": {
+      "raw": [
+        {
+          "bbox_2d": [
+            292,
+            77,
+            692,
+            999
+          ],
+          "label": "drifted subject (man)"
+        },
+        {
+          "bbox_2d": [
+            0,
+            812,
+            999,
+            999
+          ],
+          "label": "unmentioned object (desk)"
+        }
+      ],
+      "pixels": [
+        [
+          373,
+          54,
+          885,
+          703
+        ],
+        [
+          0,
+          571,
+          1278,
+          703
+        ]
+      ]
+    },
+    "28": {
+      "raw": [
+        {
+          "bbox_2d": [
+            292,
+            76,
+            692,
+            999
+          ],
+          "label": "drifted subject (man)"
+        },
+        {
+          "bbox_2d": [
+            0,
+            800,
+            999,
+            999
+          ],
+          "label": "unmentioned object (desk)"
+        }
+      ],
+      "pixels": [
+        [
+          373,
+          53,
+          885,
+          703
+        ],
+        [
+          0,
+          563,
+          1278,
+          703
+        ]
+      ]
+    },
+    "29": {
+      "raw": [
+        {
+          "bbox_2d": [
+            292,
+            76,
+            692,
+            999
+          ],
+          "label": "drifted subject (man)"
+        },
+        {
+          "bbox_2d": [
+            0,
+            800,
+            999,
+            999
+          ],
+          "label": "unmentioned object (desk)"
+        }
+      ],
+      "pixels": [
+        [
+          373,
+          53,
+          885,
+          703
+        ],
+        [
+          0,
+          563,
+          1278,
+          703
+        ]
+      ]
+    },
+    "30": {
+      "raw": [
+        {
+          "bbox_2d": [
+            292,
+            76,
+            693,
+            999
+          ],
+          "label": "drifted subject (man)"
+        },
+        {
+          "bbox_2d": [
+            0,
+            833,
+            999,
+            999
+          ],
+          "label": "unmentioned object (desk)"
+        }
+      ],
+      "pixels": [
+        [
+          373,
+          53,
+          887,
+          703
+        ],
+        [
+          0,
+          586,
+          1278,
+          703
+        ]
+      ]
+    },
+    "31": {
+      "raw": [
+        {
+          "bbox_2d": [
+            292,
+            76,
+            692,
+            999
+          ],
+          "label": "drifted subject (man)"
+        },
+        {
+          "bbox_2d": [
+            0,
+            800,
+            999,
+            999
+          ],
+          "label": "unwanted object (desk)"
+        }
+      ],
+      "pixels": [
+        [
+          373,
+          53,
+          885,
+          703
+        ],
+        [
+          0,
+          563,
+          1278,
+          703
+        ]
+      ]
+    }
+  }
+}

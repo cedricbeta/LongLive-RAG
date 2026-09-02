@@ -1,0 +1,346 @@
+{
+  "m0_phrase": "person",
+  "m1_phrases": [
+    "man in green shirt"
+  ],
+  "m2_box_sam2_boxes": {
+    "24": {
+      "raw": [
+        {
+          "bbox_2d": [
+            283,
+            83,
+            625,
+            784
+          ],
+          "label": "man in green shirt"
+        }
+      ],
+      "pixels": [
+        [
+          362,
+          58,
+          800,
+          551
+        ]
+      ]
+    },
+    "25": {
+      "raw": [
+        {
+          "bbox_2d": [
+            278,
+            86,
+            617,
+            784
+          ],
+          "label": "man in green shirt"
+        }
+      ],
+      "pixels": [
+        [
+          355,
+          60,
+          789,
+          551
+        ]
+      ]
+    },
+    "26": {
+      "raw": [
+        {
+          "bbox_2d": [
+            283,
+            83,
+            638,
+            800
+          ],
+          "label": "man in green shirt"
+        }
+      ],
+      "pixels": [
+        [
+          362,
+          58,
+          816,
+          563
+        ]
+      ]
+    },
+    "27": {
+      "raw": [
+        {
+          "bbox_2d": [
+            282,
+            86,
+            617,
+            789
+          ],
+          "label": "man in green shirt"
+        }
+      ],
+      "pixels": [
+        [
+          360,
+          60,
+          789,
+          555
+        ]
+      ]
+    },
+    "28": {
+      "raw": [
+        {
+          "bbox_2d": [
+            283,
+            83,
+            610,
+            792
+          ],
+          "label": "man in green shirt"
+        }
+      ],
+      "pixels": [
+        [
+          362,
+          58,
+          780,
+          557
+        ]
+      ]
+    },
+    "29": {
+      "raw": [
+        {
+          "bbox_2d": [
+            283,
+            73,
+            610,
+            704
+          ],
+          "label": "man in green shirt"
+        }
+      ],
+      "pixels": [
+        [
+          362,
+          51,
+          780,
+          495
+        ]
+      ]
+    },
+    "30": {
+      "raw": [
+        {
+          "bbox_2d": [
+            283,
+            68,
+            610,
+            792
+          ],
+          "label": "man in green shirt"
+        }
+      ],
+      "pixels": [
+        [
+          362,
+          47,
+          780,
+          557
+        ]
+      ]
+    },
+    "31": {
+      "raw": [
+        {
+          "bbox_2d": [
+            278,
+            74,
+            612,
+            788
+          ],
+          "label": "man in green shirt"
+        }
+      ],
+      "pixels": [
+        [
+          355,
+          52,
+          783,
+          554
+        ]
+      ]
+    }
+  },
+  "m3_box_direct_boxes": {
+    "24": {
+      "raw": [
+        {
+          "bbox_2d": [
+            237,
+            64,
+            607,
+            878
+          ],
+          "label": "drifted/replaced subject (whole body and"
+        }
+      ],
+      "pixels": [
+        [
+          303,
+          45,
+          776,
+          618
+        ]
+      ]
+    },
+    "25": {
+      "raw": [
+        {
+          "bbox_2d": [
+            250,
+            62,
+            600,
+            888
+          ],
+          "label": "drifted/replaced subject (whole body and"
+        }
+      ],
+      "pixels": [
+        [
+          320,
+          43,
+          768,
+          625
+        ]
+      ]
+    },
+    "26": {
+      "raw": [
+        {
+          "bbox_2d": [
+            278,
+            100,
+            625,
+            875
+          ],
+          "label": "drifted/replaced subject (whole body and"
+        }
+      ],
+      "pixels": [
+        [
+          355,
+          70,
+          800,
+          616
+        ]
+      ]
+    },
+    "27": {
+      "raw": [
+        {
+          "bbox_2d": [
+            283,
+            74,
+            625,
+            888
+          ],
+          "label": "drifted/replaced subject (whole body and"
+        }
+      ],
+      "pixels": [
+        [
+          362,
+          52,
+          800,
+          625
+        ]
+      ]
+    },
+    "28": {
+      "raw": [
+        {
+          "bbox_2d": [
+            283,
+            74,
+            600,
+            888
+          ],
+          "label": "drifted/replaced subject (whole body and"
+        }
+      ],
+      "pixels": [
+        [
+          362,
+          52,
+          768,
+          625
+        ]
+      ]
+    },
+    "29": {
+      "raw": [
+        {
+          "bbox_2d": [
+            283,
+            71,
+            625,
+            900
+          ],
+          "label": "drifted/replaced subject (whole body and"
+        }
+      ],
+      "pixels": [
+        [
+          362,
+          49,
+          800,
+          633
+        ]
+      ]
+    },
+    "30": {
+      "raw": [
+        {
+          "bbox_2d": [
+            284,
+            67,
+            607,
+            888
+          ],
+          "label": "drifted/replaced subject (whole body and"
+        }
+      ],
+      "pixels": [
+        [
+          363,
+          47,
+          776,
+          625
+        ]
+      ]
+    },
+    "31": {
+      "raw": [
+        {
+          "bbox_2d": [
+            278,
+            100,
+            600,
+            875
+          ],
+          "label": "drifted/replaced subject (whole body and"
+        }
+      ],
+      "pixels": [
+        [
+          355,
+          70,
+          768,
+          616
+        ]
+      ]
+    }
+  }
+}

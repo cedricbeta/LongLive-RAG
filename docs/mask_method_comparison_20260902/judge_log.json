@@ -1,0 +1,107 @@
+{
+  "ns000_in_the_library_reading/shot1": {
+    "drifted": false,
+    "confidence": 1,
+    "drift_description": "",
+    "reference_description": "A man with a shaved head wearing a dark green button-up shirt with a small logo on the left chest.",
+    "repaint_region": ""
+  },
+  "ns000_in_the_library_reading/shot2": {
+    "drifted": false,
+    "confidence": 1,
+    "drift_description": "",
+    "reference_description": "A bald man wearing a dark green, long-sleeved button-up shirt with a small logo on the left chest.",
+    "repaint_region": ""
+  },
+  "ns000_in_the_library_reading/shot3": {
+    "drifted": true,
+    "confidence": 0.75,
+    "drift_description": "The man in the green shirt has been replaced by a different person wearing a green hoodie with 'N.C. State' text.",
+    "reference_description": "A man with a shaved head wearing a dark green button-up shirt with a small logo on the left chest.",
+    "repaint_region": "person"
+  },
+  "ns000_in_the_library_reading/shot4": {
+    "drifted": true,
+    "confidence": 0.75,
+    "drift_description": "The man's shirt changed from a solid dark green button-up to a green polo with 'N. Colorado' text and a red banner.",
+    "reference_description": "A man with a shaved head wearing a solid dark green button-up shirt with a small logo on the left chest.",
+    "repaint_region": "the man"
+  },
+  "ns000_in_the_library_reading/shot5": {
+    "drifted": true,
+    "confidence": 0.75,
+    "drift_description": "The man's shirt changed from a solid dark green button-up to a green sweatshirt with white and red lettering.",
+    "reference_description": "A man with a shaved head wearing a solid dark green button-up shirt.",
+    "repaint_region": "the man"
+  },
+  "ns100_noah_stands_at_the/shot1": {
+    "drifted": true,
+    "confidence": 0.75,
+    "drift_description": "The man's hair color has changed from dark brown to black, and his facial features appear more youthful.",
+    "reference_description": "A man with dark brown hair wearing a black button-up shirt over a light-colored undershirt and green pants.",
+    "repaint_region": "The man"
+  },
+  "ns100_noah_stands_at_the/shot2": {
+    "drifted": true,
+    "confidence": 1,
+    "drift_description": "The man from the reference frames has been replaced by two women in the current frames.",
+    "reference_description": "A man with dark hair wearing a black button-up shirt over a light-colored t-shirt and green pants.",
+    "repaint_region": "person"
+  },
+  "ns100_noah_stands_at_the/shot3": {
+    "drifted": true,
+    "confidence": 0.75,
+    "drift_description": "The man is no longer present; instead, two women are seated at the desk.",
+    "reference_description": "A man with dark hair wearing a black button-up shirt over a light-colored undershirt and green pants.",
+    "repaint_region": "man"
+  },
+  "ns100_noah_stands_at_the/shot4": {
+    "drifted": true,
+    "confidence": 0.75,
+    "drift_description": "The man is replaced by a woman with long, wavy reddish-brown hair.",
+    "reference_description": "A man with dark hair wearing a black shirt over a light-colored t-shirt.",
+    "repaint_region": "person"
+  },
+  "ns100_noah_stands_at_the/shot5": {
+    "drifted": true,
+    "confidence": 0.75,
+    "drift_description": "The man is now seated at a desk with papers spread out, wearing a jacket with a visible logo, and has a strap over his shoulder, whereas in the reference he stands holding a notebook and pen.",
+    "reference_description": "A man with dark hair, wearing a black button-up shirt over a light-colored t-shirt and green pants, holding a notebook and pen.",
+    "repaint_region": "The man, the notebook, the pen, the belt, and the wooden seats in the foreground."
+  },
+  "ns190_in_the_hotel_lobby/shot1": {
+    "drifted": true,
+    "confidence": 0.75,
+    "drift_description": "A man in a brown trench coat has been added next to the woman, replacing the previously empty space.",
+    "reference_description": "A woman with white hair wearing a green coat and black pants.",
+    "repaint_region": "man"
+  },
+  "ns190_in_the_hotel_lobby/shot2": {
+    "drifted": true,
+    "confidence": 0.75,
+    "drift_description": "The woman is now wearing a green coat and using a laptop, whereas in the reference she was using a notebook.",
+    "reference_description": "A woman with short white hair, wearing a green coat and black pants, sitting on a brown leather couch.",
+    "repaint_region": "the woman"
+  },
+  "ns190_in_the_hotel_lobby/shot3": {
+    "drifted": false,
+    "confidence": 1,
+    "drift_description": "",
+    "reference_description": "A woman with short white hair, wearing a bright green coat over a black top and black pants.",
+    "repaint_region": ""
+  },
+  "ns190_in_the_hotel_lobby/shot4": {
+    "drifted": true,
+    "confidence": 0.75,
+    "drift_description": "The woman's appearance has changed: her hair is now brown and shoulder-length, and she is wearing a blue top under her green blazer, whereas in the reference she had short white hair and was wearing a black top.",
+    "reference_description": "A woman with short white hair, wearing a green coat over a black top.",
+    "repaint_region": "person"
+  },
+  "ns190_in_the_hotel_lobby/shot5": {
+    "drifted": true,
+    "confidence": 0.75,
+    "drift_description": "The woman's white hair is now brown, and she is wearing a pearl necklace instead of earrings, with a different top underneath her blazer.",
+    "reference_description": "A woman with white hair, wearing a green coat over a black top and dark pants, with small earrings.",
+    "repaint_region": "woman"
+  }
+}

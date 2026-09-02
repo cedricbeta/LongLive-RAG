@@ -1,0 +1,390 @@
+{
+  "m0_phrase": "person",
+  "m1_phrases": [
+    "man"
+  ],
+  "m2_box_sam2_boxes": {
+    "16": {
+      "raw": [],
+      "pixels": []
+    },
+    "17": {
+      "raw": [],
+      "pixels": []
+    },
+    "18": {
+      "raw": [],
+      "pixels": []
+    },
+    "19": {
+      "raw": [],
+      "pixels": []
+    },
+    "20": {
+      "raw": [],
+      "pixels": []
+    },
+    "21": {
+      "raw": [],
+      "pixels": []
+    },
+    "22": {
+      "raw": [],
+      "pixels": []
+    },
+    "23": {
+      "raw": [],
+      "pixels": []
+    }
+  },
+  "m3_box_direct_boxes": {
+    "16": {
+      "raw": [
+        {
+          "bbox_2d": [
+            292,
+            77,
+            694,
+            999
+          ],
+          "label": "drifted subject (man)"
+        },
+        {
+          "bbox_2d": [
+            508,
+            188,
+            867,
+            999
+          ],
+          "label": "person not called for in current caption"
+        },
+        {
+          "bbox_2d": [
+            167,
+            138,
+            470,
+            999
+          ],
+          "label": "person not called for in current caption"
+        }
+      ],
+      "pixels": [
+        [
+          373,
+          54,
+          888,
+          703
+        ],
+        [
+          650,
+          132,
+          1109,
+          703
+        ],
+        [
+          213,
+          97,
+          601,
+          703
+        ]
+      ]
+    },
+    "17": {
+      "raw": [
+        {
+          "bbox_2d": [
+            292,
+            77,
+            694,
+            999
+          ],
+          "label": "drifted subject (man)"
+        },
+        {
+          "bbox_2d": [
+            157,
+            123,
+            457,
+            875
+          ],
+          "label": "person not called for in current caption"
+        },
+        {
+          "bbox_2d": [
+            507,
+            183,
+            887,
+            875
+          ],
+          "label": "person not called for in current caption"
+        }
+      ],
+      "pixels": [
+        [
+          373,
+          54,
+          888,
+          703
+        ],
+        [
+          200,
+          86,
+          584,
+          616
+        ],
+        [
+          648,
+          128,
+          1135,
+          616
+        ]
+      ]
+    },
+    "18": {
+      "raw": [
+        {
+          "bbox_2d": [
+            292,
+            77,
+            695,
+            999
+          ],
+          "label": "drifted/replaced subject (whole body and"
+        }
+      ],
+      "pixels": [
+        [
+          373,
+          54,
+          889,
+          703
+        ]
+      ]
+    },
+    "19": {
+      "raw": [
+        {
+          "bbox_2d": [
+            292,
+            79,
+            695,
+            999
+          ],
+          "label": "drifted subject (man)"
+        },
+        {
+          "bbox_2d": [
+            157,
+            113,
+            462,
+            875
+          ],
+          "label": "person not called for in current caption"
+        },
+        {
+          "bbox_2d": [
+            505,
+            183,
+            887,
+            875
+          ],
+          "label": "person not called for in current caption"
+        }
+      ],
+      "pixels": [
+        [
+          373,
+          55,
+          889,
+          703
+        ],
+        [
+          200,
+          79,
+          591,
+          616
+        ],
+        [
+          646,
+          128,
+          1135,
+          616
+        ]
+      ]
+    },
+    "20": {
+      "raw": [
+        {
+          "bbox_2d": [
+            292,
+            77,
+            695,
+            999
+          ],
+          "label": "drifted/replaced subject (whole body and"
+        }
+      ],
+      "pixels": [
+        [
+          373,
+          54,
+          889,
+          703
+        ]
+      ]
+    },
+    "21": {
+      "raw": [
+        {
+          "bbox_2d": [
+            292,
+            79,
+            694,
+            999
+          ],
+          "label": "drifted subject (man)"
+        },
+        {
+          "bbox_2d": [
+            156,
+            111,
+            468,
+            875
+          ],
+          "label": "person not called for in current caption"
+        },
+        {
+          "bbox_2d": [
+            505,
+            177,
+            894,
+            875
+          ],
+          "label": "person not called for in current caption"
+        }
+      ],
+      "pixels": [
+        [
+          373,
+          55,
+          888,
+          703
+        ],
+        [
+          199,
+          78,
+          599,
+          616
+        ],
+        [
+          646,
+          124,
+          1144,
+          616
+        ]
+      ]
+    },
+    "22": {
+      "raw": [
+        {
+          "bbox_2d": [
+            292,
+            79,
+            694,
+            999
+          ],
+          "label": "drifted subject (man)"
+        },
+        {
+          "bbox_2d": [
+            160,
+            117,
+            460,
+            855
+          ],
+          "label": "person not called for in current caption"
+        },
+        {
+          "bbox_2d": [
+            500,
+            183,
+            860,
+            855
+          ],
+          "label": "person not called for in current caption"
+        }
+      ],
+      "pixels": [
+        [
+          373,
+          55,
+          888,
+          703
+        ],
+        [
+          204,
+          82,
+          588,
+          601
+        ],
+        [
+          640,
+          128,
+          1100,
+          601
+        ]
+      ]
+    },
+    "23": {
+      "raw": [
+        {
+          "bbox_2d": [
+            292,
+            79,
+            694,
+            999
+          ],
+          "label": "drifted subject (man)"
+        },
+        {
+          "bbox_2d": [
+            155,
+            127,
+            462,
+            875
+          ],
+          "label": "person not called for in current caption"
+        },
+        {
+          "bbox_2d": [
+            500,
+            177,
+            850,
+            875
+          ],
+          "label": "person not called for in current caption"
+        }
+      ],
+      "pixels": [
+        [
+          373,
+          55,
+          888,
+          703
+        ],
+        [
+          198,
+          89,
+          591,
+          616
+        ],
+        [
+          640,
+          124,
+          1088,
+          616
+        ]
+      ]
+    }
+  }
+}

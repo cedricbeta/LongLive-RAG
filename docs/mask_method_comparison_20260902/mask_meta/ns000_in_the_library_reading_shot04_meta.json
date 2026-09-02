@@ -1,0 +1,346 @@
+{
+  "m0_phrase": "the man",
+  "m1_phrases": [
+    "man in green shirt"
+  ],
+  "m2_box_sam2_boxes": {
+    "32": {
+      "raw": [
+        {
+          "bbox_2d": [
+            300,
+            83,
+            800,
+            784
+          ],
+          "label": "man in green shirt"
+        }
+      ],
+      "pixels": [
+        [
+          384,
+          58,
+          1024,
+          551
+        ]
+      ]
+    },
+    "33": {
+      "raw": [
+        {
+          "bbox_2d": [
+            242,
+            54,
+            792,
+            836
+          ],
+          "label": "man in green shirt"
+        }
+      ],
+      "pixels": [
+        [
+          309,
+          38,
+          1013,
+          588
+        ]
+      ]
+    },
+    "34": {
+      "raw": [
+        {
+          "bbox_2d": [
+            244,
+            64,
+            600,
+            872
+          ],
+          "label": "man in green shirt"
+        }
+      ],
+      "pixels": [
+        [
+          312,
+          45,
+          768,
+          613
+        ]
+      ]
+    },
+    "35": {
+      "raw": [
+        {
+          "bbox_2d": [
+            227,
+            16,
+            666,
+            864
+          ],
+          "label": "man in green shirt"
+        }
+      ],
+      "pixels": [
+        [
+          290,
+          11,
+          852,
+          608
+        ]
+      ]
+    },
+    "36": {
+      "raw": [
+        {
+          "bbox_2d": [
+            227,
+            26,
+            775,
+            820
+          ],
+          "label": "man in green shirt"
+        }
+      ],
+      "pixels": [
+        [
+          290,
+          18,
+          992,
+          577
+        ]
+      ]
+    },
+    "37": {
+      "raw": [
+        {
+          "bbox_2d": [
+            220,
+            16,
+            773,
+            812
+          ],
+          "label": "man in green shirt"
+        }
+      ],
+      "pixels": [
+        [
+          281,
+          11,
+          989,
+          571
+        ]
+      ]
+    },
+    "38": {
+      "raw": [
+        {
+          "bbox_2d": [
+            232,
+            0,
+            764,
+            784
+          ],
+          "label": "man in green shirt"
+        }
+      ],
+      "pixels": [
+        [
+          296,
+          0,
+          977,
+          551
+        ]
+      ]
+    },
+    "39": {
+      "raw": [
+        {
+          "bbox_2d": [
+            223,
+            0,
+            745,
+            787
+          ],
+          "label": "man in green shirt"
+        }
+      ],
+      "pixels": [
+        [
+          285,
+          0,
+          953,
+          554
+        ]
+      ]
+    }
+  },
+  "m3_box_direct_boxes": {
+    "32": {
+      "raw": [
+        {
+          "bbox_2d": [
+            242,
+            58,
+            625,
+            888
+          ],
+          "label": "drifted subject (whole body and hair)"
+        }
+      ],
+      "pixels": [
+        [
+          309,
+          40,
+          800,
+          625
+        ]
+      ]
+    },
+    "33": {
+      "raw": [
+        {
+          "bbox_2d": [
+            220,
+            58,
+            628,
+            888
+          ],
+          "label": "drifted subject (whole body and hair)"
+        }
+      ],
+      "pixels": [
+        [
+          281,
+          40,
+          803,
+          625
+        ]
+      ]
+    },
+    "34": {
+      "raw": [
+        {
+          "bbox_2d": [
+            233,
+            58,
+            550,
+            888
+          ],
+          "label": "drifted subject (whole body and hair)"
+        }
+      ],
+      "pixels": [
+        [
+          298,
+          40,
+          704,
+          625
+        ]
+      ]
+    },
+    "35": {
+      "raw": [
+        {
+          "bbox_2d": [
+            237,
+            54,
+            576,
+            888
+          ],
+          "label": "drifted subject (whole body and hair)"
+        }
+      ],
+      "pixels": [
+        [
+          303,
+          38,
+          737,
+          625
+        ]
+      ]
+    },
+    "36": {
+      "raw": [
+        {
+          "bbox_2d": [
+            230,
+            58,
+            700,
+            900
+          ],
+          "label": "drifted subject (whole body and hair)"
+        }
+      ],
+      "pixels": [
+        [
+          294,
+          40,
+          896,
+          633
+        ]
+      ]
+    },
+    "37": {
+      "raw": [
+        {
+          "bbox_2d": [
+            220,
+            58,
+            700,
+            900
+          ],
+          "label": "drifted subject (whole body and hair)"
+        }
+      ],
+      "pixels": [
+        [
+          281,
+          40,
+          896,
+          633
+        ]
+      ]
+    },
+    "38": {
+      "raw": [
+        {
+          "bbox_2d": [
+            227,
+            58,
+            637,
+            900
+          ],
+          "label": "drifted subject (whole body and hair)"
+        }
+      ],
+      "pixels": [
+        [
+          290,
+          40,
+          815,
+          633
+        ]
+      ]
+    },
+    "39": {
+      "raw": [
+        {
+          "bbox_2d": [
+            230,
+            58,
+            657,
+            900
+          ],
+          "label": "drifted subject (whole body and hair)"
+        }
+      ],
+      "pixels": [
+        [
+          294,
+          40,
+          840,
+          633
+        ]
+      ]
+    }
+  }
+}

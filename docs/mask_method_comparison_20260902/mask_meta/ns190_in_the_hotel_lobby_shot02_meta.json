@@ -1,0 +1,402 @@
+{
+  "m0_phrase": "the woman",
+  "m1_phrases": [
+    "woman"
+  ],
+  "m2_box_sam2_boxes": {
+    "16": {
+      "raw": [
+        {
+          "bbox_2d": [
+            444,
+            242,
+            675,
+            856
+          ],
+          "label": "woman"
+        }
+      ],
+      "pixels": [
+        [
+          568,
+          170,
+          864,
+          602
+        ]
+      ]
+    },
+    "17": {
+      "raw": [
+        {
+          "bbox_2d": [
+            444,
+            242,
+            675,
+            864
+          ],
+          "label": "woman"
+        }
+      ],
+      "pixels": [
+        [
+          568,
+          170,
+          864,
+          608
+        ]
+      ]
+    },
+    "18": {
+      "raw": [
+        {
+          "bbox_2d": [
+            437,
+            237,
+            673,
+            856
+          ],
+          "label": "woman"
+        }
+      ],
+      "pixels": [
+        [
+          559,
+          166,
+          861,
+          602
+        ]
+      ]
+    },
+    "19": {
+      "raw": [
+        {
+          "bbox_2d": [
+            433,
+            237,
+            675,
+            856
+          ],
+          "label": "woman"
+        }
+      ],
+      "pixels": [
+        [
+          554,
+          166,
+          864,
+          602
+        ]
+      ]
+    },
+    "20": {
+      "raw": [
+        {
+          "bbox_2d": [
+            427,
+            242,
+            673,
+            864
+          ],
+          "label": "woman"
+        }
+      ],
+      "pixels": [
+        [
+          546,
+          170,
+          861,
+          608
+        ]
+      ]
+    },
+    "21": {
+      "raw": [
+        {
+          "bbox_2d": [
+            425,
+            243,
+            673,
+            865
+          ],
+          "label": "woman"
+        }
+      ],
+      "pixels": [
+        [
+          544,
+          171,
+          861,
+          608
+        ]
+      ]
+    },
+    "22": {
+      "raw": [
+        {
+          "bbox_2d": [
+            432,
+            233,
+            675,
+            856
+          ],
+          "label": "woman"
+        }
+      ],
+      "pixels": [
+        [
+          552,
+          164,
+          864,
+          602
+        ]
+      ]
+    },
+    "23": {
+      "raw": [
+        {
+          "bbox_2d": [
+            425,
+            237,
+            668,
+            856
+          ],
+          "label": "woman"
+        }
+      ],
+      "pixels": [
+        [
+          544,
+          166,
+          855,
+          602
+        ]
+      ]
+    }
+  },
+  "m3_box_direct_boxes": {
+    "16": {
+      "raw": [
+        {
+          "bbox_2d": [
+            137,
+            103,
+            697,
+            999
+          ],
+          "label": "drifted subject (woman)"
+        },
+        {
+          "bbox_2d": [
+            488,
+            103,
+            738,
+            525
+          ],
+          "label": "man who is not in the current caption"
+        },
+        {
+          "bbox_2d": [
+            370,
+            437,
+            592,
+            666
+          ],
+          "label": "laptop (not in current caption)"
+        },
+        {
+          "bbox_2d": [
+            137,
+            704,
+            697,
+            999
+          ],
+          "label": "coffee table items (not in current cap)"
+        }
+      ],
+      "pixels": [
+        [
+          175,
+          72,
+          892,
+          703
+        ],
+        [
+          624,
+          72,
+          944,
+          369
+        ],
+        [
+          473,
+          307,
+          757,
+          468
+        ],
+        [
+          175,
+          495,
+          892,
+          703
+        ]
+      ]
+    },
+    "17": {
+      "raw": [
+        {
+          "bbox_2d": [
+            137,
+            104,
+            697,
+            999
+          ],
+          "label": "drifted/replaced subject (whole body and"
+        }
+      ],
+      "pixels": [
+        [
+          175,
+          73,
+          892,
+          703
+        ]
+      ]
+    },
+    "18": {
+      "raw": [
+        {
+          "bbox_2d": [
+            137,
+            103,
+            697,
+            999
+          ],
+          "label": "drifted/replaced subject (whole body and"
+        }
+      ],
+      "pixels": [
+        [
+          175,
+          72,
+          892,
+          703
+        ]
+      ]
+    },
+    "19": {
+      "raw": [
+        {
+          "bbox_2d": [
+            137,
+            103,
+            697,
+            999
+          ],
+          "label": "drifted/replaced subject (whole body and"
+        }
+      ],
+      "pixels": [
+        [
+          175,
+          72,
+          892,
+          703
+        ]
+      ]
+    },
+    "20": {
+      "raw": [
+        {
+          "bbox_2d": [
+            137,
+            104,
+            697,
+            999
+          ],
+          "label": "drifted subject (woman)"
+        },
+        {
+          "bbox_2d": [
+            357,
+            578,
+            607,
+            704
+          ],
+          "label": "object not called for in current caption"
+        },
+        {
+          "bbox_2d": [
+            137,
+            678,
+            200,
+            738
+          ],
+          "label": "object not called for in current caption"
+        },
+        {
+          "bbox_2d": [
+            200,
+            678,
+            262,
+            738
+          ],
+          "label": "object not called for in current caption"
+        }
+      ],
+      "pixels": [
+        [
+          175,
+          73,
+          892,
+          703
+        ],
+        [
+          456,
+          406,
+          776,
+          495
+        ],
+        [
+          175,
+          477,
+          256,
+          519
+        ],
+        [
+          256,
+          477,
+          335,
+          519
+        ]
+      ]
+    },
+    "21": {
+      "raw": [
+        {
+          "bbox_2d": [
+            137,
+            103,
+            697,
+            999
+          ],
+          "label": "drifted/replaced subject (whole body and"
+        }
+      ],
+      "pixels": [
+        [
+          175,
+          72,
+          892,
+          703
+        ]
+      ]
+    },
+    "22": {
+      "raw": [],
+      "pixels": []
+    },
+    "23": {
+      "raw": [],
+      "pixels": []
+    }
+  }
+}

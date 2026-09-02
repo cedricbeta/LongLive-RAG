@@ -1,0 +1,588 @@
+{
+  "m0_phrase": "person",
+  "m1_phrases": [
+    "woman in green coat",
+    "laptop",
+    "brown leather couch"
+  ],
+  "m2_box_sam2_boxes": {
+    "32": {
+      "raw": [
+        {
+          "label": "woman in green coat",
+          "bbox_2d": [
+            305,
+            0,
+            704,
+            870
+          ]
+        },
+        {
+          "label": "laptop",
+          "bbox_2d": [
+            278,
+            600,
+            420,
+            704
+          ]
+        },
+        {
+          "label": "brown leather couch",
+          "bbox_2d": [
+            96,
+            352,
+            888,
+            997
+          ]
+        }
+      ],
+      "pixels": [
+        [
+          390,
+          0,
+          901,
+          612
+        ],
+        [
+          355,
+          422,
+          537,
+          495
+        ],
+        [
+          122,
+          247,
+          1136,
+          701
+        ]
+      ]
+    },
+    "33": {
+      "raw": [
+        {
+          "label": "woman in green coat",
+          "bbox_2d": [
+            16,
+            0,
+            528,
+            997
+          ]
+        },
+        {
+          "label": "laptop",
+          "bbox_2d": [
+            352,
+            784,
+            612,
+            997
+          ]
+        },
+        {
+          "label": "brown leather couch",
+          "bbox_2d": [
+            458,
+            320,
+            884,
+            997
+          ]
+        }
+      ],
+      "pixels": [
+        [
+          20,
+          0,
+          675,
+          701
+        ],
+        [
+          450,
+          551,
+          783,
+          701
+        ],
+        [
+          586,
+          225,
+          1131,
+          701
+        ]
+      ]
+    },
+    "34": {
+      "raw": [
+        {
+          "label": "woman in green coat",
+          "bbox_2d": [
+            158,
+            0,
+            556,
+            999
+          ]
+        },
+        {
+          "label": "laptop",
+          "bbox_2d": [
+            250,
+            777,
+            350,
+            875
+          ]
+        },
+        {
+          "label": "brown leather couch",
+          "bbox_2d": [
+            95,
+            330,
+            883,
+            999
+          ]
+        }
+      ],
+      "pixels": [
+        [
+          202,
+          0,
+          711,
+          703
+        ],
+        [
+          320,
+          547,
+          448,
+          616
+        ],
+        [
+          121,
+          232,
+          1130,
+          703
+        ]
+      ]
+    },
+    "35": {
+      "raw": [
+        {
+          "label": "woman in green coat",
+          "bbox_2d": [
+            270,
+            0,
+            730,
+            888
+          ]
+        },
+        {
+          "label": "laptop",
+          "bbox_2d": [
+            342,
+            768,
+            592,
+            952
+          ]
+        },
+        {
+          "label": "brown leather couch",
+          "bbox_2d": [
+            104,
+            344,
+            888,
+            999
+          ]
+        }
+      ],
+      "pixels": [
+        [
+          345,
+          0,
+          934,
+          625
+        ],
+        [
+          437,
+          540,
+          757,
+          670
+        ],
+        [
+          133,
+          242,
+          1136,
+          703
+        ]
+      ]
+    },
+    "36": {
+      "raw": [
+        {
+          "label": "woman in green coat",
+          "bbox_2d": [
+            292,
+            67,
+            712,
+            845
+          ]
+        },
+        {
+          "label": "laptop",
+          "bbox_2d": [
+            347,
+            545,
+            520,
+            656
+          ]
+        },
+        {
+          "label": "brown leather couch",
+          "bbox_2d": [
+            107,
+            328,
+            875,
+            997
+          ]
+        }
+      ],
+      "pixels": [
+        [
+          373,
+          47,
+          911,
+          594
+        ],
+        [
+          444,
+          383,
+          665,
+          461
+        ],
+        [
+          136,
+          230,
+          1120,
+          701
+        ]
+      ]
+    },
+    "37": {
+      "raw": [
+        {
+          "label": "woman in green coat",
+          "bbox_2d": [
+            268,
+            44,
+            712,
+            876
+          ]
+        },
+        {
+          "label": "laptop",
+          "bbox_2d": [
+            347,
+            788,
+            587,
+            956
+          ]
+        },
+        {
+          "label": "brown leather couch",
+          "bbox_2d": [
+            110,
+            330,
+            876,
+            997
+          ]
+        }
+      ],
+      "pixels": [
+        [
+          343,
+          30,
+          911,
+          616
+        ],
+        [
+          444,
+          554,
+          751,
+          673
+        ],
+        [
+          140,
+          232,
+          1121,
+          701
+        ]
+      ]
+    },
+    "38": {
+      "raw": [
+        {
+          "label": "woman in green coat",
+          "bbox_2d": [
+            305,
+            0,
+            666,
+            856
+          ]
+        },
+        {
+          "label": "laptop",
+          "bbox_2d": [
+            347,
+            792,
+            592,
+            960
+          ]
+        },
+        {
+          "label": "brown leather couch",
+          "bbox_2d": [
+            109,
+            336,
+            876,
+            997
+          ]
+        }
+      ],
+      "pixels": [
+        [
+          390,
+          0,
+          852,
+          602
+        ],
+        [
+          444,
+          557,
+          757,
+          675
+        ],
+        [
+          139,
+          236,
+          1121,
+          701
+        ]
+      ]
+    },
+    "39": {
+      "raw": [
+        {
+          "label": "woman in green coat",
+          "bbox_2d": [
+            278,
+            0,
+            685,
+            876
+          ]
+        },
+        {
+          "label": "laptop",
+          "bbox_2d": [
+            337,
+            784,
+            597,
+            952
+          ]
+        },
+        {
+          "label": "brown leather couch",
+          "bbox_2d": [
+            107,
+            330,
+            876,
+            999
+          ]
+        }
+      ],
+      "pixels": [
+        [
+          355,
+          0,
+          876,
+          616
+        ],
+        [
+          431,
+          551,
+          764,
+          670
+        ],
+        [
+          136,
+          232,
+          1121,
+          703
+        ]
+      ]
+    }
+  },
+  "m3_box_direct_boxes": {
+    "32": {
+      "raw": [
+        {
+          "label": "drifted/replaced subject (whole body and",
+          "bbox_2d": [
+            137,
+            97,
+            697,
+            999
+          ]
+        }
+      ],
+      "pixels": [
+        [
+          175,
+          68,
+          892,
+          703
+        ]
+      ]
+    },
+    "33": {
+      "raw": [
+        {
+          "label": "drifted/replaced subject (whole body and",
+          "bbox_2d": [
+            137,
+            100,
+            697,
+            999
+          ]
+        }
+      ],
+      "pixels": [
+        [
+          175,
+          70,
+          892,
+          703
+        ]
+      ]
+    },
+    "34": {
+      "raw": [
+        {
+          "label": "drifted/replaced subject (whole body and",
+          "bbox_2d": [
+            137,
+            100,
+            700,
+            999
+          ]
+        }
+      ],
+      "pixels": [
+        [
+          175,
+          70,
+          896,
+          703
+        ]
+      ]
+    },
+    "35": {
+      "raw": [
+        {
+          "label": "drifted subject (whole body and hair)",
+          "bbox_2d": [
+            137,
+            99,
+            700,
+            999
+          ]
+        }
+      ],
+      "pixels": [
+        [
+          175,
+          69,
+          896,
+          703
+        ]
+      ]
+    },
+    "36": {
+      "raw": [
+        {
+          "label": "drifted/replaced subject (whole body and",
+          "bbox_2d": [
+            137,
+            97,
+            697,
+            999
+          ]
+        }
+      ],
+      "pixels": [
+        [
+          175,
+          68,
+          892,
+          703
+        ]
+      ]
+    },
+    "37": {
+      "raw": [
+        {
+          "label": "drifted subject (whole body and hair)",
+          "bbox_2d": [
+            137,
+            99,
+            699,
+            999
+          ]
+        }
+      ],
+      "pixels": [
+        [
+          175,
+          69,
+          894,
+          703
+        ]
+      ]
+    },
+    "38": {
+      "raw": [
+        {
+          "label": "drifted subject (whole body and hair)",
+          "bbox_2d": [
+            138,
+            99,
+            699,
+            999
+          ]
+        }
+      ],
+      "pixels": [
+        [
+          176,
+          69,
+          894,
+          703
+        ]
+      ]
+    },
+    "39": {
+      "raw": [
+        {
+          "label": "drifted/replaced subject (whole body and",
+          "bbox_2d": [
+            137,
+            101,
+            700,
+            999
+          ]
+        }
+      ],
+      "pixels": [
+        [
+          175,
+          71,
+          896,
+          703
+        ]
+      ]
+    }
+  }
+}

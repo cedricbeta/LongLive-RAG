@@ -1,0 +1,466 @@
+{
+  "m0_phrase": "man",
+  "m1_phrases": [
+    "woman"
+  ],
+  "m2_box_sam2_boxes": {
+    "8": {
+      "raw": [
+        {
+          "bbox_2d": [
+            444,
+            320,
+            666,
+            832
+          ],
+          "label": "woman"
+        }
+      ],
+      "pixels": [
+        [
+          568,
+          225,
+          852,
+          585
+        ]
+      ]
+    },
+    "9": {
+      "raw": [
+        {
+          "bbox_2d": [
+            437,
+            345,
+            628,
+            875
+          ],
+          "label": "woman"
+        }
+      ],
+      "pixels": [
+        [
+          559,
+          242,
+          803,
+          616
+        ]
+      ]
+    },
+    "10": {
+      "raw": [
+        {
+          "bbox_2d": [
+            398,
+            343,
+            620,
+            856
+          ],
+          "label": "woman"
+        }
+      ],
+      "pixels": [
+        [
+          509,
+          241,
+          793,
+          602
+        ]
+      ]
+    },
+    "11": {
+      "raw": [
+        {
+          "bbox_2d": [
+            408,
+            336,
+            620,
+            856
+          ],
+          "label": "woman"
+        }
+      ],
+      "pixels": [
+        [
+          522,
+          236,
+          793,
+          602
+        ]
+      ]
+    },
+    "12": {
+      "raw": [
+        {
+          "bbox_2d": [
+            412,
+            343,
+            620,
+            867
+          ],
+          "label": "woman"
+        }
+      ],
+      "pixels": [
+        [
+          527,
+          241,
+          793,
+          610
+        ]
+      ]
+    },
+    "13": {
+      "raw": [
+        {
+          "bbox_2d": [
+            444,
+            347,
+            617,
+            863
+          ],
+          "label": "woman"
+        }
+      ],
+      "pixels": [
+        [
+          568,
+          244,
+          789,
+          607
+        ]
+      ]
+    },
+    "14": {
+      "raw": [
+        {
+          "bbox_2d": [
+            396,
+            336,
+            617,
+            864
+          ],
+          "label": "woman"
+        }
+      ],
+      "pixels": [
+        [
+          506,
+          236,
+          789,
+          608
+        ]
+      ]
+    },
+    "15": {
+      "raw": [
+        {
+          "bbox_2d": [
+            412,
+            336,
+            612,
+            856
+          ],
+          "label": "woman"
+        }
+      ],
+      "pixels": [
+        [
+          527,
+          236,
+          783,
+          602
+        ]
+      ]
+    }
+  },
+  "m3_box_direct_boxes": {
+    "8": {
+      "raw": [
+        {
+          "bbox_2d": [
+            137,
+            103,
+            697,
+            999
+          ],
+          "label": "drifted/replaced subject (whole body and"
+        }
+      ],
+      "pixels": [
+        [
+          175,
+          72,
+          892,
+          703
+        ]
+      ]
+    },
+    "9": {
+      "raw": [
+        {
+          "bbox_2d": [
+            137,
+            103,
+            697,
+            999
+          ],
+          "label": "drifted/replaced subject (woman)"
+        },
+        {
+          "bbox_2d": [
+            577,
+            127,
+            800,
+            999
+          ],
+          "label": "person not called for in current caption"
+        }
+      ],
+      "pixels": [
+        [
+          175,
+          72,
+          892,
+          703
+        ],
+        [
+          738,
+          89,
+          1024,
+          703
+        ]
+      ]
+    },
+    "10": {
+      "raw": [
+        {
+          "bbox_2d": [
+            137,
+            104,
+            699,
+            999
+          ],
+          "label": "drifted/replaced subject (woman)"
+        },
+        {
+          "bbox_2d": [
+            557,
+            127,
+            800,
+            999
+          ],
+          "label": "person not called for in current caption"
+        }
+      ],
+      "pixels": [
+        [
+          175,
+          73,
+          894,
+          703
+        ],
+        [
+          712,
+          89,
+          1024,
+          703
+        ]
+      ]
+    },
+    "11": {
+      "raw": [
+        {
+          "bbox_2d": [
+            137,
+            103,
+            697,
+            999
+          ],
+          "label": "drifted/replaced subject (woman)"
+        },
+        {
+          "bbox_2d": [
+            570,
+            148,
+            800,
+            999
+          ],
+          "label": "person not called for in current caption"
+        }
+      ],
+      "pixels": [
+        [
+          175,
+          72,
+          892,
+          703
+        ],
+        [
+          729,
+          104,
+          1024,
+          703
+        ]
+      ]
+    },
+    "12": {
+      "raw": [
+        {
+          "bbox_2d": [
+            141,
+            104,
+            699,
+            999
+          ],
+          "label": "drifted/replaced subject (woman)"
+        },
+        {
+          "bbox_2d": [
+            577,
+            127,
+            800,
+            999
+          ],
+          "label": "person not called for in current caption"
+        }
+      ],
+      "pixels": [
+        [
+          180,
+          73,
+          894,
+          703
+        ],
+        [
+          738,
+          89,
+          1024,
+          703
+        ]
+      ]
+    },
+    "13": {
+      "raw": [
+        {
+          "bbox_2d": [
+            137,
+            104,
+            699,
+            999
+          ],
+          "label": "drifted/replaced subject (woman)"
+        },
+        {
+          "bbox_2d": [
+            630,
+            145,
+            800,
+            999
+          ],
+          "label": "person not called for in current caption"
+        },
+        {
+          "bbox_2d": [
+            137,
+            104,
+            300,
+            999
+          ],
+          "label": "person not called for in current caption"
+        }
+      ],
+      "pixels": [
+        [
+          175,
+          73,
+          894,
+          703
+        ],
+        [
+          806,
+          102,
+          1024,
+          703
+        ],
+        [
+          175,
+          73,
+          384,
+          703
+        ]
+      ]
+    },
+    "14": {
+      "raw": [
+        {
+          "bbox_2d": [
+            141,
+            104,
+            699,
+            999
+          ],
+          "label": "drifted/replaced subject (woman)"
+        },
+        {
+          "bbox_2d": [
+            587,
+            156,
+            800,
+            999
+          ],
+          "label": "person not called for in current caption"
+        }
+      ],
+      "pixels": [
+        [
+          180,
+          73,
+          894,
+          703
+        ],
+        [
+          751,
+          109,
+          1024,
+          703
+        ]
+      ]
+    },
+    "15": {
+      "raw": [
+        {
+          "bbox_2d": [
+            141,
+            103,
+            699,
+            999
+          ],
+          "label": "drifted/replaced subject (woman)"
+        },
+        {
+          "bbox_2d": [
+            578,
+            170,
+            800,
+            999
+          ],
+          "label": "person not called for in current caption"
+        }
+      ],
+      "pixels": [
+        [
+          180,
+          72,
+          894,
+          703
+        ],
+        [
+          739,
+          119,
+          1024,
+          703
+        ]
+      ]
+    }
+  }
+}
