@@ -36,6 +36,7 @@ from pathlib import Path
 from typing import Any
 
 import cv2
+import torch
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -44,6 +45,13 @@ if str(ROOT) not in sys.path:
 
 from evaluation.closed_judge import find_free_port, probe_qwen3_optimizer, qwen3_sglang_launch_command
 from utils.agent_edit import clipseg_chunk_masks, mask_coverage, save_mask_payload
+from utils.agent_entity_judge import (
+    EntityDriftVerifier,
+    Sam2Tracker,
+    VLMComparer,
+    VLMLocalizer,
+    load_entity_specs,
+)
 from utils.agent_runtime import (
     AbstainingController,
     AgentRuntimeConfig,
@@ -311,6 +319,7 @@ class EditRenderBackend:
         return self._shot_candidate(shot_index, attempt, self.active_video, edited=False)
 
     def observe(self, generated):
+        c0, c1 = self.chunk_ranges[generated.shot_index]
         return ShotObservation(
             shot_index=generated.shot_index,
             attempt=generated.attempt,
@@ -319,6 +328,10 @@ class EditRenderBackend:
             telemetry={
                 "reference_frames": list(self.reference_frames),
                 "edited": bool(generated.telemetry.get("edited", False)),
+                # entity judge inputs: the candidate render and the shot's chunk range
+                "shot_video": str(generated.output["video"]),
+                "chunk_start": c0,
+                "chunk_end": c1,
             },
             inputs=generated.input_refs,
             input_fingerprint="",
@@ -327,27 +340,34 @@ class EditRenderBackend:
     def edit(self, shot_index, attempt, action, verdict):
         params = dict(action.params)
         c0, c1 = self.chunk_ranges[shot_index]
-        masks = clipseg_chunk_masks(
-            self.active_video,
-            range(c0, c1 + 1),
-            params["mask_phrase"],
-            device=self.clipseg_device,
-        )
-        mask_path = save_mask_payload(
-            masks,
-            self.out_dir / "edit" / f"shot{shot_index:02d}_masks.pt",
-            phrase=params["mask_phrase"],
-            video=self.active_video,
-        )
+        if params.get("mask_path"):
+            # Precomputed repaint region (entity judge: SAM2 tracks of drifted
+            # entities and unassigned subjects), already in payload format.
+            mask_path = Path(params["mask_path"])
+            masks = torch.load(mask_path, map_location="cpu", weights_only=False)["masks"]
+        else:
+            masks = clipseg_chunk_masks(
+                self.active_video,
+                range(c0, c1 + 1),
+                params["mask_phrase"],
+                device=self.clipseg_device,
+            )
+            mask_path = save_mask_payload(
+                masks,
+                self.out_dir / "edit" / f"shot{shot_index:02d}_attempt{attempt}_masks.pt",
+                phrase=params["mask_phrase"],
+                video=self.active_video,
+            )
         edit_cfg = {
             "chunk_start": c0,
             "chunk_end": c1,
             "entry_sigma": float(params["entry_sigma"]),
             "mask_path": str(mask_path),
             "prompt": params["prompt"],
-            "noise_seed": self.noise_seed,
+            # every repair round draws fresh noise inside the mask
+            "noise_seed": self.noise_seed + int(attempt),
         }
-        prefix = f"edit_shot{shot_index:02d}"
+        prefix = f"edit_shot{shot_index:02d}_attempt{attempt}"
         render_dir = self.out_dir / "renders"
         config_path = build_render_config(
             self.base_config,
@@ -421,6 +441,17 @@ def make_two_up(baseline: Path, final: Path, output: Path) -> None:
     )
 
 
+_SAM2_TRACKER = None
+
+
+def _sam2_tracker(args):
+    """One SAM2 predictor per process (weights load once, shared across scenes)."""
+    global _SAM2_TRACKER
+    if _SAM2_TRACKER is None:
+        _SAM2_TRACKER = Sam2Tracker(device=args.clipseg_device)
+    return _SAM2_TRACKER
+
+
 def resolve_entity_phrase(args, scene: str) -> str:
     if getattr(args, "entities_json", None):
         table = json.loads((ROOT / args.entities_json).read_text())
@@ -485,14 +516,28 @@ def run_scene(args, scene: str, base_url: str, output_root: Path) -> dict[str, A
             "lock_path": str(output_root / f"{scene}.lock"),
             "decision_cache_dir": str(output_root / "vlm_cache"),
             "edit_entry_sigma": args.entry_sigma,
+            "max_edits_per_shot": int(args.max_edits_per_shot),
         }
     )
-    verifier = ComparativeDriftVerifier(
-        client,
-        entity_phrase=resolve_entity_phrase(args, scene),
-        edit_entry_sigma=runtime_config.edit_entry_sigma,
-        prompt_template=runtime_config.edit_prompt_template,
-    )
+    if args.judge == "entity":
+        # Entity-level judge: locate / enumerate / compare, SAM2 tracks as the
+        # repaint region, multi-round repair with best-of-N delivery.
+        specs = load_entity_specs(ROOT / args.entity_specs, scene)
+        verifier = EntityDriftVerifier(
+            specs,
+            localizer=VLMLocalizer(client),
+            comparer=VLMComparer(client),
+            tracker=_sam2_tracker(args),
+            work_dir=out_dir / "entity_judge",
+            edit_entry_sigma=runtime_config.edit_entry_sigma,
+        )
+    else:
+        verifier = ComparativeDriftVerifier(
+            client,
+            entity_phrase=resolve_entity_phrase(args, scene),
+            edit_entry_sigma=runtime_config.edit_entry_sigma,
+            prompt_template=runtime_config.edit_prompt_template,
+        )
     graph = NormativeGraph.compile_scene(
         scene_src, allow_missing_global=bool(getattr(args, "allow_missing_global", False))
     )
@@ -554,6 +599,28 @@ def main() -> None:
         action="store_true",
         help="permit scenes without global.json (self-contained suites like NarraStream)",
     )
+    parser.add_argument(
+        "--judge",
+        choices=("comparative", "entity"),
+        default="comparative",
+        help="comparative = single free-form drift call (pilot); entity = locate/enumerate/compare + SAM2 tracks",
+    )
+    parser.add_argument(
+        "--entity_specs",
+        default="example/narrastream_bench/entity_specs_pilot3.json",
+        help="JSON {scene: [{name, description, shots}]} for --judge entity",
+    )
+    parser.add_argument(
+        "--base_url",
+        default=None,
+        help="use an already running OpenAI-compatible judge server (e.g. http://127.0.0.1:53456/v1) instead of launching one",
+    )
+    parser.add_argument(
+        "--max_edits_per_shot",
+        type=int,
+        default=1,
+        help="masked-renoise repair rounds per shot (each round: fresh seed, shrinking mask, positive feedback)",
+    )
     args = parser.parse_args()
 
     output_root = ROOT / args.output_root
@@ -567,7 +634,14 @@ def main() -> None:
     }
     proc = None
     try:
-        proc, base_url = start_vlm_server(args, output_root)
+        if args.base_url:
+            # Shared external judge server (one per machine; several scene
+            # drivers may run in parallel against it).
+            base_url = str(args.base_url).rstrip("/")
+            with urllib.request.urlopen(f"{base_url}/models", timeout=10):
+                pass
+        else:
+            proc, base_url = start_vlm_server(args, output_root)
         for scene in args.scenes:
             summary["scenes"][scene] = run_scene(args, scene, base_url, output_root)
         summary["passed"] = all(record["passed"] for record in summary["scenes"].values())
