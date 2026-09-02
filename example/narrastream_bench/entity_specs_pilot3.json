@@ -1,0 +1,14 @@
+{
+  "_comment": "Scripted entities for the three arm-C pilot scenes (normative layer input for utils.agent_entity_judge). shots = shot indices where the caption places the entity; omit for every shot.",
+  "ns000_in_the_library_reading": [
+    {"name": "Noah", "description": "a tall man with a shaved head and a dark green work shirt"}
+  ],
+  "ns100_noah_stands_at_the": [
+    {"name": "Noah", "description": "a man in a dark green work shirt taking notes"},
+    {"name": "Iris", "description": "a woman with curly red hair and a moss green coat", "shots": [1, 2]}
+  ],
+  "ns190_in_the_hotel_lobby": [
+    {"name": "Iris", "description": "a middle-aged woman with curly red hair and a moss green coat"},
+    {"name": "Kai", "description": "an older man with silver hair and a brown trench coat", "shots": [1, 2]}
+  ]
+}
