@@ -455,8 +455,12 @@ class EditShotActionBoundsTest(unittest.TestCase):
             ).normalized(shot_index=0)
 
     def test_config_bounds(self):
-        with self.assertRaisesRegex(ValueError, "at most one edit_shot"):
-            AgentRuntimeConfig.from_config({"enabled": True, "max_edits_per_shot": 2})
+        with self.assertRaisesRegex(ValueError, "max_edits_per_shot"):
+            AgentRuntimeConfig.from_config({"enabled": True, "max_edits_per_shot": 5})
+        self.assertEqual(
+            AgentRuntimeConfig.from_config({"enabled": True, "max_edits_per_shot": 3}).max_edits_per_shot,
+            3,
+        )
         with self.assertRaisesRegex(ValueError, "edit_entry_sigma"):
             AgentRuntimeConfig.from_config({"enabled": True, "edit_entry_sigma": 0.5})
         cfg = AgentRuntimeConfig.from_config(

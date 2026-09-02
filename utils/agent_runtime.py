@@ -31,6 +31,9 @@ ALLOWED_LOGIT_BIAS = frozenset({0.0, 1.0, 2.0})
 # (docs/editing-repair-report.zh.md); sigma=1.0 (full erase inside the mask)
 # was the strength champion and is the default.
 ALLOWED_EDIT_SIGMA = frozenset({0.63, 0.83, 0.94, 1.0})
+# Upper bound on masked-renoise repair rounds per shot (each round costs one
+# shot replay); the pre-registered multi-round experiment uses 3.
+MAX_EDIT_ROUNDS = 4
 # Default repair-prompt template for edit_shot: authored shot caption joined
 # with the judge's drift description.  Overridable via
 # AgentRuntimeConfig.edit_prompt_template.
@@ -160,9 +163,13 @@ class AgentRuntimeConfig:
     require_streaming_vae_off: bool = True
     archive_failures: bool = True
     # edit_shot (masked-renoise in-place repair) budget and defaults.  The edit
-    # budget is per shot, in addition to the single retry slot: a shot may be
-    # repaired at most once, and a failed repair review falls back to the
-    # existing restore+retry / accept-with-quarantine degradation path.
+    # budget is per shot, in addition to the single retry slot: up to
+    # ``max_edits_per_shot`` repair rounds run back to back, each one restoring
+    # the boundary snapshot and replaying the shot with the verifier's latest
+    # directed plan (shrinking mask, positive feedback, fresh noise seed).
+    # When the budget is spent the existing restore+retry path runs, and the
+    # best-scoring rejected candidate (verdict metric ``repair_score``) is
+    # delivered under quarantine.
     max_edits_per_shot: int = 1
     edit_entry_sigma: float = 1.0
     edit_prompt_template: str = DEFAULT_EDIT_PROMPT_TEMPLATE
@@ -189,8 +196,10 @@ class AgentRuntimeConfig:
             raise ValueError("agent runtime v1 supports only mode='shot_buffered'")
         if result.max_retries_per_shot != 1:
             raise ValueError("agent runtime v1 requires exactly one retry slot per shot")
-        if result.max_edits_per_shot not in (0, 1):
-            raise ValueError("agent runtime v1 allows at most one edit_shot repair per shot")
+        if not 0 <= result.max_edits_per_shot <= MAX_EDIT_ROUNDS:
+            raise ValueError(
+                f"max_edits_per_shot must be within 0..{MAX_EDIT_ROUNDS} edit_shot rounds per shot"
+            )
         if result.edit_entry_sigma not in ALLOWED_EDIT_SIGMA:
             raise ValueError(
                 f"edit_entry_sigma must be one of {sorted(ALLOWED_EDIT_SIGMA)}"
@@ -432,6 +441,9 @@ class TrustPartitionedMemory:
     def candidate(self, shot_index: int, attempt: int) -> MemoryPayload | None:
         return self._candidate.get((int(shot_index), int(attempt)))
 
+    def quarantined_payload(self, shot_index: int, attempt: int) -> MemoryPayload:
+        return self._quarantine[(int(shot_index), int(attempt))]
+
     def partition_counts(self) -> dict[str, int]:
         return {
             "candidate": len(self._candidate),
@@ -536,20 +548,22 @@ class Action:
             prompt = str(params.get("prompt", "")).strip()
             if not prompt:
                 raise ValueError("edit_shot requires a non-empty repair prompt")
+            # The repaint region is either a CLIPSeg phrase (legacy judge) or a
+            # precomputed mask payload on disk (entity judge: SAM2 tracks).
             mask_phrase = str(params.get("mask_phrase", "")).strip()
-            if not mask_phrase:
-                raise ValueError("edit_shot requires a non-empty mask_phrase")
+            mask_path = str(params.get("mask_path", "")).strip()
+            if not mask_phrase and not mask_path:
+                raise ValueError("edit_shot requires a non-empty mask_phrase or mask_path")
             entry_sigma = float(params.get("entry_sigma", 1.0))
             if entry_sigma not in ALLOWED_EDIT_SIGMA:
                 raise ValueError(
                     f"edit_shot entry_sigma must be one of {sorted(ALLOWED_EDIT_SIGMA)}"
                 )
-            params = {
-                "shot": target,
-                "prompt": prompt,
-                "mask_phrase": mask_phrase,
-                "entry_sigma": entry_sigma,
-            }
+            params = {"shot": target, "prompt": prompt, "entry_sigma": entry_sigma}
+            if mask_phrase:
+                params["mask_phrase"] = mask_phrase
+            if mask_path:
+                params["mask_path"] = mask_path
         elif tool == "restore_and_retry":
             raw_program = params.get("action_program")
             if not isinstance(raw_program, Sequence) or isinstance(raw_program, (str, bytes)):
@@ -1194,12 +1208,18 @@ class CausalShotSession:
         if verdict.accept:
             return self._commit_accepted(generated, verdict)
         self._reject_candidate(generated, verdict)
+        rejected: list[tuple[GeneratedShot, Verdict]] = [(generated, verdict)]
 
-        # edit_shot stage: a verifier-directed in-place repair, budgeted to one
-        # per shot.  A passing review commits the repaired shot; a failing
-        # review falls through to the pre-existing degradation path below.
-        edit_action = self._select_edit_action(k, verdict)
-        if edit_action is not None:
+        # edit_shot stage: verifier-directed in-place repair rounds, budgeted
+        # by max_edits_per_shot.  Every round restores the boundary snapshot
+        # and replays the shot with the latest directed plan; a passing review
+        # commits the repaired shot, a failing review feeds the next round.
+        # When the verifier stops directing an edit (nothing left to mask) or
+        # the budget is spent, control falls through to the degradation path.
+        while True:
+            edit_action = self._select_edit_action(k, verdict)
+            if edit_action is None:
+                break
             attempt += 1
             edited, edit_verdict = self._edit_and_review(
                 context, verdict, edit_action, snapshot, snapshot_digest, attempt
@@ -1207,6 +1227,7 @@ class CausalShotSession:
             if edit_verdict.accept:
                 return self._commit_accepted(edited, edit_verdict)
             self._reject_candidate(edited, edit_verdict)
+            rejected.append((edited, edit_verdict))
             verdict = edit_verdict
 
         # Restore + directed retry: exactly one slot per shot.
@@ -1227,23 +1248,34 @@ class CausalShotSession:
         if verdict.accept:
             return self._commit_accepted(generated, verdict)
 
-        quarantined = self._reject_candidate(generated, verdict)
-        delivered = self.backend.commit(generated, quarantined=True)
+        self._reject_candidate(generated, verdict)
+        rejected.append((generated, verdict))
+
+        # Best-of-N delivery: every candidate of this shot was rejected, so the
+        # one with the highest verifier ``repair_score`` is delivered under
+        # quarantine (ties keep the latest candidate, i.e. the legacy choice).
+        # Quarantined payloads never enter trusted reads regardless of choice.
+        scores = [float(v.metrics.get("repair_score", 0.0)) for _, v in rejected]
+        best_index = max(range(len(rejected)), key=lambda i: (scores[i], i))
+        best_generated, best_verdict = rejected[best_index]
+        delivered = self.backend.commit(best_generated, quarantined=True)
         self.committed_shots.add(k)
         self.ledger.append(
             "commit",
             shot_index=k,
-            attempt=generated.attempt,
-            payload_fingerprint=quarantined.payload_fingerprint,
+            attempt=best_generated.attempt,
+            payload_fingerprint=self.memory.quarantined_payload(k, best_generated.attempt).payload_fingerprint,
             quarantined=True,
             retry_count=self.retry_counts.get(k, 0),
+            edit_count=self.edit_counts.get(k, 0),
+            best_of={"attempts": [g.attempt for g, _ in rejected], "repair_scores": scores},
             partition_counts=self.memory.partition_counts(),
         )
         self.scene.assert_unchanged()
         invisible_errors = self.memory.audit_invisible()
         if invisible_errors:
             raise RuntimeError("; ".join(invisible_errors))
-        return ShotResult(k, generated.attempt + 1, False, True, delivered, verdict)
+        return ShotResult(k, attempt + 1, False, True, delivered, best_verdict)
 
     def run(self, shot_indices: Iterable[int] | None = None) -> list[ShotResult]:
         indices = list(range(self.scene.num_shots)) if shot_indices is None else [int(x) for x in shot_indices]
