@@ -1,0 +1,654 @@
+{
+  "_comment": "Scripted entities compiled from shot captions by scripts/extract_entity_specs.py; review before use.",
+  "ns000_in_the_library_reading": [
+    {
+      "name": "Noah",
+      "description": "a tall man with a shaved head and a dark green work shirt"
+    }
+  ],
+  "ns010_iris": [
+    {
+      "name": "Iris",
+      "description": "a middle-aged woman with curly red hair and a moss green coat"
+    },
+    {
+      "name": "Kai",
+      "description": "an older man with silver hair and a brown trench coat",
+      "shots": [
+        1,
+        2,
+        3
+      ]
+    }
+  ],
+  "ns020_at_the_studio_equipment": [
+    {
+      "name": "Clara",
+      "description": "a woman"
+    },
+    {
+      "name": "Miles",
+      "description": "a man"
+    },
+    {
+      "name": "Luna",
+      "description": "a petite woman with silver bob hair and a black turtleneck",
+      "shots": [
+        1,
+        2,
+        3
+      ]
+    }
+  ],
+  "ns030_at_the_workshop_workbench": [
+    {
+      "name": "Nora",
+      "description": "a woman"
+    },
+    {
+      "name": "Ethan",
+      "description": "a man"
+    },
+    {
+      "name": "Clara",
+      "description": "a woman with auburn hair",
+      "shots": [
+        1,
+        2,
+        3
+      ]
+    }
+  ],
+  "ns040_at_the_rooftop_bar": [
+    {
+      "name": "Nora",
+      "description": "a woman"
+    },
+    {
+      "name": "Ethan",
+      "description": "a man"
+    }
+  ],
+  "ns050_at_the_market_produce": [
+    {
+      "name": "Luca",
+      "description": "a young man with slightly longer dark hair, wearing a navy knit sweater"
+    },
+    {
+      "name": "Milan",
+      "description": "a young man with neat dark hair, wearing a black zip jacket"
+    },
+    {
+      "name": "Dario",
+      "description": "a man",
+      "shots": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "name": "Nico",
+      "description": "a man",
+      "shots": [
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  ],
+  "ns060_at_the_office_meeting": [
+    {
+      "name": "Nora",
+      "description": "a woman",
+      "shots": [
+        0,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "name": "Ethan",
+      "description": "a man",
+      "shots": [
+        0,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "name": "Clara",
+      "description": "a woman"
+    },
+    {
+      "name": "Miles",
+      "description": "a man",
+      "shots": [
+        1,
+        2,
+        4,
+        5
+      ]
+    }
+  ],
+  "ns070_at_the_classroom_front": [
+    {
+      "name": "Noah",
+      "description": "a person",
+      "shots": [
+        0,
+        1,
+        4,
+        5
+      ]
+    },
+    {
+      "name": "Iris",
+      "description": "a person"
+    },
+    {
+      "name": "Kai",
+      "description": "a person"
+    },
+    {
+      "name": "Ava",
+      "description": "a person",
+      "shots": [
+        2,
+        3,
+        5
+      ]
+    }
+  ],
+  "ns080_at_the_restaurant_prep": [
+    {
+      "name": "Luca",
+      "description": "a man"
+    },
+    {
+      "name": "Milan",
+      "description": "a man"
+    },
+    {
+      "name": "Dario",
+      "description": "a man"
+    },
+    {
+      "name": "Nico",
+      "description": "a man",
+      "shots": [
+        1,
+        2,
+        3,
+        5
+      ]
+    }
+  ],
+  "ns090_iris_stands_at_the": [
+    {
+      "name": "Iris",
+      "description": "a woman with curly red hair, wearing a moss green coat"
+    }
+  ],
+  "ns100_noah_stands_at_the": [
+    {
+      "name": "Noah",
+      "description": "a man in a dark green work shirt"
+    },
+    {
+      "name": "Iris",
+      "description": "a woman with curly red hair in a moss green coat",
+      "shots": [
+        1,
+        2
+      ]
+    }
+  ],
+  "ns110_in_the_library_reading": [
+    {
+      "name": "Clara",
+      "description": "a middle-aged woman with auburn hair and a long tan coat"
+    },
+    {
+      "name": "Miles",
+      "description": "a slim man with a buzz cut and a charcoal jacket"
+    },
+    {
+      "name": "Luna",
+      "description": "a petite woman with silver bob hair and a black turtleneck",
+      "shots": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ]
+    }
+  ],
+  "ns120_at_the_cafe_corner": [
+    {
+      "name": "Clara",
+      "description": "a middle-aged woman with auburn hair and a long tan coat"
+    },
+    {
+      "name": "Miles",
+      "description": "a slim man with a buzz cut and a charcoal jacket"
+    },
+    {
+      "name": "Luna",
+      "description": "a petite woman with silver bob hair and a black turtleneck",
+      "shots": [
+        1,
+        2,
+        3
+      ]
+    }
+  ],
+  "ns130_at_the_studio_equipment": [
+    {
+      "name": "Miles",
+      "description": "a man"
+    },
+    {
+      "name": "Luna",
+      "description": "a woman"
+    }
+  ],
+  "ns140_at_the_workshop_workbench": [
+    {
+      "name": "Milan",
+      "description": "a man with neat dark hair and a black zip jacket"
+    },
+    {
+      "name": "Dario",
+      "description": "a man with dark side-parted hair and a dark gray overshirt"
+    },
+    {
+      "name": "Nico",
+      "description": "a man with dark cropped hair and a muted navy cardigan",
+      "shots": [
+        1,
+        2
+      ]
+    },
+    {
+      "name": "Evan",
+      "description": "a man with short dark hair and a charcoal knit sweater",
+      "shots": [
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  ],
+  "ns150_at_the_rooftop_bar": [
+    {
+      "name": "Ethan",
+      "description": "a man"
+    },
+    {
+      "name": "Clara",
+      "description": "a woman"
+    },
+    {
+      "name": "Miles",
+      "description": "a man"
+    },
+    {
+      "name": "Luna",
+      "description": "a woman",
+      "shots": [
+        1,
+        2,
+        5
+      ]
+    }
+  ],
+  "ns160_at_the_market_produce": [
+    {
+      "name": "Iris",
+      "description": "a woman"
+    },
+    {
+      "name": "Kai",
+      "description": "a person",
+      "shots": [
+        0,
+        1
+      ]
+    },
+    {
+      "name": "Ava",
+      "description": "a person"
+    },
+    {
+      "name": "Mina",
+      "description": "a person",
+      "shots": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  ],
+  "ns170_at_the_office_meeting": [
+    {
+      "name": "Milan",
+      "description": "a man"
+    },
+    {
+      "name": "Dario",
+      "description": "a man"
+    },
+    {
+      "name": "Nico",
+      "description": "a man"
+    },
+    {
+      "name": "Evan",
+      "description": "a man",
+      "shots": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  ],
+  "ns180_noah": [
+    {
+      "name": "Noah",
+      "description": "a tall man with a shaved head and a dark green work shirt"
+    }
+  ],
+  "ns190_in_the_hotel_lobby": [
+    {
+      "name": "Iris",
+      "description": "a middle-aged woman with curly red hair and a moss green coat"
+    },
+    {
+      "name": "Kai",
+      "description": "an older man with silver hair and a brown trench coat",
+      "shots": [
+        1,
+        2
+      ]
+    }
+  ],
+  "ns200_at_the_flower_shop": [
+    {
+      "name": "Ethan",
+      "description": "a young man with tidy brown hair and a dark blue shirt"
+    },
+    {
+      "name": "Clara",
+      "description": "a middle-aged woman with auburn hair and a long tan coat"
+    },
+    {
+      "name": "Miles",
+      "description": "a slim man with a buzz cut and a charcoal jacket",
+      "shots": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  ],
+  "ns210_at_the_lecture_hall": [
+    {
+      "name": "Ethan",
+      "description": "a young man with tidy brown hair and a dark blue shirt"
+    },
+    {
+      "name": "Clara",
+      "description": "a middle-aged woman with auburn hair and a long tan coat"
+    },
+    {
+      "name": "Miles",
+      "description": "a slim man with a buzz cut and a charcoal jacket",
+      "shots": [
+        1,
+        2
+      ]
+    }
+  ],
+  "ns220_in_the_library_reading": [
+    {
+      "name": "Clara",
+      "description": "a middle-aged woman with auburn hair and a long tan coat"
+    },
+    {
+      "name": "Miles",
+      "description": "a slim man with a buzz cut and a charcoal jacket"
+    }
+  ],
+  "ns230_at_the_cafe_corner": [
+    {
+      "name": "Milan",
+      "description": "a man with neat dark hair, wearing a black zip jacket"
+    },
+    {
+      "name": "Dario",
+      "description": "a man with dark side-parted hair, wearing a dark gray overshirt",
+      "shots": [
+        0,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "name": "Nico",
+      "description": "a man",
+      "shots": [
+        1,
+        2
+      ]
+    },
+    {
+      "name": "Evan",
+      "description": "a man",
+      "shots": [
+        2,
+        3
+      ]
+    }
+  ],
+  "ns240_at_the_studio_equipment": [
+    {
+      "name": "Miles",
+      "description": "a man"
+    },
+    {
+      "name": "Luna",
+      "description": "a woman",
+      "shots": [
+        0,
+        4,
+        5
+      ]
+    },
+    {
+      "name": "Nora",
+      "description": "a woman"
+    },
+    {
+      "name": "Ethan",
+      "description": "a man",
+      "shots": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  ],
+  "ns250_at_the_workshop_workbench": [
+    {
+      "name": "Kai",
+      "description": "a person"
+    },
+    {
+      "name": "Ava",
+      "description": "a person",
+      "shots": [
+        0,
+        1
+      ]
+    },
+    {
+      "name": "Mina",
+      "description": "a person"
+    },
+    {
+      "name": "Noah",
+      "description": "a person",
+      "shots": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  ],
+  "ns260_at_the_rooftop_bar": [
+    {
+      "name": "Dario",
+      "description": "a man"
+    },
+    {
+      "name": "Nico",
+      "description": "a man"
+    },
+    {
+      "name": "Evan",
+      "description": "a person",
+      "shots": [
+        0,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "name": "Luca",
+      "description": "a person",
+      "shots": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  ],
+  "ns270_at_the_office_meeting": [
+    {
+      "name": "Iris",
+      "description": "a woman with curly red hair, wearing a moss green coat"
+    }
+  ],
+  "ns280_kai": [
+    {
+      "name": "Kai",
+      "description": "an older man with silver hair and a brown trench coat"
+    },
+    {
+      "name": "Ava",
+      "description": "a petite woman with straight blonde hair and a denim jacket",
+      "shots": [
+        1,
+        2
+      ]
+    }
+  ],
+  "ns290_at_the_restaurant_prep": [
+    {
+      "name": "Nora",
+      "description": "a young woman with short black curls and a beige sweater"
+    },
+    {
+      "name": "Ethan",
+      "description": "a young man with tidy brown hair and a dark blue shirt"
+    },
+    {
+      "name": "Clara",
+      "description": "a middle-aged woman with auburn hair and a long tan coat",
+      "shots": [
+        1,
+        2,
+        3
+      ]
+    }
+  ],
+  "ns300_in_the_hotel_lobby": [
+    {
+      "name": "Clara",
+      "description": "a middle-aged woman with auburn hair and a long tan coat"
+    },
+    {
+      "name": "Miles",
+      "description": "a slim man with a buzz cut and a charcoal jacket"
+    },
+    {
+      "name": "Luna",
+      "description": "a petite woman with silver bob hair and a black turtleneck",
+      "shots": [
+        1,
+        2,
+        3
+      ]
+    }
+  ],
+  "ns310_at_the_flower_shop": [
+    {
+      "name": "Clara",
+      "description": "a middle-aged woman with auburn hair and a long tan coat"
+    },
+    {
+      "name": "Miles",
+      "description": "a slim man with a buzz cut and a charcoal jacket"
+    }
+  ],
+  "ns320_at_the_lecture_hall": [
+    {
+      "name": "Dario",
+      "description": "a man with dark side-parted hair, wearing a dark gray overshirt"
+    },
+    {
+      "name": "Nico",
+      "description": "a man with dark cropped hair, wearing a muted navy cardigan"
+    },
+    {
+      "name": "Evan",
+      "description": "a man with short dark hair, wearing a charcoal knit sweater",
+      "shots": [
+        1,
+        2
+      ]
+    },
+    {
+      "name": "Luca",
+      "description": "a man",
+      "shots": [
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  ]
+}
