@@ -1,0 +1,72 @@
+denoising_step_list:
+- 1000
+- 750
+- 500
+- 250
+warp_denoising_step: true
+num_frame_per_block: 3
+model_name: Wan2.1-T2V-1.3B
+model_kwargs:
+  local_attn_size: 12
+  timestep_shift: 5.0
+  sink_size: 1
+  memory_size: 6
+  recent_exclude: 5
+  use_latentmem: true
+  compression_method: ae
+  ae_ckpt: checkpoints/ae_latent_mem.pt
+generator_ckpt: checkpoints/longlive_base.pt
+lora_ckpt: checkpoints/longlive_lora.pt
+adapter:
+  type: lora
+  rank: 256
+  alpha: 256
+  dropout: 0.0
+  dtype: bfloat16
+  verbose: false
+data_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_pilot_batch4_portable_check_v1/ns110/baseline/initial_prompt.txt
+output_folder: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_pilot_batch4_portable_check_v1/ns110/baseline/videos
+inference_iter: -1
+skip_existing: false
+num_output_frames: 241
+use_ema: false
+seed: 0
+num_samples: 1
+save_with_index: true
+global_sink: true
+context_noise: 0
+adapter_diagnostics_dir: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_pilot_batch4_portable_check_v1/ns110/baseline/diagnostics
+timed_segments:
+- seconds: 10
+  prompts:
+  - In the library reading room, Clara, a middle-aged woman with auburn hair and a
+    long tan coat, and Miles, a slim man with a buzz cut and a charcoal jacket, sit
+    at a long reading table, both standing to begin organizing books.
+- seconds: 10
+  prompts:
+  - In the library reading room, Clara and Miles continue organizing the books, while
+    Luna, a petite woman with silver bob hair and a black turtleneck, joins them,
+    standing beside the table. They mention a rare manuscript that needs to be carefully
+    handled later.
+- seconds: 10
+  prompts:
+  - In the library reading room, Luna steps away from the table to fetch the rare
+    manuscript, while Clara and Miles pause their work. A young librarian enters,
+    briefly interrupting their flow, and points to a notice on the wall.
+- seconds: 10
+  prompts:
+  - In the library reading room, the young librarian's interruption resolves, and
+    Clara and Miles return to their tasks. Luna, having fetched the manuscript, quietly
+    exits the room.
+- seconds: 10
+  prompts:
+  - In the library reading room, Clara and Miles return to the rare manuscript they
+    were discussing earlier. Clara stands by the table, carefully examining the pages,
+    while Miles sits and notes down important details.
+- seconds: 10
+  prompts:
+  - In the library reading room, Clara and Miles finish their work on the rare manuscript.
+    Clara stands, closing the last page, while Miles gathers his notes and stands
+    up, ready to leave. They both feel a sense of accomplishment as they prepare to
+    exit the cozy space.
+audit_prompt_switch: false

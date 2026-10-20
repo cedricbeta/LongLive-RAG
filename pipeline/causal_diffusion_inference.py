@@ -23,6 +23,10 @@ from utils.config import section_get, wan_default_config
 from utils.kv_rag import KVRAGConfig, KVRAGMemory
 from utils.capsule import CapsuleEditConfig, CapsuleProbeConfig, CapsuleRuntime
 from utils.agent_runtime import AgentRuntimeConfig, CausalShotSession, NormativeGraph
+from utils.edit_renoise_plans import (
+    normalize_edit_renoise_config as _normalize_edit_renoise_config,
+    normalize_edit_renoise_plans as _normalize_edit_renoise_plans,
+)
 
 
 def _plain_get(cfg, key, default=None):
@@ -201,44 +205,42 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
         edit_renoise_raw = section_get(
             args, "inference", "edit_renoise", getattr(args, "edit_renoise", None)
         )
-        self.edit_renoise = None
-        if edit_renoise_raw is not None and bool(
-            _plain_get(edit_renoise_raw, "enabled", False)
-        ):
-            self.edit_renoise = {
-                "chunk_start": int(_plain_get(edit_renoise_raw, "chunk_start", -1)),
-                "chunk_end": int(_plain_get(edit_renoise_raw, "chunk_end", -1)),
-                "entry_index": int(_plain_get(edit_renoise_raw, "entry_index", 2)),
-                "entry_sigma": _plain_get(edit_renoise_raw, "entry_sigma", None),
-                "mask_path": str(_plain_get(edit_renoise_raw, "mask_path", "")),
-                "mask_threshold": float(
-                    _plain_get(edit_renoise_raw, "mask_threshold", 0.35)
-                ),
-                "mask_dilate": int(_plain_get(edit_renoise_raw, "mask_dilate", 1)),
-                "prompt": str(_plain_get(edit_renoise_raw, "prompt", "")),
-                "noise_seed": int(_plain_get(edit_renoise_raw, "noise_seed", 4242)),
-                # cut-paste-SDEdit: initialize the masked region from a pasted
-                # golden-subject latent instead of the drifted content, then
-                # harmonize with a mid-sigma renoise.
-                "collage": bool(_plain_get(edit_renoise_raw, "collage", False)),
-                "donor_chunk": int(_plain_get(edit_renoise_raw, "donor_chunk", -1)),
-                "donor_frame": int(_plain_get(edit_renoise_raw, "donor_frame", 0)),
-                "donor_mask_path": str(_plain_get(edit_renoise_raw, "donor_mask_path", "")),
-                "donor_flip": bool(_plain_get(edit_renoise_raw, "donor_flip", False)),
-                # freeze the pasted donor core at its clean value (zero noise)
-                # and repaint only the seam ring + rest of the mask
-                "paste_pin": bool(_plain_get(edit_renoise_raw, "paste_pin", False)),
-            }
-            self._edit_masks = None
-            self._edit_conditional_dict = None
-            self._edit_donor = None
+        edit_renoise_plans_raw = section_get(
+            args,
+            "inference",
+            "edit_renoise_plans",
+            getattr(args, "edit_renoise_plans", None),
+        )
+        self.edit_renoise = _normalize_edit_renoise_config(edit_renoise_raw)
+        self.edit_renoise_plans = _normalize_edit_renoise_plans(edit_renoise_plans_raw)
+        if self.edit_renoise is not None and self.edit_renoise_plans:
+            raise ValueError(
+                "configure either inference.edit_renoise or "
+                "inference.edit_renoise_plans, not both"
+            )
+        self._edit_masks = None
+        self._edit_conditional_dict = None
+        self._edit_donor = None
+        self._edit_paste_core = None
+        if self.edit_renoise is not None:
             print(f"[edit_renoise] {self.edit_renoise}")
+        if self.edit_renoise_plans:
+            ranges = [
+                [plan["chunk_start"], plan["chunk_end"]]
+                for plan in self.edit_renoise_plans
+            ]
+            print(f"[edit_renoise_plans] {len(self.edit_renoise_plans)} plans: {ranges}")
 
         # Runtime-installed masked-renoise repair plan (agent edit_shot action).
         # Strictly inert unless set_runtime_edit_plan() is called; the static
         # edit_renoise config block above keeps priority and its exact legacy
         # behavior when both are present.
         self._runtime_edit_plan = None
+        parent_replay = section_get(args, "inference", "replay_parent", None)
+        self.parent_latent_replay = None
+        if parent_replay:
+            from utils.parent_latent_replay import ParentLatentReplay
+            self.parent_latent_replay = ParentLatentReplay(parent_replay)
 
         capsule_probe_raw = section_get(
             args, "inference", "capsule_probe", getattr(args, "capsule_probe", None)
@@ -835,6 +837,15 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
         if self.independent_first_frame and initial_latent is None:
             all_num_frames = [1] + all_num_frames
 
+        parent_replay = getattr(self, "parent_latent_replay", None)
+        if parent_replay is not None:
+            if initial_latent is not None or num_input_frames:
+                raise ValueError("Parent replay requires a full replay without initial context")
+            if len(all_num_frames) != parent_replay.num_chunks or any(
+                count != parent_replay.frames_per_chunk for count in all_num_frames
+            ):
+                raise ValueError("Parent replay temporal layout differs from current generation")
+
         # Multi-shot RoPE offset: track current shot index for phase offset.
         current_shot_index = 0
         # Scene-memory shot index: incremented at every shot boundary regardless
@@ -1073,15 +1084,19 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
                     print(f"kv_cache['local_end_index']: {self.kv_cache_pos[0]['local_end_index']}")
                     print(f"kv_cache['global_end_index']: {self.kv_cache_pos[0]['global_end_index']}")
 
-            # cut-paste donor capture: stash the golden chunk's clean latent
-            # as it flows past, for later collage initialization.
-            if (
-                self.edit_renoise is not None
-                and self.edit_renoise["collage"]
-                and chunk_index == self.edit_renoise["donor_chunk"]
-            ):
-                self._edit_donor = latents.detach().clone()
-                print(f"[edit_renoise] captured donor latent from chunk {chunk_index}")
+            # cut-paste donor capture: stash each plan's golden chunk as it
+            # flows past. Plan-local storage is required when several repairs
+            # with different donors are accumulated in one causal replay.
+            for donor_cfg in self._static_edit_configs():
+                if donor_cfg["collage"] and chunk_index == donor_cfg["donor_chunk"]:
+                    donor = latents.detach().clone()
+                    donor_cfg["_donor"] = donor
+                    if donor_cfg is self.edit_renoise:
+                        self._edit_donor = donor
+                    print(
+                        f"[edit_renoise] captured donor latent from chunk {chunk_index} "
+                        f"for range [{donor_cfg['chunk_start']}, {donor_cfg['chunk_end']}]"
+                    )
 
             # SDEdit repair pass: masked renoise + re-denoise with the repair
             # prompt. Replaces `latents` so both the decoded output (3.2) and
@@ -1089,6 +1104,8 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
             # is the static edit_renoise block (legacy, priority) or a
             # runtime-installed repair plan (agent edit_shot action).
             _edit_cfg = self._active_edit_cfg(chunk_index)
+            if parent_replay is not None:
+                latents = parent_replay.before_edit(chunk_index, latents)
             if _edit_cfg is not None:
                 latents = self._apply_edit_renoise(
                     latents,
@@ -1101,6 +1118,13 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
                     batch_size=batch_size,
                     cfg=_edit_cfg,
                 )
+                if _edit_cfg.get("restore_authored_text", False):
+                    # The repair pass populated cross-attention with its prompt.
+                    # Recache must explicitly return to the authored condition.
+                    for block in self.crossattn_cache_pos:
+                        block["is_init"] = False
+            if parent_replay is not None:
+                latents = parent_replay.before_recache(chunk_index, latents)
 
             # Step 3.2: record the model's output
             output[:, cache_start_frame:cache_start_frame + current_num_frames] = latents
@@ -1424,10 +1448,20 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
             and self.edit_renoise["chunk_start"] <= chunk_index <= self.edit_renoise["chunk_end"]
         ):
             return self.edit_renoise
+        for plan in getattr(self, "edit_renoise_plans", []):
+            if plan["chunk_start"] <= chunk_index <= plan["chunk_end"]:
+                return plan
         plan = self._runtime_edit_plan
         if plan is not None and plan["chunk_start"] <= chunk_index <= plan["chunk_end"]:
             return plan
         return None
+
+    def _static_edit_configs(self):
+        configs = []
+        if self.edit_renoise is not None:
+            configs.append(self.edit_renoise)
+        configs.extend(getattr(self, "edit_renoise_plans", []))
+        return configs
 
     def set_runtime_edit_plan(
         self,
@@ -1521,7 +1555,16 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
                 self._edit_masks = {int(k): v for k, v in payload["masks"].items()}
             masks = self._edit_masks
         else:
-            masks = cfg["masks"]
+            masks = cfg.get("masks")
+            if masks is None:
+                masks = cfg.get("_masks")
+            if masks is None:
+                mask_path = cfg.get("mask_path", "")
+                if not mask_path:
+                    raise ValueError("edit_renoise plan requires masks or mask_path")
+                payload = torch.load(mask_path, map_location="cpu", weights_only=False)
+                masks = {int(k): v for k, v in payload["masks"].items()}
+                cfg["_masks"] = masks
         soft = masks.get(int(chunk_index))
         if soft is None:
             return None
@@ -1536,7 +1579,7 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
         ).squeeze(1)  # [F, H, W]
         return m.unsqueeze(0).unsqueeze(2).to(device=device, dtype=dtype)
 
-    def _build_collage(self, x0_ref, mask, chunk_index):
+    def _build_collage(self, x0_ref, mask, chunk_index, cfg=None):
         """Paste the donor subject's latent into each target frame's mask bbox.
 
         Donor patch is cut by the donor frame's CLIPSeg silhouette, optionally
@@ -1544,8 +1587,12 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
         target mask is on. Rough alignment is fine: the entry-sigma renoise
         harmonizes seams, pose, and lighting.
         """
-        cfg = self.edit_renoise
-        donor = self._edit_donor[:, cfg["donor_frame"]].float()  # [B, C, H, W]
+        if cfg is None:
+            cfg = self.edit_renoise
+        donor_source = self._edit_donor if cfg is self.edit_renoise else cfg.get("_donor")
+        if donor_source is None:
+            raise RuntimeError("collage edit has no captured donor latent")
+        donor = donor_source[:, cfg["donor_frame"]].float()  # [B, C, H, W]
         dm_payload = torch.load(cfg["donor_mask_path"], map_location="cpu",
                                 weights_only=False)
         dsoft = dm_payload["masks"][cfg["donor_chunk"]][cfg["donor_frame"]]
@@ -1593,7 +1640,10 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
               f"chunk {cfg['donor_chunk']} frame {cfg['donor_frame']} "
               f"(flip={cfg['donor_flip']}, paste_pin={cfg['paste_pin']}, "
               f"core={float(core.mean()):.3f})")
-        self._edit_paste_core = core
+        if cfg is self.edit_renoise:
+            self._edit_paste_core = core
+        else:
+            cfg["_paste_core"] = core
         return out
 
     def _apply_edit_renoise(
@@ -1659,20 +1709,29 @@ class CausalDiffusionInferencePipeline(torch.nn.Module):
         ).to(latents.dtype)
 
         x0_init = x0_ref
-        self._edit_paste_core = None
+        if cfg is self.edit_renoise:
+            self._edit_paste_core = None
+        else:
+            cfg["_paste_core"] = None
         if cfg["collage"]:
-            if self._edit_donor is None:
+            donor_source = self._edit_donor if cfg is self.edit_renoise else cfg.get("_donor")
+            if donor_source is None:
                 print(f"[edit_renoise] chunk {chunk_index}: no donor captured, "
                       "falling back to plain renoise")
             else:
-                x0_init = self._build_collage(x0_ref, mask, chunk_index)
+                x0_init = self._build_collage(x0_ref, mask, chunk_index, cfg=cfg)
 
         # x0_pin: what pinned regions are held to at each step. paste_pin mode
         # holds the pasted core to its clean golden value and shrinks the
         # repaint region to the seam ring + non-core mask.
         x0_pin = x0_ref
-        if cfg["paste_pin"] and self._edit_paste_core is not None:
-            core = self._edit_paste_core
+        paste_core = (
+            self._edit_paste_core
+            if cfg is self.edit_renoise
+            else cfg.get("_paste_core")
+        )
+        if cfg["paste_pin"] and paste_core is not None:
+            core = paste_core
             x0_pin = core * x0_init + (1.0 - core) * x0_ref
             mask = mask * (1.0 - core)
 

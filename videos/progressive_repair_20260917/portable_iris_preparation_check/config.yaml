@@ -1,0 +1,70 @@
+denoising_step_list:
+- 1000
+- 750
+- 500
+- 250
+warp_denoising_step: true
+num_frame_per_block: 3
+model_name: Wan2.1-T2V-1.3B
+model_kwargs:
+  local_attn_size: 12
+  timestep_shift: 5.0
+  sink_size: 1
+  memory_size: 6
+  recent_exclude: 5
+  use_latentmem: true
+  compression_method: ae
+  ae_ckpt: checkpoints/ae_latent_mem.pt
+generator_ckpt: checkpoints/longlive_base.pt
+lora_ckpt: checkpoints/longlive_lora.pt
+adapter:
+  type: lora
+  rank: 256
+  alpha: 256
+  dropout: 0.0
+  dtype: bfloat16
+  verbose: false
+data_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/portable_iris_preparation_check/initial_prompt.txt
+output_folder: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/portable_iris_preparation_check/videos
+inference_iter: -1
+skip_existing: false
+num_output_frames: 241
+use_ema: false
+seed: 0
+num_samples: 1
+save_with_index: true
+global_sink: true
+context_noise: 0
+adapter_diagnostics_dir: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/portable_iris_preparation_check/diagnostics
+timed_segments:
+- seconds: 10
+  prompts:
+  - Iris stands at the flower shop wrapping table, arranging fresh stems from the
+    nearby buckets. Soft natural light filters through, casting gentle shadows.
+- seconds: 10
+  prompts:
+  - Iris pauses at the flower shop wrapping table, stepping back to check the arrangement
+    from another angle. Her curly red hair catches the soft natural light, highlighting
+    the delicate flowers.
+- seconds: 10
+  prompts:
+  - Iris leans forward at the flower shop wrapping table, adjusting a small vase in
+    the center. Her moss green coat brushes against the flowers as she carefully aligns
+    it.
+- seconds: 10
+  prompts:
+  - Iris stands at the flower shop wrapping table, studying the result of her arrangement.
+    Her moss green coat remains still as she examines each flower, ensuring everything
+    is perfect.
+- seconds: 10
+  prompts:
+  - Iris stands at the flower shop wrapping table, making one final correction to
+    the setup. She straightens a few stems, her moss green coat moving slightly with
+    her movements. The soft natural light enhances the vibrant colors of the flowers.
+- seconds: 10
+  prompts:
+  - Iris steps back slightly at the flower shop wrapping table, confirming the setup
+    is complete. Her moss green coat settles as she stands still, satisfied with the
+    arrangement. The soft natural light continues to highlight the vibrant colors
+    of the flowers.
+audit_prompt_switch: true

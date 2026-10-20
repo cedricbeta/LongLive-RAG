@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "selection_policy": "Fixed exploratory cases selected from pre-existing defects before observing feedback-v1 results; all cases including failures must be shown. These are development examples, not a held-out benchmark.",
+  "cases": [
+    {"scene": "ns310_at_the_flower_shop", "category": "garment_drift", "focus_shots_0based": [0], "reason_zh": "衣服颜色走样：看局部重画能否保留人物身份与后续连续性。", "prior_run": "videos/benchmark_20260911/armC_newjudge"},
+    {"scene": "ns090_iris_stands_at_the", "category": "hair_drift", "focus_shots_0based": [0, 1], "reason_zh": "头发颜色走样：看规划选择重画强度后能否避免脸部副作用。", "prior_run": "videos/benchmark_20260911/armC_newjudge"},
+    {"scene": "ns020_at_the_studio_equipment", "category": "missing_entity", "focus_shots_0based": [1], "reason_zh": "缺席人物：旧改写连续三次未通过，看视觉失败反馈是否有帮助。", "prior_run": "videos/benchmark_20260913/absent_regen"},
+    {"scene": "ns050_at_the_market_produce", "category": "future_regression", "focus_shots_0based": [1, 2], "reason_zh": "当前通过但后续回退：检查是否利用具体失败证据继续修。", "prior_run": "videos/benchmark_20260913/absent_regen"},
+    {"scene": "ns190_in_the_hotel_lobby", "category": "identity_side_effect", "focus_shots_0based": [2], "reason_zh": "旧版接受过但曾发现身份副作用：必须人工检查脸，不能仅看裁判通过数。", "prior_run": "videos/benchmark_20260911/armC_newjudge"},
+    {"scene": "ns130_at_the_studio_equipment", "category": "unchanged_control", "focus_shots_0based": [0, 1, 2, 3, 4, 5], "reason_zh": "旧裁判认为无需修复的对照：检查新流程是否保持原视频、不产生无谓编辑。", "prior_run": "videos/benchmark_20260911/armC_newjudge"}
+  ],
+  "budget": {"max_edits_per_shot": 3, "commit_lookahead_shots": 2, "max_repair_seconds": 1800, "case_timeout_seconds": 5400},
+  "comparison_policy": "baseline = exact archived A video; original = pre-change dirty-worktree source rerun with identical current flags; feedback = fixed constraint adapter plus offline feedback planner. Equal maximum edit counts, not claimed equal total compute: planner calls and wall times must be reported."
+}

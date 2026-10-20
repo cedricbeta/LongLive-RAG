@@ -1,0 +1,70 @@
+denoising_step_list:
+- 1000
+- 750
+- 500
+- 250
+warp_denoising_step: true
+num_frame_per_block: 3
+model_name: Wan2.1-T2V-1.3B
+model_kwargs:
+  local_attn_size: 12
+  timestep_shift: 5.0
+  sink_size: 1
+  memory_size: 6
+  recent_exclude: 5
+  use_latentmem: true
+  compression_method: ae
+  ae_ckpt: checkpoints/ae_latent_mem.pt
+generator_ckpt: checkpoints/longlive_base.pt
+lora_ckpt: checkpoints/longlive_lora.pt
+adapter:
+  type: lora
+  rank: 256
+  alpha: 256
+  dropout: 0.0
+  dtype: bfloat16
+  verbose: false
+data_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_development_pilot12_batch5_v1/ns050/baseline/initial_prompt.txt
+output_folder: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_development_pilot12_batch5_v1/ns050/baseline/videos
+inference_iter: -1
+skip_existing: false
+num_output_frames: 241
+use_ema: false
+seed: 0
+num_samples: 1
+save_with_index: true
+global_sink: true
+context_noise: 0
+adapter_diagnostics_dir: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_development_pilot12_batch5_v1/ns050/baseline/diagnostics
+timed_segments:
+- seconds: 10
+  prompts:
+  - At the market produce table, Luca and Milan stand side by side, both engaged in
+    selecting fresh produce. Luca has slightly longer dark hair and wears a navy knit
+    sweater, while Milan sports neat dark hair and a black zip jacket.
+- seconds: 10
+  prompts:
+  - At the market produce table, Dario approaches, standing next to Luca. Luca begins
+    to hand a bag of apples to Dario, their hands briefly meeting. Milan steps back
+    to give them some space.
+- seconds: 10
+  prompts:
+  - At the market produce table, Dario takes the bag of apples from Luca, nodding
+    in thanks. Milan watches from a step back, while Nico, who was browsing nearby,
+    turns to leave.
+- seconds: 10
+  prompts:
+  - At the market produce table, Luca and Milan exchange a quick glance as Dario walks
+    away. Nico pauses, looking back at the table before continuing his departure.
+    The young men adjust their positions, with Luca standing and Milan sitting on
+    a nearby stool.
+- seconds: 10
+  prompts:
+  - At the market produce table, Luca stands while Milan remains seated on the stool.
+    They continue their exchange, occasionally glancing around the bustling market.
+- seconds: 10
+  prompts:
+  - At the market produce table, Luca and Milan stay in frame, maintaining their positions.
+    The young men continue their conversation, their eyes occasionally drifting to
+    the surrounding stalls and passing shoppers.
+audit_prompt_switch: false

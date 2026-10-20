@@ -1,0 +1,94 @@
+denoising_step_list:
+- 1000
+- 750
+- 500
+- 250
+warp_denoising_step: true
+num_frame_per_block: 3
+model_name: Wan2.1-T2V-1.3B
+model_kwargs:
+  local_attn_size: 12
+  timestep_shift: 5.0
+  sink_size: 1
+  memory_size: 6
+  recent_exclude: 5
+  use_latentmem: true
+  compression_method: ae
+  ae_ckpt: checkpoints/ae_latent_mem.pt
+generator_ckpt: checkpoints/longlive_base.pt
+lora_ckpt: checkpoints/longlive_lora.pt
+adapter:
+  type: lora
+  rank: 256
+  alpha: 256
+  dropout: 0.0
+  dtype: bfloat16
+  verbose: false
+data_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_kai_silver_hair_v1/candidate/initial_prompt.txt
+output_folder: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_kai_silver_hair_v1/candidate/videos
+inference_iter: -1
+skip_existing: false
+num_output_frames: 241
+use_ema: false
+seed: 0
+num_samples: 1
+save_with_index: true
+global_sink: true
+context_noise: 0
+adapter_diagnostics_dir: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_kai_silver_hair_v1/candidate/diagnostics
+timed_segments:
+- seconds: 10
+  prompts:
+  - Kai, an older man with silver hair and a brown trench coat, stands at the classroom
+    front table, focusing intently on a stack of papers. Soft afternoon light bathes
+    the orderly classroom, highlighting the chalkboard and front desk.
+- seconds: 10
+  prompts:
+  - Kai continues to stand at the classroom front table, sorting through the papers.
+    Ava, a petite woman with straight blonde hair and a denim jacket, enters from
+    the side and quietly joins the space, standing beside him.
+- seconds: 10
+  prompts:
+  - Kai and Ava stand at the classroom front table, leaning over the same stack of
+    papers. They exchange a few glances, their hands occasionally brushing as they
+    sort through the documents. The soft afternoon light continues to illuminate the
+    orderly classroom.
+- seconds: 10
+  prompts:
+  - Kai stands at the classroom front table, looking pensively at the papers they
+    just sorted. He reflects on the interaction with Ava, who has just left the room.
+    The soft afternoon light still bathes the orderly classroom.
+- seconds: 10
+  prompts:
+  - Kai stands at the classroom front table, gently placing the papers back in their
+    original position. He straightens the stack carefully, ensuring everything is
+    in order. The soft afternoon light still bathes the orderly classroom.
+- seconds: 10
+  prompts:
+  - Kai stands at the classroom front table, settling the papers in their final place.
+    He steps back, satisfied that everything is perfectly arranged. The soft afternoon
+    light still bathes the orderly classroom.
+audit_prompt_switch: false
+repair_request:
+  schema_version: 1
+  entry_sigma: 1.0
+  parent_branch_id: native_ns280_seed0
+  latent_range:
+  - 81
+  - 121
+  noise_seed: 4245
+  prompts:
+  - Kai and Ava stand at the classroom front table, leaning over the same stack of
+    papers. They exchange a few glances, their hands occasionally brushing as they
+    sort through the documents. The soft afternoon light continues to illuminate the
+    orderly classroom. Kai has silver hair.
+  parent_latents_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_sampler_cases_v1/ns280/baseline/diagnostics/latents_0000.pt
+  parent_latents_sha256: 797d77a4d91b46c95aefdc9c8b0de32a3de211041f57fb716713c692b9e0d2fc
+  parent_video_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_sampler_cases_v1/ns280/baseline/videos/rank0-0-0_lora.mp4
+  parent_video_sha256: 59aa1d38f032a1c23c66bb0e4ea367952fab201cbe3e6d5123b8f2865df948ce
+  parent_timing_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_sampler_cases_v1/ns280/baseline/diagnostics/timing_0000.json
+  parent_timing_sha256: 1769e0fe3226efee8115cf7567c1c9f805b06c82fc4f0b0ee93e9f2d8874009e
+  parent_config_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_sampler_cases_v1/ns280/baseline/config.yaml
+  parent_config_sha256: 6106190f13cdde25f80173c0eaa3be79341908d65fc6906df8e79103965b1b36
+  mask_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_kai_silver_hair_v1/hair_mask/mask.pt
+  mask_sha256: 23300b4ecca226b46aaf906b16b267e20af0578e10644033c20bb29754289610

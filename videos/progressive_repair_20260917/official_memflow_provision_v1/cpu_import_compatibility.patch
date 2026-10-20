@@ -1,0 +1,26 @@
+diff --git a/utils/memory.py b/utils/memory.py
+index bf3b562..3c44c52 100644
+--- a/utils/memory.py
++++ b/utils/memory.py
+@@ -6,7 +6,7 @@ import torch
+ 
+ 
+ cpu = torch.device('cpu')
+-gpu = torch.device(f'cuda:{torch.cuda.current_device()}')
++gpu = torch.device(f'cuda:{torch.cuda.current_device()}') if torch.cuda.is_available() else cpu
+ gpu_complete_modules = []
+ 
+ 
+diff --git a/wan/modules/t5.py b/wan/modules/t5.py
+index c841b04..2a1e279 100644
+--- a/wan/modules/t5.py
++++ b/wan/modules/t5.py
+@@ -475,7 +475,7 @@ class T5EncoderModel:
+         self,
+         text_len,
+         dtype=torch.bfloat16,
+-        device=torch.cuda.current_device(),
++        device=torch.cuda.current_device() if torch.cuda.is_available() else torch.device('cpu'),
+         checkpoint_path=None,
+         tokenizer_path=None,
+         shard_fn=None,

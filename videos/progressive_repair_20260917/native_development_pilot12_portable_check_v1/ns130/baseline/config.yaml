@@ -1,0 +1,69 @@
+denoising_step_list:
+- 1000
+- 750
+- 500
+- 250
+warp_denoising_step: true
+num_frame_per_block: 3
+model_name: Wan2.1-T2V-1.3B
+model_kwargs:
+  local_attn_size: 12
+  timestep_shift: 5.0
+  sink_size: 1
+  memory_size: 6
+  recent_exclude: 5
+  use_latentmem: true
+  compression_method: ae
+  ae_ckpt: checkpoints/ae_latent_mem.pt
+generator_ckpt: checkpoints/longlive_base.pt
+lora_ckpt: checkpoints/longlive_lora.pt
+adapter:
+  type: lora
+  rank: 256
+  alpha: 256
+  dropout: 0.0
+  dtype: bfloat16
+  verbose: false
+data_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_development_pilot12_portable_check_v1/ns130/baseline/initial_prompt.txt
+output_folder: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_development_pilot12_portable_check_v1/ns130/baseline/videos
+inference_iter: -1
+skip_existing: false
+num_output_frames: 241
+use_ema: false
+seed: 0
+num_samples: 1
+save_with_index: true
+global_sink: true
+context_noise: 0
+adapter_diagnostics_dir: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_development_pilot12_portable_check_v1/ns130/baseline/diagnostics
+timed_segments:
+- seconds: 10
+  prompts:
+  - At the studio equipment desk, Miles and Luna stand side by side, their focused
+    gazes meeting as they begin to discuss their next project.
+- seconds: 10
+  prompts:
+  - At the studio equipment desk, Miles reaches into a drawer and pulls out a small,
+    sleek remote. He turns to Luna and hands it to her, their hands briefly touching
+    as she takes it.
+- seconds: 10
+  prompts:
+  - At the studio equipment desk, Miles and Luna continue their discussion, examining
+    the remote closely. Luna's fingers trace the buttons, while Miles points out specific
+    features.
+- seconds: 10
+  prompts:
+  - At the studio equipment desk, Miles and Luna inspect the object from two nearby
+    positions while staying in frame. Luna leans in to examine the remote's display,
+    and Miles adjusts the angle of a nearby light to better illuminate it.
+- seconds: 10
+  prompts:
+  - At the studio equipment desk, Luna carefully places the remote back on the cluttered
+    table, her eyes never leaving it. Miles watches closely, his hands resting on
+    the edge of the desk.
+- seconds: 10
+  prompts:
+  - At the studio equipment desk, Luna steps back, satisfied with the placement of
+    the remote. Miles nods, his hands still on the desk, and they share a brief, knowing
+    look before turning to gather their things.
+audit_prompt_switch: false

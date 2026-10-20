@@ -29,7 +29,7 @@ SCHEMA = {
         "entities": {
             "type": "array",
             "minItems": 1,
-            "maxItems": 4,
+            "maxItems": 8,
             "items": {
                 "type": "object",
                 "additionalProperties": False,

@@ -1,0 +1,73 @@
+denoising_step_list:
+- 1000
+- 750
+- 500
+- 250
+warp_denoising_step: true
+num_frame_per_block: 3
+model_name: Wan2.1-T2V-1.3B
+model_kwargs:
+  local_attn_size: 12
+  timestep_shift: 5.0
+  sink_size: 1
+  memory_size: 6
+  recent_exclude: 5
+  use_latentmem: true
+  compression_method: ae
+  ae_ckpt: checkpoints/ae_latent_mem.pt
+generator_ckpt: checkpoints/longlive_base.pt
+lora_ckpt: checkpoints/longlive_lora.pt
+adapter:
+  type: lora
+  rank: 256
+  alpha: 256
+  dropout: 0.0
+  dtype: bfloat16
+  verbose: false
+data_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_development_pilot12_batch3_v1/ns200/baseline/initial_prompt.txt
+output_folder: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_development_pilot12_batch3_v1/ns200/baseline/videos
+inference_iter: -1
+skip_existing: false
+num_output_frames: 241
+use_ema: false
+seed: 0
+num_samples: 1
+save_with_index: true
+global_sink: true
+context_noise: 0
+adapter_diagnostics_dir: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_development_pilot12_batch3_v1/ns200/baseline/diagnostics
+timed_segments:
+- seconds: 10
+  prompts:
+  - At the flower shop wrapping table, Ethan, a young man with tidy brown hair and
+    a dark blue shirt, and Clara, a middle-aged woman with auburn hair and a long
+    tan coat, begin to wrap floral arrangements together.
+- seconds: 10
+  prompts:
+  - At the flower shop wrapping table, Ethan and Clara continue wrapping the floral
+    arrangements. Miles, a slim man with a buzz cut and a charcoal jacket, joins them,
+    carefully selecting ribbons for the bouquets. They note that the silver vase will
+    be needed for the centerpiece later.
+- seconds: 10
+  prompts:
+  - At the flower shop wrapping table, Ethan and Clara are still busy with the floral
+    arrangements. Miles, the slim man with a buzz cut, briefly steps away to fetch
+    the silver vase. A customer enters the shop, interrupting their flow.
+- seconds: 10
+  prompts:
+  - At the flower shop wrapping table, Ethan and Clara resume their work after the
+    customer leaves. Miles returns with the silver vase and places it on the table.
+    Clara finishes the last bouquet and steps back, satisfied with their progress.
+    She then gathers her things and heads out, waving goodbye.
+- seconds: 10
+  prompts:
+  - At the flower shop wrapping table, Ethan and Clara return to the unfinished centerpiece.
+    Ethan picks up the silver vase, while Clara selects a few more flowers to complete
+    the arrangement. They work in tandem, their hands moving with practiced precision.
+- seconds: 10
+  prompts:
+  - At the flower shop wrapping table, Ethan and Clara finish the centerpiece with
+    the final touches. Ethan places the completed arrangement in the silver vase,
+    and Clara steps back to admire their work. They both smile, satisfied with the
+    result, and wrap up the task.
+audit_prompt_switch: false

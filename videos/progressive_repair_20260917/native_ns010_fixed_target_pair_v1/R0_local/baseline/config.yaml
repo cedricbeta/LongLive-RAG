@@ -1,0 +1,91 @@
+denoising_step_list:
+- 1000
+- 750
+- 500
+- 250
+warp_denoising_step: true
+num_frame_per_block: 3
+model_name: Wan2.1-T2V-1.3B
+model_kwargs:
+  local_attn_size: 12
+  timestep_shift: 5.0
+  sink_size: 1
+  memory_size: 6
+  recent_exclude: 5
+  use_latentmem: true
+  compression_method: ae
+  ae_ckpt: checkpoints/ae_latent_mem.pt
+generator_ckpt: checkpoints/longlive_base.pt
+lora_ckpt: checkpoints/longlive_lora.pt
+adapter:
+  type: lora
+  rank: 256
+  alpha: 256
+  dropout: 0.0
+  dtype: bfloat16
+  verbose: false
+data_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_ns010_fixed_target_pair_v1/R0_local/baseline/initial_prompt.txt
+output_folder: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_ns010_fixed_target_pair_v1/R0_local/baseline/videos
+inference_iter: -1
+skip_existing: false
+num_output_frames: 241
+use_ema: false
+seed: 0
+num_samples: 1
+save_with_index: true
+global_sink: true
+context_noise: 0
+adapter_diagnostics_dir: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_ns010_fixed_target_pair_v1/R0_local/baseline/diagnostics
+timed_segments:
+- seconds: 10
+  prompts:
+  - Iris, a middle-aged woman with curly red hair and a moss green coat, stands at
+    the cafe corner table, quietly setting up her notebook and pen.
+- seconds: 10
+  prompts:
+  - Iris stands at the cafe corner table, arranging her notebook and pen. Kai, an
+    older man with silver hair and a brown trench coat, enters from the side and approaches
+    the table, his presence adding a subtle tension to the quiet cafe.
+- seconds: 10
+  prompts:
+  - Iris and Kai stand at the cafe corner table, their hands gently touching the same
+    old book. The soft window light casts a gentle glow, highlighting the subtle tension
+    between them.
+- seconds: 10
+  prompts:
+  - Iris stands at the cafe corner table, holding the old book tightly. She watches
+    as Kai exits the cafe, the door closing behind him. The soft window light still
+    illuminates the small wooden table.
+- seconds: 10
+  prompts:
+  - Iris stands at the cafe corner table, carefully placing the old book back on the
+    table where it was earlier. The soft window light continues to illuminate the
+    small wooden table, casting a warm glow over the scene.
+- seconds: 10
+  prompts:
+  - Iris stands at the cafe corner table, settling the old book in its final place.
+    Her hands move with a sense of finality, and the soft window light still illuminates
+    the small wooden table.
+audit_prompt_switch: false
+repair_request:
+  schema_version: 1
+  entry_sigma: 1.0
+  parent_branch_id: native_ns010_seed0
+  latent_range:
+  - 0
+  - 41
+  noise_seed: 4243
+  prompts:
+  - Iris, a middle-aged woman with curly red hair and a moss green coat, stands at
+    the cafe corner table, quietly setting up her notebook and pen. Iris has curly
+    red hair.
+  parent_latents_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_development_pilot12_batch2_v1/ns010/baseline/diagnostics/latents_0000.pt
+  parent_latents_sha256: ce2efe605f7e41cff1d8c971fb126decbf02d908b830cd13665e73bdd4b91388
+  parent_video_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_development_pilot12_batch2_v1/ns010/baseline/videos/rank0-0-0_lora.mp4
+  parent_video_sha256: 98e1d9625d69c3ef5769bd2f63cb2acef9c355f053973c3150245f203f89bf26
+  parent_timing_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_development_pilot12_batch2_v1/ns010/baseline/diagnostics/timing_0000.json
+  parent_timing_sha256: 84a336a139ce8e80e850a9b5fa8ffab5f45c2d8b601972ea97c6a6b08230cdc1
+  parent_config_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_development_pilot12_batch2_v1/ns010/baseline/config.yaml
+  parent_config_sha256: 5abaf79d166d4d32dbbb657dbcbeca094c432284ea17eb8810b8eba703aa791f
+  mask_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_ns010_fixed_target_pair_v1/garment_mask/mask.pt
+  mask_sha256: 92b8e3a2ddc61cbb9366b466d6bf045a167f5f07f103af72fd7f1814b1dac2ae

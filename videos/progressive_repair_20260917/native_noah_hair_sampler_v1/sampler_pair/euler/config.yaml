@@ -1,0 +1,91 @@
+denoising_step_list:
+- 1000
+- 750
+- 500
+- 250
+warp_denoising_step: true
+num_frame_per_block: 3
+model_name: Wan2.1-T2V-1.3B
+model_kwargs:
+  local_attn_size: 12
+  timestep_shift: 5.0
+  sink_size: 1
+  memory_size: 6
+  recent_exclude: 5
+  use_latentmem: true
+  compression_method: ae
+  ae_ckpt: checkpoints/ae_latent_mem.pt
+generator_ckpt: checkpoints/longlive_base.pt
+lora_ckpt: checkpoints/longlive_lora.pt
+adapter:
+  type: lora
+  rank: 256
+  alpha: 256
+  dropout: 0.0
+  dtype: bfloat16
+  verbose: false
+data_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_noah_hair_sampler_v1/sampler_pair/euler/initial_prompt.txt
+output_folder: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_noah_hair_sampler_v1/sampler_pair/euler/videos
+inference_iter: -1
+skip_existing: false
+num_output_frames: 241
+use_ema: false
+seed: 0
+num_samples: 1
+save_with_index: true
+global_sink: true
+context_noise: 0
+adapter_diagnostics_dir: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_noah_hair_sampler_v1/sampler_pair/euler/diagnostics
+timed_segments:
+- seconds: 10
+  prompts:
+  - In the library reading room, Noah, a tall man with a shaved head and a dark green
+    work shirt, quietly arranges items on the table. He stands and sits naturally,
+    mixing between poses.
+- seconds: 10
+  prompts:
+  - In the library reading room, Noah pauses and steps back to check the arrangement
+    from another angle. He runs his hand through his shaved head, contemplating the
+    layout.
+- seconds: 10
+  prompts:
+  - In the library reading room, Noah leans over the table and carefully adjusts a
+    small, ornate bookend near the center. He straightens up, satisfied with the placement.
+- seconds: 10
+  prompts:
+  - In the library reading room, Noah sits down and studies the result of his adjustments.
+    His eyes scan the table, ensuring everything is in perfect order.
+- seconds: 10
+  prompts:
+  - In the library reading room, Noah stands up and makes one final correction to
+    the setup. He moves a book slightly to the left, ensuring everything is perfectly
+    aligned.
+- seconds: 10
+  prompts:
+  - In the library reading room, Noah steps back slightly and confirms the setup is
+    complete. He nods, satisfied with the arrangement, and runs his hand over the
+    smooth wooden table.
+audit_prompt_switch: false
+repair_request:
+  schema_version: 1
+  entry_sigma: 1.0
+  parent_branch_id: native_ns000_seed0
+  latent_range:
+  - 0
+  - 41
+  noise_seed: 4243
+  prompts:
+  - In the library reading room, Noah, a tall man with a shaved head and a dark green
+    work shirt, quietly arranges items on the table. He stands and sits naturally,
+    mixing between poses. Noah has a shaved head.
+  parent_latents_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_sampler_cases_v1/ns000/baseline/diagnostics/latents_0000.pt
+  parent_latents_sha256: 261ac3a851e60568b6cddede46af36b4a34c0742dd01cde6b5ebf03ae8b84f4f
+  parent_video_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_sampler_cases_v1/ns000/baseline/videos/rank0-0-0_lora.mp4
+  parent_video_sha256: 0aea8006fefd9ae3165b68bad2db21116d53c9776793ba72771f0766dcb7bde1
+  parent_timing_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_sampler_cases_v1/ns000/baseline/diagnostics/timing_0000.json
+  parent_timing_sha256: a65ced408a472ba62557168e25ec63a6bfb5e31ef4767d095af1b7dd8a266fb5
+  parent_config_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_sampler_cases_v1/ns000/baseline/config.yaml
+  parent_config_sha256: 93b96e39d1506f77c177dcf8a812c851dceb7bf800692ba72346e4acf247e05a
+  mask_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_noah_hair_sampler_v1/hair_mask/mask.pt
+  mask_sha256: 8519ecf005cedca20f0d83512141eeec7d5a064887f0b6039c48db7262c01e62
+  repair_sampler: fixed_noise_euler_v1

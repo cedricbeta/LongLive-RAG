@@ -1,0 +1,73 @@
+denoising_step_list:
+- 1000
+- 750
+- 500
+- 250
+warp_denoising_step: true
+num_frame_per_block: 3
+model_name: Wan2.1-T2V-1.3B
+model_kwargs:
+  local_attn_size: 12
+  timestep_shift: 5.0
+  sink_size: 1
+  memory_size: 6
+  recent_exclude: 5
+  use_latentmem: true
+  compression_method: ae
+  ae_ckpt: checkpoints/ae_latent_mem.pt
+generator_ckpt: checkpoints/longlive_base.pt
+lora_ckpt: checkpoints/longlive_lora.pt
+adapter:
+  type: lora
+  rank: 256
+  alpha: 256
+  dropout: 0.0
+  dtype: bfloat16
+  verbose: false
+data_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_pilot_batch2_portable_check_v1/ns070/baseline/initial_prompt.txt
+output_folder: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_pilot_batch2_portable_check_v1/ns070/baseline/videos
+inference_iter: -1
+skip_existing: false
+num_output_frames: 241
+use_ema: false
+seed: 0
+num_samples: 1
+save_with_index: true
+global_sink: true
+context_noise: 0
+adapter_diagnostics_dir: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_pilot_batch2_portable_check_v1/ns070/baseline/diagnostics
+timed_segments:
+- seconds: 10
+  prompts:
+  - At the classroom front table, Noah, Iris, and Kai sit in clear positions, establishing
+    a cooperative task under soft afternoon light.
+- seconds: 10
+  prompts:
+  - At the classroom front table, Noah stands up and steps away, making room for Ava
+    to join the team. Kai and Iris shift their positions slightly to accommodate the
+    new arrangement, maintaining their focus on the task at hand.
+- seconds: 10
+  prompts:
+  - At the classroom front table, Iris, Kai, Ava, and Mina perform a shared step together,
+    each taking on a specific role. Iris holds a notebook, Kai adjusts a projector,
+    Ava arranges papers, and Mina sets up a laptop. They work in sync, their movements
+    coordinated and precise.
+- seconds: 10
+  prompts:
+  - At the classroom front table, Iris, Kai, Ava, and Mina immediately refer back
+    to the just-changed arrangement. Iris notes the projector's position, Kai checks
+    the alignment, Ava confirms the paper layout, and Mina ensures the laptop is ready.
+    They refine their setup, making small adjustments to improve efficiency.
+- seconds: 10
+  prompts:
+  - At the classroom front table, Noah, Iris, and Kai sit together, continuing their
+    coordinated task. Noah reviews the notes, Iris monitors the projector, and Kai
+    ensures everything is aligned. They work seamlessly, making minor adjustments
+    to perfect their setup.
+- seconds: 10
+  prompts:
+  - At the classroom front table, Noah, Iris, Kai, Ava, and Mina sit together, confirming
+    the updated arrangement. Noah nods in approval, Iris gives a final check to the
+    projector, and Kai adjusts the last few details. Ava and Mina finish the current
+    step, ensuring everything is in place.
+audit_prompt_switch: false

@@ -1,0 +1,71 @@
+denoising_step_list:
+- 1000
+- 750
+- 500
+- 250
+warp_denoising_step: true
+num_frame_per_block: 3
+model_name: Wan2.1-T2V-1.3B
+model_kwargs:
+  local_attn_size: 12
+  timestep_shift: 5.0
+  sink_size: 1
+  memory_size: 6
+  recent_exclude: 5
+  use_latentmem: true
+  compression_method: ae
+  ae_ckpt: checkpoints/ae_latent_mem.pt
+generator_ckpt: checkpoints/longlive_base.pt
+lora_ckpt: checkpoints/longlive_lora.pt
+adapter:
+  type: lora
+  rank: 256
+  alpha: 256
+  dropout: 0.0
+  dtype: bfloat16
+  verbose: false
+data_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_ns040_posture_probe_v1/P_prompt/initial_prompt.txt
+output_folder: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_ns040_posture_probe_v1/P_prompt/videos
+inference_iter: -1
+skip_existing: false
+num_output_frames: 241
+use_ema: false
+seed: 0
+num_samples: 1
+save_with_index: true
+global_sink: true
+context_noise: 0
+adapter_diagnostics_dir: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_ns040_posture_probe_v1/P_prompt/diagnostics
+timed_segments:
+- seconds: 10
+  prompts:
+  - At the rooftop bar high table, Nora and Ethan stand, their eyes meeting as they
+    share a moment of connection. The glowing skyline and string lights create a romantic
+    backdrop.
+- seconds: 10
+  prompts:
+  - At the rooftop bar high table, Nora and Ethan stand, the glowing skyline and string
+    lights casting a warm glow around them. Nora reaches into her pocket and passes
+    a small, silver object to Ethan, their hands briefly touching. Nora and Ethan
+    are both standing upright on their feet throughout this interaction.
+- seconds: 10
+  prompts:
+  - At the rooftop bar high table, Nora and Ethan stand, the small, silver object
+    now in Ethan's hand. They continue their discussion, their eyes fixed on the object,
+    the skyline glowing softly behind them.
+- seconds: 10
+  prompts:
+  - At the rooftop bar high table, Nora and Ethan stand close, inspecting the small,
+    silver object from different angles. They move slightly to get a better view,
+    staying within the frame, the skyline a constant, glowing presence.
+- seconds: 10
+  prompts:
+  - At the rooftop bar high table, Nora gently places the small, silver object back
+    on the table. Ethan watches closely, his eyes following her every move. The skyline
+    glows softly in the background.
+- seconds: 10
+  prompts:
+  - At the rooftop bar high table, Nora and Ethan stand, the small, silver object
+    now back on the table. They finish their exchange, their expressions thoughtful,
+    the skyline still glowing softly behind them.
+audit_prompt_switch: false

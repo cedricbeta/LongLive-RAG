@@ -1,0 +1,104 @@
+model_kwargs:
+  model_name: Wan2.2-TI2V-5B
+  timestep_shift: 5.0
+  num_frame_per_block: 8
+  local_attn_size: 32
+use_ema: false
+output_folder: /home/chendong/video-gen/LongLive-RAG/videos/benchmark_20260911/armC_newjudge/ns190_in_the_hotel_lobby/renders
+num_samples: 1
+save_latents_only: false
+num_output_frames: 384
+data:
+  data_path: /home/chendong/video-gen/LongLive-RAG/videos/benchmark_20260911/armC_newjudge/ns190_in_the_hotel_lobby/data
+  image_or_video_shape:
+  - 1
+  - 384
+  - 48
+  - 44
+  - 80
+inference:
+  sampling_steps: 4
+  sink_size: 8
+  multiview_per_perspective: false
+  guidance_scale: 1.0
+  multi_shot_sink: true
+  multi_shot_rope_offset: 8
+  scene_cut_prefix: 'The camera cuts to another shot of the same continuous event. '
+  streaming_vae: true
+  async_vae: false
+  vae_decode_chunk_size: 1
+  vae_type: wan
+  vae_device: cuda:0
+  kv_rag:
+    enabled: false
+    layers:
+    - 0
+    - 7
+    - 14
+    - 21
+    - 29
+    top_k: 2
+    max_entries: 32
+    max_frames_per_entry: 1
+    max_tokens_per_entry: 1024
+    min_frame_gap: 0
+    retrieve_during_denoise: true
+    retrieve_during_recache: false
+    store_after_recache: true
+    token_policy: uniform
+    similarity: cosine
+    store_on_cpu: false
+    verbose: true
+    summary_prerope: true
+    summary_per_head: true
+    reinject_rope: true
+    frame_aligned_store: true
+    require_frame_aligned: true
+    persistent_logit_bias_lambda: 0.0
+    scene_memory_enabled: true
+    scene_memory_max_entries: 8
+    scene_score_bonus: 0.15
+    boundary_inject_anchors: 2
+    retrieval_key_mode: subject_identity
+    retrieval_key_centroids: 4
+    retrieval_key_top_m: 8
+    retrieval_value_mode: raw
+  output_folder: /home/chendong/video-gen/LongLive-RAG/videos/benchmark_20260911/armC_newjudge/ns190_in_the_hotel_lobby/renders
+  filename_prefix: edit_shot02_attempt1
+  filename_from_sample_name: true
+  edit_renoise_plans:
+  - enabled: true
+    chunk_start: 0
+    chunk_end: 7
+    entry_sigma: 1.0
+    mask_path: /home/chendong/video-gen/LongLive-RAG/videos/benchmark_20260911/armC_newjudge/ns190_in_the_hotel_lobby/entity_judge/shot00_attempt1_23d87ea6af14/repaint_masks.pt
+    prompt: In the hotel lobby sofa area, Iris, a middle-aged woman with curly red
+      hair and a moss green coat, sits on a low sofa, her legs crossed, working on
+      her laptop. Iris is a middle-aged woman with curly red hair and a moss green
+      coat.
+    noise_seed: 4244
+  - enabled: true
+    chunk_start: 8
+    chunk_end: 15
+    entry_sigma: 1.0
+    mask_path: /home/chendong/video-gen/LongLive-RAG/videos/benchmark_20260911/armC_newjudge/ns190_in_the_hotel_lobby/entity_judge/shot01_attempt0_6cf6e3dafc4f/repaint_masks.pt
+    prompt: In the hotel lobby sofa area, Kai, an older man with silver hair and a
+      brown trench coat, enters from the side and quietly takes a seat next to Iris.
+      She glances up briefly, then returns to her work. Kai is an older man with silver
+      hair and a brown trench coat.
+    noise_seed: 4243
+  - enabled: true
+    chunk_start: 16
+    chunk_end: 23
+    entry_sigma: 1.0
+    mask_path: /home/chendong/video-gen/LongLive-RAG/videos/benchmark_20260911/armC_newjudge/ns190_in_the_hotel_lobby/entity_judge/shot02_attempt0_c5f3ffa9bdad/repaint_masks.pt
+    prompt: In the hotel lobby sofa area, Iris and Kai lean over a small, ornate notebook
+      on the coffee table. Iris points to a page, and Kai nods, his eyes following
+      her finger. They remain close, the warm gold lighting casting soft shadows around
+      them. Kai is an older man with silver hair and a brown trench coat.
+    noise_seed: 4243
+checkpoints:
+  generator_ckpt: checkpoints/longlive2_5b/longlive2_merged_generator.pt
+logging:
+  seed: 0
+filename_from_sample_name: true

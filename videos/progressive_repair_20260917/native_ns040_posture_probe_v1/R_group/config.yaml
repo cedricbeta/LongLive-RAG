@@ -1,0 +1,93 @@
+denoising_step_list:
+- 1000
+- 750
+- 500
+- 250
+warp_denoising_step: true
+num_frame_per_block: 3
+model_name: Wan2.1-T2V-1.3B
+model_kwargs:
+  local_attn_size: 12
+  timestep_shift: 5.0
+  sink_size: 1
+  memory_size: 6
+  recent_exclude: 5
+  use_latentmem: true
+  compression_method: ae
+  ae_ckpt: checkpoints/ae_latent_mem.pt
+generator_ckpt: checkpoints/longlive_base.pt
+lora_ckpt: checkpoints/longlive_lora.pt
+adapter:
+  type: lora
+  rank: 256
+  alpha: 256
+  dropout: 0.0
+  dtype: bfloat16
+  verbose: false
+data_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_ns040_posture_probe_v1/R_group/initial_prompt.txt
+output_folder: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_ns040_posture_probe_v1/R_group/videos
+inference_iter: -1
+skip_existing: false
+num_output_frames: 241
+use_ema: false
+seed: 0
+num_samples: 1
+save_with_index: true
+global_sink: true
+context_noise: 0
+adapter_diagnostics_dir: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_ns040_posture_probe_v1/R_group/diagnostics
+timed_segments:
+- seconds: 10
+  prompts:
+  - At the rooftop bar high table, Nora and Ethan stand, their eyes meeting as they
+    share a moment of connection. The glowing skyline and string lights create a romantic
+    backdrop.
+- seconds: 10
+  prompts:
+  - At the rooftop bar high table, Nora and Ethan stand, the glowing skyline and string
+    lights casting a warm glow around them. Nora reaches into her pocket and passes
+    a small, silver object to Ethan, their hands briefly touching.
+- seconds: 10
+  prompts:
+  - At the rooftop bar high table, Nora and Ethan stand, the small, silver object
+    now in Ethan's hand. They continue their discussion, their eyes fixed on the object,
+    the skyline glowing softly behind them.
+- seconds: 10
+  prompts:
+  - At the rooftop bar high table, Nora and Ethan stand close, inspecting the small,
+    silver object from different angles. They move slightly to get a better view,
+    staying within the frame, the skyline a constant, glowing presence.
+- seconds: 10
+  prompts:
+  - At the rooftop bar high table, Nora gently places the small, silver object back
+    on the table. Ethan watches closely, his eyes following her every move. The skyline
+    glows softly in the background.
+- seconds: 10
+  prompts:
+  - At the rooftop bar high table, Nora and Ethan stand, the small, silver object
+    now back on the table. They finish their exchange, their expressions thoughtful,
+    the skyline still glowing softly behind them.
+audit_prompt_switch: false
+repair_request:
+  schema_version: 1
+  entry_sigma: 1.0
+  parent_branch_id: native_ns040_seed0
+  latent_range:
+  - 41
+  - 81
+  noise_seed: 4245
+  prompts:
+  - At the rooftop bar high table, Nora and Ethan stand, the glowing skyline and string
+    lights casting a warm glow around them. Nora reaches into her pocket and passes
+    a small, silver object to Ethan, their hands briefly touching. Nora and Ethan
+    are both standing upright on their feet throughout this interaction.
+  parent_latents_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_development_pilot12_v1/ns040/baseline/diagnostics/latents_0000.pt
+  parent_latents_sha256: 42c6dc3998a135eeb4b5d6eee939df55008a5ec2ad86b8c2aa338f61068671f7
+  parent_video_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_development_pilot12_v1/ns040/baseline/videos/rank0-0-0_lora.mp4
+  parent_video_sha256: 5ae74f7a7451108463e2c391220a33f8567448a57ac5516c8f05957aafaa46d7
+  parent_timing_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_development_pilot12_v1/ns040/baseline/diagnostics/timing_0000.json
+  parent_timing_sha256: d83d69a333455b07379b2b8ea2cede634fa303b952be6d26d7800a9d7fa73404
+  parent_config_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_development_pilot12_v1/ns040/baseline/config.yaml
+  parent_config_sha256: a40260972b503a11c7011f565972328ff87e140addac99ca53cb797b2c7a316d
+  mask_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_ns040_posture_probe_v1/group_mask/mask.pt
+  mask_sha256: 8402d923c057bc86119ed3577d806ed6ab7a49526f369ef554a6a355356b461e

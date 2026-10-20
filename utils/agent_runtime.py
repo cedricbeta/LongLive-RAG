@@ -173,6 +173,20 @@ class AgentRuntimeConfig:
     max_edits_per_shot: int = 1
     edit_entry_sigma: float = 1.0
     edit_prompt_template: str = DEFAULT_EDIT_PROMPT_TEMPLATE
+    # Hold a repaired candidate locally while comparing at most this many
+    # affected future shots against the nearest stable parent branch. Preview
+    # inputs are audited at their own future shot indices and never enter the
+    # current controller context. A verifier may supply the affected indices in
+    # ``repair_dependencies.future_shots``; contiguous shots are the legacy
+    # fallback.
+    # Both suffixes are judged from the verifier state that preceded the
+    # current candidate's own judgment, so the guard asks whether the future
+    # still meets the script, not whether it matches the reference the repair
+    # has just frozen.
+    # Zero preserves the original immediate-commit behavior.
+    # Offline/buffered commit guard.  Values >0 intentionally inspect a
+    # tentative suffix and therefore must not be reported as online/shot-causal.
+    commit_lookahead_shots: int = 0
 
     @classmethod
     def from_config(cls, value: Any) -> "AgentRuntimeConfig":
@@ -191,6 +205,7 @@ class AgentRuntimeConfig:
             max_edits_per_shot=int(cfg.get("max_edits_per_shot", 1)),
             edit_entry_sigma=float(cfg.get("edit_entry_sigma", 1.0)),
             edit_prompt_template=str(cfg.get("edit_prompt_template", cls.edit_prompt_template)),
+            commit_lookahead_shots=int(cfg.get("commit_lookahead_shots", 0)),
         )
         if result.mode != "shot_buffered":
             raise ValueError("agent runtime v1 supports only mode='shot_buffered'")
@@ -204,6 +219,8 @@ class AgentRuntimeConfig:
             raise ValueError(
                 f"edit_entry_sigma must be one of {sorted(ALLOWED_EDIT_SIGMA)}"
             )
+        if result.commit_lookahead_shots < 0:
+            raise ValueError("commit_lookahead_shots must be non-negative")
         return result
 
 
@@ -783,6 +800,12 @@ class ShotBackend(Protocol):
 
     def telemetry(self, shot_index: int) -> Mapping[str, Any]: ...
 
+    # Optional capability used only when commit_lookahead_shots > 0. It must
+    # expose a future shot from the branch identified by ``generated`` without
+    # mutating backend state.  The runtime calls it for both the tentative
+    # candidate and its nearest stable parent to perform a paired comparison.
+    def preview(self, generated: GeneratedShot, shot_index: int) -> GeneratedShot: ...
+
     # Optional capability: an in-place masked-renoise repair of the current
     # provisional shot.  Called after the session has restored the boundary
     # snapshot; the backend replays the shot with the repair plan installed
@@ -834,6 +857,7 @@ class CausalShotSession:
         self.retry_counts: dict[int, int] = {}
         self.edit_counts: dict[int, int] = {}
         self.committed_shots: set[int] = set()
+        self._verifier_candidate_states: dict[tuple[int, int], Any] = {}
         self._lock = SessionLock(config.lock_path, nonblocking=config.lock_nonblocking)
         self._owns_lock = bool(acquire_lock)
         if self._owns_lock:
@@ -878,10 +902,13 @@ class CausalShotSession:
             raise RuntimeError(f"future information leak at {stage}: {'; '.join(violations)}")
         return resolved
 
-    def pre_shot(self, shot_index: int) -> ShotContext:
-        k = int(shot_index)
+    def _check_shot_sequence(self, k: int) -> None:
         if k > 0 and k - 1 not in self.committed_shots:
             raise RuntimeError(f"shot {k} cannot start before shot {k - 1} is delivered")
+
+    def pre_shot(self, shot_index: int) -> ShotContext:
+        k = int(shot_index)
+        self._check_shot_sequence(k)
         normative = self.scene.view(k)
         trusted = self.memory.trusted(as_of_shot=k)
         telemetry = dict(self.backend.telemetry(k))
@@ -975,6 +1002,9 @@ class CausalShotSession:
         self,
         generated: GeneratedShot,
         normative: NormativeView,
+        *,
+        ledger_event: str = "verifier",
+        ledger_extra: Mapping[str, Any] | None = None,
     ) -> tuple[ShotObservation, Verdict]:
         observation = self.backend.observe(generated)
         if observation.shot_index != generated.shot_index or observation.attempt != generated.attempt:
@@ -1022,7 +1052,7 @@ class CausalShotSession:
             raise RuntimeError("verifier verdict fingerprint does not match its audited input")
         verdict = dataclasses.replace(verdict, input_fingerprint=digest)
         self.ledger.append(
-            "verifier",
+            ledger_event,
             shot_index=generated.shot_index,
             attempt=generated.attempt,
             input_fingerprint=digest,
@@ -1034,6 +1064,7 @@ class CausalShotSession:
                 item.to_dict() if isinstance(item, Action) else dict(item)
                 for item in verdict.directed_actions
             ],
+            **dict(ledger_extra or {}),
         )
         return observation, verdict
 
@@ -1067,11 +1098,346 @@ class CausalShotSession:
             payload_fingerprint=payload.payload_fingerprint,
             partition_counts=self.memory.partition_counts(),
         )
+        snapshot_state = getattr(self.verifier, "snapshot_state", None)
+        # Snapshot every stateful verifier before judgment.  A rejected ordinary
+        # candidate or retry is just as untrusted as a rejected edit and must not
+        # be able to teach the next candidate.  Accepted candidates pop the
+        # snapshot in _commit_accepted and keep their deliberate state changes.
+        if callable(snapshot_state):
+            self._verifier_candidate_states[(k, generated.attempt)] = snapshot_state()
         _, verdict = self._observe_and_judge(generated, context.normative)
         return verdict
 
-    def _commit_accepted(self, generated: GeneratedShot, verdict: Verdict) -> ShotResult:
+    @staticmethod
+    def _verdict_summary(verdict: Verdict) -> dict[str, Any]:
+        """Return the stable, human-readable fields used by the paired guard."""
+        raw_score = verdict.metrics.get("repair_score")
+        try:
+            repair_score = None if raw_score is None else float(raw_score)
+        except (TypeError, ValueError):
+            repair_score = None
+        return {
+            "accept": bool(verdict.accept),
+            "reason": str(verdict.reason),
+            "repair_score": repair_score,
+            "metrics": dict(verdict.metrics),
+        }
+
+    @staticmethod
+    def _compare_lookahead_verdicts(
+        parent: Verdict,
+        candidate: Verdict,
+    ) -> tuple[bool, dict[str, Any]]:
+        """Return whether a candidate suffix is no worse than its parent.
+
+        Constraint-level assessments take priority when both verdicts expose
+        them.  Older verifiers remain compatible through a lexicographic
+        ``accept`` then ``repair_score`` comparison.  Equal failures are not a
+        regression: an existing future defect must not erase a successful
+        repair of the current shot.
+        """
+        # Local import keeps the generic runtime's legacy/no-lookahead import
+        # path light.  The comparator itself owns both the generic constraint
+        # policy and the accept/repair_score migration fallback.
+        from utils.agent_constraints import compare_constraint_assessments
+
+        decision = compare_constraint_assessments(parent, candidate)
+        details = dict(decision.to_dict())
+        details["source"] = (
+            "constraint_assessments"
+            if decision.comparison_mode == "constraints"
+            else "legacy_verdict_metrics"
+        )
+        return bool(decision.allow_commit), details
+
+    def _lookahead_indices(
+        self,
+        generated: GeneratedShot,
+        requested: int,
+    ) -> tuple[list[int], dict[str, Any]]:
+        """Select up to ``requested`` affected future shots.
+
+        A repair-aware verifier may identify future appearances of the edited
+        entity/object in ``repair_dependencies.future_shots``.  This avoids a
+        person-specific or fixed-distance heuristic.  Legacy verifiers fall
+        back to the next contiguous authored shots.
+        """
+        current = int(generated.shot_index)
+        dependencies = generated.telemetry.get("repair_dependencies")
+        if isinstance(dependencies, Mapping) and "future_shots" in dependencies:
+            raw = dependencies.get("future_shots")
+            if not isinstance(raw, Sequence) or isinstance(raw, (str, bytes)):
+                raise ValueError("repair_dependencies.future_shots must be a sequence")
+            eligible: set[int] = (
+                set(range(current + 1, self.scene.num_shots))
+                if _as_bool(dependencies.get("all_future", False))
+                else set()
+            )
+            for value in raw:
+                try:
+                    index = int(value)
+                except (TypeError, ValueError) as exc:
+                    raise ValueError(
+                        "repair_dependencies.future_shots must contain integers"
+                    ) from exc
+                if current < index < self.scene.num_shots:
+                    eligible.add(index)
+            ordered = sorted(eligible)
+            return ordered[:requested], {
+                "source": "repair_dependencies",
+                "eligible": ordered,
+                "limited": len(ordered) > requested,
+            }
+
+        stop = min(self.scene.num_shots, current + requested + 1)
+        contiguous = list(range(current + 1, stop))
+        return contiguous, {
+            "source": "contiguous_fallback",
+            "eligible": contiguous,
+            "limited": stop < current + requested + 1,
+        }
+
+    def _lookahead_guard(
+        self,
+        generated: GeneratedShot,
+        parent_generated: GeneratedShot | None = None,
+        *,
+        basis_state: Any = None,
+    ) -> tuple[bool, dict[str, Any]]:
+        """Compare a repaired suffix with the nearest stable parent suffix.
+
+        The current repaired shot has already passed the verifier absolutely.
+        Future shots need not be perfect: they veto the repair only on a clear
+        regression or an invalid/incomplete constraint comparison.  Parent and
+        candidate judgments each start from the same frozen verifier state:
+        ``basis_state`` when given (the state that preceded the current
+        candidate's own judgment), otherwise the post-current state.  Judging
+        from the pre-judgment state matters for identity verifiers: the entity
+        just repaired has no frozen reference yet, so both suffixes are compared
+        with the script description instead of with the repair itself, which
+        would otherwise make the candidate win every identity comparison by
+        construction.  Preview observations never enter trusted memory,
+        consume attempts, call ``commit()``, or mutate backend state.
+        """
+        requested = int(self.config.commit_lookahead_shots)
+        if requested <= 0 or not bool(generated.telemetry.get("edited", False)):
+            return True, {
+                "enabled": False,
+                "policy": "paired_no_regression",
+                "requested": requested,
+                "checked": [],
+                "decision": "commit_guard_disabled",
+            }
+        if parent_generated is None:
+            raise RuntimeError(
+                "paired commit lookahead requires the nearest stable parent candidate"
+            )
+        if int(parent_generated.shot_index) != int(generated.shot_index):
+            raise RuntimeError("lookahead parent candidate belongs to another shot")
+        preview = getattr(self.backend, "preview", None)
+        if not callable(preview):
+            raise RuntimeError(
+                "commit lookahead requires backend.preview(generated, shot_index)"
+            )
+        snapshot_state = getattr(self.verifier, "snapshot_state", None)
+        restore_state = getattr(self.verifier, "restore_state", None)
+        if not callable(snapshot_state) or not callable(restore_state):
+            raise RuntimeError(
+                "commit lookahead requires verifier snapshot_state/restore_state"
+            )
+        current = int(generated.shot_index)
+        future_indices, selection = self._lookahead_indices(generated, requested)
+        checked: list[dict[str, Any]] = []
+        preview_error = ""
+        post_current_state = snapshot_state()
+        judging_state = post_current_state if basis_state is None else basis_state
+        backend_snapshot = self.backend.snapshot(current)
+        backend_snapshot_digest = fingerprint(backend_snapshot)
+        try:
+            for future_index in future_indices:
+                # Each side is judged from exactly the same verifier state.
+                # This prevents the parent judgment from teaching or otherwise
+                # contaminating the candidate judgment (and vice versa).
+                restore_state(judging_state)
+                parent_future = preview(parent_generated, future_index)
+                _, parent_verdict = self._observe_and_judge(
+                    parent_future,
+                    self.scene.view(future_index),
+                    ledger_event="lookahead_verifier",
+                    ledger_extra={
+                        "tentative_shot_index": current,
+                        "decision_as_of_shot": future_index,
+                        "branch_role": "parent",
+                    },
+                )
+
+                restore_state(judging_state)
+                candidate_future = preview(generated, future_index)
+                _, candidate_verdict = self._observe_and_judge(
+                    candidate_future,
+                    self.scene.view(future_index),
+                    ledger_event="lookahead_verifier",
+                    ledger_extra={
+                        "tentative_shot_index": current,
+                        "decision_as_of_shot": future_index,
+                        "branch_role": "candidate",
+                    },
+                )
+                allow_commit, comparison = self._compare_lookahead_verdicts(
+                    parent_verdict, candidate_verdict
+                )
+                checked.append(
+                    {
+                        "shot_index": future_index,
+                        "parent": self._verdict_summary(parent_verdict),
+                        "candidate": self._verdict_summary(candidate_verdict),
+                        "comparison": comparison,
+                        "decision": (
+                            "keep_candidate" if allow_commit else "rollback_candidate"
+                        ),
+                    }
+                )
+                if not allow_commit:
+                    break
+        except Exception as exc:
+            # A missing/failed paired judgment cannot establish no-regression.
+            # Keep the failure in the ledger-facing result and roll back.
+            preview_error = f"{type(exc).__name__}: {exc}"
+        finally:
+            restore_state(post_current_state)
+        restored_backend_digest = fingerprint(self.backend.snapshot(current))
+        if restored_backend_digest != backend_snapshot_digest:
+            preview_error = preview_error or (
+                "RuntimeError: backend.preview mutated backend state "
+                f"({backend_snapshot_digest} != {restored_backend_digest})"
+            )
+        passed = (
+            not preview_error
+            and len(checked) == len(future_indices)
+            and all(row["decision"] == "keep_candidate" for row in checked)
+        )
+        return passed, {
+            "enabled": True,
+            "policy": "paired_no_regression",
+            "requested": requested,
+            "verifier_basis": (
+                "post_current_judgment" if basis_state is None else "pre_current_judgment"
+            ),
+            "selection": selection,
+            "checked": checked,
+            "error": preview_error,
+            "truncated": bool(selection["limited"]),
+            "decision_as_of_shot": checked[-1]["shot_index"] if checked else current,
+            "decision": (
+                "commit_no_regression"
+                if passed
+                else (
+                    "rollback_guard_error"
+                    if preview_error
+                    else "rollback_relative_regression"
+                )
+            ),
+        }
+
+    def _commit_accepted(
+        self,
+        generated: GeneratedShot,
+        verdict: Verdict,
+        *,
+        boundary_snapshot: Any,
+        boundary_snapshot_digest: str,
+        fallback: tuple[GeneratedShot, Any, str] | None = None,
+        defer_rollback_delivery: bool = False,
+    ) -> ShotResult | Verdict:
         k = generated.shot_index
+        if not verdict.accept:
+            raise RuntimeError("_commit_accepted requires an accepted current-shot verdict")
+        parent_generated = fallback[0] if fallback is not None else None
+        # The state snapshotted before this candidate was judged (see
+        # _stage_and_judge).  Missing only for verifiers without snapshot_state,
+        # in which case the guard refuses to run anyway.
+        basis_state = self._verifier_candidate_states.get((k, generated.attempt))
+        lookahead_passed, lookahead = self._lookahead_guard(
+            generated, parent_generated, basis_state=basis_state
+        )
+        if lookahead["enabled"]:
+            self.ledger.append(
+                "commit_guard",
+                shot_index=k,
+                attempt=generated.attempt,
+                passed=lookahead_passed,
+                lookahead=lookahead,
+            )
+        if not lookahead_passed:
+            if fallback is None:
+                # Lookahead is only valid when the caller retained both the
+                # parent-branch output and its post-generation state.  Falling
+                # back to ``generated`` here would deliver the very repair that
+                # failed the guard, while restoring some other backend state.
+                self._reject_candidate(generated, verdict)
+                self._restore_checked(
+                    k,
+                    boundary_snapshot,
+                    boundary_snapshot_digest,
+                    purpose="lookahead_rollback_missing_fallback",
+                    decision_as_of_shot=lookahead.get("decision_as_of_shot", k),
+                )
+                raise RuntimeError(
+                    "commit lookahead rejected an edited candidate without a "
+                    "saved parent-branch fallback"
+                )
+            fallback_generated, fallback_snapshot, fallback_snapshot_digest = fallback
+            if fallback_generated.shot_index != k:
+                raise RuntimeError("lookahead fallback belongs to another shot")
+            guard_verdict = Verdict(
+                accept=False,
+                reason="reject_commit_lookahead",
+                metrics={"lookahead": lookahead},
+                input_fingerprint=verdict.input_fingerprint,
+            )
+            self._reject_candidate(generated, guard_verdict)
+            self._restore_checked(
+                k,
+                fallback_snapshot,
+                fallback_snapshot_digest,
+                purpose="lookahead_rollback",
+                decision_as_of_shot=lookahead.get("decision_as_of_shot", k),
+            )
+            if defer_rollback_delivery:
+                # An explicitly offline repair session may use this rejection
+                # in another budgeted attempt. Nothing has been delivered yet.
+                return guard_verdict
+            # Deliver the current shot from the nearest stable parent branch,
+            # not the edited candidate whose suffix just failed.  Its payload
+            # was already quarantined when the repair was requested, so the
+            # ledger can point at the actual delivered visual/model-native pair.
+            delivered = self.backend.commit(fallback_generated, quarantined=True)
+            self.committed_shots.add(k)
+            fallback_payload = self.memory.quarantined_payload(
+                k, fallback_generated.attempt
+            )
+            self.ledger.append(
+                "commit",
+                shot_index=k,
+                attempt=fallback_generated.attempt,
+                rejected_candidate_attempt=generated.attempt,
+                payload_fingerprint=fallback_payload.payload_fingerprint,
+                quarantined=True,
+                reason="lookahead_rollback",
+                lookahead=lookahead,
+                partition_counts=self.memory.partition_counts(),
+            )
+            self.scene.assert_unchanged()
+            return ShotResult(
+                k,
+                generated.attempt + 1,
+                False,
+                True,
+                delivered,
+                guard_verdict,
+            )
+
+        self._verifier_candidate_states.pop((k, generated.attempt), None)
         admitted = self.memory.admit(k, generated.attempt)
         delivered = self.backend.commit(generated, quarantined=False)
         self.committed_shots.add(k)
@@ -1089,6 +1455,12 @@ class CausalShotSession:
     def _reject_candidate(self, generated: GeneratedShot, verdict: Verdict) -> MemoryPayload:
         # Rejected candidates are archived in quarantine immediately.  Only a
         # final rejected candidate is delivered; none can enter trusted reads.
+        verifier_state = self._verifier_candidate_states.pop(
+            (int(generated.shot_index), int(generated.attempt)), None
+        )
+        restore_state = getattr(self.verifier, "restore_state", None)
+        if verifier_state is not None and callable(restore_state):
+            restore_state(verifier_state)
         quarantined = self.memory.quarantine(generated.shot_index, generated.attempt)
         self.ledger.append(
             "reject_candidate",
@@ -1167,6 +1539,27 @@ class CausalShotSession:
             k, snapshot, snapshot_digest, purpose="edit_shot", edit_count=self.edit_counts[k]
         )
         edited, raw_result = self.backend.edit(k, int(attempt), action, verdict)
+        # The runtime, not a backend convention, knows this candidate came from
+        # edit_shot.  Stamp it here so commit guards and fallback policy cannot
+        # be accidentally bypassed by an omitted telemetry field.
+        edited = dataclasses.replace(
+            edited,
+            telemetry=MappingProxyType(
+                {
+                    **dict(edited.telemetry),
+                    "edited": True,
+                    **(
+                        {
+                            "repair_dependencies": _plain(
+                                verdict.metrics["repair_dependencies"]
+                            )
+                        }
+                        if "repair_dependencies" in verdict.metrics
+                        else {}
+                    ),
+                }
+            ),
+        )
         result = dict(raw_result or {})
         self.ledger.append(
             "action",
@@ -1204,9 +1597,21 @@ class CausalShotSession:
 
         attempt = 0
         generated = self.backend.generate(k, attempt)
+        # A guarded edit may later fail because of its future suffix.  Keep the
+        # parent branch's current-shot output *and post-generation state* so
+        # rollback can deliver and continue from one coherent version.
+        fallback_snapshot = self.backend.snapshot(k)
+        fallback_snapshot_digest = fingerprint(fallback_snapshot)
         verdict = self._stage_and_judge(context, generated, expected_attempt=attempt)
+        stable_parent_generated = generated
+        stable_parent_verdict = verdict
         if verdict.accept:
-            return self._commit_accepted(generated, verdict)
+            return self._commit_accepted(
+                generated,
+                verdict,
+                boundary_snapshot=snapshot,
+                boundary_snapshot_digest=snapshot_digest,
+            )
         self._reject_candidate(generated, verdict)
         rejected: list[tuple[GeneratedShot, Verdict]] = [(generated, verdict)]
 
@@ -1225,7 +1630,13 @@ class CausalShotSession:
                 context, verdict, edit_action, snapshot, snapshot_digest, attempt
             )
             if edit_verdict.accept:
-                return self._commit_accepted(edited, edit_verdict)
+                return self._commit_accepted(
+                    edited,
+                    edit_verdict,
+                    boundary_snapshot=snapshot,
+                    boundary_snapshot_digest=snapshot_digest,
+                    fallback=(generated, fallback_snapshot, fallback_snapshot_digest),
+                )
             self._reject_candidate(edited, edit_verdict)
             rejected.append((edited, edit_verdict))
             verdict = edit_verdict
@@ -1246,18 +1657,41 @@ class CausalShotSession:
         generated = self.backend.generate(k, attempt)
         verdict = self._stage_and_judge(context, generated, expected_attempt=attempt)
         if verdict.accept:
-            return self._commit_accepted(generated, verdict)
+            return self._commit_accepted(
+                generated,
+                verdict,
+                boundary_snapshot=snapshot,
+                boundary_snapshot_digest=snapshot_digest,
+            )
 
         self._reject_candidate(generated, verdict)
         rejected.append((generated, verdict))
 
-        # Best-of-N delivery: every candidate of this shot was rejected, so the
-        # one with the highest verifier ``repair_score`` is delivered under
-        # quarantine (ties keep the latest candidate, i.e. the legacy choice).
+        # Every candidate was rejected.  Once an edit branch was attempted, a
+        # failed repair must fall back to the current shot from the nearest
+        # stable parent branch.  With no edit branch, the legacy best-of-N
+        # policy still chooses among ordinary retry candidates.
         # Quarantined payloads never enter trusted reads regardless of choice.
         scores = [float(v.metrics.get("repair_score", 0.0)) for _, v in rejected]
-        best_index = max(range(len(rejected)), key=lambda i: (scores[i], i))
-        best_generated, best_verdict = rejected[best_index]
+        edit_failed = any(
+            bool(g.telemetry.get("edited", False)) for g, _ in rejected
+        )
+        if edit_failed:
+            self._restore_checked(
+                k,
+                fallback_snapshot,
+                fallback_snapshot_digest,
+                purpose="stable_parent_fallback",
+            )
+            best_generated, best_verdict = (
+                stable_parent_generated,
+                stable_parent_verdict,
+            )
+            selection = "nearest_stable_parent"
+        else:
+            best_index = max(range(len(rejected)), key=lambda i: (scores[i], i))
+            best_generated, best_verdict = rejected[best_index]
+            selection = "best_repair_score"
         delivered = self.backend.commit(best_generated, quarantined=True)
         self.committed_shots.add(k)
         self.ledger.append(
@@ -1268,6 +1702,7 @@ class CausalShotSession:
             quarantined=True,
             retry_count=self.retry_counts.get(k, 0),
             edit_count=self.edit_counts.get(k, 0),
+            selection=selection,
             best_of={"attempts": [g.attempt for g, _ in rejected], "repair_scores": scores},
             partition_counts=self.memory.partition_counts(),
         )

@@ -162,11 +162,13 @@ def save_mask_payload(
     """Persist masks in the prepare_renoise_edit_masks.py payload format."""
     out = Path(out_path)
     out.parent.mkdir(parents=True, exist_ok=True)
+    from utils.agent_runtime import file_sha256
     torch.save(
         {
             "masks": {int(k): v for k, v in masks.items()},
             "phrase": str(phrase),
             "video": str(video),
+            "video_sha256": file_sha256(video) if str(video) and Path(video).is_file() else None,
             "grid": list(grid),
             "frames_per_chunk": int(frames_per_chunk),
         },

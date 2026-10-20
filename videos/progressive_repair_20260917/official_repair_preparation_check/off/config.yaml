@@ -1,0 +1,72 @@
+denoising_step_list:
+- 1000
+- 750
+- 500
+- 250
+warp_denoising_step: true
+num_frame_per_block: 3
+model_name: Wan2.1-T2V-1.3B
+model_kwargs:
+  local_attn_size: 12
+  timestep_shift: 5.0
+  sink_size: 1
+  memory_size: 6
+  recent_exclude: 5
+  use_latentmem: true
+  compression_method: ae
+  ae_ckpt: checkpoints/ae_latent_mem.pt
+generator_ckpt: checkpoints/longlive_base.pt
+lora_ckpt: checkpoints/longlive_lora.pt
+adapter:
+  type: lora
+  rank: 256
+  alpha: 256
+  dropout: 0.0
+  dtype: bfloat16
+  verbose: false
+data_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/official_repair_preparation_check/off/initial_prompt.txt
+output_folder: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/official_repair_preparation_check/off/videos
+inference_iter: -1
+skip_existing: false
+num_output_frames: 241
+use_ema: false
+seed: 0
+num_samples: 1
+save_with_index: true
+global_sink: true
+context_noise: 0
+adapter_diagnostics_dir: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/official_repair_preparation_check/off/diagnostics
+timed_segments:
+- seconds: 10
+  prompts:
+  - At the flower shop wrapping table, Clara, a middle-aged woman with auburn hair
+    and a long tan coat, and Miles, a slim man with a buzz cut and a charcoal jacket,
+    sit and stand mixed, establishing a shared relationship as they work together.
+- seconds: 10
+  prompts:
+  - At the flower shop wrapping table, Clara stands and carefully selects a small
+    vase from the shelf, then passes it to Miles, who is seated and arranging flowers.
+    The soft natural light highlights the fresh stems around them.
+- seconds: 10
+  prompts:
+  - At the flower shop wrapping table, Clara stands beside Miles, who remains seated
+    and continues arranging the flowers. They discuss the vase's suitability for the
+    arrangement, their voices steady and focused. The soft natural light enhances
+    the vibrant colors of the fresh stems.
+- seconds: 10
+  prompts:
+  - At the flower shop wrapping table, Clara leans in to inspect the vase from one
+    side while Miles, still seated, examines it from the other. They both stay in
+    frame, their movements deliberate and focused.
+- seconds: 10
+  prompts:
+  - At the flower shop wrapping table, Clara gently places the vase back on the table,
+    her auburn hair catching the soft natural light. Miles watches closely, his eyes
+    following her every move.
+- seconds: 10
+  prompts:
+  - At the flower shop wrapping table, Clara and Miles complete the arrangement, their
+    hands moving in sync. Clara stands back to admire their work, while Miles, still
+    seated, adds the final touches. The soft natural light bathes the fresh stems
+    in a warm glow.
+audit_prompt_switch: true

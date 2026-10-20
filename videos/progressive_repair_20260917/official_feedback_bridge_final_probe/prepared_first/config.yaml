@@ -1,0 +1,92 @@
+denoising_step_list:
+- 1000
+- 750
+- 500
+- 250
+warp_denoising_step: true
+num_frame_per_block: 3
+model_name: Wan2.1-T2V-1.3B
+model_kwargs:
+  local_attn_size: 12
+  timestep_shift: 5.0
+  sink_size: 1
+  memory_size: 6
+  recent_exclude: 5
+  use_latentmem: true
+  compression_method: ae
+  ae_ckpt: checkpoints/ae_latent_mem.pt
+generator_ckpt: checkpoints/longlive_base.pt
+lora_ckpt: checkpoints/longlive_lora.pt
+adapter:
+  type: lora
+  rank: 256
+  alpha: 256
+  dropout: 0.0
+  dtype: bfloat16
+  verbose: false
+data_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/official_feedback_bridge_final_probe/prepared_first/initial_prompt.txt
+output_folder: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/official_feedback_bridge_final_probe/prepared_first/videos
+inference_iter: -1
+skip_existing: false
+num_output_frames: 241
+use_ema: false
+seed: 0
+num_samples: 1
+save_with_index: true
+global_sink: true
+context_noise: 0
+adapter_diagnostics_dir: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/official_feedback_bridge_final_probe/prepared_first/diagnostics
+timed_segments:
+- seconds: 10
+  prompts:
+  - Iris stands at the flower shop wrapping table, arranging fresh stems from the
+    nearby buckets. Soft natural light filters through, casting gentle shadows.
+- seconds: 10
+  prompts:
+  - Iris pauses at the flower shop wrapping table, stepping back to check the arrangement
+    from another angle. Her curly red hair catches the soft natural light, highlighting
+    the delicate flowers.
+- seconds: 10
+  prompts:
+  - Iris leans forward at the flower shop wrapping table, adjusting a small vase in
+    the center. Her moss green coat brushes against the flowers as she carefully aligns
+    it.
+- seconds: 10
+  prompts:
+  - Iris stands at the flower shop wrapping table, studying the result of her arrangement.
+    Her moss green coat remains still as she examines each flower, ensuring everything
+    is perfect.
+- seconds: 10
+  prompts:
+  - Iris stands at the flower shop wrapping table, making one final correction to
+    the setup. She straightens a few stems, her moss green coat moving slightly with
+    her movements. The soft natural light enhances the vibrant colors of the flowers.
+- seconds: 10
+  prompts:
+  - Iris steps back slightly at the flower shop wrapping table, confirming the setup
+    is complete. Her moss green coat settles as she stands still, satisfied with the
+    arrangement. The soft natural light continues to highlight the vibrant colors
+    of the flowers.
+audit_prompt_switch: true
+repair_request:
+  schema_version: 1
+  entry_sigma: 1.0
+  parent_branch_id: audited_original_parent
+  latent_range:
+  - 81
+  - 121
+  noise_seed: 4243
+  prompts:
+  - Iris leans forward at the flower shop wrapping table, adjusting a small vase in
+    the center. Her moss green coat brushes against the flowers as she carefully aligns
+    it. Iris wears a moss green coat and has curly red hair.
+  parent_latents_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/official_iris_60s_baseline_prepared/diagnostics/latents_0000.pt
+  parent_latents_sha256: 5642da35cae4785ac6d9813b374d1f64cce9a36a7a689a5f1eea0361994d86c4
+  parent_video_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/official_iris_60s_baseline_prepared/videos/rank0-0-0_lora.mp4
+  parent_video_sha256: 6571c062d6868e3e50ba92660777397fd2692444ddc1e148719b565244b35675
+  parent_timing_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/official_iris_60s_baseline_prepared/diagnostics/timing_0000.json
+  parent_timing_sha256: faf780be56bd7ce86681b6eaa18d85019712ca46d6594550bfd0513070debd7e
+  parent_config_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/official_iris_60s_baseline_prepared/config.yaml
+  parent_config_sha256: 642a7c647d7bbf7d07a8c0665f76280a3dd401685bc896bdcc4aa7b789907275
+  mask_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/official_iris_garment_mask/mask.pt
+  mask_sha256: 34b6a742359d79b8ef985a4bb78b505c67d2d7c05dba90f9aa417bfe35a7f1c5

@@ -10,8 +10,11 @@ from __future__ import annotations
 
 import base64
 import copy
+import fcntl
 import json
+import os
 import re
+import tempfile
 import time
 import urllib.error
 import urllib.request
@@ -33,6 +36,25 @@ from utils.agent_runtime import (
     fingerprint,
 )
 from utils.agent_edit import build_repair_prompt
+
+
+def _atomic_write_text(path: Path, text: str, *, encoding="utf-8") -> None:
+    """Publish a complete transcript; interruption never leaves a partial JSON."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile(mode="w", encoding=encoding, dir=path.parent,
+                                     prefix=f".{path.name}.", delete=False) as handle:
+        temporary = Path(handle.name)
+        try:
+            handle.write(text)
+            handle.flush()
+            os.fsync(handle.fileno())
+        except BaseException:
+            temporary.unlink(missing_ok=True)
+            raise
+    try:
+        os.replace(temporary, path)
+    finally:
+        temporary.unlink(missing_ok=True)
 
 
 def _action_branch(
@@ -388,9 +410,10 @@ class FingerprintedVLMClient:
         base_url: str,
         model: str,
         cache_dir: str | Path,
-        timeout: int = 240,
+        timeout: int = 600,
         max_parse_retries: int = 1,
         max_tokens: int = 4096,
+        seed: int = 0,
     ) -> None:
         self.base_url = str(base_url).rstrip("/")
         self.model = str(model)
@@ -398,6 +421,11 @@ class FingerprintedVLMClient:
         self.timeout = int(timeout)
         self.max_parse_retries = int(max_parse_retries)
         self.max_tokens = int(max_tokens)
+        self.seed = int(seed)
+
+    @property
+    def sampling_config(self) -> dict[str, Any]:
+        return {"temperature": 0, "seed": self.seed, "max_tokens": self.max_tokens}
 
     def call_fingerprint(
         self,
@@ -413,23 +441,77 @@ class FingerprintedVLMClient:
                 "prompt": prompt,
                 "ordered_images": [file_sha256(path) for path in paths],
                 "schema": schema,
+                "request_version": 2,
+                "sampling": self.sampling_config,
             }
         )
 
+    # Transport retries only (timeouts, connection errors, 5xx): the request
+    # is identical each time and the response is validated by the caller.  A
+    # shared sglang server serving four judge processes exceeded the 240 s
+    # timeout and killed a whole labeling lane on 2026-09-11.
+    TRANSPORT_ATTEMPTS = 4
+    TRANSPORT_BACKOFF_SECONDS = 15.0
+
     def _post(self, payload: Mapping[str, Any]) -> dict[str, Any]:
-        request = urllib.request.Request(
-            f"{self.base_url}/chat/completions",
-            data=json.dumps(payload).encode("utf-8"),
-            headers={"Content-Type": "application/json"},
-            method="POST",
-        )
-        with urllib.request.urlopen(request, timeout=self.timeout) as response:
-            parsed = json.loads(response.read().decode("utf-8"))
+        import socket
+        import time as _time
+        import urllib.error
+
+        data = json.dumps(payload).encode("utf-8")
+        last_error: Exception | None = None
+        for attempt in range(1, self.TRANSPORT_ATTEMPTS + 1):
+            request = urllib.request.Request(
+                f"{self.base_url}/chat/completions",
+                data=data,
+                headers={"Content-Type": "application/json"},
+                method="POST",
+            )
+            try:
+                with urllib.request.urlopen(request, timeout=self.timeout) as response:
+                    parsed = json.loads(response.read().decode("utf-8"))
+                break
+            except urllib.error.HTTPError as error:
+                if error.code < 500 or attempt == self.TRANSPORT_ATTEMPTS:
+                    raise
+                last_error = error
+            except (urllib.error.URLError, socket.timeout, TimeoutError, ConnectionError) as error:
+                if attempt == self.TRANSPORT_ATTEMPTS:
+                    raise
+                last_error = error
+            _time.sleep(self.TRANSPORT_BACKOFF_SECONDS * attempt)
+        else:  # pragma: no cover - loop always breaks or raises
+            raise RuntimeError(f"VLM endpoint unreachable: {last_error}")
         if not isinstance(parsed, dict):
             raise RuntimeError("VLM endpoint returned a non-object response")
         return parsed
 
     def call(
+        self,
+        *,
+        prompt: str,
+        image_paths: Iterable[str | Path],
+        schema: Mapping[str, Any],
+        call_kind: str,
+        shot_index: int,
+        temporal_inputs: Iterable[TemporalInput],
+    ) -> dict[str, Any]:
+        paths, inputs = tuple(image_paths), tuple(temporal_inputs)
+        violations = audit_temporal_inputs(inputs, as_of_shot=int(shot_index))
+        if violations:
+            raise RuntimeError(f"future information leak before VLM call: {'; '.join(violations)}")
+        digest = self.call_fingerprint(prompt=prompt, image_paths=paths, schema=schema)
+        lock_dir = self.cache_dir / ".call_locks" / str(call_kind)
+        lock_dir.mkdir(parents=True, exist_ok=True)
+        # Separate file descriptions also serialize threads, and the lock is
+        # shared across worker processes using this cache. Distinct requests
+        # remain concurrent; identical requests get exactly one response.
+        with (lock_dir / f"{digest}.lock").open("a") as lock:
+            fcntl.flock(lock, fcntl.LOCK_EX)
+            return self._call_locked(prompt=prompt, image_paths=paths, schema=schema,
+                                     call_kind=call_kind, shot_index=shot_index, temporal_inputs=inputs)
+
+    def _call_locked(
         self,
         *,
         prompt: str,
@@ -469,8 +551,7 @@ class FingerprintedVLMClient:
         payload: dict[str, Any] = {
             "model": self.model,
             "messages": [{"role": "user", "content": content}],
-            "temperature": 0,
-            "max_tokens": self.max_tokens,
+            **self.sampling_config,
             "response_format": {
                 "type": "json_schema",
                 "json_schema": {"name": str(call_kind), "schema": dict(schema), "strict": True},
@@ -502,7 +583,7 @@ class FingerprintedVLMClient:
                 if attempt >= self.max_parse_retries:
                     transcript_path.parent.mkdir(parents=True, exist_ok=True)
                     failure_path = transcript_path.with_suffix(".failure.json")
-                    failure_path.write_text(
+                    _atomic_write_text(failure_path,
                         json.dumps(
                             {
                                 "schema_version": 1,
@@ -558,7 +639,7 @@ class FingerprintedVLMClient:
             "parsed": parsed,
             "wall_seconds": time.time() - started,
         }
-        transcript_path.write_text(json.dumps(transcript, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        _atomic_write_text(transcript_path, json.dumps(transcript, indent=2, sort_keys=True) + "\n", encoding="utf-8")
         return {
             "parsed": parsed,
             "call_id": digest,

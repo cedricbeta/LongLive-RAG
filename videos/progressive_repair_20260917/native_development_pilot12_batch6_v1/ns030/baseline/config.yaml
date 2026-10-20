@@ -1,0 +1,67 @@
+denoising_step_list:
+- 1000
+- 750
+- 500
+- 250
+warp_denoising_step: true
+num_frame_per_block: 3
+model_name: Wan2.1-T2V-1.3B
+model_kwargs:
+  local_attn_size: 12
+  timestep_shift: 5.0
+  sink_size: 1
+  memory_size: 6
+  recent_exclude: 5
+  use_latentmem: true
+  compression_method: ae
+  ae_ckpt: checkpoints/ae_latent_mem.pt
+generator_ckpt: checkpoints/longlive_base.pt
+lora_ckpt: checkpoints/longlive_lora.pt
+adapter:
+  type: lora
+  rank: 256
+  alpha: 256
+  dropout: 0.0
+  dtype: bfloat16
+  verbose: false
+data_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_development_pilot12_batch6_v1/ns030/baseline/initial_prompt.txt
+output_folder: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_development_pilot12_batch6_v1/ns030/baseline/videos
+inference_iter: -1
+skip_existing: false
+num_output_frames: 241
+use_ema: false
+seed: 0
+num_samples: 1
+save_with_index: true
+global_sink: true
+context_noise: 0
+adapter_diagnostics_dir: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_development_pilot12_batch6_v1/ns030/baseline/diagnostics
+timed_segments:
+- seconds: 10
+  prompts:
+  - At the workshop workbench, Nora and Ethan stand, sorting through papers and cups.
+    Pine dust covers the floor, and tool racks line the walls.
+- seconds: 10
+  prompts:
+  - At the workshop workbench, Nora and Ethan stand, sorting through papers and cups.
+    Clara enters, her auburn hair catching the light as she approaches. Nora hands
+    a small, intricately carved wooden item to Ethan.
+- seconds: 10
+  prompts:
+  - At the workshop workbench, Ethan takes the small, intricately carved wooden item
+    from Nora and examines it closely. Clara stands nearby, watching with interest.
+- seconds: 10
+  prompts:
+  - At the workshop workbench, Ethan and Nora focus on the wooden item, making small
+    adjustments. Clara leaves the area, and they continue working together.
+- seconds: 10
+  prompts:
+  - At the workshop workbench, Nora points at the updated arrangement of tools and
+    materials. Ethan nods in agreement, his eyes following her gesture. They both
+    stand, focused on the task at hand.
+- seconds: 10
+  prompts:
+  - At the workshop workbench, Nora and Ethan finish the exchange, placing the intricately
+    carved wooden item in the center of the table. They step back, satisfied with
+    their work.
+audit_prompt_switch: false

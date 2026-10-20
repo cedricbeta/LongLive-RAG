@@ -1,0 +1,70 @@
+denoising_step_list:
+- 1000
+- 750
+- 500
+- 250
+warp_denoising_step: true
+num_frame_per_block: 3
+model_name: Wan2.1-T2V-1.3B
+model_kwargs:
+  local_attn_size: 12
+  timestep_shift: 5.0
+  sink_size: 1
+  memory_size: 6
+  recent_exclude: 5
+  use_latentmem: true
+  compression_method: ae
+  ae_ckpt: checkpoints/ae_latent_mem.pt
+generator_ckpt: checkpoints/longlive_base.pt
+lora_ckpt: checkpoints/longlive_lora.pt
+adapter:
+  type: lora
+  rank: 256
+  alpha: 256
+  dropout: 0.0
+  dtype: bfloat16
+  verbose: false
+data_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_ns235_portable_preparation_check_v1/P_cue/initial_prompt.txt
+output_folder: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_ns235_portable_preparation_check_v1/P_cue/videos
+inference_iter: -1
+skip_existing: false
+num_output_frames: 241
+use_ema: false
+seed: 0
+num_samples: 1
+save_with_index: true
+global_sink: true
+context_noise: 0
+adapter_diagnostics_dir: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_ns235_portable_preparation_check_v1/P_cue/diagnostics
+timed_segments:
+- seconds: 10
+  prompts:
+  - At the studio equipment desk, Kai, an older man with silver hair and a brown trench
+    coat, stands and begins setting up lighting equipment.
+- seconds: 10
+  prompts:
+  - At the studio equipment desk, Kai continues arranging the softbox lights. Ava,
+    a petite woman with straight blonde hair and a denim jacket, enters from the side
+    and quietly joins the space. She stands beside Kai, observing the setup.
+- seconds: 10
+  prompts:
+  - At the studio equipment desk, Kai and Ava stand close, both focusing on a cable
+    tangled among the lighting equipment. Ava gently untangles it while Kai watches,
+    nodding in approval. They work in sync, their movements deliberate and precise.
+- seconds: 10
+  prompts:
+  - At the studio equipment desk, Kai stands alone, adjusting the softbox lights.
+    He reflects on the just-finished interaction with Ava, feeling satisfied with
+    their synchronized effort. The studio remains bright with white backdrops and
+    cluttered equipment. Kai has silver hair.
+- seconds: 10
+  prompts:
+  - At the studio equipment desk, Kai stands and carefully places the softbox light
+    back to its earlier position. He ensures everything is set just right, maintaining
+    the studio's bright, organized atmosphere. Kai has silver hair.
+- seconds: 10
+  prompts:
+  - At the studio equipment desk, Kai stands and settles the softbox light in its
+    final place. He steps back, satisfied that everything is perfectly arranged. The
+    studio's bright, organized atmosphere is maintained. Kai has silver hair.
+audit_prompt_switch: false

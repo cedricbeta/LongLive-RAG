@@ -1,0 +1,70 @@
+denoising_step_list:
+- 1000
+- 750
+- 500
+- 250
+warp_denoising_step: true
+num_frame_per_block: 3
+model_name: Wan2.1-T2V-1.3B
+model_kwargs:
+  local_attn_size: 12
+  timestep_shift: 5.0
+  sink_size: 1
+  memory_size: 6
+  recent_exclude: 5
+  use_latentmem: true
+  compression_method: ae
+  ae_ckpt: checkpoints/ae_latent_mem.pt
+generator_ckpt: checkpoints/longlive_base.pt
+lora_ckpt: checkpoints/longlive_lora.pt
+adapter:
+  type: lora
+  rank: 256
+  alpha: 256
+  dropout: 0.0
+  dtype: bfloat16
+  verbose: false
+data_path: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_pilot_batch6_portable_preparation_v1/ns180/baseline/initial_prompt.txt
+output_folder: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_pilot_batch6_portable_preparation_v1/ns180/baseline/videos
+inference_iter: -1
+skip_existing: false
+num_output_frames: 241
+use_ema: false
+seed: 0
+num_samples: 1
+save_with_index: true
+global_sink: true
+context_noise: 0
+adapter_diagnostics_dir: /home/chendong/video-gen/LongLive-RAG/videos/progressive_repair_20260917/native_pilot_batch6_portable_preparation_v1/ns180/baseline/diagnostics
+timed_segments:
+- seconds: 10
+  prompts:
+  - Noah, a tall man with a shaved head and a dark green work shirt, stands at the
+    restaurant prep counter, quietly arranging utensils and ingredients. Warm task
+    lights cast a glow over the stainless-steel kitchen.
+- seconds: 10
+  prompts:
+  - Noah pauses at the restaurant prep counter, stepping back to check the arrangement
+    from another angle. His dark green work shirt stands out against the stainless-steel
+    surfaces.
+- seconds: 10
+  prompts:
+  - Noah leans forward at the restaurant prep counter, carefully adjusting a small
+    spice container near the center. The warm task lights highlight his focused expression
+    as he ensures everything is in perfect order.
+- seconds: 10
+  prompts:
+  - Noah stands at the restaurant prep counter, studying the result of his adjustments.
+    His shaved head and dark green work shirt are clearly visible as he inspects the
+    neatly arranged utensils and ingredients.
+- seconds: 10
+  prompts:
+  - Noah stands at the restaurant prep counter, making one final correction to the
+    setup. He reaches for a misplaced knife and aligns it with the others, ensuring
+    the prep area is flawless.
+- seconds: 10
+  prompts:
+  - Noah steps back slightly at the restaurant prep counter, confirming the setup
+    is complete. His tall frame and shaved head are visible under the warm task lights
+    as he gives a final nod of satisfaction.
+audit_prompt_switch: false
